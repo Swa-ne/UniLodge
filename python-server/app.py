@@ -16,8 +16,8 @@ smtp_connection = smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context)
 smtp_connection.login(_emailSender, _emailPassword)
 
 
-@app.route("/send-email", methods=["POST"])
-def sendEmail():
+@app.route("/send-email-code", methods=["POST"])
+def sendEmailCode():
     name = request.form.get('name')
     code = request.form.get('code')
     emailReceiver = request.form.get('receiver')
@@ -36,8 +36,9 @@ def sendEmail():
             <img src="{image_url}" alt="UniLodge Logo" style="width: 100px; margin-bottom: 20px;">
             <h2>Your Security Code</h2>
             <p>Hello, {name}</p>
-            <p>Verifying your email address improves the security of your UniLodge account, please enter the following code when prompted:</p>
+            <p>Verifying your email address improves the security of your UniLodge account. Please enter the following code when prompted:</p>
             <h1 style="letter-spacing: 5px;">{code}</h1>
+            <p>Please note: This code will expire in 20 minutes.</p>
             <p>Thank you,<br>The UniLodge Team</p>
         </div>
     </body>
