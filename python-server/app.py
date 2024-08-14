@@ -1,11 +1,9 @@
 from flask import Flask, request, send_file
-from dotenv import load_dotenv, dotenv_values
-
+from dotenv import load_dotenv
 from email.message import EmailMessage
 import os
 import ssl
 import smtplib
-import base64
 
 load_dotenv()
 
@@ -20,9 +18,12 @@ smtp_connection.login(_emailSender, _emailPassword)
 
 @app.route("/send-email", methods=["POST"])
 def sendEmail():
-    name = request.form['name']
-    code = request.form['code']
-    emailReceiver = request.form['receiver']
+    name = request.form.get('name')
+    code = request.form.get('code')
+    emailReceiver = request.form.get('receiver')
+
+    if not name or not code or not emailReceiver:
+        return "Missing required fields", 400
 
     em = EmailMessage()
 
@@ -46,12 +47,14 @@ def sendEmail():
     em['Subject'] = "Email Verification"
     em['From'] = _emailSender
     em['To'] = emailReceiver
-    em.set_content(body, subtype='html') 
+    em.set_content(body, subtype='html')
 
-    smtp_connection.sendmail(_emailSender, emailReceiver, em.as_string())
-
-    return "Email Sent"
-
+    try:
+        smtp_connection.sendmail(_emailSender, emailReceiver, em.as_string())
+        return "Email Sent"
+    except Exception as e:
+        print(f"Error sending email: {e}")  # Log the exception (optional)
+        return "Failed to send email", 500
 
 def close_connection(exception):
     smtp_connection.quit()
@@ -60,3 +63,6 @@ def close_connection(exception):
 def display_logo():
     image_path = 'logo.png'
     return send_file(image_path, mimetype='image/png')
+
+if __name__ == "__main__":
+    app.run(debug=True)
