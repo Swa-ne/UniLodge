@@ -1,7 +1,12 @@
 import express, { Request, Response } from 'express';
 import mongoose from 'mongoose';
+import bodyParser from "body-parser"
+import cors from 'cors';
 import dotenv from "dotenv"
 dotenv.config()
+
+
+import entryRoutes from "./routes/authentication.routes";
 
 const app = express();
 
@@ -16,6 +21,22 @@ mongoose
     .catch((error) => {
         console.log('Internal Server Error');
     });
+
+// app.use(
+//     cors({
+//       origin: CLIENT_URL,
+//       credentials: true,
+//     })
+//   );
+
+app.use(express.json())
+app.use(
+    bodyParser.urlencoded({
+        extended: true,
+    }),
+);
+
+app.use("/authentication/", entryRoutes)
 
 app.get('/', (req: Request, res: Response) => {
     res.send('Hello from your Node.js Express server!');
