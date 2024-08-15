@@ -1,10 +1,12 @@
-import { Router } from "express"
+import { Router } from "express";
 
 
-import { signupUserController } from "../controllers/signup.controller"
+import { resendEmailCodeController, signupUserController, verifyEmailCodeController } from "../controllers/signup.controller";
 
-const router = Router()
+const router = Router();
 
-router.post("/signup", signupUserController)
+router.post("/signup", signupUserController);
+router.post("/resend-verification", resendEmailCodeController);
+router.post("/verify-code", verifyEmailCodeController);
 
-export default router
+export default router;

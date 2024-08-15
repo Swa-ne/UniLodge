@@ -20,3 +20,11 @@ export const sendEmailCode = async (user_id: ObjectId, receiver: string, name: s
         console.error(error);
     }
 }
+export const verifyEmailCode = async (user_id: ObjectId, code: string) => {
+    try {
+        const result: boolean = ((await UserValidCode.findOne({ user_id }))?.code) === code;
+        return result
+    } catch (error) {
+        console.error(error);
+    }
+}

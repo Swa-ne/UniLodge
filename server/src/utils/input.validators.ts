@@ -4,6 +4,7 @@ import { checkEmailAvailability } from "../services/authentication/signup.servic
 export interface CustomResponse {
     message?: string,
     error?: string,
+    user_details?: { user_id: string, email: string, name: string },
     httpCode: number
 }
 
@@ -20,7 +21,7 @@ export const checkEveryInputForSignup = async (emailAddress: string, password: s
     if (password !== confirmationPassword) {
         return { error: "Those password didn't match. Try again.", "httpCode": 400 };
     }
-    return { message: 'success', "httpCode": 200 };
+    return { message: 'Success', "httpCode": 200 };
 };
 
 export const checkEmailValidity = (emailAddress: string) => {

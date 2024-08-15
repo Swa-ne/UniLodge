@@ -3,6 +3,7 @@ import { signupUsertoDatabase } from '../services/authentication/signup.services
 
 import { UserSchemaInterface } from '../models/authentication/user.model';
 import { checkEveryInputForSignup } from '../utils/input.validators';
+import { sendEmailCode } from '../services/authentication/index.services';
 
 interface CustomRequestBody extends UserSchemaInterface {
     confirmation_password: string
@@ -24,23 +25,41 @@ export const signupUserController = async (req: Request, res: Response) => {
 
         for (const [key, value] of Object.entries(requiredFields)) {
             if (value == null) {
-                return res.status(400).json(`${key} is required and cannot be null or undefined.`);
+                return res.status(400).json({ error: `${key} is required and cannot be null or undefined.` });
             }
         }
 
         const checkerForInput = await checkEveryInputForSignup(emailAddress, password_hash, confirmation_password);
-        if (checkerForInput.message === 'success') {
+        if (checkerForInput.message === 'Success') {
             const data = await signupUsertoDatabase(first_name, middle_name, last_name, emailAddress, personal_number, birthday, password_hash);
             if (data.httpCode !== 200) {
-                return res.status(500).json(data.error);;
+                return res.status(500).json({ error: data.error });
             }
-            return res.status(data.httpCode).json(data.message);
+            return res.status(data.httpCode).json({ message: data.message, user_details: data.user_details });
         }
 
-        return res.status(checkerForInput.httpCode).json(checkerForInput.message);;
-
+        return res.status(checkerForInput.httpCode).send({ message: checkerForInput.message });
     } catch (error) {
-        res.status(500).json("Internal Server Error");
-
+        res.status(500).json({ error: "Internal Server Error" });
     }
 };
+
+export const resendEmailCodeController = async (req: Request, res: Response) => {
+    try {
+        const { user_id, email, name } = req.body;
+        await sendEmailCode(user_id, email, name);
+        return res.status(200).json({ message: "Success" });
+    } catch (error) {
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+}
+
+export const verifyEmailCodeController = async (req: Request, res: Response) => {
+    try {
+        const { user_id, code } = req.body;
+        return res.status(200).json({ message: "Success" });
+    } catch (error) {
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+}
+

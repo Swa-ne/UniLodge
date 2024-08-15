@@ -30,7 +30,15 @@ export const signupUsertoDatabase = async (
 
         await sendEmailCode(userCredentialResult._id, personal_email, first_name)
 
-        return { message: "Congratulations, your account has been successfully created", httpCode: 200 };
+        return {
+            message: "Congratulations, your account has been successfully created",
+            user_details: {
+                user_id: `${userCredentialResult._id}`,
+                email: personal_email,
+                name: userCredentialResult.full_name
+            },
+            httpCode: 200
+        };
     } catch (error) {
         if (userCredentialResult) {
             await userCredentialResult.deleteOne();
@@ -41,7 +49,7 @@ export const signupUsertoDatabase = async (
 
 export const checkEmailAvailability = async (emailAddress: string): Promise<boolean> => {
     try {
-        const result: boolean = (await User.findOne({ personal_email: { $regex: new RegExp(`^${emailAddress}$`, 'i') } })) === null;
+        const result: boolean = (await User.findOne({ personal_email: { $regex: new RegExp(`^ ${emailAddress} $`, 'i') } })) === null;
         return result;
     } catch (error) {
         return false;
@@ -50,7 +58,7 @@ export const checkEmailAvailability = async (emailAddress: string): Promise<bool
 
 export const getDataByEmailAddress = async (emailAddress: string): Promise<UserSchemaInterface | null> => {
     try {
-        const result: UserSchemaInterface | null = await User.findOne({ personal_email: { $regex: new RegExp(`^${emailAddress}$`, 'i') } });
+        const result: UserSchemaInterface | null = await User.findOne({ personal_email: { $regex: new RegExp(`^ ${emailAddress} $`, 'i') } });
         return result;
     } catch (error) {
         return null;
