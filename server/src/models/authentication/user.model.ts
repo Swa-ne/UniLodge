@@ -5,6 +5,7 @@ export interface UserSchemaInterface extends Document {
     first_name: string,
     middle_name?: string,
     last_name: string,
+    username: string,
     full_name: string,
     bio?: string,
     profile_picture_url: string,
@@ -14,6 +15,7 @@ export interface UserSchemaInterface extends Document {
     password_hash: string,
     valid_email: boolean,
     valid_landlord: boolean,
+    refresh_token: string,
     createdAt?: Date,
     updatedAt?: Date,
 }
@@ -29,6 +31,10 @@ const UserSchema: Schema = new Schema({
     last_name: {
         type: String,
         required: [true, 'Please enter your last name.'],
+    },
+    username: {
+        type: String,
+        required: [true, 'Please enter your username.'],
     },
     full_name: {
         type: String,
@@ -67,6 +73,9 @@ const UserSchema: Schema = new Schema({
         type: Boolean,
         default: false
     },
+    refresh_token: {
+        type: String
+    }
 }, {
     timestamps: true,
 });
