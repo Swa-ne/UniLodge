@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 
-import { resendEmailCodeController, signupUserController, verifyEmailCodeController } from "../controllers/signup.controller";
+import { resendEmailCodeController, signupUserController, verifyEmailCodeController } from "../controllers/authentication/signup.controller";
 
 const router = Router();
 

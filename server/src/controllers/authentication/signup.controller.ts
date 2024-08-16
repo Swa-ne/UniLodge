@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import { signupUsertoDatabase } from '../services/authentication/signup.services';
+import { signupUsertoDatabase } from '../../services/authentication/signup.services';
 
-import { UserSchemaInterface } from '../models/authentication/user.model';
-import { checkEveryInputForSignup } from '../utils/input.validators';
-import { sendEmailCode } from '../services/authentication/index.services';
+import { UserSchemaInterface } from '../../models/authentication/user.model';
+import { checkEveryInputForSignup } from '../../utils/input.validators';
+import { generateAccessAndRefereshTokens, sendEmailCode, verifyEmailCode } from '../../services/authentication/index.services';
 
 interface CustomRequestBody extends UserSchemaInterface {
     confirmation_password: string
@@ -55,9 +55,21 @@ export const resendEmailCodeController = async (req: Request, res: Response) => 
 }
 
 export const verifyEmailCodeController = async (req: Request, res: Response) => {
+    const options = {
+        httpOnly: true,
+        secure: true
+    }
     try {
         const { user_id, code } = req.body;
-        return res.status(200).json({ message: "Success" });
+        const result = await verifyEmailCode(user_id, code);
+        if (result.httpCode === 200) {
+            const { access_token, refresh_token } = await generateAccessAndRefereshTokens(user_id);
+            return res
+                .status(200)
+                .cookie("refresh_token", refresh_token, options)
+                .json({ message: "Success", access_token });
+        }
+        return res.status(result.httpCode).json({ error: result.error });
     } catch (error) {
         res.status(500).json({ error: "Internal Server Error" });
     }
