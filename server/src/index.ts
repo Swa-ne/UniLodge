@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import bodyParser from "body-parser"
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import dotenv from "dotenv"
 dotenv.config()
 
@@ -35,6 +36,7 @@ app.use(
         extended: true,
     }),
 );
+app.use(cookieParser())
 
 app.use("/authentication/", entryRoutes)
 
