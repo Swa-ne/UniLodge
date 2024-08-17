@@ -18,10 +18,11 @@ smtp_connection.login(_emailSender, _emailPassword)
 
 @app.route("/send-email-code", methods=["POST"])
 def sendEmailCode():
-    name = request.form.get('name')
-    code = request.form.get('code')
-    emailReceiver = request.form.get('receiver')
-
+    data = request.json
+    name = data.get('name')
+    code = data.get('code')
+    emailReceiver = data.get('receiver')
+    
     if not name or not code or not emailReceiver:
         return "Missing required fields", 400
 
@@ -53,12 +54,13 @@ def sendEmailCode():
     try:
         smtp_connection.sendmail(_emailSender, emailReceiver, em.as_string())
         return "Email Sent"
-    except Exception as e:
-        print(f"Error sending email: {e}")  # Log the exception (optional)
-        return "Failed to send email", 500
+    except smtplib.SMTPException as e:
+        smtp_connection.quit()
+        smtp_connection.connect('smtp.gmail.com', 465)
+        smtp_connection.login(_emailSender, _emailPassword)
+        smtp_connection.sendmail(_emailSender, em['To'], em.as_string())
+        return "Email Sent"
 
-def close_connection(exception):
-    smtp_connection.quit()
 
 @app.route('/image-logo')
 def display_logo():
