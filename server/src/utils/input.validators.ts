@@ -4,7 +4,7 @@ import { checkEmailAvailability } from "../services/authentication/signup.servic
 export interface CustomResponse {
     message?: string,
     error?: string,
-    user_details?: { user_id: string, email: string, name: string },
+    access_token?: string,
     httpCode: number
 }
 

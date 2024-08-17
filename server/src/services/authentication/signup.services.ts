@@ -2,11 +2,13 @@ import * as bcrypt from "bcrypt";
 import { User, UserSchemaInterface } from "../../models/authentication/user.model";
 import { CustomResponse } from "../../utils/input.validators";
 import { sendEmailCode } from "./index.services";
+import { generateAccessToken } from "../../utils/generate.token";
 
 export const signupUsertoDatabase = async (
     first_name: string,
     middle_name: string | undefined,
     last_name: string,
+    username: string,
     personal_email: string,
     personal_number: string | undefined,
     birthday: Date,
@@ -21,6 +23,7 @@ export const signupUsertoDatabase = async (
             first_name,
             middle_name,
             last_name,
+            username,
             full_name: `${first_name} ${middle_name && `${middle_name} `}${last_name}`,
             personal_email,
             personal_number,
@@ -28,15 +31,12 @@ export const signupUsertoDatabase = async (
             password_hash
         }).save();
 
-        await sendEmailCode(userCredentialResult._id, personal_email, first_name)
+        await sendEmailCode(`${userCredentialResult._id}`, personal_email, first_name)
 
+        const access_token = await generateAccessToken(`${userCredentialResult._id}`, personal_email, username, userCredentialResult.full_name)
         return {
             message: "Congratulations, your account has been successfully created",
-            user_details: {
-                user_id: `${userCredentialResult._id}`,
-                email: personal_email,
-                name: userCredentialResult.full_name
-            },
+            access_token,
             httpCode: 200
         };
     } catch (error) {
