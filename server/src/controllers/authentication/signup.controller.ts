@@ -62,7 +62,7 @@ export const resendEmailCodeController = async (req: Request & { user?: UserType
         const user = req.user;
 
         if (!user) {
-            return res.status(400).json({ error: "User not found" });
+            return res.status(404).json({ error: "User not found" });
         }
 
         const { user_id, email, full_name } = user;
@@ -82,7 +82,7 @@ export const verifyEmailCodeController = async (req: Request & { user?: UserType
         const user = req.user;
 
         if (!user) {
-            return res.status(400).json({ error: "User not found" });
+            return res.status(404).json({ error: "User not found" });
         }
 
         const { user_id } = user;
@@ -100,4 +100,3 @@ export const verifyEmailCodeController = async (req: Request & { user?: UserType
         res.status(500).json({ error: "Internal Server Error" });
     }
 }
-
