@@ -16,6 +16,7 @@ export interface UserSchemaInterface extends Document {
     valid_email: boolean,
     valid_landlord: boolean,
     refresh_token: string,
+    refresh_token_version: string,
     createdAt?: Date,
     updatedAt?: Date,
 }
@@ -74,6 +75,9 @@ const UserSchema: Schema = new Schema({
         default: false
     },
     refresh_token: {
+        type: String
+    },
+    refresh_token_version: {
         type: String
     }
 }, {
