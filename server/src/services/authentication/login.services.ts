@@ -1,5 +1,6 @@
 import { User, UserSchemaInterface } from "../../models/authentication/user.model";
 import * as bcrypt from "bcrypt";
+import { CustomResponse } from "../../utils/input.validators";
 
 export const loginUsertoDatabase = async (user_identifier: string, password: string) => {
     try {
@@ -24,3 +25,36 @@ export const getDataByEmailAddress = async (email_address: string): Promise<User
         return null;
     }
 };
+
+export const changePassword = async (user_id: string, new_password: string): Promise<CustomResponse> => {
+    try {
+        const user = await User.findById(user_id)
+        if (!user) {
+            return { error: "User not found", httpCode: 404 };
+        }
+
+        const saltRounds = await bcrypt.genSalt();
+        const password_hash = await bcrypt.hash(new_password, saltRounds);
+
+        user.password_hash = password_hash
+        await user.save()
+
+        return { message: "Success", httpCode: 200 }
+    } catch (error) {
+        return { error: "Internal Server Error", httpCode: 500 }
+    }
+}
+
+export const isOldPasswordSimilar = async (user_id: string, old_password: string): Promise<CustomResponse> => {
+    try {
+        const user = await User.findById(user_id)
+        if (!user) {
+            return { error: "User not found", httpCode: 404 };
+        }
+        if (!(await bcrypt.compare(old_password, user.password_hash))) return { error: "Current password is incorrect. Please try again.", httpCode: 401 }
+
+        return { message: "Success", httpCode: 200 }
+    } catch (error) {
+        return { error: "Internal Server Error", httpCode: 500 }
+    }
+}
