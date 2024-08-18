@@ -5,6 +5,7 @@ import { resendEmailCodeController, signupUserController, verifyEmailCodeControl
 import { authenticateToken } from "../middlewares/token.authentication";
 import { loginUserController } from "../controllers/authentication/login.controller";
 import { logoutUserController } from "../controllers/authentication/logout.controller";
+import { refreshAccessTokenController } from "../controllers/authentication/refresh.token.controller";
 
 const router = Router();
 
@@ -14,5 +15,7 @@ router.post("/verify-code", authenticateToken, verifyEmailCodeController);
 
 router.post("/login", loginUserController);
 router.post("/logout", authenticateToken, logoutUserController);
+
+router.post("/access-token", refreshAccessTokenController);
 
 export default router;
