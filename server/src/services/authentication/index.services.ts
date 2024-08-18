@@ -57,10 +57,21 @@ export const generateAccessAndRefereshTokens = async (user_id: string) => {
         const access_token = await generateAccessToken(user._id.toString(), user.personal_email, user.username, user.full_name)
         const refresh_token = await generateRefreshToken(user._id.toString())
 
-        user.refresh_token = refresh_token
+        user.refresh_token_version += 1
         await user.save()
-
         return { access_token, refresh_token }
+    } catch (error) {
+        return { error: "Internal Server Error", httpCode: 500 }
+    }
+}
+
+export const getUserRefreshToken = async (user_id: string) => {
+    try {
+        const user = await User.findById(user_id)
+        if (!user) {
+            return { error: "User not found", httpCode: 404 }
+        }
+        return user.refresh_token_version
     } catch (error) {
         return { error: "Internal Server Error", httpCode: 500 }
     }
