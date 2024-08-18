@@ -23,17 +23,19 @@ export const loginUserController = async (req: Request, res: Response) => {
                 const { access_token, refresh_token } = await generateAccessAndRefereshTokens(user_data._id.toString());
                 loginUpdate = { loginUpdate, accessToken: access_token };
 
-                const options = {
-                    httpOnly: true,
-                    secure: true
-                }
-
                 return res
                     .status(200)
-                    .cookie("refresh_token", refresh_token, options)
+                    .cookie(
+                        "refresh_token",
+                        refresh_token,
+                        {
+                            httpOnly: true,
+                            secure: true
+                        }
+                    )
                     .json({ message: "Success", access_token });
             }
-            return res.status(data.httpCode).json(loginUpdate);;
+            return res.status(data.httpCode).json(loginUpdate);
         }
         return res.status(checker_for_input.httpCode).json(checker_for_input.message);;
     } catch (error) {
