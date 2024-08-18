@@ -74,10 +74,6 @@ export const resendEmailCodeController = async (req: Request & { user?: UserType
 }
 
 export const verifyEmailCodeController = async (req: Request & { user?: UserType }, res: Response) => {
-    const options = {
-        httpOnly: true,
-        secure: true
-    }
     try {
         const user = req.user;
 
@@ -92,7 +88,14 @@ export const verifyEmailCodeController = async (req: Request & { user?: UserType
             const { access_token, refresh_token } = await generateAccessAndRefereshTokens(user_id);
             return res
                 .status(200)
-                .cookie("refresh_token", refresh_token, options)
+                .cookie(
+                    "refresh_token",
+                    refresh_token,
+                    {
+                        httpOnly: true,
+                        secure: true
+                    }
+                )
                 .json({ message: "Success", access_token });
         }
         return res.status(result.httpCode).json({ error: result.error });
