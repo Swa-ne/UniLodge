@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:unilodge/core/configs/theme/app_theme.dart';
+import 'app_routes.dart'; 
 
 void main() {
   runApp(const MainApp());
 }
+
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.lightTheme,
+      title: 'UniLodge',
+      routerConfig: appRouter,
     );
   }
 }
