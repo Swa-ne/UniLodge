@@ -26,10 +26,10 @@ export const checkEveryInputForSignup = async (emailAddress: string, password: s
 
 export const checkEveryInputForLogin = async (userIdentifier: string, password: string) => {
     if (!checkEmailValidity(userIdentifier)) {
-        return { 'message': 'Please enter a valid email address', "httpCode": 200 };
+        return { 'error': 'Please enter a valid email address', "httpCode": 400 };
     }
     if (!checkPasswordValidity(password)) {
-        return { 'message': 'Sorry, looks like that\'s the wrong email or password.', "httpCode": 200 };
+        return { 'error': 'Sorry, looks like that\'s the wrong email or password.', "httpCode": 401 };
     }
     return { 'message': 'success', "httpCode": 200 };
 };

@@ -15,7 +15,7 @@ export interface UserSchemaInterface extends Document {
     password_hash: string,
     valid_email: boolean,
     valid_landlord: boolean,
-    refresh_token_version: string,
+    refresh_token_version: number,
     createdAt?: Date,
     updatedAt?: Date,
 }

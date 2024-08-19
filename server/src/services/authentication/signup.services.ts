@@ -33,12 +33,15 @@ export const signupUsertoDatabase = async (
 
         await sendEmailCode(`${userCredentialResult._id}`, personal_email, first_name)
 
-        const access_token = await generateAccessToken(`${userCredentialResult._id}`, personal_email, username, userCredentialResult.full_name)
-        return {
-            message: "Congratulations, your account has been successfully created",
-            access_token,
-            httpCode: 200
-        };
+        const access_token = await generateAccessToken(`${userCredentialResult._id}`,)
+        if (access_token.httpCode === 200) {
+            return {
+                message: "Congratulations, your account has been successfully created",
+                access_token: access_token.message,
+                httpCode: 200
+            };
+        }
+        return { error: access_token.error, httpCode: access_token.httpCode }
     } catch (error) {
         if (userCredentialResult) {
             await userCredentialResult.deleteOne();
