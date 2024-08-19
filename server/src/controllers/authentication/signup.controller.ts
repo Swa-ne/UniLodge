@@ -85,18 +85,18 @@ export const verifyEmailCodeController = async (req: Request & { user?: UserType
         const { code } = req.body;
         const result = await verifyEmailCode(user_id, code);
         if (result.httpCode === 200) {
-            const { access_token, refresh_token } = await generateAccessAndRefereshTokens(user_id);
+            const result_token = await generateAccessAndRefereshTokens(user_id);
             return res
                 .status(200)
                 .cookie(
                     "refresh_token",
-                    refresh_token,
+                    result_token.message?.refresh_token,
                     {
                         httpOnly: true,
                         secure: true
                     }
                 )
-                .json({ message: "Success", access_token });
+                .json({ message: "Success", access_token: result_token.message?.access_token });
         }
         return res.status(result.httpCode).json({ error: result.error });
     } catch (error) {
