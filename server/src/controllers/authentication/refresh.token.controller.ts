@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 
 import { UserType } from '../../middlewares/token.authentication';
 import { User } from '../../models/authentication/user.model';
-import { generateAccessToken } from '../../utils/generate.token';
+import { generateAccessTokenWithRefreshToken } from '../../utils/generate.token';
 
 export const refreshAccessTokenController = async (req: Request & { user?: UserType }, res: Response) => {
     try {
@@ -17,14 +17,7 @@ export const refreshAccessTokenController = async (req: Request & { user?: UserT
             process.env.REFRESH_TOKEN_SECRET as string
         ) as jwt.JwtPayload
 
-        const user = await User.findById(decoded_token?.user_id)
-
-        if (!user) return res.status(401).json({ error: "Invalid refresh token" })
-
-
-        if (decoded_token.refresh_token_version !== user.refresh_token_version) return res.status(401).json({ error: "Refresh token is invalid" });
-
-        const access_token = await generateAccessToken(user._id.toString(), user.personal_email, user.username, user.full_name)
+        const access_token = await generateAccessTokenWithRefreshToken(decoded_token)
 
         return res
             .status(200)
