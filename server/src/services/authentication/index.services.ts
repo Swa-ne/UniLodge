@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { User, UserValidCode, UserValidCodeSchemaInterface } from '../../models/authentication/user.model';
+import { User, UserSchemaInterface, UserValidCode, UserValidCodeSchemaInterface } from '../../models/authentication/user.model';
 import { generateAccessToken, generateRefreshToken } from '../../utils/generate.token';
 import { CustomResponse } from '../../utils/input.validators';
 
@@ -24,8 +24,19 @@ export const sendEmailCode = async (user_id: string, receiver: string, name: str
             }).save();
         }
         await python_server.post(`/send-email-code`, data);
+        return { message: "Success", httpCode: 200 }
     } catch (error) {
-        console.error(error);
+        return { error: "Internal Server Error", httpCode: 500 }
+    }
+}
+export const sendEmailForgetPassword = async (user_id: string, receiver: string, name: string, token: string) => {
+    try {
+        const data = { token, receiver, name };
+        await python_server.post(`/send-email-forget-password`, data);
+
+        return { message: "Success", httpCode: 200 }
+    } catch (error) {
+        return { error: "Internal Server Error", httpCode: 500 }
     }
 }
 
@@ -54,12 +65,10 @@ export const generateAccessAndRefereshTokens = async (user_id: string) => {
         if (!user) {
             return { error: "User not found", httpCode: 404 }
         }
-        const access_token = await generateAccessToken(user._id.toString(), user.personal_email, user.username, user.full_name)
+        const access_token = await generateAccessToken(user_id)
         const refresh_token = await generateRefreshToken(user._id.toString())
 
-        user.refresh_token_version += 1
-        await user.save()
-        return { access_token, refresh_token }
+        return { message: { access_token: access_token.message, refresh_token }, httpCode: 200 }
     } catch (error) {
         return { error: "Internal Server Error", httpCode: 500 }
     }
@@ -74,5 +83,27 @@ export const getUserRefreshToken = async (user_id: string) => {
         return user.refresh_token_version
     } catch (error) {
         return { error: "Internal Server Error", httpCode: 500 }
+    }
+}
+
+export const getCurrentUserByEmail = async (personal_email: string): Promise<UserSchemaInterface | null> => {
+    try {
+        const user = await User.findOne({ personal_email });
+        if (!user) return null;
+
+        return user
+    } catch (error) {
+        return null
+    }
+}
+
+export const getCurrentUserById = async (user_id: string): Promise<UserSchemaInterface | null> => {
+    try {
+        const user = await User.findById(user_id);
+        if (!user) return null;
+
+        return user
+    } catch (error) {
+        return null
     }
 }
