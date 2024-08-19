@@ -1,14 +1,16 @@
 name: unilodge
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: '>=3.4.3 <4.0.0'
+  sdk: ">=3.4.3 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
+  flutter_svg:
+  go_router: ^14.2.3
 
 dev_dependencies:
   flutter_test:
@@ -17,3 +19,13 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/images/initLogo1.png
+    - assets/images/initLogo2.png
+  fonts:
+    - family: TrainOne
+      fonts:
+        - asset: assets/fonts/TrainOne-Regular.ttf
+          weight: 400
