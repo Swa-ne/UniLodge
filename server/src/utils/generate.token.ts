@@ -8,7 +8,7 @@ export const generateAccessTokenWithRefreshToken = async (decoded_token: jwt.Jwt
 
     if (!user) return { error: "Invalid refresh token", httpCode: 401 }
 
-    if (decoded_token.refresh_token_version !== (user.refresh_token_version - 1)) return { error: "Refresh token is invalid", httpCode: 401 };
+    if (decoded_token.refresh_token_version !== (user.refresh_token_version)) return { error: "Refresh token is invalid", httpCode: 401 };
 
     return {
         message: jwt.sign(

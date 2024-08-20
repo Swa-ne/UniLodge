@@ -19,7 +19,7 @@ export async function authenticateToken(req: AuthenticatedRequest, res: Response
 
         const user = verify(token, process.env.ACCESS_TOKEN_SECRET as string) as UserType;
         req.user = user;
-        next();
+        return next();
     } catch (err) {
         if (err instanceof TokenExpiredError) {
             try {
@@ -35,7 +35,7 @@ export async function authenticateToken(req: AuthenticatedRequest, res: Response
                     return res.status(refresh_access_token.httpCode).json({ error: refresh_access_token.error });
                 }
 
-                req.headers['authorization'] = `Bearer ${refresh_access_token.message}`;
+                res.setHeader('Authorization', `Bearer ${refresh_access_token.message}`);
                 const user = verify(refresh_access_token.message as string, process.env.ACCESS_TOKEN_SECRET as string) as UserType;
 
                 if (user && user.user_id && user.email && user.username && user.full_name) {
