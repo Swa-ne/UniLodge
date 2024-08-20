@@ -3,7 +3,6 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
 import { UserType } from '../../middlewares/token.authentication';
-import { User } from '../../models/authentication/user.model';
 import { generateAccessTokenWithRefreshToken } from '../../utils/generate.token';
 
 export const refreshAccessTokenController = async (req: Request & { user?: UserType }, res: Response) => {
