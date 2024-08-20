@@ -23,12 +23,12 @@ mongoose
         console.log('Internal Server Error');
     });
 
-// app.use(
-//     cors({
-//       origin: CLIENT_URL,
-//       credentials: true,
-//     })
-//   );
+app.use(
+    cors({
+        origin: process.env.CLIENT_URL,
+        credentials: true,
+    })
+);
 
 app.use(express.json())
 app.use(
@@ -38,7 +38,7 @@ app.use(
 );
 app.use(cookieParser())
 
-app.use("/authentication/", entryRoutes)
+app.use("/authentication", entryRoutes)
 
 app.get('/', (req: Request, res: Response) => {
     res.send('Hello from your Node.js Express server!');
