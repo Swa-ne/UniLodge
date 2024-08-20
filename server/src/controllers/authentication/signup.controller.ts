@@ -93,7 +93,8 @@ export const verifyEmailCodeController = async (req: Request & { user?: UserType
                     result_token.message?.refresh_token,
                     {
                         httpOnly: true,
-                        secure: true
+                        secure: true,
+                        sameSite: 'none',
                     }
                 )
                 .json({ message: "Success", access_token: result_token.message?.access_token });

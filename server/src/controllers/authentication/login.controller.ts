@@ -14,7 +14,6 @@ export const loginUserController = async (req: Request, res: Response) => {
 
         if (checker_for_input.httpCode === 200) {
             const data = await loginUsertoDatabase(email_address, password);
-            let login_update: any = data.message;
 
             if (data.httpCode === 200) {
                 const user_data = await getDataByEmailAddress(email_address);
@@ -23,7 +22,6 @@ export const loginUserController = async (req: Request, res: Response) => {
 
                 const result = await generateAccessAndRefereshTokens(user_data._id.toString());
                 if (result.httpCode !== 200) return res.status(result.httpCode).json({ error: result.error })
-                login_update = { login_update, access_token: result.message?.access_token };
 
                 return res
                     .status(200)
@@ -32,7 +30,8 @@ export const loginUserController = async (req: Request, res: Response) => {
                         result.message?.refresh_token,
                         {
                             httpOnly: true,
-                            secure: true
+                            secure: true,
+                            sameSite: 'none',
                         }
                     )
                     .json({ message: "Success", access_token: result.message?.access_token });
