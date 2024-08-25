@@ -7,21 +7,22 @@ import { changePasswordController, forgotPasswordController, loginUserController
 import { logoutUserController } from "../controllers/authentication/logout.controller";
 import { refreshAccessTokenController } from "../controllers/authentication/refresh.token.controller";
 import { getCurrentUserController } from "../controllers/authentication/index.controller";
+import { forgetPasswordLimiter, loginLimiter, sendCodeLimiter } from "../middlewares/rate.limiter";
 
 const router = Router();
 
 router.post("/signup", signupUserController);
-router.post("/resend-verification", authenticateToken, resendEmailCodeController);
+router.post("/resend-verification", sendCodeLimiter, authenticateToken, resendEmailCodeController);
 router.post("/verify-code", authenticateToken, verifyEmailCodeController);
 
-router.post("/login", loginUserController);
+router.post("/login", loginLimiter, loginUserController);
 router.post("/logout", authenticateToken, logoutUserController);
 
 router.post("/access-token", refreshAccessTokenController);
 
 router.post("/change-password", authenticateToken, changePasswordController);
 
-router.post("/forgot-password", forgotPasswordController);
+router.post("/forgot-password", forgetPasswordLimiter, forgotPasswordController);
 router.post("/reset-password/:token", postResetPasswordController);
 
 router.get("/current-user", authenticateToken, getCurrentUserController);
