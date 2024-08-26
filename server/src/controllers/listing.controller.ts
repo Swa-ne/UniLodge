@@ -157,6 +157,9 @@ export const putDormListingController = async (req: Request & { user?: UserType 
             image_urls,
             tags
         );
+
+        if (dorm_put_update.httpCode === 200) return res.status(dorm_put_update.httpCode).json({ 'message': dorm_put_update.message });
+        return res.status(dorm_put_update.httpCode).json({ 'error': dorm_put_update.error });
     } catch (error) {
         return res.status(500).json({ 'error': 'Internal Server Error' });
     }
