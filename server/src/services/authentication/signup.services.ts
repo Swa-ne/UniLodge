@@ -1,7 +1,7 @@
 import * as bcrypt from "bcrypt";
 import { User, UserSchemaInterface } from "../../models/authentication/user.model";
 import { CustomResponse } from "../../utils/input.validators";
-import { sendEmailCode } from "./index.services";
+import { sendEmailCode } from "../index.services";
 import { generateAccessToken } from "../../utils/generate.token";
 
 export const signupUsertoDatabase = async (

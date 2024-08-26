@@ -3,7 +3,7 @@ import { signupUsertoDatabase } from '../../services/authentication/signup.servi
 
 import { UserSchemaInterface } from '../../models/authentication/user.model';
 import { checkEveryInputForSignup } from '../../utils/input.validators';
-import { generateAccessAndRefereshTokens, sendEmailCode, verifyEmailCode } from '../../services/authentication/index.services';
+import { generateAccessAndRefereshTokens, sendEmailCode, verifyEmailCode } from '../../services/index.services';
 import { UserType } from '../../middlewares/token.authentication';
 
 interface CustomRequestBody extends UserSchemaInterface {

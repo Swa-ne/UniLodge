@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { UserType } from "../../middlewares/token.authentication"
-import { getCurrentUserByEmail } from "../../services/authentication/index.services";
+import { getCurrentUserByEmail } from "../../services/index.services";
 
 export const getCurrentUserController = async (req: Request & { user?: UserType }, res: Response) => {
     try {

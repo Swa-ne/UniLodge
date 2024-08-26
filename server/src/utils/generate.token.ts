@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { getUserRefreshToken } from '../services/authentication/index.services';
+import { getUserRefreshToken } from '../services/index.services';
 import { User } from '../models/authentication/user.model';
 import { CustomResponse } from './input.validators';
 
