@@ -45,3 +45,17 @@ export const checkPasswordValidity = (password: string) => {
     const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s)./;
     return regex.test(password);
 };
+
+export const validateRequiredFields = (fields: Record<string, any>, fieldLabels: Record<string, string>) => {
+    for (const [key, value] of Object.entries(fields)) {
+        if (value == null) {
+            return { valid: false, error: `${fieldLabels[key]} is required and cannot be null or undefined.` };
+        }
+    }
+    return { valid: true };
+};
+
+export const validateDescriptionLength = (description: string) => {
+    const wordCount = description.trim().split(/\s+/).length;
+    return wordCount <= 250;
+};

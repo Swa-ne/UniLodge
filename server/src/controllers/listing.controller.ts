@@ -1,7 +1,21 @@
 import { Request, Response } from 'express';
 import { UserType } from '../middlewares/token.authentication';
 import { getDorms, postDormListing, putDormListing, toggleVisibilityDormListing } from '../services/listing.services';
+import { validateDescriptionLength, validateRequiredFields } from '../utils/input.validators';
 
+const REQUIRED_FIELDS_LABELS = {
+    property_name: "Property Name",
+    type: "Type",
+    city: "City",
+    street: "Street",
+    barangay_or_district: "Barangay or District",
+    zip_code: "Zip Code",
+    currency_id: "Currency",
+    available_rooms: "Available Room/s",
+    price_per_month: "Price per Month",
+    description: "Description",
+    image_urls: "Image Urls",
+};
 
 export const getDormListingController = async (req: Request & { user?: UserType }, res: Response) => {
     try {
@@ -24,43 +38,17 @@ export const postDormListingController = async (req: Request & { user?: UserType
 
         const { property_name, type, city, street, barangay_or_district, house_number, zip_code, lat, lng, currency_id, available_rooms, price_per_month, description, least_terms, rental_amenities, utility_included, image_urls, tags, } = req.body;
 
-        const word_description = description.trim().split(/\s+/);
-        if (word_description.length > 250) return res.status(413).json({ error: "Description contains too many words. Please shorten your description." });
-
-
-        const requiredFields = {
-            property_name,
-            type,
-            city,
-            street,
-            barangay_or_district,
-            zip_code,
-            currency_id,
-            available_rooms,
-            price_per_month,
-            description,
-            image_urls,
-        };
-
-        const updatedKey: { [key: string]: string } = {
-            property_name: "Property Name",
-            type: "Type",
-            city: "City",
-            street: "Street",
-            barangay_or_district: "Barangay or District",
-            zip_code: "Zip Code",
-            currency_id: "Currency",
-            available_rooms: "Available Room/s",
-            price_per_month: "Price per Month",
-            description: "Description",
-            image_urls: "Image Urls",
-        };
-
-        for (const [key, value] of Object.entries(requiredFields)) {
-            if (value == null) {
-                return res.status(400).json({ error: `${updatedKey[key]} is required and cannot be null or undefined.` });
-            }
+        if (!validateDescriptionLength(description)) {
+            return res.status(413).json({ error: "Description contains too many words. Please shorten your description." });
         }
+
+        const { valid, error } = validateRequiredFields(
+            { property_name, type, city, street, barangay_or_district, zip_code, currency_id, available_rooms, price_per_month, description, image_urls },
+            REQUIRED_FIELDS_LABELS
+        );
+
+        if (!valid) return res.status(400).json({ error });
+
         const dorm_post_update = await postDormListing(
             user.user_id,
             property_name,
@@ -98,43 +86,17 @@ export const putDormListingController = async (req: Request & { user?: UserType 
 
         const { property_name, type, city, street, barangay_or_district, house_number, zip_code, lat, lng, currency_id, available_rooms, price_per_month, description, least_terms, rental_amenities, utility_included, image_urls, tags, } = req.body;
 
-        const word_description = description.trim().split(/\s+/);
-        if (word_description.length > 250) return res.status(413).json({ error: "Description contains too many words. Please shorten your description." });
-
-
-        const requiredFields = {
-            property_name,
-            type,
-            city,
-            street,
-            barangay_or_district,
-            zip_code,
-            currency_id,
-            available_rooms,
-            price_per_month,
-            description,
-            image_urls,
-        };
-
-        const updatedKey: { [key: string]: string } = {
-            property_name: "Property Name",
-            type: "Type",
-            city: "City",
-            street: "Street",
-            barangay_or_district: "Barangay or District",
-            zip_code: "Zip Code",
-            currency_id: "Currency",
-            available_rooms: "Available Room/s",
-            price_per_month: "Price per Month",
-            description: "Description",
-            image_urls: "Image Urls",
-        };
-
-        for (const [key, value] of Object.entries(requiredFields)) {
-            if (value == null) {
-                return res.status(400).json({ error: `${updatedKey[key]} is required and cannot be null or undefined.` });
-            }
+        if (!validateDescriptionLength(description)) {
+            return res.status(413).json({ error: "Description contains too many words. Please shorten your description." });
         }
+
+        const { valid, error } = validateRequiredFields(
+            { property_name, type, city, street, barangay_or_district, zip_code, currency_id, available_rooms, price_per_month, description, image_urls },
+            REQUIRED_FIELDS_LABELS
+        );
+
+        if (!valid) return res.status(400).json({ error });
+
         const dorm_put_update = await putDormListing(
             dorm_id,
             user.user_id,
