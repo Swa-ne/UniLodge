@@ -36,6 +36,13 @@ export const postDormListing = async (
     session.startTransaction();
 
     try {
+        const latitude = parseFloat(lat);
+        const longitude = parseFloat(lng);
+
+        if (isNaN(latitude) || isNaN(longitude)) {
+            return { error: 'Invalid latitude or longitude', httpCode: 400 };
+        }
+
         const newLoc: Document<unknown, {}, LocationSchemaInterface> & LocationSchemaInterface & Required<{ _id: ObjectId; }> | null = await new Location({
             city,
             street,
@@ -67,7 +74,7 @@ export const postDormListing = async (
         await session.commitTransaction();
         session.endSession();
 
-        return { message: 'Success', httpCode: 500 };
+        return { message: 'Success', httpCode: 200 };
     } catch (error) {
         await session.abortTransaction();
         session.endSession();
@@ -85,8 +92,8 @@ export const putDormListing = async (
     barangay_or_district: string,
     house_number: string,
     zip_code: string,
-    lat: number,
-    lng: number,
+    lat: string,
+    lng: string,
     currency_id: string,
     available_rooms: string,
     price_per_month: string,
@@ -98,6 +105,12 @@ export const putDormListing = async (
     tags: string[]
 ): Promise<CustomResponse> => {
     try {
+        const latitude = parseFloat(lat);
+        const longitude = parseFloat(lng);
+
+        if (isNaN(latitude) || isNaN(longitude)) {
+            return { error: 'Invalid latitude or longitude', httpCode: 400 };
+        }
         const dorm = await Dorm.findByIdAndUpdate(post_id, {
             owner_id: user_id,
             property_name,
