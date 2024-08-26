@@ -81,7 +81,8 @@ export const postDormListingController = async (req: Request & { user?: UserType
             image_urls,
             tags
         );
-        return res.status(200).json({ 'message': dorm_post_update });
+        if (dorm_post_update.httpCode === 200) return res.status(dorm_post_update.httpCode).json({ 'message': dorm_post_update.message });
+        return res.status(dorm_post_update.httpCode).json({ 'error': dorm_post_update.error });
     } catch (error) {
         return res.status(500).json({ 'error': 'Internal Server Error' });
     }
