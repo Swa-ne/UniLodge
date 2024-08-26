@@ -15,6 +15,7 @@ export interface DormSchemaInterface extends Document {
     utility_included?: ObjectId[],
     image_urls: ObjectId[],
     tags?: string[],
+    isAvailable: boolean,
     createdAt?: Date,
     updatedAt?: Date,
 }
@@ -116,6 +117,10 @@ const DormSchema: Schema = new Schema({
     tags: [{
         type: String,
     }],
+    isAvailable: {
+        type: Boolean,
+        default: true
+    },
 }, {
     timestamps: true,
 });
