@@ -93,8 +93,8 @@ export const putDormListingController = async (req: Request & { user?: UserType 
     try {
         const user = req.user;
         if (!user) return res.status(404).json({ error: "User not found" });
-        const { post_id } = req.params;
-        if (!post_id) return res.status(404).json({ error: "Post not found" });
+        const { dorm_id } = req.params;
+        if (!dorm_id) return res.status(404).json({ error: "Dorm not found" });
 
         const { property_name, type, city, street, barangay_or_district, house_number, zip_code, lat, lng, currency_id, available_rooms, price_per_month, description, least_terms, rental_amenities, utility_included, image_urls, tags, } = req.body;
 
@@ -136,7 +136,7 @@ export const putDormListingController = async (req: Request & { user?: UserType 
             }
         }
         const dorm_put_update = await putDormListing(
-            post_id,
+            dorm_id,
             user.user_id,
             property_name,
             type,
@@ -168,10 +168,10 @@ export const toggleVisibilityDormListingController = async (req: Request & { use
     try {
         const user = req.user;
         if (!user) return res.status(404).json({ error: "User not found" });
-        const { post_id } = req.params;
-        if (!post_id) return res.status(404).json({ error: "Post not found" });
+        const { dorm_id } = req.params;
+        if (!dorm_id) return res.status(404).json({ error: "Dorm not found" });
 
-        const dorm = await toggleVisibilityDormListing(post_id);
+        const dorm = await toggleVisibilityDormListing(dorm_id);
         if (dorm.httpCode === 200) return res.status(dorm.httpCode).json({ 'message': dorm.message });
 
         return res.status(dorm.httpCode).json({ 'error': dorm.error });

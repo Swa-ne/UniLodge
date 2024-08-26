@@ -83,7 +83,7 @@ export const postDormListing = async (
 };
 
 export const putDormListing = async (
-    post_id: string,
+    dorm_id: string,
     user_id: string,
     property_name: string,
     type: string,
@@ -111,7 +111,7 @@ export const putDormListing = async (
         if (isNaN(latitude) || isNaN(longitude)) {
             return { error: 'Invalid latitude or longitude', httpCode: 400 };
         }
-        const dorm = await Dorm.findByIdAndUpdate(post_id, {
+        const dorm = await Dorm.findByIdAndUpdate(dorm_id, {
             owner_id: user_id,
             property_name,
             type,
@@ -149,9 +149,9 @@ export const putDormListing = async (
     }
 };
 
-export const toggleVisibilityDormListing = async (post_id: string): Promise<CustomResponse> => {
+export const toggleVisibilityDormListing = async (dorm_id: string): Promise<CustomResponse> => {
     try {
-        const dorm = await Dorm.findById(post_id).exec();
+        const dorm = await Dorm.findById(dorm_id).exec();
         if (!dorm) {
             return { error: 'Dorm not found', httpCode: 404 };
         }

@@ -118,10 +118,10 @@ export const userExists = async (userId: string): Promise<boolean> => {
     }
 };
 
-export const postExists = async (post_id: string): Promise<boolean> => {
+export const dormExists = async (dorm_id: string): Promise<boolean> => {
     try {
-        const post = await Dorm.findById(post_id).exec();
-        return !!post;
+        const dorm = await Dorm.findById(dorm_id).exec();
+        return !!dorm;
     } catch (error) {
         return false
     }
