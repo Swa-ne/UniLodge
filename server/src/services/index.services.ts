@@ -1,7 +1,8 @@
 import axios from 'axios';
-import { User, UserSchemaInterface, UserValidCode, UserValidCodeSchemaInterface } from '../../models/authentication/user.model';
-import { generateAccessToken, generateRefreshToken } from '../../utils/generate.token';
-import { CustomResponse } from '../../utils/input.validators';
+import { User, UserSchemaInterface, UserValidCode, UserValidCodeSchemaInterface } from '../models/authentication/user.model';
+import { generateAccessToken, generateRefreshToken } from '../utils/generate.token';
+import { CustomResponse } from '../utils/input.validators';
+import { Dorm } from '../models/dorm.model';
 
 const python_server = axios.create({
     baseURL: process.env.PYTHON_API_URL,
@@ -107,3 +108,21 @@ export const getCurrentUserById = async (user_id: string): Promise<UserSchemaInt
         return null
     }
 }
+
+export const userExists = async (userId: string): Promise<boolean> => {
+    try {
+        const user = await User.findById(userId).exec();
+        return !!user;
+    } catch (error) {
+        return false
+    }
+};
+
+export const postExists = async (post_id: string): Promise<boolean> => {
+    try {
+        const post = await Dorm.findById(post_id).exec();
+        return !!post;
+    } catch (error) {
+        return false
+    }
+};
