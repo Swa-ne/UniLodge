@@ -1,12 +1,24 @@
 import { Request, Response } from 'express';
 import { UserType } from '../middlewares/token.authentication';
-import { postDormListing } from '../services/listing.services';
+import { getDorms, postDormListing } from '../services/listing.services';
 
 
+export const getDormListingController = async (req: Request & { user?: UserType }, res: Response) => {
+    try {
+        const user = req.user;
+        if (!user) return res.status(404).json({ error: "User not found" });
+
+        const dorms = await getDorms(user.user_id);
+        if (dorms.httpCode === 200) return res.status(dorms.httpCode).json({ 'message': dorms.message });
+        return res.status(dorms.httpCode).json({ 'error': dorms.error });
+    } catch (error) {
+        return res.status(500).json({ 'error': 'Internal Server Error' });
+    }
+
+}
 export const postDormListingController = async (req: Request & { user?: UserType }, res: Response) => {
     try {
         const user = req.user;
-
         if (!user) return res.status(404).json({ error: "User not found" });
 
         const { property_name, type, city, street, barangay_or_district, house_number, zip_code, lat, lng, currency_id, available_rooms, price_per_month, description, least_terms, rental_amenities, utility_included, image_urls, tags, } = req.body;

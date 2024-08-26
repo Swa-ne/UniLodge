@@ -1,6 +1,15 @@
 import { Document, ObjectId, startSession } from 'mongoose';
 import { CustomResponse } from '../utils/input.validators';
-import { Dorm, Location, LocationSchemaInterface } from '../models/dorm.model';
+import { Dorm, DormSchemaInterface, Location, LocationSchemaInterface } from '../models/dorm.model';
+
+export const getDorms = async (user_id: string) => {
+    try {
+        const dorms: DormSchemaInterface[] | null = await Dorm.find({ owner_id: user_id });
+        return { message: dorms, httpCode: 200 };
+    } catch (error) {
+        return { error: 'Internal Server Error', httpCode: 500 };
+    }
+}
 
 export const postDormListing = async (
     user_id: string,
