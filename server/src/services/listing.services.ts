@@ -148,3 +148,18 @@ export const putDormListing = async (
         return { error: 'Internal Server Error', httpCode: 500 };
     }
 };
+
+export const toggleVisibilityDormListing = async (post_id: string): Promise<CustomResponse> => {
+    try {
+        const dorm = await Dorm.findById(post_id).exec();
+        if (!dorm) {
+            return { error: 'Dorm not found', httpCode: 404 };
+        }
+        dorm.isAvailable = !dorm.isAvailable;
+        await dorm.save()
+
+        return { message: "Success", httpCode: 200 }
+    } catch (error) {
+        return { error: 'Internal Server Error', httpCode: 500 };
+    }
+}
