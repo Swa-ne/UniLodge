@@ -74,3 +74,64 @@ export const postDormListing = async (
         return { error: 'Internal Server Error', httpCode: 500 };
     }
 };
+
+export const putDormListing = async (
+    post_id: string,
+    user_id: string,
+    property_name: string,
+    type: string,
+    city: string,
+    street: string,
+    barangay_or_district: string,
+    house_number: string,
+    zip_code: string,
+    lat: number,
+    lng: number,
+    currency_id: string,
+    available_rooms: string,
+    price_per_month: string,
+    description: string,
+    least_terms: string,
+    rental_amenities: string[],
+    utility_included: string[],
+    image_urls: string[],
+    tags: string[]
+): Promise<CustomResponse> => {
+    try {
+        const dorm = await Dorm.findByIdAndUpdate(post_id, {
+            owner_id: user_id,
+            property_name,
+            type,
+            currency: currency_id,
+            available_rooms,
+            price_per_month,
+            description,
+            least_terms,
+            rental_amenities,
+            utility_included,
+            image_urls,
+            tags,
+        }, { new: true });
+
+        if (!dorm) {
+            return { error: 'Dorm not found', httpCode: 404 };
+        }
+
+        await Location.findByIdAndUpdate(dorm.location, {
+            city,
+            street,
+            barangay_or_district,
+            house_number,
+            zip_code,
+            coordinates: {
+                lat,
+                lng,
+            },
+        });
+
+
+        return { message: 'Success', httpCode: 200 };
+    } catch (error) {
+        return { error: 'Internal Server Error', httpCode: 500 };
+    }
+};
