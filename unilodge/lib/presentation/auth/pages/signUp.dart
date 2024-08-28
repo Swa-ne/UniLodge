@@ -3,14 +3,14 @@ import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/core/configs/theme/app_theme.dart';
 
-class Signin extends StatefulWidget {
-  const Signin({super.key});
+class SignUp extends StatefulWidget {
+  const SignUp({super.key});
 
   @override
-  State<Signin> createState() => _SigninState();
+  State<SignUp> createState() => _SignUpState();
 }
 
-class _SigninState extends State<Signin> {
+class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +38,7 @@ class _SigninState extends State<Signin> {
                     fontSize: 36,
                     color: AppColors.lightBlueTextColor),
               ),
-              Text('Sign In Page',
+              Text('Sign Up Page',
                   style: TextStyle(color: AppColors.textColor)),
               SizedBox(
                 height: 450,
@@ -54,7 +54,7 @@ class _SigninState extends State<Signin> {
                         foregroundColor: Colors.white,
                         side: const BorderSide(color: Colors.white)),
                     child: Text(
-                      'Sign In',
+                      'Sign Up',
                     )),
               )
             ],
