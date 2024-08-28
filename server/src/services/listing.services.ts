@@ -3,7 +3,7 @@ import { CustomResponse } from '../utils/input.validators';
 import { Dorm, DormSchemaInterface } from '../models/dorm/dorm.model';
 import { Location, LocationSchemaInterface } from '../models/dorm/location.model';
 
-export const getDorms = async (user_id: string) => {
+export const getMyDorms = async (user_id: string) => {
     try {
         const dorms: DormSchemaInterface[] | null = await Dorm.find({ owner_id: user_id });
         return { message: dorms, httpCode: 200 };

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { UserType } from '../middlewares/token.authentication';
-import { getDorms, postDormListing, putDormListing, toggleVisibilityDormListing } from '../services/listing.services';
+import { getMyDorms, postDormListing, putDormListing, toggleVisibilityDormListing } from '../services/listing.services';
 import { validateDescriptionLength, validateRequiredFields } from '../utils/input.validators';
 
 const REQUIRED_FIELDS_LABELS = {
@@ -17,12 +17,12 @@ const REQUIRED_FIELDS_LABELS = {
     image_urls: "Image Urls",
 };
 
-export const getDormListingController = async (req: Request & { user?: UserType }, res: Response) => {
+export const getMyDormsListingController = async (req: Request & { user?: UserType }, res: Response) => {
     try {
         const user = req.user;
         if (!user) return res.status(404).json({ error: "User not found" });
 
-        const dorms = await getDorms(user.user_id);
+        const dorms = await getMyDorms(user.user_id);
         if (dorms.httpCode === 200) return res.status(dorms.httpCode).json({ 'message': dorms.message });
         return res.status(dorms.httpCode).json({ 'error': dorms.error });
     } catch (error) {
