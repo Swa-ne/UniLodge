@@ -1,6 +1,7 @@
 import { Document, ObjectId, startSession } from 'mongoose';
 import { CustomResponse } from '../utils/input.validators';
-import { Dorm, DormSchemaInterface, Location, LocationSchemaInterface } from '../models/dorm.model';
+import { Dorm, DormSchemaInterface } from '../models/dorm/dorm.model';
+import { Location, LocationSchemaInterface } from '../models/dorm/location.model';
 
 export const getDorms = async (user_id: string) => {
     try {

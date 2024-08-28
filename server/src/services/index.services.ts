@@ -1,8 +1,9 @@
 import axios from 'axios';
-import { User, UserSchemaInterface, UserValidCode, UserValidCodeSchemaInterface } from '../models/authentication/user.model';
+import { User, UserSchemaInterface } from '../models/authentication/user.model';
+import { UserValidCode, UserValidCodeSchemaInterface } from '../models/authentication/valid.code.model';
 import { generateAccessToken, generateRefreshToken } from '../utils/generate.token';
 import { CustomResponse } from '../utils/input.validators';
-import { Dorm } from '../models/dorm.model';
+import { Dorm } from '../models/dorm/dorm.model';
 
 const python_server = axios.create({
     baseURL: process.env.PYTHON_API_URL,
