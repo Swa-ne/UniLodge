@@ -85,4 +85,4 @@ const DormSchema: Schema = new Schema({
     timestamps: true,
 });
 
-export const Dorm = model<DormSchemaInterface>("User", DormSchema)
+export const Dorm = model<DormSchemaInterface>("Dorm", DormSchema)
