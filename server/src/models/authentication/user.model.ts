@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, ObjectId } from 'mongoose';
+import { Schema, Document, ObjectId, model } from 'mongoose';
 
 export interface UserSchemaInterface extends Document {
     _id: ObjectId,
@@ -81,28 +81,4 @@ const UserSchema: Schema = new Schema({
     timestamps: true,
 });
 
-export const User = mongoose.model<UserSchemaInterface>("User", UserSchema)
-
-export interface UserValidCodeSchemaInterface extends Document {
-    user_id: ObjectId,
-    code: string,
-    expiresAt: Date
-}
-
-const UserValidCodeSchema: Schema = new Schema({
-    user_id: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        default: null,
-    },
-    code: {
-        type: String,
-        required: true,
-    },
-    expiresAt: {
-        type: Date,
-        required: true,
-    },
-})
-
-export const UserValidCode = mongoose.model<UserValidCodeSchemaInterface>("UserValidCode", UserValidCodeSchema)
+export const User = model<UserSchemaInterface>("User", UserSchema)
