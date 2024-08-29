@@ -10,6 +10,8 @@ class Login extends StatefulWidget {
   State<Login> createState() => _LoginState();
 }
 
+// nilagay lang
+
 class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,7 @@ class _LoginState extends State<Login> {
                 height: 50,
                 child: OutlinedButton(
                     onPressed: () async {
-                      context.go('/');
+                      context.go('/home');
                     },
                     style: OutlinedButton.styleFrom(
                         foregroundColor: Colors.white,
