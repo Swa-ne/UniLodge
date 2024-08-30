@@ -12,15 +12,15 @@ import { forgetPasswordLimiter, loginLimiter, sendCodeLimiter } from "../middlew
 const router = Router();
 
 router.post("/signup", signupUserController);
-router.post("/resend-verification", sendCodeLimiter, authenticateToken, resendEmailCodeController);
+router.put("/resend-verification", sendCodeLimiter, authenticateToken, resendEmailCodeController);
 router.post("/verify-code", authenticateToken, verifyEmailCodeController);
 
 router.post("/login", loginLimiter, loginUserController);
-router.post("/logout", authenticateToken, logoutUserController);
+router.delete("/logout", authenticateToken, logoutUserController);
 
 router.post("/access-token", refreshAccessTokenController);
 
-router.post("/change-password", authenticateToken, changePasswordController);
+router.put("/change-password", authenticateToken, changePasswordController);
 
 router.post("/forgot-password", forgetPasswordLimiter, forgotPasswordController);
 router.post("/reset-password/:token", postResetPasswordController);
