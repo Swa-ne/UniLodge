@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { signupUsertoDatabase } from '../../services/authentication/signup.services';
 
 import { UserSchemaInterface } from '../../models/authentication/user.model';
-import { checkEveryInputForSignup } from '../../utils/input.validators';
+import { checkEveryInputForSignup, validateBioLength } from '../../utils/input.validators';
 import { generateAccessAndRefereshTokens, sendEmailCode, verifyEmailCode } from '../../services/index.services';
 import { UserType } from '../../middlewares/token.authentication';
 
@@ -12,7 +12,7 @@ interface CustomRequestBody extends UserSchemaInterface {
 
 export const signupUserController = async (req: Request, res: Response) => {
     try {
-        const { first_name, middle_name, last_name, username, password_hash, confirmation_password, personal_number, birthday }: CustomRequestBody = req.body;
+        const { first_name, middle_name, last_name, username, bio, password_hash, confirmation_password, personal_number, birthday }: CustomRequestBody = req.body;
         const personal_email: string = req.body.personal_email.toLowerCase();
 
         const requiredFields = {
@@ -42,9 +42,13 @@ export const signupUserController = async (req: Request, res: Response) => {
             }
         }
 
+        if (!validateBioLength(bio)) {
+            return res.status(400).json({ error: 'Bio exceeds the maximum allowed length of 80 words. Please shorten your bio.' });
+        }
+
         const checkerForInput = await checkEveryInputForSignup(personal_email, password_hash, confirmation_password);
         if (checkerForInput.message === 'Success') {
-            const data = await signupUsertoDatabase(first_name, middle_name, last_name, username, personal_email, personal_number, birthday, password_hash);
+            const data = await signupUsertoDatabase(first_name, middle_name, last_name, username, bio, personal_email, personal_number, birthday, password_hash);
             if (data.httpCode !== 200) {
                 return res.status(500).json({ error: data.error });
             }
