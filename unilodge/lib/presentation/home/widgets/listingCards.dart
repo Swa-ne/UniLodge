@@ -29,11 +29,14 @@ class _ListingCardsState extends State<ListingCards> {
             Center(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: Image.asset(
-                  AppImages.dorm1,
-                  width: 345,
-                  height: 200,
-                  fit: BoxFit.cover,
+                child: Opacity(
+                  opacity: 0.9,
+                  child: Image.asset(
+                    AppImages.dorm1,
+                    width: 345,
+                    height: 200,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),

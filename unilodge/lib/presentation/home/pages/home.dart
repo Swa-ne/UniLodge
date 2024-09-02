@@ -57,11 +57,8 @@ class _HomeState extends State<Home> {
         ],
       ),
       body: SingleChildScrollView(
-        // --------- dorms, apartment, solo room, bedspacer cards ---------
-
         child: Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.start, // Aligns children to the left
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 30),
             Padding(
@@ -109,29 +106,44 @@ class _HomeState extends State<Home> {
               ),
             ),
             const SizedBox(height: 20),
-            ListingCards(
-                imageUrl: "",
-                title: "Bedspacer in Dagupan",
-                address: "#123 Arellano Street, Dagupan City",
-                price: "₱5,000.00"),
-            ListingCards(
-                imageUrl: "",
-                title: "Solo room in Dagupan",
-                address: "#75 Amado Street, Dagupan City",
-                price: "₱5,000.00"),
-            ListingCards(
-                imageUrl: "",
-                title: "Bedspacer in Dagupan",
-                address: "#123 Arellano Street, Dagupan City",
-                price: "₱5,000.00"),
-            ListingCards(
-                imageUrl: "",
-                title: "Bedspacer in Dagupan",
-                address: "#123 Arellano Street, Dagupan City",
-                price: "₱5,000.00"),
+
+            // ListView with Dividers
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: Column(
+                children: [
+                  ListingCards(
+                      imageUrl: "",
+                      title: "Bedspacer in Dagupan",
+                      address: "#123 Arellano Street, Dagupan City",
+                      price: "₱5,000.00"),
+                  const Divider(height: 20, color: Color.fromARGB(255, 223, 223, 223)),
+                  ListingCards(
+                      imageUrl: "",
+                      title: "Solo room in Dagupan",
+                      address: "#75 Amado Street, Dagupan City",
+                      price: "₱5,000.00"),
+                  const Divider(
+                      height: 20, color: Color.fromARGB(255, 223, 223, 223)),
+                  ListingCards(
+                      imageUrl: "",
+                      title: "Bedspacer in Dagupan",
+                      address: "#123 Arellano Street, Dagupan City",
+                      price: "₱5,000.00"),
+                  const Divider(
+                      height: 20, color: Color.fromARGB(255, 223, 223, 223)),
+                  ListingCards(
+                      imageUrl: "",
+                      title: "Bedspacer in Dagupan",
+                      address: "#123 Arellano Street, Dagupan City",
+                      price: "₱5,000.00"),
+                ],
+              ),
+            ),
           ],
         ),
       ),
+
     );
   }
 }
