@@ -58,3 +58,35 @@ export const isOldPasswordSimilar = async (user_id: string, old_password: string
         return { error: "Internal Server Error", httpCode: 500 }
     }
 }
+
+export const editProfile = async (
+    user_id: string,
+    first_name: string,
+    middle_name: string | undefined,
+    last_name: string,
+    username: string,
+    bio: string | undefined,
+    personal_number: string | undefined,
+    birthday: Date,
+): Promise<CustomResponse> => {
+    try {
+        await User.findOneAndUpdate(
+            { _id: user_id },
+            {
+                $set: {
+                    first_name,
+                    middle_name,
+                    last_name,
+                    username,
+                    bio,
+                    personal_number,
+                    birthday,
+                }
+            }
+        );
+
+        return { message: "Success", httpCode: 200 }
+    } catch (error) {
+        return { error: "Internal Server Error", httpCode: 500 }
+    }
+};

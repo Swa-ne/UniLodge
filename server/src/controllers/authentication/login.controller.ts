@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
 import jwt, { TokenExpiredError } from 'jsonwebtoken';
 
-import { checkEveryInputForLogin } from '../../utils/input.validators';
-import { changePassword, getDataByEmailAddress, isOldPasswordSimilar, loginUsertoDatabase } from '../../services/authentication/login.services';
+import { checkEveryInputForLogin, checkUsernameValidity } from '../../utils/input.validators';
+import { changePassword, editProfile, getDataByEmailAddress, isOldPasswordSimilar, loginUsertoDatabase } from '../../services/authentication/login.services';
 import { generateAccessAndRefereshTokens, getCurrentUserByEmail, getCurrentUserById, sendEmailForgetPassword } from '../../services/index.services';
 import { UserType } from '../../middlewares/token.authentication';
+import { checkUsernameAvailability } from '../../services/authentication/signup.services';
 
 
 export const loginUserController = async (req: Request, res: Response) => {
@@ -59,6 +60,54 @@ export const changePasswordController = async (req: Request & { user?: UserType 
             await changePassword(user.user_id, new_password)
         }
         return res.status(is_old_password_similar.httpCode).json({ error: is_old_password_similar.error })
+    } catch (error) {
+        return res.status(500).json({ 'error': 'Internal Server Error' });
+    }
+}
+export const editProfileController = async (req: Request & { user?: UserType }, res: Response) => {
+    try {
+        const user = req.user;
+
+        if (!user) return res.status(404).json({ error: "User not found" });
+
+        const { first_name, middle_name, last_name, username, bio, personal_number, birthday } = req.body;
+
+        const requiredFields = {
+            first_name,
+            last_name,
+            username,
+            personal_number,
+            birthday,
+        };
+
+        const updatedKey: { [key: string]: string } = {
+            first_name: "First Name",
+            last_name: "Last Name",
+            username: "Username",
+            personal_email: "Email Address",
+            password_hash: "Password",
+            confirmation_password: "Confirmation Password",
+            personal_number: "Phone Number",
+            birthday: "Birthday",
+        }
+        for (const [key, value] of Object.entries(requiredFields)) {
+            if (value == null) {
+                return res.status(400).json({ error: `${updatedKey[key]} is required and cannot be null or undefined.` });
+            }
+        }
+
+        if (!checkUsernameValidity(username)) {
+            return res.status(400).json({ error: 'Please enter a valid username' });
+        }
+        if (!(await checkUsernameAvailability(username))) {
+            return res.status(409).json({ error: 'This usernmae is being used.' });
+        }
+
+        const data = await editProfile(user.user_id, first_name, middle_name, last_name, username, bio, personal_number, birthday);
+        if (data.httpCode !== 200) {
+            return res.status(500).json({ error: data.error });
+        }
+        return res.status(200).send({ message: data.message });
     } catch (error) {
         return res.status(500).json({ 'error': 'Internal Server Error' });
     }

@@ -40,7 +40,7 @@ export const checkEveryInputForLogin = async (userIdentifier: string, password: 
     return { 'message': 'success', "httpCode": 200 };
 };
 
-const checkUsernameValidity = (username: string) => {
+export const checkUsernameValidity = (username: string) => {
     // TODO: max 25 characters
     const regex = /^[a-zA-Z0-9]+$/;
     return regex.test(username);
