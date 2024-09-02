@@ -1,7 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/presentation/auth/pages/login.dart';
 import 'package:unilodge/presentation/auth/pages/signUp.dart';
-import 'package:unilodge/presentation/home/pages/dormInformation.dart';
 import 'package:unilodge/presentation/home/pages/home.dart';
 import 'package:unilodge/presentation/profile/pages/userProfile.dart';
 
@@ -28,10 +27,10 @@ final GoRouter appRouter = GoRouter(routes: [
     path: '/home',
     builder: (context, state) => const Home(),
   ),
-  GoRoute(
-    path: '/dorm-information',
-    builder: (context, state) => const DormInformation(),
-  ),
+  // GoRoute(
+  //   path: '/dorm-information',
+  //   builder: (context, state) => const ListingDetailScreen(),
+  // ),
   GoRoute(
     path: '/user-profile',
     builder: (context, state) => const UserProfile(),

@@ -23,6 +23,15 @@ class Cards extends StatelessWidget {
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: const Color.fromARGB(255, 179, 179, 179)
+                  .withOpacity(0.2), // Shadow color with opacity
+              offset: Offset(0, 2), // Shadow position (x, y)
+              blurRadius: 2, // Blur radius of the shadow
+              spreadRadius: 1, // Spread radius of the shadow
+            ),
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

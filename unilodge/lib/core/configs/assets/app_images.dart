@@ -12,5 +12,5 @@ class AppImages {
   static const String soloRoom = '${basePath}solo-room$pngformat';
   static const String bedspacer = '${basePath}bedspacer$pngformat';
   static const String emptyImage = '${basePath}emptyImage$jpgformat';
-  static const String dorm1 = '${basePath}dorm-1$jpgformat';
+  static const String findDorm = '${basePath}findDorm$pngformat';
 }

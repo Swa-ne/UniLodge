@@ -31,7 +31,7 @@ flutter:
     - assets/images/solo-room.png
     - assets/images/bedspacer.png
     - assets/images/emptyImage.jpg
-    - assets/images/dorm-1.jpg
+    - assets/images/findDorm.png
 
   fonts:
     - family: TrainOne
