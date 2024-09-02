@@ -11,6 +11,7 @@ final GoRouter appRouter = GoRouter(routes: [
     redirect: (context, state) {
       // add some auth logic heree
       final isLoggedIn = false;
+      // ignore: dead_code
       return isLoggedIn ? '/home' : '/login';
     },
   ),

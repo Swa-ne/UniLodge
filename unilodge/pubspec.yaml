@@ -11,6 +11,7 @@ dependencies:
     sdk: flutter
   flutter_svg:
   go_router: ^14.2.3
+  google_nav_bar: ^5.0.6
 
 dev_dependencies:
   flutter_test:
@@ -24,6 +25,14 @@ flutter:
   assets:
     - assets/images/initLogo1.png
     - assets/images/initLogo2.png
+    - assets/images/empty.png
+    - assets/images/apartment.png
+    - assets/images/dorm.png
+    - assets/images/solo-room.png
+    - assets/images/bedspacer.png
+    - assets/images/emptyImage.jpg
+    - assets/images/dorm-1.jpg
+
   fonts:
     - family: TrainOne
       fonts:
