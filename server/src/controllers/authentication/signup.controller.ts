@@ -46,7 +46,7 @@ export const signupUserController = async (req: Request, res: Response) => {
             return res.status(400).json({ error: 'Bio exceeds the maximum allowed length of 80 words. Please shorten your bio.' });
         }
 
-        const checkerForInput = await checkEveryInputForSignup(personal_email, password_hash, confirmation_password);
+        const checkerForInput = await checkEveryInputForSignup(username, personal_email, password_hash, confirmation_password);
         if (checkerForInput.message === 'Success') {
             const data = await signupUsertoDatabase(first_name, middle_name, last_name, username, bio, personal_email, personal_number, birthday, password_hash);
             if (data.httpCode !== 200) {

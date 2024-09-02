@@ -52,6 +52,15 @@ export const signupUsertoDatabase = async (
     }
 };
 
+export const checkUsernameAvailability = async (username: string): Promise<boolean> => {
+    try {
+        const result = (await User.findOne({ username: { $regex: new RegExp(`^${username}$`, 'i') } })) === null;
+        return result;
+    } catch (error) {
+        return false;
+    }
+};
+
 export const checkEmailAvailability = async (emailAddress: string): Promise<boolean> => {
     try {
         const result: boolean = (await User.findOne({ personal_email: { $regex: new RegExp(`^ ${emailAddress} $`, 'i') } })) === null;

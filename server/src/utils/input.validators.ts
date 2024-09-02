@@ -1,4 +1,4 @@
-import { checkEmailAvailability } from "../services/authentication/signup.services";
+import { checkEmailAvailability, checkUsernameAvailability } from "../services/authentication/signup.services";
 
 
 export interface CustomResponse {
@@ -8,7 +8,10 @@ export interface CustomResponse {
     httpCode: number
 }
 
-export const checkEveryInputForSignup = async (emailAddress: string, password: string, confirmationPassword: string): Promise<CustomResponse> => {
+export const checkEveryInputForSignup = async (username: string, emailAddress: string, password: string, confirmationPassword: string): Promise<CustomResponse> => {
+    if (!checkUsernameValidity(username)) {
+        return { error: 'Please enter a valid username', "httpCode": 400 };
+    }
     if (!checkEmailValidity(emailAddress)) {
         return { error: 'Please enter a valid email address', "httpCode": 400 };
     }
@@ -17,6 +20,9 @@ export const checkEveryInputForSignup = async (emailAddress: string, password: s
     }
     if (!(await checkEmailAvailability(emailAddress))) {
         return { error: 'This email address is being used.', "httpCode": 409 };
+    }
+    if (!(await checkUsernameAvailability(username))) {
+        return { error: 'This usernmae is being used.', "httpCode": 409 };
     }
     if (password !== confirmationPassword) {
         return { error: "Those password didn't match. Try again.", "httpCode": 400 };
@@ -32,6 +38,12 @@ export const checkEveryInputForLogin = async (userIdentifier: string, password: 
         return { 'error': 'Sorry, looks like that\'s the wrong email or password.', "httpCode": 401 };
     }
     return { 'message': 'success', "httpCode": 200 };
+};
+
+const checkUsernameValidity = (username: string) => {
+    // TODO: max 25 characters
+    const regex = /^[a-zA-Z0-9]+$/;
+    return regex.test(username);
 };
 
 export const checkEmailValidity = (emailAddress: string) => {
