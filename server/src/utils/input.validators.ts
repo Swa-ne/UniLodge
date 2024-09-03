@@ -72,6 +72,11 @@ export const validateDescriptionLength = (description: string) => {
     return wordCount <= 250;
 };
 
+export const validateReviewCommentLength = (description: string) => {
+    const wordCount = description.trim().split(/\s+/).length;
+    return wordCount <= 250;
+};
+
 export const validateBioLength = (input: string | undefined,) => {
     if (!input) {
         return false
