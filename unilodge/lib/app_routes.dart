@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:unilodge/presentation/auth/pages/login.dart';
 import 'package:unilodge/presentation/auth/pages/signUp.dart';
 import 'package:unilodge/presentation/home/pages/home.dart';
+import 'package:unilodge/presentation/message/pages/messages.dart';
 import 'package:unilodge/presentation/profile/pages/userProfile.dart';
 
 final GoRouter appRouter = GoRouter(routes: [
@@ -34,5 +35,9 @@ final GoRouter appRouter = GoRouter(routes: [
   GoRoute(
     path: '/user-profile',
     builder: (context, state) => const UserProfile(),
+  ),
+  GoRoute(
+    path: '/messages',
+    builder: (context, state) => const Messages(),
   )
 ]);
