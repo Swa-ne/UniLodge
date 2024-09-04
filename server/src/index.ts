@@ -4,12 +4,13 @@ import bodyParser from "body-parser"
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import dotenv from "dotenv"
+import { app, server } from './socket/socket.server';
+
 dotenv.config()
 
 
 import entryRoutes from "./routes/authentication.routes";
 
-const app = express();
 
 const port = 3000;
 
@@ -44,6 +45,6 @@ app.get('/', (req: Request, res: Response) => {
     res.send('Hello from your Node.js Express server!');
 });
 
-app.listen(port, () => {
+server.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
