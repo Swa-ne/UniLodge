@@ -1,7 +1,7 @@
-import { Document, ObjectId, startSession } from 'mongoose';
-import { CustomResponse } from '../utils/input.validators';
+import { startSession } from 'mongoose';
 import { Dorm, DormSchemaInterface } from '../models/dorm/dorm.model';
 import { Review } from '../models/dorm/review.model';
+import { Saved } from '../models/dorm/saved.model';
 
 export const getDorms = async () => {
     try {
@@ -17,12 +17,47 @@ export const postReviewForDorm = async (user_id: string, dorm_id: string, stars:
     session.startTransaction();
 
     try {
-        await new Review({
+        new Review({
             user_id,
             dorm_id,
             stars,
             comment
-        })
+        }).save({ session });
+
+        await session.commitTransaction();
+        session.endSession();
+
+        return { message: 'Success', httpCode: 200 };
+    } catch (error) {
+        await session.abortTransaction();
+        session.endSession();
+        return { error: 'Internal Server Error', httpCode: 500 };
+    }
+}
+
+export const putSavedDorm = async (user_id: string, dorm_id: string) => {
+    const session = await startSession();
+    session.startTransaction();
+
+    try {
+        const saved = await Saved.findOne({ user_id }).session(session);
+        const dorm = await Dorm.findById(dorm_id).session(session);
+
+        if (!dorm) return { error: 'Dorm not found', httpCode: 404 };
+
+        if (saved !== null) {
+            saved.dorm_ids.push(dorm._id);
+            await saved.save({ session });
+        } else {
+            new Saved({
+                user_id,
+                dorm_ids: [dorm_id],
+            }).save({ session });
+        }
+
+        await session.commitTransaction();
+        session.endSession();
+
         return { message: 'Success', httpCode: 200 };
     } catch (error) {
         await session.abortTransaction();
