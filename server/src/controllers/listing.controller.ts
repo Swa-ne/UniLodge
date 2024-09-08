@@ -14,7 +14,6 @@ const REQUIRED_FIELDS_LABELS = {
     available_rooms: "Available Room/s",
     price_per_month: "Price per Month",
     description: "Description",
-    image_urls: "Image Urls",
 };
 
 export const getMyDormsListingController = async (req: Request & { user?: UserType }, res: Response) => {
@@ -36,18 +35,24 @@ export const postDormListingController = async (req: Request & { user?: UserType
         const user = req.user;
         if (!user) return res.status(404).json({ error: "User not found" });
 
-        const { property_name, type, city, street, barangay_or_district, house_number, zip_code, lat, lng, currency_id, available_rooms, price_per_month, description, least_terms, rental_amenities, utility_included, image_urls, tags, } = req.body;
+        const { property_name, type, city, street, barangay_or_district, house_number, zip_code, lat, lng, currency_id, available_rooms, price_per_month, description, least_terms, rental_amenities, utility_included, tags } = req.body;
 
         if (!validateDescriptionLength(description)) {
             return res.status(413).json({ error: "Description contains too many words. Please shorten your description." });
         }
 
         const { valid, error } = validateRequiredFields(
-            { property_name, type, city, street, barangay_or_district, zip_code, currency_id, available_rooms, price_per_month, description, image_urls },
+            { property_name, type, city, street, barangay_or_district, zip_code, currency_id, available_rooms, price_per_month, description },
             REQUIRED_FIELDS_LABELS
         );
 
         if (!valid) return res.status(400).json({ error });
+
+        const image_files: Express.Multer.File[] | undefined = req.files as Express.Multer.File[] | undefined;
+
+        if (!image_files) {
+            return res.status(400).json({ error: "No files uploaded" });
+        }
 
         const dorm_post_update = await postDormListing(
             user.user_id,
@@ -67,7 +72,7 @@ export const postDormListingController = async (req: Request & { user?: UserType
             least_terms,
             rental_amenities,
             utility_included,
-            image_urls,
+            image_files,
             tags
         );
         if (dorm_post_update.httpCode === 200) return res.status(dorm_post_update.httpCode).json({ 'message': dorm_post_update.message });

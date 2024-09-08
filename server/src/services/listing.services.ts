@@ -2,6 +2,9 @@ import { Document, ObjectId, startSession } from 'mongoose';
 import { CustomResponse } from '../utils/input.validators';
 import { Dorm, DormSchemaInterface } from '../models/dorm/dorm.model';
 import { Location, LocationSchemaInterface } from '../models/dorm/location.model';
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import { storage } from '../middlewares/save.config';
+import { Image } from '../models/media/image.model';
 
 export const getMyDorms = async (user_id: string) => {
     try {
@@ -30,13 +33,32 @@ export const postDormListing = async (
     least_terms: string,
     rental_amenities: string[],
     utility_included: string[],
-    image_urls: string[],
+    image_files: Express.Multer.File[],
     tags: string[]
 ): Promise<CustomResponse> => {
     const session = await startSession();
     session.startTransaction();
-
     try {
+        let image_urls: ObjectId[] = []
+        if (image_files) {
+            for (const file of image_files) {
+                const storage_ref = ref(storage, `files/${file.originalname}${new Date()}`);
+
+                const metadata = {
+                    contentType: file.mimetype,
+                };
+
+                const snapshot = await uploadBytesResumable(storage_ref, file.buffer, metadata);
+                const download_url = await getDownloadURL(snapshot.ref);
+
+                const new_image = await new Image({
+                    name: file.originalname,
+                    url: download_url,
+                }).save();
+
+                image_urls.push(new_image._id);
+            }
+        }
         const latitude = parseFloat(lat);
         const longitude = parseFloat(lng);
 
