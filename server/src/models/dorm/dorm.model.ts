@@ -13,6 +13,7 @@ export interface DormSchemaInterface extends Document {
     least_terms?: string,
     rental_amenities?: ObjectId[],
     utility_included?: ObjectId[],
+    image_urls: ObjectId[],
     tags?: string[],
     isAvailable: boolean,
     createdAt?: Date,
@@ -67,6 +68,10 @@ const DormSchema: Schema = new Schema({
     utility_included: [{
         type: Schema.Types.ObjectId,
         ref: 'Utility',
+    }],
+    image_urls: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Image',
     }],
     tags: [{
         type: String,
