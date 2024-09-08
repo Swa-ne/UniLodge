@@ -17,10 +17,10 @@ const ImageSchema: Schema = new Schema({
         required: true,
     },
     width: {
-        type: String,
+        type: Number,
     },
     height: {
-        type: String,
+        type: Number,
     },
 });
 
