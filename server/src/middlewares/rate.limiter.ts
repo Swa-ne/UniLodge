@@ -12,3 +12,7 @@ export const sendCodeLimiter = rateLimit({
     windowMs: 1 * 60 * 1000,
     max: 1,
 });
+export const saveDormLimiter = rateLimit({
+    windowMs: 1 * 60 * 1000,
+    max: 10,
+});
