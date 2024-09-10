@@ -154,7 +154,7 @@ class _LoginState extends State<Login> {
                               context.go('/signup');
                             },
                             child: const Text(
-                              "SIGN UP",
+                              "Sign up",
                               textAlign: TextAlign.right,
                               style: TextStyle(
                                 fontSize: 11,
