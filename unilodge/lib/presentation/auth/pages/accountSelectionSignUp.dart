@@ -4,8 +4,8 @@ import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/core/configs/theme/app_theme.dart';
 import 'package:unilodge/presentation/auth/widgets/authButton.dart';
 
-class AccountSelectionLogin extends StatelessWidget {
-  const AccountSelectionLogin({super.key});
+class AccountSelectionSignup extends StatelessWidget {
+  const AccountSelectionSignup({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class AccountSelectionLogin extends StatelessWidget {
                   ),
                 ),
                 const Text(
-                  'Log in to UniLodge',
+                  'Sign up for UniLodge',
                   style: TextStyle(
                     color: AppColors.textColor,
                     fontSize: 40,
@@ -61,7 +61,7 @@ class AccountSelectionLogin extends StatelessWidget {
                     AuthButton(
                       text: 'Use email or username',
                       onPressed: () {
-                        context.go('/login');
+                        context.go('/signup');
                       },
                       icon: const Icon(Icons.person),
                     ),
@@ -90,17 +90,17 @@ class AccountSelectionLogin extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text(
-                          "Don't have an account? ",
+                          "Already have an account? ",
                           style: TextStyle(
                             fontSize: 12,
                           ),
                         ),
                         InkWell(
                           onTap: () {
-                            context.go('/account-selection-signup');
+                            context.go('/account-selection-login');
                           },
                           child: const Text(
-                            "Sign up",
+                            "Log in",
                             textAlign: TextAlign.right,
                             style: TextStyle(
                               fontSize: 11,

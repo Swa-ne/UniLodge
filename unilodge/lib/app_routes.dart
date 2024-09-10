@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/presentation/auth/pages/accountSelectionLogin.dart';
+import 'package:unilodge/presentation/auth/pages/accountSelectionSignUp.dart';
 import 'package:unilodge/presentation/auth/pages/login.dart';
 import 'package:unilodge/presentation/auth/pages/signUp.dart';
 import 'package:unilodge/presentation/favorite/pages/favorites.dart';
@@ -22,6 +23,10 @@ final GoRouter appRouter = GoRouter(routes: [
   GoRoute(
     path: '/account-selection-login',
     builder: (context, state) => const AccountSelectionLogin(),
+  ),
+  GoRoute(
+    path: '/account-selection-signup',
+    builder: (context, state) => const AccountSelectionSignup(),
   ),
   GoRoute(
     path: '/signup',
