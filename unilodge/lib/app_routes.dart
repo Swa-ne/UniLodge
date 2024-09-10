@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:unilodge/presentation/auth/pages/accountSelectionLogin.dart';
 import 'package:unilodge/presentation/auth/pages/login.dart';
 import 'package:unilodge/presentation/auth/pages/signUp.dart';
 import 'package:unilodge/presentation/favorite/pages/favorites.dart';
@@ -14,10 +15,14 @@ final GoRouter appRouter = GoRouter(routes: [
       // add some auth logic heree
       final isLoggedIn = false;
       // ignore: dead_code
-      return isLoggedIn ? '/home' : '/login';
+      return isLoggedIn ? '/home' : '/account-selection-login';
     },
   ),
 
+  GoRoute(
+    path: '/account-selection-login',
+    builder: (context, state) => const AccountSelectionLogin(),
+  ),
   GoRoute(
     path: '/signup',
     builder: (context, state) => const SignUp(),
