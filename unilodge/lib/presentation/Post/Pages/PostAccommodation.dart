@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:unilodge/presentation/Post/Widgets/customcard.dart';
+import 'package:unilodge/presentation/post/widgets/customcard.dart';
 
 class Postaccommodation extends StatefulWidget {
   const Postaccommodation({super.key});
@@ -30,7 +30,7 @@ class _PostaccommodationState extends State<Postaccommodation> {
           children: [
             Expanded(
               child: Stack(
-                children: [
+                children: <Widget>[
                   Positioned(
                     top: 50,
                     left: 16,
@@ -44,28 +44,35 @@ class _PostaccommodationState extends State<Postaccommodation> {
                     ),
                   ),
                   Positioned(
-                    top: 140,
+                    top: 180,
                     left: 16,
                     right: 16,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         CustomCard(
-                          cardName: 'BedSpacer',
+                          leading: Icon(Icons.bed, size: 90),
+                          leadingWidth: 50,
+                          leadingHeight: 80,
+                          cardName: 'Bed Spacer',
                           description:
-                              'A small area for a bed, ideal for budget accommodation.',
+                              'Room shared with one or more occupants, ideal for cost-saving.',
                         ),
                         CustomCard(
+                          leading: Icon(Icons.bed, size: 90),
+                          leadingWidth: 50,
+                          leadingHeight: 80,
                           cardName: 'Private Room',
-                          description: 'A room with a single bed or bunk beds.',
+                          description:
+                              'Private Room, basic space for sleeping and studying.',
                         ),
                         CustomCard(
-                          cardName: 'Private Room',
-                          description: 'A room with a single bed or bunk beds.',
-                        ),
-                        CustomCard(
-                          cardName: 'Private Room',
-                          description: 'A room with a single bed or bunk beds.',
+                          leading: Icon(Icons.bed, size: 90),
+                          leadingWidth: 50,
+                          leadingHeight: 80,
+                          cardName: 'Entire Place',
+                          description:
+                              'Larger space with separate bedrooms, kitchen, and living area.',
                         ),
                         const SizedBox(height: 16),
                       ],
