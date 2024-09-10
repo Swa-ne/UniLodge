@@ -7,7 +7,7 @@ import 'package:unilodge/presentation/favorite/pages/favorites.dart';
 import 'package:unilodge/presentation/home/pages/home.dart';
 import 'package:unilodge/presentation/message/pages/messages.dart';
 import 'package:unilodge/presentation/profile/pages/userProfile.dart';
-import 'package:unilodge/presentation/Post/Pages/PostAccommodation.dart';
+import 'package:unilodge/presentation/post/pages/postaccommodation.dart';
 
 final GoRouter appRouter = GoRouter(routes: [
   GoRoute(
