@@ -17,7 +17,6 @@ class _SignUpState extends State<SignUp> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
   DateTime? _selectedDate;
-  String _initialCountry = 'US';
   PhoneNumber _phoneNumber = PhoneNumber(isoCode: 'US');
   PhoneNumberUtil phoneUtil = PhoneNumberUtil.instance;
 
@@ -92,41 +91,55 @@ class _SignUpState extends State<SignUp> {
         child: SizedBox(
           width: screenWidth,
           height: screenHeight,
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: screenWidth * 0.1,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(height: screenHeight * 0.15),
-                const Text(
-                  'UniLodge',
-                  style: TextStyle(
-                    fontFamily: AppTheme.logoFont,
-                    fontSize: 36,
-                    color: AppColors.lightBlueTextColor,
-                  ),
+          child: Stack(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: screenWidth * 0.1,
                 ),
-                SizedBox(height: screenHeight * 0.05),
-                Expanded(
-                  child: PageView(
-                    controller: _pageController,
-                    physics: NeverScrollableScrollPhysics(),
-                    onPageChanged: (int page) {
-                      setState(() {
-                        _currentPage = page;
-                      });
-                    },
-                    children: [
-                      _buildPersonalInfoPage(context, screenHeight),
-                      _buildAccountInfoPage(context, screenHeight),
-                    ],
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(height: screenHeight * 0.1),
+                    const Text(
+                      'UniLodge',
+                      style: TextStyle(
+                        fontFamily: AppTheme.logoFont,
+                        fontSize: 36,
+                        color: AppColors.lightBlueTextColor,
+                      ),
+                    ),
+                    SizedBox(height: screenHeight * 0.05),
+                    Expanded(
+                      child: PageView(
+                        controller: _pageController,
+                        physics: NeverScrollableScrollPhysics(),
+                        onPageChanged: (int page) {
+                          setState(() {
+                            _currentPage = page;
+                          });
+                        },
+                        children: [
+                          _buildPersonalInfoPage(context, screenHeight),
+                          _buildAccountInfoPage(context, screenHeight),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              Positioned(
+                top: 16.0,
+                left: 16.0,
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () {
+                    context.go("/account-selection-signup");
+                  },
+                ),
+              ),
+            ],
           ),
         ),
       ),

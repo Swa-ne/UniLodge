@@ -22,7 +22,7 @@ class AuthButton extends StatelessWidget {
         side: const BorderSide(
           color: AppColors.primary,
         ),
-        minimumSize: const Size(double.infinity, 60),
+        minimumSize: const Size(double.infinity, 50),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
