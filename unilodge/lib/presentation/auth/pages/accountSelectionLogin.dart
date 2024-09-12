@@ -37,7 +37,7 @@ class AccountSelectionLogin extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                SizedBox(height: screenHeight * 0.15),
+                SizedBox(height: screenHeight * 0.1),
                 const Text(
                   'UniLodge',
                   style: TextStyle(
@@ -50,7 +50,7 @@ class AccountSelectionLogin extends StatelessWidget {
                   'Log in to UniLodge',
                   style: TextStyle(
                     color: AppColors.textColor,
-                    fontSize: 40,
+                    fontSize: 30,
                   ),
                 ),
                 SizedBox(
