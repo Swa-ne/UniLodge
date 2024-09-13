@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/core/configs/theme/app_theme.dart';
+import 'package:unilodge/presentation/auth/pages/login.dart';
 import 'package:unilodge/presentation/auth/widgets/authButton.dart';
 
 class AccountSelectionLogin extends StatelessWidget {
@@ -61,7 +62,12 @@ class AccountSelectionLogin extends StatelessWidget {
                     AuthButton(
                       text: 'Use email or username',
                       onPressed: () {
-                        context.go('/login');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const Login(),
+                          ),
+                        );
                       },
                       icon: const Icon(Icons.person),
                     ),
