@@ -3,8 +3,6 @@ import 'package:unilodge/presentation/auth/pages/accountSelectionLogin.dart';
 import 'package:unilodge/presentation/auth/pages/accountSelectionSignUp.dart';
 import 'package:unilodge/presentation/auth/pages/email&password/forget_password.dart';
 import 'package:unilodge/presentation/auth/pages/email&password/verify_email.dart';
-import 'package:unilodge/presentation/auth/pages/login.dart';
-import 'package:unilodge/presentation/auth/pages/signUp.dart';
 import 'package:unilodge/presentation/favorite/pages/favorites.dart';
 import 'package:unilodge/presentation/home/pages/home.dart';
 import 'package:unilodge/presentation/message/pages/messages.dart';
@@ -31,14 +29,6 @@ final GoRouter appRouter = GoRouter(routes: [
     builder: (context, state) => const AccountSelectionSignup(),
   ),
   GoRoute(
-    path: '/signup',
-    builder: (context, state) => const SignUp(),
-  ),
-  GoRoute(
-    path: '/login',
-    builder: (context, state) => const Login(),
-  ),
-  GoRoute(
     path: '/home',
     builder: (context, state) => const Home(),
   ),
@@ -62,7 +52,7 @@ final GoRouter appRouter = GoRouter(routes: [
     path: '/favorites',
     builder: (context, state) => const Favorites(),
   ),
-     GoRoute(
+  GoRoute(
     path: '/verify_email',
     builder: (context, state) => const VerifyEmail(),
   ),
