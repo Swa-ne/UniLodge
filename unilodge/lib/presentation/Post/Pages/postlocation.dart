@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class Postlocation extends StatefulWidget {
-  const Postlocation({super.key});
+class PostLocation extends StatefulWidget {
+  const PostLocation({super.key});
 
   @override
-  State<Postlocation> createState() => _PostlocationState();
+  State<PostLocation> createState() => _PostLocationState();
 }
 
-class _PostlocationState extends State<Postlocation> {
+class _PostLocationState extends State<PostLocation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,7 +95,7 @@ class _PostlocationState extends State<Postlocation> {
                   children: [
                     OutlinedButton(
                       onPressed: () {
-                        context.go('/postaccommodation');
+                        context.go('/post-accommodation');
                       },
                       child: const Text("Back"),
                       style: OutlinedButton.styleFrom(
@@ -111,7 +111,7 @@ class _PostlocationState extends State<Postlocation> {
                     SizedBox(width: 20),
                     ElevatedButton(
                       onPressed: () {
-                        context.go('/postprice');
+                        context.go('/post-price');
                       },
                       child: const Text('Next'),
                       style: ElevatedButton.styleFrom(

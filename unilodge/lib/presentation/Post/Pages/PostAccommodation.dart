@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/presentation/post/widgets/customcard.dart';
 
-class Postaccommodation extends StatefulWidget {
-  const Postaccommodation({super.key});
+class PostAccommodation extends StatefulWidget {
+  const PostAccommodation({super.key});
 
   @override
-  State<Postaccommodation> createState() => _PostaccommodationState();
+  State<PostAccommodation> createState() => _PostAccommodationState();
 }
 
-class _PostaccommodationState extends State<Postaccommodation> {
+class _PostAccommodationState extends State<PostAccommodation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,7 +104,7 @@ class _PostaccommodationState extends State<Postaccommodation> {
                   children: [
                     OutlinedButton(
                       onPressed: () {
-                        context.go('/login');
+                        context.go('/home');
                       },
                       child: const Text("Back"),
                       style: OutlinedButton.styleFrom(
@@ -120,7 +120,7 @@ class _PostaccommodationState extends State<Postaccommodation> {
                     SizedBox(width: 20),
                     ElevatedButton(
                       onPressed: () {
-                        context.go('/postlocation');
+                        context.go('/post-location');
                       },
                       child: const Text('Next'),
                       style: ElevatedButton.styleFrom(

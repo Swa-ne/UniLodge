@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class postprice extends StatefulWidget {
-  const postprice({super.key});
+class PostPrice extends StatefulWidget {
+  const PostPrice({super.key});
 
   @override
-  State<postprice> createState() => _postpriceState();
+  State<PostPrice> createState() => _PostPriceState();
 }
 
-class _postpriceState extends State<postprice> {
+class _PostPriceState extends State<PostPrice> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,12 +28,13 @@ class _postpriceState extends State<postprice> {
         child: Column(
           children: <Widget>[
             Expanded(
-              child: Stack(
-                children: <Widget>[
-                  Positioned(
-                    top: 70,
-                    left: 16,
-                    child: Text(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    const SizedBox(height: 70),
+                    const Text(
                       'Property Information',
                       style: TextStyle(
                         color: Colors.black,
@@ -41,74 +42,80 @@ class _postpriceState extends State<postprice> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                  Positioned(
-                    top: 100,
-                    left: 16,
-                    right: 16,
-                    child: Text(
+                    const SizedBox(height: 10),
+                    const Text(
                       'Please fill in all fields below to continue',
                       style: TextStyle(
-                          fontSize: 15, fontWeight: FontWeight.normal),
+                        fontSize: 15,
+                        fontWeight: FontWeight.normal,
+                      ),
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 30),
+                    _buildTextField(label: 'Price',contentPadding: const EdgeInsets.all(16),),
+                    _buildTextField(
+                      label: 'Description',
+                      maxLines: 5, // Makes the field appear more like a square
+                      minLines: 5,
+                      contentPadding: const EdgeInsets.all(16),
+                    ),
+                    _buildTextField(
+                      label: 'Lease Terms',
+                      maxLines: 5, // Makes the field appear more like a square
+                      minLines: 5,
+                      contentPadding: const EdgeInsets.all(16),
+                    ),
+                  ],
+                ),
               ),
             ),
             // Bottom buttons
-            Padding(
-              padding: const EdgeInsets.all(1.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white, //
-                  borderRadius: BorderRadius.horizontal(),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      spreadRadius: 1,
-                      blurRadius: 10,
-                      offset: Offset(0, -3),
-                    ),
-                  ],
-                ),
-                padding: const EdgeInsets.symmetric(
-                    vertical: 10.0, horizontal: 20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    OutlinedButton(
-                      onPressed: () {
-                        context.go('/postaccommodation');
-                      },
-                      child: const Text("Back"),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: Colors.black,
-                        backgroundColor: Colors.transparent,
-                        side: BorderSide(color: Colors.black, width: 1),
-                        minimumSize: Size(120, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    spreadRadius: 1,
+                    blurRadius: 10,
+                    offset: const Offset(0, -3),
+                  ),
+                ],
+              ),
+              padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  OutlinedButton(
+                    onPressed: () {
+                      context.go('/post-accommodation');
+                    },
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.black,
+                      side: const BorderSide(color: Colors.black, width: 1),
+                      minimumSize: const Size(120, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    SizedBox(width: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        context.go('/postlocation');
-                      },
-                      child: const Text('Next'),
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Color(0xff2E3E4A),
-                        minimumSize: Size(120, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        elevation: 0,
+                    child: const Text("Back"),
+                  ),
+                  const SizedBox(width: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      context.go('/postlocation');
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: const Color(0xff2E3E4A),
+                      minimumSize: const Size(120, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
                       ),
+                      elevation: 0,
                     ),
-                  ],
-                ),
+                    child: const Text('Next'),
+                  ),
+                ],
               ),
             ),
           ],
@@ -117,21 +124,29 @@ class _postpriceState extends State<postprice> {
     );
   }
 
-  Widget _buildTextField({required String label}) {
+  Widget _buildTextField({
+    required String label,
+    int maxLines = 1,
+    int minLines = 1,
+    EdgeInsetsGeometry contentPadding = const EdgeInsets.symmetric(vertical: 16.0),
+  }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
       child: TextFormField(
+        maxLines: maxLines,
+        minLines: minLines,
         decoration: InputDecoration(
           labelText: label,
+          contentPadding: contentPadding,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Color(0xff2E3E4A)),
+            borderSide: const BorderSide(color: Color(0xff2E3E4A)),
             borderRadius: BorderRadius.circular(10),
           ),
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey),
+            borderSide: const BorderSide(color: Colors.grey),
             borderRadius: BorderRadius.circular(10),
           ),
         ),

@@ -7,7 +7,9 @@ import 'package:unilodge/presentation/favorite/pages/favorites.dart';
 import 'package:unilodge/presentation/home/pages/home.dart';
 import 'package:unilodge/presentation/message/pages/messages.dart';
 import 'package:unilodge/presentation/profile/pages/userProfile.dart';
-import 'package:unilodge/presentation/post/pages/postaccommodation.dart';
+import 'package:unilodge/presentation/post/pages/postAccommodation.dart';
+import 'package:unilodge/presentation/post/pages/postLocation.dart';
+import 'package:unilodge/presentation/Post/pages/PostPrice.dart';
 
 final GoRouter appRouter = GoRouter(routes: [
   GoRoute(
@@ -33,8 +35,16 @@ final GoRouter appRouter = GoRouter(routes: [
     builder: (context, state) => const Home(),
   ),
   GoRoute(
-    path: '/postAccommodation',
-    builder: (context, state) => const Postaccommodation(),
+    path: '/post-accommodation',
+    builder: (context, state) => const PostAccommodation(),
+  ),
+  GoRoute(
+    path: '/post-location',
+    builder: (context, state) => const PostLocation(),
+  ),
+  GoRoute(
+    path: '/post-price',
+    builder: (context, state) => const PostPrice(),
   ),
   // GoRoute(
   //   path: '/dorm-information',
