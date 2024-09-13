@@ -62,7 +62,7 @@ final GoRouter appRouter = GoRouter(routes: [
     path: '/favorites',
     builder: (context, state) => const Favorites(),
   ),
-     GoRoute(
+  GoRoute(
     path: '/verify_email',
     builder: (context, state) => const VerifyEmail(),
   ),
