@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:unilodge/presentation/post/widgets/customcard.dart';
 
-class Postaccommodation extends StatefulWidget {
-  const Postaccommodation({super.key});
+class postprice extends StatefulWidget {
+  const postprice({super.key});
 
   @override
-  State<Postaccommodation> createState() => _PostaccommodationState();
+  State<postprice> createState() => _postpriceState();
 }
 
-class _PostaccommodationState extends State<Postaccommodation> {
+class _postpriceState extends State<postprice> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +26,7 @@ class _PostaccommodationState extends State<Postaccommodation> {
           ),
         ),
         child: Column(
-          children: [
+          children: <Widget>[
             Expanded(
               child: Stack(
                 children: <Widget>[
@@ -35,53 +34,28 @@ class _PostaccommodationState extends State<Postaccommodation> {
                     top: 70,
                     left: 16,
                     child: Text(
-                      'What type of property do you want to list?',
+                      'Property Information',
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 17,
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
                   Positioned(
-                    top: 180,
+                    top: 100,
                     left: 16,
                     right: 16,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        CustomCard(
-                          leading: Icon(Icons.bed, size: 90),
-                          leadingWidth: 50,
-                          leadingHeight: 80,
-                          cardName: 'Bed Spacer',
-                          description:
-                              'Room shared with one or more occupants, ideal for cost-saving.',
-                        ),
-                        CustomCard(
-                          leading: Icon(Icons.bed, size: 90),
-                          leadingWidth: 50,
-                          leadingHeight: 80,
-                          cardName: 'Private Room',
-                          description:
-                              'Private Room, basic space for sleeping and studying.',
-                        ),
-                        CustomCard(
-                          leading: Icon(Icons.bed, size: 90),
-                          leadingWidth: 50,
-                          leadingHeight: 80,
-                          cardName: 'Entire Place',
-                          description:
-                              'Larger space with separate bedrooms, kitchen, and living area.',
-                        ),
-                        const SizedBox(height: 16),
-                      ],
+                    child: Text(
+                      'Please fill in all fields below to continue',
+                      style: TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.normal),
                     ),
                   ),
                 ],
               ),
             ),
-            // Bottom Nav
+            // Bottom buttons
             Padding(
               padding: const EdgeInsets.all(1.0),
               child: Container(
@@ -104,7 +78,7 @@ class _PostaccommodationState extends State<Postaccommodation> {
                   children: [
                     OutlinedButton(
                       onPressed: () {
-                        context.go('/login');
+                        context.go('/postaccommodation');
                       },
                       child: const Text("Back"),
                       style: OutlinedButton.styleFrom(
@@ -138,6 +112,28 @@ class _PostaccommodationState extends State<Postaccommodation> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextField({required String label}) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16.0),
+      child: TextFormField(
+        decoration: InputDecoration(
+          labelText: label,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Color(0xff2E3E4A)),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey),
+            borderRadius: BorderRadius.circular(10),
+          ),
         ),
       ),
     );
