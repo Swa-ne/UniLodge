@@ -3,13 +3,13 @@ import 'package:unilodge/presentation/auth/pages/accountSelectionLogin.dart';
 import 'package:unilodge/presentation/auth/pages/accountSelectionSignUp.dart';
 import 'package:unilodge/presentation/auth/pages/email&password/forget_password.dart';
 import 'package:unilodge/presentation/auth/pages/email&password/verify_email.dart';
-import 'package:unilodge/presentation/auth/pages/login.dart';
-import 'package:unilodge/presentation/auth/pages/signUp.dart';
 import 'package:unilodge/presentation/favorite/pages/favorites.dart';
 import 'package:unilodge/presentation/home/pages/home.dart';
 import 'package:unilodge/presentation/message/pages/messages.dart';
 import 'package:unilodge/presentation/profile/pages/userProfile.dart';
-import 'package:unilodge/presentation/post/pages/postaccommodation.dart';
+import 'package:unilodge/presentation/post/pages/postAccommodation.dart';
+import 'package:unilodge/presentation/post/pages/postLocation.dart';
+import 'package:unilodge/presentation/Post/pages/PostPrice.dart';
 
 final GoRouter appRouter = GoRouter(routes: [
   GoRoute(
@@ -31,20 +31,20 @@ final GoRouter appRouter = GoRouter(routes: [
     builder: (context, state) => const AccountSelectionSignup(),
   ),
   GoRoute(
-    path: '/signup',
-    builder: (context, state) => const SignUp(),
-  ),
-  GoRoute(
-    path: '/login',
-    builder: (context, state) => const Login(),
-  ),
-  GoRoute(
     path: '/home',
     builder: (context, state) => const Home(),
   ),
   GoRoute(
-    path: '/postAccommodation',
-    builder: (context, state) => const Postaccommodation(),
+    path: '/post-accommodation',
+    builder: (context, state) => const PostAccommodation(),
+  ),
+  GoRoute(
+    path: '/post-location',
+    builder: (context, state) => const PostLocation(),
+  ),
+  GoRoute(
+    path: '/post-price',
+    builder: (context, state) => const PostPrice(),
   ),
   // GoRoute(
   //   path: '/dorm-information',

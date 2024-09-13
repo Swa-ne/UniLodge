@@ -5,6 +5,7 @@ import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/core/configs/theme/app_theme.dart';
 import 'package:intl/intl.dart';
+import 'package:unilodge/presentation/auth/pages/login.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -73,73 +74,84 @@ class _SignUpState extends State<SignUp> {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xff83a2ac),
-              Color.fromARGB(255, 255, 255, 255),
-              Color.fromARGB(255, 255, 255, 255),
-            ],
-            stops: [0.00, 0.18, 0.90],
+    return PopScope(
+      canPop: true,
+      onPopInvokedWithResult: (bool didPop, Object? result) {
+        if (didPop) {
+          return;
+        }
+        if (context.mounted) {
+          Navigator.pop(context, result);
+        }
+      },
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(0xff83a2ac),
+                Color.fromARGB(255, 255, 255, 255),
+                Color.fromARGB(255, 255, 255, 255),
+              ],
+              stops: [0.00, 0.18, 0.90],
+            ),
           ),
-        ),
-        child: SizedBox(
-          width: screenWidth,
-          height: screenHeight,
-          child: Stack(
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: screenWidth * 0.1,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(height: screenHeight * 0.1),
-                    const Text(
-                      'UniLodge',
-                      style: TextStyle(
-                        fontFamily: AppTheme.logoFont,
-                        fontSize: 36,
-                        color: AppColors.lightBlueTextColor,
+          child: SizedBox(
+            width: screenWidth,
+            height: screenHeight,
+            child: Stack(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: screenWidth * 0.1,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(height: screenHeight * 0.1),
+                      const Text(
+                        'UniLodge',
+                        style: TextStyle(
+                          fontFamily: AppTheme.logoFont,
+                          fontSize: 36,
+                          color: AppColors.lightBlueTextColor,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: screenHeight * 0.05),
-                    Expanded(
-                      child: PageView(
-                        controller: _pageController,
-                        physics: NeverScrollableScrollPhysics(),
-                        onPageChanged: (int page) {
-                          setState(() {
-                            _currentPage = page;
-                          });
-                        },
-                        children: [
-                          _buildPersonalInfoPage(context, screenHeight),
-                          _buildAccountInfoPage(context, screenHeight),
-                        ],
+                      SizedBox(height: screenHeight * 0.05),
+                      Expanded(
+                        child: PageView(
+                          controller: _pageController,
+                          physics: const NeverScrollableScrollPhysics(),
+                          onPageChanged: (int page) {
+                            setState(() {
+                              _currentPage = page;
+                            });
+                          },
+                          children: [
+                            _buildPersonalInfoPage(context, screenHeight),
+                            _buildAccountInfoPage(context, screenHeight),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Positioned(
-                top: 16.0,
-                left: 16.0,
-                child: IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () {
-                    context.go("/account-selection-signup");
-                  },
+                Positioned(
+                  top: 16.0,
+                  left: 16.0,
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_back),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -331,7 +343,12 @@ class _SignUpState extends State<SignUp> {
         ),
         InkWell(
           onTap: () {
-            context.go('/login');
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const Login(),
+              ),
+            );
           },
           child: const Text(
             "Log in",

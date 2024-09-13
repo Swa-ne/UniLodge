@@ -33,7 +33,7 @@ class _CustomCardState extends State<CustomCard>
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 100),
-      lowerBound: 0.95,
+      lowerBound: 0.93,
       upperBound: 1.0,
     );
 
@@ -54,7 +54,7 @@ class _CustomCardState extends State<CustomCard>
   }
 
   void _onTapUp(TapUpDetails details) {
-    _animationController.forward(); // Scale back to normal
+    _animationController.forward(); 
   }
 
   @override
