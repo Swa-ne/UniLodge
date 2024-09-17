@@ -13,7 +13,6 @@ class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 248, 248, 248),
       body: Container(
         child: Column(
           children: [
