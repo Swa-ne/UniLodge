@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unilodge/common/widgets/customButton.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 
 class ForgetPassword extends StatelessWidget {
@@ -69,22 +70,9 @@ class ForgetPassword extends StatelessWidget {
                     const SizedBox(height: 25),
 
                     // Elevated Button
-                    SizedBox(
-                      width: 300,
-                      height: 55,
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF2E3E4A),
-                        ),
-                        child: const Text(
-                          'Send',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
+                    
+
+                    CustomButton(text: "Send", onPressed: (){})
                   ],
                 ),
               ),

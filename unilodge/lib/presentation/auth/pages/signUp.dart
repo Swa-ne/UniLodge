@@ -2,6 +2,7 @@ import 'package:dlibphonenumber/phone_number_util.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:unilodge/common/widgets/customButton.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:intl/intl.dart';
 import 'package:unilodge/presentation/auth/pages/login.dart';
@@ -154,24 +155,8 @@ class _SignUpState extends State<SignUp> {
           SizedBox(height: screenHeight * 0.10),
           _buildPageIndicator(),
           const SizedBox(height: 20.0),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              backgroundColor: AppColors.primary,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              minimumSize: const Size(double.infinity, 48),
-            ),
-            onPressed: _nextPage,
-            child: const Text(
-              'Next',
-              style: TextStyle(
-                fontSize: 18,
-                color: Colors.white,
-              ),
-            ),
-          ),
+          
+          CustomButton(text: "Next", onPressed: _nextPage),
           const SizedBox(height: 10),
           _buildLoginText(context),
         ],
@@ -221,26 +206,11 @@ class _SignUpState extends State<SignUp> {
           SizedBox(height: screenHeight * 0.17),
           _buildPageIndicator(),
           const SizedBox(height: 20.0),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              backgroundColor: AppColors.primary,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              minimumSize: const Size(double.infinity, 48),
-            ),
-            onPressed: () {
-              context.go('/home');
-            },
-            child: const Text(
-              'Sign Up',
-              style: TextStyle(
-                fontSize: 18,
-                color: Colors.white,
-              ),
-            ),
-          ),
+          CustomButton(
+              text: "Sign Up",
+              onPressed: () {
+                context.go('/home');
+              }),
           const SizedBox(height: 10),
           _buildLoginText(context),
           TextButton(

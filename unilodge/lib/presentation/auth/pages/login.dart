@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:unilodge/common/widgets/customButton.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/presentation/auth/pages/email&password/forget_password.dart';
 import 'package:unilodge/presentation/auth/pages/signUp.dart';
@@ -118,27 +119,11 @@ class _LoginState extends State<Login> {
                             ),
                           ),
                           SizedBox(height: screenHeight * 0.37),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 12),
-                              backgroundColor: AppColors.primary,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              minimumSize: const Size(double.infinity, 48),
-                            ),
-                            onPressed: () async {
-                              context.go('/home');
-                            },
-                            child: const Text(
-                              'Log in',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
+                          CustomButton(
+                              text: "Log in",
+                              onPressed: () async {
+                                context.go('/home');
+                              }),
                           const SizedBox(height: 10),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -146,9 +131,8 @@ class _LoginState extends State<Login> {
                               const Text(
                                 "Don't have an account? ",
                                 style: TextStyle(
-                                  fontSize: 14,
-                                  color: AppColors.formTextColor
-                                ),
+                                    fontSize: 14,
+                                    color: AppColors.formTextColor),
                               ),
                               InkWell(
                                 onTap: () {
