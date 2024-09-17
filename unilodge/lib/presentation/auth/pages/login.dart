@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
+import 'package:unilodge/presentation/auth/pages/email&password/forget_password.dart';
 import 'package:unilodge/presentation/auth/pages/signUp.dart';
 import 'package:unilodge/presentation/auth/widgets/unilodgeText.dart';
 
@@ -99,7 +100,12 @@ class _LoginState extends State<Login> {
                             alignment: Alignment.centerRight,
                             child: InkWell(
                               onTap: () {
-                                print("Text tapped!");
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ForgetPassword(),
+                                  ),
+                                );
                               },
                               child: const Text(
                                 "Forgot your password?",
