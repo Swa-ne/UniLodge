@@ -4,7 +4,6 @@ import 'package:unilodge/presentation/auth/pages/accountSelectionSignUp.dart';
 import 'package:unilodge/presentation/auth/pages/email&password/forget_password.dart';
 import 'package:unilodge/presentation/auth/pages/email&password/verify_email.dart';
 import 'package:unilodge/presentation/favorite/pages/favorites.dart';
-import 'package:unilodge/presentation/home/pages/home.dart';
 import 'package:unilodge/presentation/home/pages/homepage.dart';
 import 'package:unilodge/presentation/message/pages/messages.dart';
 import 'package:unilodge/presentation/profile/pages/userProfile.dart';

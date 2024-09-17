@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/presentation/message/widgets/custom_text.dart';
 import 'package:unilodge/presentation/message/widgets/list_view.dart';
 
@@ -17,7 +18,7 @@ class _MessagesState extends State<Messages> {
         backgroundColor: Colors.white,
         title: const CustomText(
           text: 'Messages',
-          color: Colors.black,
+          color: AppColors.textColor,
           fontSize: 18,
         ),
       ),

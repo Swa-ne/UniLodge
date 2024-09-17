@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unilodge/core/configs/theme/app_colors.dart';
 
 class CustomSearchDelegate extends SearchDelegate {
   List<String> searchTerms = [
@@ -78,7 +79,16 @@ class CustomSearchDelegate extends SearchDelegate {
     return ListView.builder(
       itemBuilder: (context, index) {
         var result = matchQuery[index];
-        return ListTile(title: Text(result));
+        return Column(children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: ListTile(title: Text(result, style: TextStyle(color: AppColors.textColor,))),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Divider(height: 10, color: Color.fromARGB(255, 240, 239, 239)),
+          ),
+        ]);
       },
       itemCount: matchQuery.length,
     );

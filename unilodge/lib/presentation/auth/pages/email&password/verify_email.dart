@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:unilodge/core/configs/assets/app_images.dart';
 import 'package:unilodge/presentation/auth/pages/login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 

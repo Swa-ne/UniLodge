@@ -12,13 +12,12 @@ class ListingDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(onPressed: (){
-        
       },
       child: Icon(Icons.message, color: Color(0xfffdfdfd),),
       backgroundColor: Color(0xff2E3E4A),),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 18.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

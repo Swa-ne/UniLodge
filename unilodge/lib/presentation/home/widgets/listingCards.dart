@@ -54,7 +54,7 @@ class _ListingCardsState extends State<ListingCards> {
             children: [
               Center(
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(5),
                   child: Opacity(
                     opacity: 0.9,
                     child: Image.network(

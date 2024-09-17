@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/presentation/favorite/widgets/custom_text.dart';
 
 class FavoriteCard extends StatelessWidget {
@@ -30,11 +31,11 @@ class FavoriteCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(10),
               child: Image.network(
                 image,
                 width: 150,
-                height: 150,
+                height: 120,
                 fit: BoxFit.cover,
               ),
             ),
@@ -48,31 +49,34 @@ class FavoriteCard extends StatelessWidget {
                 children: [
                   CustomText(
                     text: dormName,
-                    color: const Color(0xFF2E3E4A),
-                    fontSize: 18,
+                    color: AppColors.logoTextColor,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
                   const SizedBox(height: 4),
                   _buildStarRating(rating),
                   const SizedBox(height: 4),
                   Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
-                      color: Colors.grey[200],
+                      color: Color(0xffF8F8F8),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: CustomText(
                       text: address,
-                      color: const Color(0xFF454545),
+                      color: AppColors.formTextColor,
                       fontSize: 14,
                       fontWeight: FontWeight.normal,
                     ),
                   ),
-                  const SizedBox(height: 28),
+
+                  
+
+                  const SizedBox(height: 20),
                   CustomText(
                     text: price,
-                    color: const Color(0xFF454545),
-                    fontSize: 18,
+                    color: AppColors.formTextColor,
+                    fontSize: 16,
                     fontWeight: FontWeight.w400,
                   ),
                 ],
@@ -80,15 +84,15 @@ class FavoriteCard extends StatelessWidget {
             ),
           ),
           // hart
-          const Padding(
-            padding: EdgeInsets.all(8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                SizedBox(height: 8),
-                Icon(Icons.favorite, color: Colors.red),
-              ],
-            ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                child: Icon(Icons.favorite, color: Color(0xffF04F43)),
+              ),
+            ],
           ),
         ],
       ),
@@ -101,7 +105,7 @@ class FavoriteCard extends StatelessWidget {
       children: List.generate(5, (index) {
         return Icon(
           index < rating ? Icons.star : Icons.star_border,
-          color: Colors.yellow,
+          color: const Color.fromARGB(255, 245, 231, 110), size: 17,
         );
       }),
     );

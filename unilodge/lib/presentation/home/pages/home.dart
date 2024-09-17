@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unilodge/core/configs/assets/app_images.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
-import 'package:unilodge/presentation/home/widgets/bottomNavbar.dart';
 import 'package:unilodge/presentation/home/widgets/typeCards.dart';
 import 'package:unilodge/presentation/home/widgets/listingCards.dart';
 import 'package:unilodge/presentation/home/widgets/search.dart';

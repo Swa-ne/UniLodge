@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/presentation/favorite/widgets/favorites_list_view.dart';
 import 'package:unilodge/presentation/message/widgets/custom_text.dart';
 
@@ -17,7 +18,7 @@ class _FavoritesState extends State<Favorites> {
         backgroundColor: Colors.white,
         title: const CustomText(
           text: 'Favorites',
-          color: Colors.black,
+          color: AppColors.textColor,
           fontSize: 18,
         ),
       ),
