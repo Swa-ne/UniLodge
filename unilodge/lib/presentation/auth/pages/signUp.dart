@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
-import 'package:unilodge/core/configs/theme/app_theme.dart';
 import 'package:intl/intl.dart';
 import 'package:unilodge/presentation/auth/pages/login.dart';
+import 'package:unilodge/presentation/auth/widgets/unilodgeText.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -18,7 +18,7 @@ class _SignUpState extends State<SignUp> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
   DateTime? _selectedDate;
-  PhoneNumber _phoneNumber = PhoneNumber(isoCode: 'US');
+  PhoneNumber _phoneNumber = PhoneNumber(isoCode: 'PH');
   PhoneNumberUtil phoneUtil = PhoneNumberUtil.instance;
 
   void _nextPage() {
@@ -86,72 +86,51 @@ class _SignUpState extends State<SignUp> {
       },
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color(0xff83a2ac),
-                Color.fromARGB(255, 255, 255, 255),
-                Color.fromARGB(255, 255, 255, 255),
-              ],
-              stops: [0.00, 0.18, 0.90],
-            ),
-          ),
-          child: SizedBox(
-            width: screenWidth,
-            height: screenHeight,
-            child: Stack(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: screenWidth * 0.1,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SizedBox(height: screenHeight * 0.1),
-                      const Text(
-                        'UniLodge',
-                        style: TextStyle(
-                          fontFamily: AppTheme.logoFont,
-                          fontSize: 36,
-                          color: AppColors.lightBlueTextColor,
-                        ),
-                      ),
-                      SizedBox(height: screenHeight * 0.05),
-                      Expanded(
-                        child: PageView(
-                          controller: _pageController,
-                          physics: const NeverScrollableScrollPhysics(),
-                          onPageChanged: (int page) {
-                            setState(() {
-                              _currentPage = page;
-                            });
-                          },
-                          children: [
-                            _buildPersonalInfoPage(context, screenHeight),
-                            _buildAccountInfoPage(context, screenHeight),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+        body: SizedBox(
+          width: screenWidth,
+          height: screenHeight,
+          child: Stack(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: screenWidth * 0.1,
                 ),
-                Positioned(
-                  top: 16.0,
-                  left: 16.0,
-                  child: IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(height: screenHeight * 0.1),
+                    UnilodgeText(),
+                    SizedBox(height: screenHeight * 0.05),
+                    Expanded(
+                      child: PageView(
+                        controller: _pageController,
+                        physics: const NeverScrollableScrollPhysics(),
+                        onPageChanged: (int page) {
+                          setState(() {
+                            _currentPage = page;
+                          });
+                        },
+                        children: [
+                          _buildPersonalInfoPage(context, screenHeight),
+                          _buildAccountInfoPage(context, screenHeight),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              Positioned(
+                top: 16.0,
+                left: 16.0,
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -171,31 +150,7 @@ class _SignUpState extends State<SignUp> {
           const SizedBox(height: 20.0),
           _buildTextField("Last Name", "Enter last name"),
           const SizedBox(height: 20.0),
-          InternationalPhoneNumberInput(
-            onInputChanged: (PhoneNumber number) {
-              _phoneNumber = number;
-              print('Phone number: ${number.phoneNumber}');
-              bool isValid = phoneUtil.isValidNumber(
-                  phoneUtil.parse(number.phoneNumber, number.isoCode));
-              print('is it valid: $isValid');
-            },
-            onInputValidated: (bool isValid) {},
-            selectorConfig: const SelectorConfig(
-              selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
-            ),
-            ignoreBlank: false,
-            autoValidateMode: AutovalidateMode.onUserInteraction,
-            initialValue: _phoneNumber,
-            formatInput: true,
-            keyboardType: TextInputType.phone,
-            inputDecoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              labelText: 'Phone Number',
-              hintText: 'Enter phone number',
-            ),
-          ),
+          _buildPhoneNumberField(),
           SizedBox(height: screenHeight * 0.10),
           _buildPageIndicator(),
           const SizedBox(height: 20.0),
@@ -253,7 +208,7 @@ class _SignUpState extends State<SignUp> {
                     : DateFormat.yMMMd().format(_selectedDate!),
                 style: const TextStyle(
                   fontSize: 16,
-                  color: Colors.black,
+                  color: AppColors.formTextColor,
                 ),
               ),
             ),
@@ -317,11 +272,51 @@ class _SignUpState extends State<SignUp> {
           borderSide: BorderSide.none,
         ),
         labelStyle: const TextStyle(
-          color: Colors.black,
+          color: AppColors.formTextColor,
           height: 1.3,
         ),
         labelText: labelText,
         hintText: hintText,
+        hintStyle: const TextStyle(
+          fontSize: 14.0,
+          fontWeight: FontWeight.w400,
+          color: Colors.grey,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPhoneNumberField() {
+    return InternationalPhoneNumberInput(
+      onInputChanged: (PhoneNumber number) {
+        _phoneNumber = number;
+        print('Phone number: ${number.phoneNumber}');
+        bool isValid = phoneUtil
+            .isValidNumber(phoneUtil.parse(number.phoneNumber, number.isoCode));
+        print('is it valid: $isValid');
+      },
+      onInputValidated: (bool isValid) {},
+      selectorConfig: const SelectorConfig(
+        selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
+      ),
+      ignoreBlank: false,
+      autoValidateMode: AutovalidateMode.onUserInteraction,
+      initialValue: _phoneNumber,
+      formatInput: true,
+      keyboardType: TextInputType.phone,
+      inputDecoration: InputDecoration(
+        filled: true,
+        fillColor: AppColors.blueTextColor,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10.0),
+          borderSide: BorderSide.none,
+        ),
+        labelText: 'Phone Number',
+        hintText: 'eg. 9123000000',
+        labelStyle: const TextStyle(
+          color: AppColors.formTextColor,
+          height: 1.3,
+        ),
         hintStyle: const TextStyle(
           fontSize: 14.0,
           fontWeight: FontWeight.w400,
@@ -337,9 +332,7 @@ class _SignUpState extends State<SignUp> {
       children: [
         const Text(
           "Already have an account? ",
-          style: TextStyle(
-            fontSize: 12,
-          ),
+          style: TextStyle(fontSize: 14, color: AppColors.formTextColor),
         ),
         InkWell(
           onTap: () {
@@ -354,8 +347,9 @@ class _SignUpState extends State<SignUp> {
             "Log in",
             textAlign: TextAlign.right,
             style: TextStyle(
-              fontSize: 11,
-              color: Colors.blue,
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: AppColors.primary,
             ),
           ),
         ),
