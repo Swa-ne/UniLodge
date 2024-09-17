@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
-import 'package:unilodge/core/configs/theme/app_theme.dart';
 import 'package:unilodge/presentation/auth/pages/login.dart';
 import 'package:unilodge/presentation/auth/widgets/authButton.dart';
+import 'package:unilodge/presentation/auth/widgets/unilodgeText.dart';
 
 class AccountSelectionLogin extends StatelessWidget {
   const AccountSelectionLogin({super.key});
@@ -14,112 +14,98 @@ class AccountSelectionLogin extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xff83a2ac),
-              Color.fromARGB(255, 255, 255, 255),
-              Color.fromARGB(255, 255, 255, 255),
-            ],
-            stops: [0.00, 0.18, 0.90],
+      body: SizedBox(
+        width: screenWidth,
+        height: screenHeight,
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: screenWidth * 0.1,
           ),
-        ),
-        child: SizedBox(
-          width: screenWidth,
-          height: screenHeight,
-          child: Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: screenWidth * 0.1,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(height: screenHeight * 0.1),
-                const Text(
-                  'UniLodge',
-                  style: TextStyle(
-                    fontFamily: AppTheme.logoFont,
-                    fontSize: 36,
-                    color: AppColors.lightBlueTextColor,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: screenHeight * 0.14),
+              UnilodgeText(),
+              SizedBox(
+                height: screenHeight * 0.08,
+              ),
+              const Text(
+                'Log in',
+                style: TextStyle(
+                  color: AppColors.formTextColor,
+                  fontSize: 16,
+                ),
+              ),
+              SizedBox(
+                height: screenHeight * 0.06,
+              ),
+              Column(
+                children: [
+                  AuthButton(
+                    text: 'Use email or username',
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Login(),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.person,
+                        size: 25, color: Color.fromARGB(255, 53, 68, 80)),
                   ),
-                ),
-                const Text(
-                  'Log in to UniLodge',
-                  style: TextStyle(
-                    color: AppColors.textColor,
-                    fontSize: 30,
+                  const SizedBox(height: 5),
+                  AuthButton(
+                    text: 'Continue with Facebook',
+                    onPressed: () {
+                      context.go('/'); // TODO: add facebook
+                    },
+                    icon: const Icon(Icons.facebook,
+                        size: 25, color: Color.fromARGB(255, 53, 68, 80)),
                   ),
-                ),
-                SizedBox(
-                  height: screenHeight * 0.08,
-                ),
-                Column(
-                  children: [
-                    AuthButton(
-                      text: 'Use email or username',
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const Login(),
-                          ),
-                        );
-                      },
-                      icon: const Icon(Icons.person),
+                  const SizedBox(height: 5),
+                  AuthButton(
+                    text: 'Continue with Google',
+                    onPressed: () {
+                      context.go('/'); // TODO: add google
+                    },
+                    icon: Image.asset(
+                      'assets/images/google_logo.png',
+                      width: 22,
+                      height: 22,
+                      color: Color.fromARGB(255, 53, 68, 80)
                     ),
-                    const SizedBox(height: 5),
-                    AuthButton(
-                      text: 'Continue with Facebook',
-                      onPressed: () {
-                        context.go('/'); // TODO: add facebook
-                      },
-                      icon: const Icon(Icons.facebook),
-                    ),
-                    const SizedBox(height: 5),
-                    AuthButton(
-                      text: 'Continue with Google',
-                      onPressed: () {
-                        context.go('/'); // TODO: add google
-                      },
-                      icon: Image.asset(
-                        'assets/images/google_logo.png',
-                        width: 18,
-                        height: 18,
+                  ),
+                  SizedBox(height: screenHeight * 0.2),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Don't have an account? ",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: AppColors.formTextColor,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: screenHeight * 0.3),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "Don't have an account? ",
+                      InkWell(
+                        onTap: () {
+                          context.go('/account-selection-signup');
+                        },
+                        child: const Text(
+                          "Sign up",
+                          textAlign: TextAlign.right,
                           style: TextStyle(
-                            fontSize: 12,
-                          ),
+                              fontSize: 14,
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.bold),
                         ),
-                        InkWell(
-                          onTap: () {
-                            context.go('/account-selection-signup');
-                          },
-                          child: const Text(
-                            "Sign up",
-                            textAlign: TextAlign.right,
-                            style: TextStyle(
-                              fontSize: 11,
-                              color: Colors.blue,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),
