@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
 import 'package:unilodge/presentation/home/pages/listingDetailScreen.dart';
 
@@ -77,8 +78,9 @@ class _ListingCardsState extends State<ListingCards> {
                         Text(
                           widget.property_name,
                           style: TextStyle(
-                            color: Color(0xff454545),
+                            color: AppColors.textColor,
                             fontWeight: FontWeight.w500,
+                            fontSize: 16
                           ),
                         ),
                         Spacer(),
@@ -87,7 +89,7 @@ class _ListingCardsState extends State<ListingCards> {
                           color: Color(0xffFFB800),
                         ),
                         Text("4.9(14)",
-                            style: TextStyle(color: Color(0xff454545)))
+                            style: TextStyle(color: AppColors.textColor))
                       ],
                     ),
                     SizedBox(
@@ -95,12 +97,12 @@ class _ListingCardsState extends State<ListingCards> {
                     ),
                     Text(
                       widget.address,
-                      style: TextStyle(color: Color(0xff454545)),
+                      style: TextStyle(color: AppColors.textColor),
                     ),
                     Row(
                       children: [
                         Text(widget.price,
-                            style: TextStyle(color: Color(0xff454545))),
+                            style: TextStyle(color: AppColors.textColor)),
                         Spacer(),
                         Icon(
                           Icons.favorite,

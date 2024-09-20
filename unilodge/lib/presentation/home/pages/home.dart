@@ -24,9 +24,6 @@ class _HomeState extends State<Home> {
             pinned: true,
             floating: true,
             actions: [
-              SizedBox(
-                height: 5,
-              ),
               GestureDetector(
                 onTap: () {
                   showSearch(
@@ -35,6 +32,7 @@ class _HomeState extends State<Home> {
                   );
                 },
                 child: Container(
+                  margin: EdgeInsets.symmetric(vertical: 8),
                   width: 300,
                   padding: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
@@ -43,14 +41,9 @@ class _HomeState extends State<Home> {
                   ),
                   child: Row(
                     children: [
-                      IconButton(
-                        onPressed: () {
-                          showSearch(
-                            context: context,
-                            delegate: CustomSearchDelegate(),
-                          );
-                        },
-                        icon: const Icon(Icons.search),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Icon(Icons.search),
                       ),
                       const Text("Search"),
                     ],
@@ -118,7 +111,7 @@ class _HomeState extends State<Home> {
                   child: Text(
                     "Listings",
                     style: TextStyle(
-                      fontSize: 15,
+                      fontSize: 16,
                     ),
                   ),
                 ),

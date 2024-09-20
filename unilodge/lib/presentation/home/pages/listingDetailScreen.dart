@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:unilodge/common/widgets/customButton.dart';
+import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
 import 'package:unilodge/presentation/home/widgets/textRow.dart';
 
@@ -11,10 +13,10 @@ class ListingDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: (){
-      },
-      child: Icon(Icons.message, color: Color(0xfffdfdfd),),
-      backgroundColor: Color(0xff2E3E4A),),
+      // floatingActionButton: FloatingActionButton(onPressed: (){
+      // },
+      // child: Icon(Icons.message, color: Color(0xfffdfdfd),),
+      // backgroundColor: Color(0xff2E3E4A),),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18.0),
@@ -35,14 +37,6 @@ class ListingDetailScreen extends StatelessWidget {
                       },
                       child: Icon(Icons.cancel,
                           color: Color.fromARGB(169, 60, 60, 67))),
-                  Spacer(),
-                  Icon(
-                    Icons.favorite,
-                    color: Color(0xffF04F43),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
                 ],
               ),
               SizedBox(
@@ -55,26 +49,48 @@ class ListingDetailScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 8.0),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20.0, horizontal: 8.0),
                 child: Text(listing.property_name,
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Color(0xff434343))),
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff434343))),
               ),
               TextRow(text1: "Address:", text2: listing.address),
-              TextRow(text1: "Amenities:", text2: listing.amenities[0]),
               TextRow(text1: "Owner Information:", text2: listing.ownerInfo),
-              TextRow(text1: "Description", text2: listing.description),
+              TextRow(text1: "Amenities:", text2: listing.amenities[0]),
+              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  "Description",
+                  style: TextStyle(color: Color(0xff434343), fontSize: 15),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+                  style:
+                      TextStyle(color: AppColors.formTextColor, fontSize: 15),
+                ),
+              ),
               SizedBox(height: 30),
               const Divider(
                   height: 20, color: Color.fromARGB(255, 223, 223, 223)),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text("Reviews (14)", style: TextStyle(color: Color(0xff434343), fontSize: 15),),
+                child: Text(
+                  "Reviews (14)",
+                  style: TextStyle(color: Color(0xff434343), fontSize: 15),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   "dropdown reviews or direct to another screen",
-                  style: TextStyle(color: Color(0xff434343), fontSize: 15),
+                  style: TextStyle(color: AppColors.formTextColor, fontSize: 15),
                 ),
               ),
               SizedBox(height: 30),
@@ -88,12 +104,63 @@ class ListingDetailScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  "maybe we can show nearby or recommended listings here",
-                  style: TextStyle(color: Color(0xff434343), fontSize: 15),
+                  "maybe we can show nearby or recommended listings here. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+                  style: TextStyle(color: AppColors.formTextColor, fontSize: 15),
                 ),
               ),
-              
             ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: ClipRRect(
+        child: Container(
+          decoration: BoxDecoration(
+            color: AppColors.lightBackground,
+            boxShadow: [
+              BoxShadow(
+                color: const Color.fromARGB(255, 59, 59, 59).withOpacity(1),
+                spreadRadius: 10,
+                blurRadius: 30,
+                offset: Offset(0, 2),
+              ),
+            ],
+          ),
+          height: 65,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SizedBox(width: 10),
+                Expanded(
+                  flex: 7,
+                  child: CustomButton(
+                    text: "Chat with owner",
+                    onPressed: () {},
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 6.0),
+                  child: const VerticalDivider(
+                    color: Color.fromARGB(75, 67, 67, 67),
+                    thickness: 1,
+                    width: 20,
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: Icon(
+                      Icons.favorite_border,
+                      color: AppColors.primary,
+                      size: 28,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

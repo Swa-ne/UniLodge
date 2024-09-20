@@ -5,6 +5,7 @@ import 'package:unilodge/presentation/auth/pages/email&password/forget_password.
 import 'package:unilodge/presentation/auth/pages/email&password/verify_email.dart';
 import 'package:unilodge/presentation/favorite/pages/favorites.dart';
 import 'package:unilodge/presentation/home/pages/homepage.dart';
+import 'package:unilodge/presentation/listings/pages/yourListings.dart';
 import 'package:unilodge/presentation/message/pages/messages.dart';
 import 'package:unilodge/presentation/profile/pages/userProfile.dart';
 import 'package:unilodge/presentation/post/pages/postAccommodation.dart';
@@ -33,6 +34,10 @@ final GoRouter appRouter = GoRouter(routes: [
   GoRoute(
     path: '/home',
     builder: (context, state) => const HomePage(),
+  ),
+  GoRoute(
+    path: '/listings',
+    builder: (context, state) => const Listings(),
   ),
   GoRoute(
     path: '/post-accommodation',

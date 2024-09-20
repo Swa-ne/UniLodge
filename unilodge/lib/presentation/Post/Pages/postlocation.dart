@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:unilodge/core/configs/theme/app_colors.dart';
 
 class PostLocation extends StatefulWidget {
   const PostLocation({super.key});
@@ -12,124 +13,120 @@ class _PostLocationState extends State<PostLocation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xff83a2ac),
-              Color.fromARGB(255, 255, 255, 255),
-              Color.fromARGB(255, 255, 255, 255),
-            ],
-            stops: [0.00, 0.18, 0.90],
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: Stack(
+              children: <Widget>[
+                Positioned(
+                  top: 60,
+                  left: 16,
+                  child: Text(
+                    'Property Information',
+                    style: TextStyle(
+                      color: AppColors.primary,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 90,
+                  left: 16,
+                  right: 16,
+                  child: Text(
+                    'Please fill in all fields below to continue',
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.normal,
+                        color: AppColors.primary),
+                  ),
+                ),
+                Positioned(
+                    top: 50, right: 20, child: Icon(Icons.draw, size: 70, color: AppColors.primary,)),
+                Positioned(
+                  top: 160,
+                  left: 16,
+                  right: 16,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildTextField2(
+                          label: 'Property Name',
+                          hint: "Enter property name"),
+                      _buildTextField2(label: 'City', hint: "Enter city"),
+                      _buildTextField2(label: 'Street', hint: "Enter street"),
+                      _buildTextField2(
+                          label: 'Barangay', hint: "Enter barangay"),
+                      _buildTextField2(
+                          label: 'House Number', hint: "Enter house number"),
+                      _buildTextField2(
+                          label: 'Zipcode', hint: "Enter zipcode"),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: Stack(
-                children: <Widget>[
-                  Positioned(
-                    top: 70,
-                    left: 16,
-                    child: Text(
-                      'Property Information',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+      
+          // Bottom buttons
+          Padding(
+            padding: const EdgeInsets.all(1.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white, //
+                borderRadius: BorderRadius.horizontal(),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color.fromARGB(255, 119, 119, 119)
+                        .withOpacity(0.2),
+                    spreadRadius: 1,
+                    blurRadius: 5,
+                    offset: Offset(0, -1),
+                  ),
+                ],
+              ),
+              padding: const EdgeInsets.symmetric(
+                  vertical: 10.0, horizontal: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  OutlinedButton(
+                    onPressed: () {
+                      context.go('/post-accommodation');
+                    },
+                    child: const Text("Back"),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.black,
+                      backgroundColor: Colors.transparent,
+                      side: BorderSide(color: Colors.black, width: 1),
+                      minimumSize: Size(120, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
                       ),
                     ),
                   ),
-                  Positioned(
-                    top: 100,
-                    left: 16,
-                    right: 16,
-                    child: Text(
-                      'Please fill in all fields below to continue',
-                      style: TextStyle(
-                          fontSize: 15, fontWeight: FontWeight.normal),
-                    ),
-                  ),
-                  Positioned(
-                    top: 200,
-                    left: 16,
-                    right: 16,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _buildTextField(label: 'Property Name'),
-                        _buildTextField(label: 'City'),
-                        _buildTextField(label: 'Street'),
-                        _buildTextField(label: 'Barangay'),
-                        _buildTextField(label: 'House Number'),
-                        _buildTextField(label: 'Zipcode'),
-                      ],
+                  SizedBox(width: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      context.go('/post-price');
+                    },
+                    child: const Text('Next'),
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Color(0xff2E3E4A),
+                      minimumSize: Size(120, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      elevation: 0,
                     ),
                   ),
                 ],
               ),
             ),
-
-            // Bottom buttons
-            Padding(
-              padding: const EdgeInsets.all(1.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white, //
-                  borderRadius: BorderRadius.horizontal(),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      spreadRadius: 1,
-                      blurRadius: 10,
-                      offset: Offset(0, -3),
-                    ),
-                  ],
-                ),
-                padding: const EdgeInsets.symmetric(
-                    vertical: 10.0, horizontal: 20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    OutlinedButton(
-                      onPressed: () {
-                        context.go('/post-accommodation');
-                      },
-                      child: const Text("Back"),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: Colors.black,
-                        backgroundColor: Colors.transparent,
-                        side: BorderSide(color: Colors.black, width: 1),
-                        minimumSize: Size(120, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        context.go('/post-price');
-                      },
-                      child: const Text('Next'),
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Color(0xff2E3E4A),
-                        minimumSize: Size(120, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        elevation: 0,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -150,6 +147,34 @@ class _PostLocationState extends State<PostLocation> {
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.grey),
             borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextField2({required String label, required String hint}) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16.0),
+      child: TextField(
+        keyboardType: TextInputType.text,
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: AppColors.blueTextColor,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.0),
+            borderSide: BorderSide.none,
+          ),
+          labelStyle: const TextStyle(
+            color: AppColors.formTextColor,
+            height: 1.3,
+          ),
+          labelText: label,
+          hintText: hint,
+          hintStyle: const TextStyle(
+            fontSize: 14.0,
+            fontWeight: FontWeight.w400,
+            color: Colors.grey,
           ),
         ),
       ),

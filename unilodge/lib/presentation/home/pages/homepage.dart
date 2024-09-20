@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/presentation/favorite/pages/favorites.dart';
 import 'package:unilodge/presentation/home/pages/home.dart';
+import 'package:unilodge/presentation/listings/pages/yourListings.dart';
 import 'package:unilodge/presentation/message/pages/messages.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,19 +21,20 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  final List<Widget> _pages = [Home(), Home(), Favorites(), Messages()];
+  final List<Widget> _pages = [Home(), Listings(), Favorites(), Messages()];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages[_selectedIndex],
       bottomNavigationBar: ClipRRect(
+        
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(30), 
           topRight: Radius.circular(30),
         ),
         child: Container(
-          height: 70,
+          height: 60,
           decoration: BoxDecoration(
             color: AppColors.lightBackground,
             boxShadow: [
@@ -40,7 +42,7 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.black.withOpacity(0.1),
                 spreadRadius: 5,
                 blurRadius: 10,
-                offset: Offset(0, -3), 
+                offset: Offset(0, -3),
               ),
             ],
           ),

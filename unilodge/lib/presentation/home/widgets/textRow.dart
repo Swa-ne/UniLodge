@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unilodge/core/configs/theme/app_colors.dart';
 
 class TextRow extends StatelessWidget {
   final String text1;
@@ -17,7 +18,7 @@ class TextRow extends StatelessWidget {
             style: TextStyle(fontSize: 15, color: Color(0xff434343)),
           ),
           Spacer(),
-          Text(text2, style: TextStyle(fontSize: 15, color: Color(0xff434343)))
+          Text(text2, style: TextStyle(fontSize: 15, color: AppColors.formTextColor))
         ],
       ),
     );
