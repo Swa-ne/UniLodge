@@ -102,7 +102,7 @@ class _PostPriceState extends State<PostPrice> {
                     const SizedBox(width: 20),
                     ElevatedButton(
                       onPressed: () {
-                        context.go('/home');
+                        context.go('/listings');
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,

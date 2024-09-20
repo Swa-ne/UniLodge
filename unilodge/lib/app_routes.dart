@@ -3,10 +3,7 @@ import 'package:unilodge/presentation/auth/pages/accountSelectionLogin.dart';
 import 'package:unilodge/presentation/auth/pages/accountSelectionSignUp.dart';
 import 'package:unilodge/presentation/auth/pages/email&password/forget_password.dart';
 import 'package:unilodge/presentation/auth/pages/email&password/verify_email.dart';
-import 'package:unilodge/presentation/favorite/pages/favorites.dart';
 import 'package:unilodge/presentation/home/pages/homepage.dart';
-import 'package:unilodge/presentation/listings/pages/yourListings.dart';
-import 'package:unilodge/presentation/message/pages/messages.dart';
 import 'package:unilodge/presentation/profile/pages/userProfile.dart';
 import 'package:unilodge/presentation/post/pages/postAccommodation.dart';
 import 'package:unilodge/presentation/post/pages/postLocation.dart';
@@ -37,7 +34,19 @@ final GoRouter appRouter = GoRouter(routes: [
   ),
   GoRoute(
     path: '/listings',
-    builder: (context, state) => const Listings(),
+    builder: (context, state) => const HomePage(initialTabIndex: 1,),
+  ),
+  GoRoute(
+    path: '/favorites',
+    builder: (context, state) => const HomePage(
+      initialTabIndex: 2,
+    ),
+  ),
+  GoRoute(
+    path: '/messages',
+    builder: (context, state) => const HomePage(
+      initialTabIndex: 3,
+    ),
   ),
   GoRoute(
     path: '/post-accommodation',
@@ -51,21 +60,9 @@ final GoRouter appRouter = GoRouter(routes: [
     path: '/post-price',
     builder: (context, state) => const PostPrice(),
   ),
-  // GoRoute(
-  //   path: '/dorm-information',
-  //   builder: (context, state) => const ListingDetailScreen(),
-  // ),
   GoRoute(
     path: '/user-profile',
     builder: (context, state) => const UserProfile(),
-  ),
-  GoRoute(
-    path: '/messages',
-    builder: (context, state) => const Messages(),
-  ),
-  GoRoute(
-    path: '/favorites',
-    builder: (context, state) => const Favorites(),
   ),
   GoRoute(
     path: '/verify_email',

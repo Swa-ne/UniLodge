@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/assets/app_images.dart';
 import 'package:unilodge/presentation/profile/widgets/textRow.dart';
 
@@ -28,11 +29,9 @@ class _UserProfileState extends State<UserProfile> {
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color.fromARGB(255, 179, 179, 179)
-                          .withOpacity(0.1), 
-                      offset: Offset(0, 4), 
-                      blurRadius: 6, // Blur radius of the shadow
-                      spreadRadius: 1, // Spread radius of the shadow
+                      color: const Color(0xFF636464).withOpacity(0.15),
+                      offset: const Offset(0, 2),
+                      blurRadius: 8,
                     ),
                   ],
                 ),
@@ -81,11 +80,9 @@ class _UserProfileState extends State<UserProfile> {
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color.fromARGB(255, 179, 179, 179)
-                        .withOpacity(0.1), // Shadow color with opacity
-                    offset: Offset(0, 4), // Shadow position (x, y)
-                    blurRadius: 6, // Blur radius of the shadow
-                    spreadRadius: 1, // Spread radius of the shadow
+                    color: const Color(0xFF636464).withOpacity(0.15),
+                    offset: const Offset(0, 2),
+                    blurRadius: 8,
                   ),
                 ],
               ),
@@ -100,14 +97,18 @@ class _UserProfileState extends State<UserProfile> {
                           color: Color.fromARGB(176, 46, 62, 74),
                           size: 25,
                         )),
-                        
-                    TextRow(
-                        text: "Bookings",
-                        icon: Icon(
-                          Icons.shopping_bag,
-                          color: Color.fromARGB(176, 46, 62, 74),
-                          size: 25,
-                        )),
+                    GestureDetector(
+                      onTap: () {
+                        context.go("/listings");
+                      },
+                      child: TextRow(
+                          text: "Bookings",
+                          icon: Icon(
+                            Icons.shopping_bag,
+                            color: Color.fromARGB(176, 46, 62, 74),
+                            size: 25,
+                          )),
+                    ),
                     TextRow(
                         text: "Reviews",
                         icon: Icon(
@@ -150,11 +151,9 @@ class _UserProfileState extends State<UserProfile> {
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color.fromARGB(255, 179, 179, 179)
-                        .withOpacity(0.1), // Shadow color with opacity
-                    offset: Offset(0, 4), // Shadow position (x, y)
-                    blurRadius: 6, // Blur radius of the shadow
-                    spreadRadius: 1, // Spread radius of the shadow
+                    color: const Color(0xFF636464).withOpacity(0.15),
+                    offset: const Offset(0, 2),
+                    blurRadius: 8,
                   ),
                 ],
               ),
@@ -191,7 +190,9 @@ class _UserProfileState extends State<UserProfile> {
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
                             child: TextButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                Navigator.pop(context);
+                              },
                               child: Text("Book now"),
                               style: TextButton.styleFrom(
                                 foregroundColor: Color(0xfffdfdfd),
