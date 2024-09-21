@@ -45,6 +45,7 @@ class _ListingCardsState extends State<ListingCards> {
                     "Amenity2"
                   ], // Handle this based on real data
                   imageUrl: widget.imageUrl,
+                  rating: 5
                 ),
               ),
             ),

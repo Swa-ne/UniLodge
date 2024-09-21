@@ -1,0 +1,50 @@
+import 'package:flutter/material.dart';
+import 'package:unilodge/data/models/listing.dart';
+import 'package:unilodge/presentation/home/pages/listingDetailScreen.dart';
+import 'package:unilodge/presentation/home/widgets/nearbyListingCard.dart';
+
+class NearbyProperties extends StatelessWidget {
+  const NearbyProperties({super.key, required this.listings});
+
+  final List<Listing> listings;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 4, vertical: 10),
+      decoration: BoxDecoration(color: Color(0xFFF3F3F3)),
+      child: GridView.builder(
+        itemCount: listings.length,
+        shrinkWrap:
+            true, // allows gridview to size itself based on its children
+        physics:
+            NeverScrollableScrollPhysics(), // prevents scrolling as it iz inside a scrollable parent
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2, // 2 cards per roww
+          crossAxisSpacing: 4.0, // spacing between columns
+          mainAxisSpacing: 4.0, // spacing between rows
+        ),
+        itemBuilder: (context, index) {
+          final property = listings[index];
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ListingDetailScreen(
+                    listing: property
+                  ),
+                ),
+              );
+            },
+            child: NearbyCard(
+              imageUrl: property.imageUrl,
+              propertyName: property.property_name,
+              rating: property.rating,
+            ),
+          );
+        },
+      ),
+    );
+  }
+}

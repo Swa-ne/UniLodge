@@ -6,6 +6,7 @@ class Listing {
   final String ownerInfo;
   final List<String> amenities;
   final String imageUrl;
+  final int rating;
 
   Listing({
     required this.property_name,
@@ -15,5 +16,6 @@ class Listing {
     required this.ownerInfo,
     required this.amenities,
     required this.imageUrl,
+    required this.rating
   });
 }
