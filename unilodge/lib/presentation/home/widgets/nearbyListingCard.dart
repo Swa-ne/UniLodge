@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 
 class NearbyCard extends StatelessWidget {
@@ -26,10 +27,47 @@ class NearbyCard extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(5),
-                  child: Image.network(imageUrl, width: 170, height: 100, fit: BoxFit.cover,)),
+                  child: Image.network(
+                    imageUrl,
+                    width: 170,
+                    height: 100,
+                    fit: BoxFit.cover,
+                  )),
             ),
-            Text(propertyName),
-            Text(rating.toString())
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(propertyName,
+                        style: TextStyle(
+                          color: AppColors.textColor,
+                        )),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: RatingBar.builder(
+                        initialRating: rating.toDouble(),
+                        minRating: 1,
+                        direction: Axis.horizontal,
+                        itemCount: 5,
+                        itemSize: 18,
+                        itemPadding: EdgeInsets.symmetric(horizontal: 1),
+                        itemBuilder: (context, _) => Icon(
+                              Icons.star,
+                              color: AppColors.ratingYellow,
+                            ),
+                        onRatingUpdate: (rating) {
+                          print(rating);
+                        }),
+                  ),
+                )
+              ],
+            ),
           ],
         ),
       ),

@@ -2,9 +2,9 @@ import 'package:unilodge/data/models/listing.dart';
 
 List<Listing> dummyListings = [
   Listing(
-    property_name: "Cozy Apartment",
+    property_name: "Sunrise apartment",
     address: "123 Main St, City, Country",
-    price: "\$1200/month",
+    price: "₱8000/month",
     description: "A lovely place to stay with modern amenities.",
     ownerInfo: "John Doe - (123) 456-7890",
     amenities: ["WiFi", "Parking", "Gym"],
@@ -13,9 +13,9 @@ List<Listing> dummyListings = [
     rating: 5,
   ),
   Listing(
-    property_name: "Luxury Suite",
+    property_name: "Apartment 2",
     address: "456 Elm St, City, Country",
-    price: "\$2000/month",
+    price: "₱8000/month",
     description: "Experience luxury living in the heart of the city.",
     ownerInfo: "Jane Smith - (987) 654-3210",
     amenities: ["Pool", "Gym", "Spa"],
@@ -24,9 +24,9 @@ List<Listing> dummyListings = [
     rating: 4,
   ),
   Listing(
-    property_name: "Cozy Apartment",
+    property_name: "Bedspacer 1",
     address: "123 Main St, City, Country",
-    price: "\$1200/month",
+    price: "₱3200/month",
     description: "A lovely place to stay with modern amenities.",
     ownerInfo: "John Doe - (123) 456-7890",
     amenities: ["WiFi", "Parking", "Gym"],
@@ -35,14 +35,58 @@ List<Listing> dummyListings = [
     rating: 5,
   ),
   Listing(
-    property_name: "Luxury Suite",
+    property_name: "Apartment 3",
     address: "456 Elm St, City, Country",
-    price: "\$2000/month",
+    price: "₱6000/month",
     description: "Experience luxury living in the heart of the city.",
     ownerInfo: "Jane Smith - (987) 654-3210",
     amenities: ["Pool", "Gym", "Spa"],
     imageUrl:
         "https://scontent.fcrk2-1.fna.fbcdn.net/v/t39.30808-6/441338695_7862183873832336_7700222853071800481_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=aa7b47&_nc_eui2=AeFg5ttkLbvHeH6IOijC9ReogrTWRB9C5u6CtNZEH0Lm7vJb_mE3jppGe4Rccr52rZZfsQXNnP7HuqA3X-hbllT1&_nc_ohc=pvwB2ZfxsUwQ7kNvgFdwfVt&_nc_ht=scontent.fcrk2-1.fna&_nc_gid=A3-rX09Bwnj3l7xIDX35zvV&oh=00_AYCwQzXQ2Faa-rvLI22ocnylVg0KNPV7gQVecHkuFwf9_w&oe=66F4A36F",
     rating: 4,
+  ),
+  Listing(
+    property_name: "Solo room in Dagupan",
+    address: "#75 Amado Street, Dagupan City",
+    price: "₱5000/month",
+    description: "Experience luxury living in the heart of the city.",
+    ownerInfo: "Jane Smith - (987) 654-3210",
+    amenities: ["Pool", "Gym", "Spa"],
+    imageUrl:
+        "https://asiasociety.org/sites/default/files/styles/1200w/public/D/dormroom.jpg",
+    rating: 3,
+  ),
+  Listing(
+    property_name: "Bedspacer in Dagupan",
+    address: "#75 Amado Street, Dagupan City",
+    price: "₱3000/month",
+    description: "Experience luxury living in the heart of the city.",
+    ownerInfo: "Jane Smith - (987) 654-3210",
+    amenities: ["Pool", "Gym", "Spa"],
+    imageUrl:
+        "https://media.istockphoto.com/id/492965743/photo/empty-university-college-dorm-room-with-bunkbed-desk-and-closet.jpg?s=170667a&w=0&k=20&c=iqe28qa_mLcpgWZtMOn-SHTHgxLHX8PacAgRH_KsYho=",
+    rating: 4,
+  ),
+  Listing(
+    property_name: "Bedspacer in Dagupan",
+    address: "#123 Arellano Street, Dagupan City",
+    price: "₱3000/month",
+    description: "Experience luxury living in the heart of the city.",
+    ownerInfo: "Jane Smith - (987) 654-3210",
+    amenities: ["Pool", "Gym", "Spa"],
+    imageUrl:
+        "https://www.shutterstock.com/image-photo/college-dorm-room-empty-freshman-600nw-2487430993.jpg",
+    rating: 5,
+  ),
+  Listing(
+    property_name: "Bedspacer in Dagupan",
+    address: "#123 Arellano Street, Dagupan City",
+    price: "₱3000/month",
+    description: "Experience luxury living in the heart of the city.",
+    ownerInfo: "Jane Smith - (987) 654-3210",
+    amenities: ["Pool", "Gym", "Spa"],
+    imageUrl:
+        "https://www.une.edu/sites/default/files/styles/block_image_large/public/2020-12/Avila-6259.jpg?itok=5HTs3fnj",
+    rating: 5,
   ),
 ];

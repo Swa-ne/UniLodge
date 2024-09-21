@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:unilodge/common/widgets/customButton.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/dummy_data.dart';
@@ -97,6 +98,34 @@ class ListingDetailScreen extends StatelessWidget {
                   height: 20, color: Color.fromARGB(255, 223, 223, 223)),
             ),
             SizedBox(height: 15),
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 15.0),
+                  child: Text( "Rating: " , style: TextStyle(color: Color(0xff434343), fontSize: 15)),
+                ),
+                Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 2.0, vertical: 8),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: RatingBar.builder(
+                            initialRating: listing.rating.toDouble(),
+                            minRating: 1,
+                            direction: Axis.horizontal,
+                            itemCount: 5,
+                            itemSize: 18,
+                            itemPadding: EdgeInsets.symmetric(horizontal: 1),
+                            itemBuilder: (context, _) => Icon(
+                                  Icons.star,
+                                  color: AppColors.ratingYellow,
+                                ),
+                            onRatingUpdate: (rating) {
+                              print(rating);
+                            }),
+                      ),
+                    ),
+              ],
+            ),
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),

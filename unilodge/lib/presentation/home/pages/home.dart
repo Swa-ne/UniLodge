@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:unilodge/core/configs/assets/app_images.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
-import 'package:unilodge/presentation/home/widgets/typeCards.dart';
 import 'package:unilodge/presentation/home/widgets/listingCards.dart';
+import 'package:unilodge/presentation/home/widgets/typeCards.dart';
 import 'package:unilodge/presentation/home/widgets/search.dart';
 import 'package:unilodge/presentation/profile/pages/userProfile.dart';
+import 'package:unilodge/data/dummy_data.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -103,9 +104,6 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 const SizedBox(height: 30),
-
-                // --------- Listings Section ---------
-
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.0),
                   child: Text(
@@ -118,42 +116,24 @@ class _HomeState extends State<Home> {
                 const SizedBox(height: 20),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Column(
-                    children: [
-                      ListingCards(
-                          imageUrl:
-                              "https://asiasociety.org/sites/default/files/styles/1200w/public/D/dormroom.jpg",
-                          property_name: "Solo room in Dagupan",
-                          address: "#75 Amado Street, Dagupan City",
-                          price: "₱5,000.00"),
-                      const Divider(
-                          height: 20,
-                          color: Color.fromARGB(255, 223, 223, 223)),
-                      ListingCards(
-                          imageUrl:
-                              "https://media.istockphoto.com/id/492965743/photo/empty-university-college-dorm-room-with-bunkbed-desk-and-closet.jpg?s=170667a&w=0&k=20&c=iqe28qa_mLcpgWZtMOn-SHTHgxLHX8PacAgRH_KsYho=",
-                          property_name: "Bedspacer in Dagupan",
-                          address: "#123 Arellano Street, Dagupan City",
-                          price: "₱5,000.00"),
-                      const Divider(
-                          height: 20,
-                          color: Color.fromARGB(255, 223, 223, 223)),
-                      ListingCards(
-                          imageUrl:
-                              "https://www.shutterstock.com/image-photo/college-dorm-room-empty-freshman-600nw-2487430993.jpg",
-                          property_name: "Bedspacer in Dagupan",
-                          address: "#123 Arellano Street, Dagupan City",
-                          price: "₱5,000.00"),
-                      const Divider(
-                          height: 20,
-                          color: Color.fromARGB(255, 223, 223, 223)),
-                      ListingCards(
-                          imageUrl:
-                              "https://www.une.edu/sites/default/files/styles/block_image_large/public/2020-12/Avila-6259.jpg?itok=5HTs3fnj",
-                          property_name: "Bedspacer in Dagupan",
-                          address: "#123 Arellano Street, Dagupan City",
-                          price: "₱5,000.00"),
-                    ],
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: dummyListings.length,
+                    itemBuilder: (context, index) {
+                      final listing = dummyListings[index];
+                      return Column(
+                        children: [
+                          ListingCards(
+                            listing: listing, // Pass the whole listing object
+                          ),
+                          const Divider(
+                            height: 20,
+                            color: Color.fromARGB(255, 223, 223, 223),
+                          ),
+                        ],
+                      );
+                    },
                   ),
                 ),
               ],
