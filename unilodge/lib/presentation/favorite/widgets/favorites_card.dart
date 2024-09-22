@@ -21,7 +21,7 @@ class FavoriteCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.all(10),
+      margin: const EdgeInsets.all(5),
       color: Colors.transparent,
       elevation: 0,
       child: Row(

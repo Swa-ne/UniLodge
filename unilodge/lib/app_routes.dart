@@ -4,6 +4,7 @@ import 'package:unilodge/presentation/auth/pages/accountSelectionSignUp.dart';
 import 'package:unilodge/presentation/auth/pages/email&password/forget_password.dart';
 import 'package:unilodge/presentation/auth/pages/email&password/verify_email.dart';
 import 'package:unilodge/presentation/home/pages/homepage.dart';
+import 'package:unilodge/presentation/listings/pages/editListingPost.dart';
 import 'package:unilodge/presentation/profile/pages/userProfile.dart';
 import 'package:unilodge/presentation/post/pages/postAccommodation.dart';
 import 'package:unilodge/presentation/post/pages/postLocation.dart';
@@ -19,7 +20,6 @@ final GoRouter appRouter = GoRouter(routes: [
       return isLoggedIn ? '/home' : '/account-selection-login';
     },
   ),
-
   GoRoute(
     path: '/account-selection-login',
     builder: (context, state) => const AccountSelectionLogin(),
@@ -34,7 +34,9 @@ final GoRouter appRouter = GoRouter(routes: [
   ),
   GoRoute(
     path: '/listings',
-    builder: (context, state) => const HomePage(initialTabIndex: 1,),
+    builder: (context, state) => const HomePage(
+      initialTabIndex: 1,
+    ),
   ),
   GoRoute(
     path: '/favorites',
@@ -71,5 +73,9 @@ final GoRouter appRouter = GoRouter(routes: [
   GoRoute(
     path: '/forget_password',
     builder: (context, state) => const ForgetPassword(),
+  ),
+  GoRoute(
+    path: '/edit-listing-post',
+    builder: (context, state) => const EditListingPost(),
   ),
 ]);

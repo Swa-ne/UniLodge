@@ -87,7 +87,7 @@ class _PostPriceState extends State<PostPrice> {
                   children: [
                     OutlinedButton(
                       onPressed: () {
-                        context.go('/post-accommodation');
+                        context.go('/post-location');
                       },
                       style: OutlinedButton.styleFrom(
                         foregroundColor: Colors.black,

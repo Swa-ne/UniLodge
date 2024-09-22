@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
+import 'package:unilodge/data/dummy_yourListing.dart';
 import 'package:unilodge/presentation/favorite/widgets/custom_text.dart';
 import 'package:unilodge/presentation/listings/widgets/listingCard.dart';
 
@@ -29,8 +30,11 @@ class Listings extends StatelessWidget {
         backgroundColor: Color(0xff2E3E4A),
       ),
       body: Container(
-        child: ListView.builder(itemCount: 3,itemBuilder: (context, index) {
-          return ListingCard();
+        child: ListView.builder(
+          itemCount: dummyYourListings.length,
+          itemBuilder: (context, index) {
+            final listing = dummyYourListings[index];
+          return ListingCard(listing: listing);
         }),
       ),
     );
