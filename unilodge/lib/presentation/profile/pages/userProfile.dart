@@ -15,10 +15,22 @@ class _UserProfileState extends State<UserProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        // decoration: const BoxDecoration(
+        //   gradient: LinearGradient(
+        //     begin: Alignment.topCenter,
+        //     end: Alignment.bottomCenter,
+        //     colors: [
+        //       Color(0xff83a2ac),
+        //       Color.fromARGB(255, 235, 241, 243),
+        //       Color.fromARGB(255, 255, 255, 255),
+        //     ],
+        //     stops: [0.00, 0.18, 0.90],
+        //   ),
+        // ),
         child: Column(
           children: [
             SizedBox(
-              height: 60,
+              height: 40,
             ),
             Center(
               child: Container(
@@ -180,7 +192,7 @@ class _UserProfileState extends State<UserProfile> {
                           Padding(
                             padding: const EdgeInsets.only(left: 10.0),
                             child: Text(
-                              "Find your perfect dorm and book now!",
+                              "Find your accomodation and book now!",
                               style: TextStyle(
                                 color: Color(0xff454545),
                               ),
@@ -212,7 +224,7 @@ class _UserProfileState extends State<UserProfile> {
                     flex: 1,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
-                          vertical: 8.0, horizontal: 12),
+                          vertical: 8.0, horizontal: 6),
                       child: Image.asset(
                         AppImages.findDorm,
                         width: 200,

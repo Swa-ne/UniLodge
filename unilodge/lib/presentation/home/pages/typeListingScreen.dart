@@ -19,7 +19,7 @@ class TypeListingScreen extends StatelessWidget {
         ),
         body: SingleChildScrollView(
           child: Column(children: [
-            const SizedBox(height: 20),
+            const SizedBox(height: 15),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: ListView.builder(

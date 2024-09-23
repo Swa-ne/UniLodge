@@ -39,6 +39,10 @@ flutter:
     - assets/images/emptyImage.jpg
     - assets/images/findDorm.png
     - assets/images/google_logo.png
+    - assets/images/navIcons/favorites-icon.png
+    - assets/images/navIcons/home-icon.png
+    - assets/images/navIcons/listing-icon.png
+    - assets/images/navIcons/message-icon.png
 
   fonts:
     - family: TrainOne

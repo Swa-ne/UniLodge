@@ -76,16 +76,6 @@ class _HomeState extends State<Home> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            context.push('/type-listing/Apartment');
-                          },
-                          child: Cards(
-                            text: "Apartment",
-                            imageUrl: AppImages.apartment,
-                            color: Color(0xffCDDDEA),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
                             context.push('/type-listing/Dorm');
                           },
                           child: Cards(
@@ -112,6 +102,16 @@ class _HomeState extends State<Home> {
                             text: "Bedspacer",
                             imageUrl: AppImages.bedspacer,
                             color: Color.fromARGB(141, 235, 233, 183),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            context.push('/type-listing/Apartment');
+                          },
+                          child: Cards(
+                            text: "Apartment",
+                            imageUrl: AppImages.apartment,
+                            color: Color(0xffCDDDEA),
                           ),
                         ),
                       ],

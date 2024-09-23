@@ -13,4 +13,13 @@ class AppImages {
   static const String bedspacer = '${basePath}bedspacer$pngformat';
   static const String emptyImage = '${basePath}emptyImage$jpgformat';
   static const String findDorm = '${basePath}findDorm$pngformat';
+
+  // nav icons
+  static const String favoriteIcon =
+      '${basePath}navIcons/favorites-icon$pngformat';
+  static const String homeIcon = '${basePath}navIcons/home-icon$pngformat';
+  static const String listingIcon =
+      '${basePath}navIcons/listing-icon$pngformat';
+  static const String messageIcon =
+      '${basePath}navIcons/message-icon$pngformat';
 }

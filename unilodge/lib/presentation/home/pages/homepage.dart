@@ -76,6 +76,17 @@ class _HomePageState extends State<HomePage> {
               const BottomNavigationBarItem(
                   icon: Icon(Icons.forum), label: 'Messages'),
             ],
+            // items: [
+            //   BottomNavigationBarItem(
+            //       icon: Image.asset(AppImages.homeIcon), label: 'Home'),
+            //   BottomNavigationBarItem(
+            //       icon: Image.asset(AppImages.listingIcon), label: 'Listings'),
+            //   BottomNavigationBarItem(
+            //       icon: Image.asset(AppImages.favoriteIcon),
+            //       label: 'Favorites'),
+            //   BottomNavigationBarItem(
+            //       icon: Image.asset(AppImages.messageIcon), label: 'Messages'),
+            // ],
           ),
         ),
       ),

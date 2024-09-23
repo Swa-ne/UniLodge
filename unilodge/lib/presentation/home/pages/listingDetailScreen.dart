@@ -25,12 +25,12 @@ class ListingDetailScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              height: 30,
+              height: 20,
             ),
             Row(
               children: [
                 SizedBox(
-                  width: 10,
+                  width: 15,
                 ),
                 GestureDetector(
                     onTap: () {
@@ -41,7 +41,7 @@ class ListingDetailScreen extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: 30,
+              height: 20,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -102,28 +102,30 @@ class ListingDetailScreen extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 15.0),
-                  child: Text( "Rating: " , style: TextStyle(color: Color(0xff434343), fontSize: 15)),
+                  child: Text("Rating: ",
+                      style: TextStyle(color: Color(0xff434343), fontSize: 15)),
                 ),
                 Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 2.0, vertical: 8),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: RatingBar.builder(
-                            initialRating: listing.rating.toDouble(),
-                            minRating: 1,
-                            direction: Axis.horizontal,
-                            itemCount: 5,
-                            itemSize: 18,
-                            itemPadding: EdgeInsets.symmetric(horizontal: 1),
-                            itemBuilder: (context, _) => Icon(
-                                  Icons.star,
-                                  color: AppColors.ratingYellow,
-                                ),
-                            onRatingUpdate: (rating) {
-                              print(rating);
-                            }),
-                      ),
-                    ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 2.0, vertical: 8),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: RatingBar.builder(
+                        initialRating: listing.rating.toDouble(),
+                        minRating: 1,
+                        direction: Axis.horizontal,
+                        itemCount: 5,
+                        itemSize: 18,
+                        itemPadding: EdgeInsets.symmetric(horizontal: 1),
+                        itemBuilder: (context, _) => Icon(
+                              Icons.star,
+                              color: AppColors.ratingYellow,
+                            ),
+                        onRatingUpdate: (rating) {
+                          print(rating);
+                        }),
+                  ),
+                ),
               ],
             ),
             Padding(
