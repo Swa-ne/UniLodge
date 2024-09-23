@@ -1,9 +1,11 @@
 import 'package:go_router/go_router.dart';
+import 'package:unilodge/data/dummy_data/dummy_data.dart';
 import 'package:unilodge/presentation/auth/pages/accountSelectionLogin.dart';
 import 'package:unilodge/presentation/auth/pages/accountSelectionSignUp.dart';
 import 'package:unilodge/presentation/auth/pages/email&password/forget_password.dart';
 import 'package:unilodge/presentation/auth/pages/email&password/verify_email.dart';
 import 'package:unilodge/presentation/home/pages/homepage.dart';
+import 'package:unilodge/presentation/home/pages/listingDetailScreen.dart';
 import 'package:unilodge/presentation/listings/pages/editListingPost.dart';
 import 'package:unilodge/presentation/profile/pages/userProfile.dart';
 import 'package:unilodge/presentation/post/pages/postAccommodation.dart';
@@ -50,6 +52,19 @@ final GoRouter appRouter = GoRouter(routes: [
       initialTabIndex: 3,
     ),
   ),
+  GoRoute(
+    path: '/listing-detail/:id',
+    builder: (context, state) {
+      // Retrieve the listing ID from the route parameters
+      final listingId = state.pathParameters['id'];
+
+      final listing =
+          dummyListings.firstWhere((listing) => listing.id == listingId);
+
+      return ListingDetailScreen(listing: listing);
+    },
+  ),
+
   GoRoute(
     path: '/post-accommodation',
     builder: (context, state) => const PostAccommodation(),

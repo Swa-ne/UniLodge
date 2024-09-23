@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
-import 'package:unilodge/presentation/home/pages/listingDetailScreen.dart';
 
 class ListingCards extends StatefulWidget {
   final Listing listing; 
@@ -22,14 +22,7 @@ class _ListingCardsState extends State<ListingCards> {
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: GestureDetector(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ListingDetailScreen(
-                listing: widget.listing, 
-              ),
-            ),
-          );
+          context.push('/listing-detail/${widget.listing.id}');
         },
         child: Container(
           child: Column(

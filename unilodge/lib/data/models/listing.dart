@@ -1,4 +1,5 @@
 class Listing {
+  final String id;
   final String property_name;
   final String address;
   final String price;
@@ -8,14 +9,14 @@ class Listing {
   final String imageUrl;
   final int rating;
 
-  Listing({
-    required this.property_name,
-    required this.address,
-    required this.price,
-    required this.description,
-    required this.ownerInfo,
-    required this.amenities,
-    required this.imageUrl,
-    required this.rating
-  });
+  Listing(
+      {required this.id,
+      required this.property_name,
+      required this.address,
+      required this.price,
+      required this.description,
+      required this.ownerInfo,
+      required this.amenities,
+      required this.imageUrl,
+      required this.rating});
 }
