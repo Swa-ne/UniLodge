@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:unilodge/core/configs/assets/app_images.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
+import 'package:unilodge/presentation/home/pages/typeListingScreen.dart';
 import 'package:unilodge/presentation/home/widgets/listingCards.dart';
 import 'package:unilodge/presentation/home/widgets/typeCards.dart';
 import 'package:unilodge/presentation/home/widgets/search.dart';
 import 'package:unilodge/presentation/profile/pages/userProfile.dart';
-import 'package:unilodge/data/dummy_data.dart';
+import 'package:unilodge/data/dummy_data/dummy_data.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -78,26 +79,70 @@ class _HomeState extends State<Home> {
                     height: 135,
                     child: ListView(
                       scrollDirection: Axis.horizontal,
-                      children: const [
-                        Cards(
-                          text: "Apartment",
-                          imageUrl: AppImages.apartment,
-                          color: Color(0xffCDDDEA),
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    TypeListingScreen(appbarTitle: "Apartment"),
+                              ),
+                            );
+                          },
+                          child: Cards(
+                            text: "Apartment",
+                            imageUrl: AppImages.apartment,
+                            color: Color(0xffCDDDEA),
+                          ),
                         ),
-                        Cards(
-                          text: "Dorm",
-                          imageUrl: AppImages.dorm,
-                          color: Color.fromARGB(137, 235, 214, 183),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    TypeListingScreen(appbarTitle: "Dorm"),
+                              ),
+                            );
+                          },
+                          child: Cards(
+                            text: "Dorm",
+                            imageUrl: AppImages.dorm,
+                            color: Color.fromARGB(137, 235, 214, 183),
+                          ),
                         ),
-                        Cards(
-                          text: "Solo Room",
-                          imageUrl: AppImages.soloRoom,
-                          color: Color(0xffCCE1D4),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    TypeListingScreen(appbarTitle: "Solo Room"),
+                              ),
+                            );
+                          },
+                          child: Cards(
+                            text: "Solo Room",
+                            imageUrl: AppImages.soloRoom,
+                            color: Color(0xffCCE1D4),
+                          ),
                         ),
-                        Cards(
-                          text: "Bedspacer",
-                          imageUrl: AppImages.bedspacer,
-                          color: Color.fromARGB(141, 235, 233, 183),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    TypeListingScreen(appbarTitle: "Bedspacer"),
+                              ),
+                            );
+                          },
+                          child: Cards(
+                            text: "Bedspacer",
+                            imageUrl: AppImages.bedspacer,
+                            color: Color.fromARGB(141, 235, 233, 183),
+                          ),
                         ),
                       ],
                     ),

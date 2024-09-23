@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
-import 'package:unilodge/data/dummy_yourListing.dart';
+import 'package:unilodge/data/dummy_data/dummy_yourListing.dart';
 import 'package:unilodge/presentation/favorite/widgets/custom_text.dart';
 import 'package:unilodge/presentation/listings/widgets/listingCard.dart';
 

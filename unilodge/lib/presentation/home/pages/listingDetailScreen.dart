@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:unilodge/common/widgets/customButton.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
-import 'package:unilodge/data/dummy_data.dart';
+import 'package:unilodge/data/dummy_data/dummy_data.dart';
 import 'package:unilodge/data/models/listing.dart';
 import 'package:unilodge/presentation/home/widgets/nearbyListing.dart';
 import 'package:unilodge/presentation/home/widgets/textRow.dart';
