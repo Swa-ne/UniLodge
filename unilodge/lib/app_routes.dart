@@ -10,6 +10,7 @@ import 'package:unilodge/presentation/home/pages/homepage.dart';
 import 'package:unilodge/presentation/home/pages/listingDetailScreen.dart';
 import 'package:unilodge/presentation/home/pages/typeListingScreen.dart';
 import 'package:unilodge/presentation/listings/pages/editListingPost.dart';
+import 'package:unilodge/presentation/listings/pages/yourListingDetails.dart';
 import 'package:unilodge/presentation/profile/pages/userProfile.dart';
 import 'package:unilodge/presentation/post/pages/postAccommodation.dart';
 import 'package:unilodge/presentation/post/pages/postLocation.dart';
@@ -108,7 +109,7 @@ final GoRouter appRouter = GoRouter(routes: [
       final yourListing =
           dummyListings.firstWhere((listing) => listing.id == yourListingId);
 
-      return ListingDetailScreen(listing: yourListing);
+      return YourListingDetails(listing: yourListing);
     },
   ),
   GoRoute(

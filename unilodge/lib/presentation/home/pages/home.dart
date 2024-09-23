@@ -66,7 +66,7 @@ class _HomeState extends State<Home> {
           SliverList(
             delegate: SliverChildListDelegate(
               [
-                const SizedBox(height: 30),
+                const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.all(6.0),
                   child: Container(
@@ -118,7 +118,7 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 20),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16.0),
                   child: Text(
