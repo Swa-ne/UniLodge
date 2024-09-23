@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
-import 'package:unilodge/presentation/listings/pages/yourListingDetails.dart';
 
 class ListingCard extends StatelessWidget {
   final Listing listing;
@@ -18,14 +18,7 @@ class ListingCard extends StatelessWidget {
       child: GestureDetector(
         onTap: () async {
           // _displayBottomSheet(context);
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => YourListingDetails(
-                listing: listing,
-              ),
-            ),
-          );
+          context.push('/your-listing-detail/${listing.id}');
         },
         child: Container(
           height: 110,

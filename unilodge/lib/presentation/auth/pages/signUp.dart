@@ -5,7 +5,6 @@ import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:unilodge/common/widgets/customButton.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:intl/intl.dart';
-import 'package:unilodge/presentation/auth/pages/login.dart';
 import 'package:unilodge/presentation/auth/widgets/unilodgeText.dart';
 
 class SignUp extends StatefulWidget {
@@ -155,7 +154,6 @@ class _SignUpState extends State<SignUp> {
           SizedBox(height: screenHeight * 0.10),
           _buildPageIndicator(),
           const SizedBox(height: 20.0),
-          
           CustomButton(text: "Next", onPressed: _nextPage),
           const SizedBox(height: 10),
           _buildLoginText(context),
@@ -306,12 +304,7 @@ class _SignUpState extends State<SignUp> {
         ),
         InkWell(
           onTap: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const Login(),
-              ),
-            );
+            context.go("/login");
           },
           child: const Text(
             "Log in",

@@ -105,7 +105,7 @@ class _PostAccommodationState extends State<PostAccommodation> {
                 children: [
                   OutlinedButton(
                     onPressed: () {
-                      context.go('/home');
+                      context.go('/listings');
                     },
                     child: const Text("Back"),
                     style: OutlinedButton.styleFrom(
@@ -121,7 +121,7 @@ class _PostAccommodationState extends State<PostAccommodation> {
                   SizedBox(width: 20),
                   ElevatedButton(
                     onPressed: () {
-                      context.go('/post-location');
+                      context.push('/post-location');
                     },
                     child: const Text('Next'),
                     style: ElevatedButton.styleFrom(

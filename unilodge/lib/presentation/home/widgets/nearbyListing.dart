@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:unilodge/data/models/listing.dart';
-import 'package:unilodge/presentation/home/pages/listingDetailScreen.dart';
 import 'package:unilodge/presentation/home/widgets/nearbyListingCard.dart';
 
 class NearbyProperties extends StatelessWidget {
@@ -28,14 +28,7 @@ class NearbyProperties extends StatelessWidget {
           final property = listings[index];
           return GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ListingDetailScreen(
-                    listing: property
-                  ),
-                ),
-              );
+              context.push('/listing-detail/${property.id}');
             },
             child: NearbyCard(
               imageUrl: property.imageUrl,

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/assets/app_images.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
-import 'package:unilodge/presentation/home/pages/typeListingScreen.dart';
 import 'package:unilodge/presentation/home/widgets/listingCards.dart';
 import 'package:unilodge/presentation/home/widgets/typeCards.dart';
 import 'package:unilodge/presentation/home/widgets/search.dart';
-import 'package:unilodge/presentation/profile/pages/userProfile.dart';
 import 'package:unilodge/data/dummy_data/dummy_data.dart';
 
 class Home extends StatefulWidget {
@@ -55,12 +54,7 @@ class _HomeState extends State<Home> {
               const SizedBox(width: 15),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => UserProfile(),
-                    ),
-                  );
+                  context.push("/user-profile");
                 },
                 child: CircleAvatar(
                   backgroundImage: AssetImage(AppImages.emptyProfile),
@@ -82,13 +76,7 @@ class _HomeState extends State<Home> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    TypeListingScreen(appbarTitle: "Apartment"),
-                              ),
-                            );
+                            context.push('/type-listing/Apartment');
                           },
                           child: Cards(
                             text: "Apartment",
@@ -98,13 +86,7 @@ class _HomeState extends State<Home> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    TypeListingScreen(appbarTitle: "Dorm"),
-                              ),
-                            );
+                            context.push('/type-listing/Dorm');
                           },
                           child: Cards(
                             text: "Dorm",
@@ -114,13 +96,7 @@ class _HomeState extends State<Home> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    TypeListingScreen(appbarTitle: "Solo Room"),
-                              ),
-                            );
+                            context.push('/type-listing/Solo room');
                           },
                           child: Cards(
                             text: "Solo Room",
@@ -130,13 +106,7 @@ class _HomeState extends State<Home> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    TypeListingScreen(appbarTitle: "Bedspacer"),
-                              ),
-                            );
+                            context.push('/type-listing/Bedspacer');
                           },
                           child: Cards(
                             text: "Bedspacer",

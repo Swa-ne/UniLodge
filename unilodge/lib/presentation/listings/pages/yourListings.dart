@@ -21,7 +21,7 @@ class Listings extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.go('/post-accommodation');
+          context.push('/post-accommodation');
         },
         child: Icon(
           Icons.add,

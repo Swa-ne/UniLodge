@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
-import 'package:unilodge/presentation/auth/pages/login.dart';
 import 'package:unilodge/presentation/auth/widgets/authButton.dart';
 import 'package:unilodge/presentation/auth/widgets/unilodgeText.dart';
 
@@ -45,12 +44,7 @@ class AccountSelectionLogin extends StatelessWidget {
                   AuthButton(
                     text: 'Use email or username',
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const Login(),
-                        ),
-                      );
+                      context.push("/login");
                     },
                     icon: const Icon(Icons.person,
                         size: 25, color: Color.fromARGB(255, 53, 68, 80)),
@@ -70,12 +64,10 @@ class AccountSelectionLogin extends StatelessWidget {
                     onPressed: () {
                       context.go('/'); // TODO: add google
                     },
-                    icon: Image.asset(
-                      'assets/images/google_logo.png',
-                      width: 22,
-                      height: 22,
-                      color: Color.fromARGB(255, 53, 68, 80)
-                    ),
+                    icon: Image.asset('assets/images/google_logo.png',
+                        width: 22,
+                        height: 22,
+                        color: Color.fromARGB(255, 53, 68, 80)),
                   ),
                   SizedBox(height: screenHeight * 0.2),
                   Row(

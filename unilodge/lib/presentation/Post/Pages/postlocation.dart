@@ -93,7 +93,7 @@ class _PostLocationState extends State<PostLocation> {
                 children: [
                   OutlinedButton(
                     onPressed: () {
-                      context.go('/post-accommodation');
+                      context.pop();
                     },
                     child: const Text("Back"),
                     style: OutlinedButton.styleFrom(
@@ -109,7 +109,7 @@ class _PostLocationState extends State<PostLocation> {
                   SizedBox(width: 20),
                   ElevatedButton(
                     onPressed: () {
-                      context.go('/post-price');
+                      context.push('/post-price');
                     },
                     child: const Text('Next'),
                     style: ElevatedButton.styleFrom(

@@ -4,8 +4,11 @@ import 'package:unilodge/presentation/auth/pages/accountSelectionLogin.dart';
 import 'package:unilodge/presentation/auth/pages/accountSelectionSignUp.dart';
 import 'package:unilodge/presentation/auth/pages/email&password/forget_password.dart';
 import 'package:unilodge/presentation/auth/pages/email&password/verify_email.dart';
+import 'package:unilodge/presentation/auth/pages/login.dart';
+import 'package:unilodge/presentation/auth/pages/signUp.dart';
 import 'package:unilodge/presentation/home/pages/homepage.dart';
 import 'package:unilodge/presentation/home/pages/listingDetailScreen.dart';
+import 'package:unilodge/presentation/home/pages/typeListingScreen.dart';
 import 'package:unilodge/presentation/listings/pages/editListingPost.dart';
 import 'package:unilodge/presentation/profile/pages/userProfile.dart';
 import 'package:unilodge/presentation/post/pages/postAccommodation.dart';
@@ -29,6 +32,14 @@ final GoRouter appRouter = GoRouter(routes: [
   GoRoute(
     path: '/account-selection-signup',
     builder: (context, state) => const AccountSelectionSignup(),
+  ),
+  GoRoute(
+    path: '/login',
+    builder: (context, state) => const Login(),
+  ),
+  GoRoute(
+    path: '/sign-up',
+    builder: (context, state) => const SignUp(),
   ),
   GoRoute(
     path: '/home',
@@ -64,7 +75,6 @@ final GoRouter appRouter = GoRouter(routes: [
       return ListingDetailScreen(listing: listing);
     },
   ),
-
   GoRoute(
     path: '/post-accommodation',
     builder: (context, state) => const PostAccommodation(),
@@ -82,15 +92,34 @@ final GoRouter appRouter = GoRouter(routes: [
     builder: (context, state) => const UserProfile(),
   ),
   GoRoute(
-    path: '/verify_email',
+    path: '/verify-email',
     builder: (context, state) => const VerifyEmail(),
   ),
   GoRoute(
-    path: '/forget_password',
+    path: '/forget-password',
     builder: (context, state) => const ForgetPassword(),
+  ),
+    GoRoute(
+    path: '/your-listing-detail/:id',
+    builder: (context, state) {
+      // Retrieve the listing ID from the route parameters
+      final yourListingId = state.pathParameters['id'];
+
+      final yourListing =
+          dummyListings.firstWhere((listing) => listing.id == yourListingId);
+
+      return ListingDetailScreen(listing: yourListing);
+    },
   ),
   GoRoute(
     path: '/edit-listing-post',
     builder: (context, state) => const EditListingPost(),
+  ),
+  GoRoute(
+    path: '/type-listing/:type',
+    builder: (context, state) {
+      final type = state.pathParameters['type'];
+      return TypeListingScreen(appbarTitle: type!);
+    },
   ),
 ]);

@@ -170,7 +170,7 @@ class YourListingDetails extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 30.0),
                     child: GestureDetector(
                       onTap: () {
-                        context.go("/edit-listing-post");
+                        context.push("/edit-listing-post");
                       },
                       child: Row(
                         children: [
