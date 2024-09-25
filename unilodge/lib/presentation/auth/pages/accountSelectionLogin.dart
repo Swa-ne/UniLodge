@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
+import 'package:unilodge/data/sources/auth/authFirebaseService.dart';
 import 'package:unilodge/presentation/auth/widgets/authButton.dart';
 import 'package:unilodge/presentation/auth/widgets/unilodgeText.dart';
 
@@ -62,7 +63,8 @@ class AccountSelectionLogin extends StatelessWidget {
                   AuthButton(
                     text: 'Continue with Google',
                     onPressed: () {
-                      context.go('/'); // TODO: add google
+                      // TODO: add google
+                      AuthFirebaseServiceImpl().signInWithGoogle();
                     },
                     icon: Image.asset('assets/images/google_logo.png',
                         width: 22,
