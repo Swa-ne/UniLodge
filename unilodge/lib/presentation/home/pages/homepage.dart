@@ -4,6 +4,7 @@ import 'package:unilodge/presentation/favorite/pages/favorites.dart';
 import 'package:unilodge/presentation/home/pages/home.dart';
 import 'package:unilodge/presentation/listings/pages/yourListings.dart';
 import 'package:unilodge/presentation/message/pages/messages.dart';
+import 'package:unilodge/presentation/listing/pages/listingPage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, this.initialTabIndex = 0});
@@ -15,13 +16,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late int _selectedIndex; 
+  late int _selectedIndex;
 
   @override
   void initState() {
     super.initState();
-    _selectedIndex =
-        widget.initialTabIndex; 
+    _selectedIndex = widget.initialTabIndex;
   }
 
   void _navigateBottomBar(int index) {
@@ -55,7 +55,7 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.black.withOpacity(0.1),
                 spreadRadius: 5,
                 blurRadius: 10,
-                offset: const Offset(0, -3),
+                offset: Offset(0, -3),
               ),
             ],
           ),
