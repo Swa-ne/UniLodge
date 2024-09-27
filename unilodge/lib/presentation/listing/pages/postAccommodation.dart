@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:unilodge/presentation/post/widgets/customcard.dart';
+import 'package:unilodge/presentation/listing/widgets/customcard.dart';
 
 class PostAccommodation extends StatefulWidget {
   const PostAccommodation({super.key});
@@ -28,7 +28,7 @@ class _PostAccommodationState extends State<PostAccommodation> {
         ),
         child: Column(
           children: [
-            Expanded(
+             const Expanded(
               child: Stack(
                 children: <Widget>[
                   Positioned(
@@ -74,7 +74,7 @@ class _PostAccommodationState extends State<PostAccommodation> {
                           description:
                               'Larger space with separate bedrooms, kitchen, and living area.',
                         ),
-                        const SizedBox(height: 16),
+                        SizedBox(height: 16),
                       ],
                     ),
                   ),

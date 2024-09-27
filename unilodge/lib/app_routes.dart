@@ -7,9 +7,9 @@ import 'package:unilodge/presentation/favorite/pages/favorites.dart';
 import 'package:unilodge/presentation/home/pages/homepage.dart';
 import 'package:unilodge/presentation/message/pages/messages.dart';
 import 'package:unilodge/presentation/profile/pages/userProfile.dart';
-import 'package:unilodge/presentation/post/pages/postAccommodation.dart';
-import 'package:unilodge/presentation/post/pages/postLocation.dart';
-import 'package:unilodge/presentation/Post/pages/PostPrice.dart';
+import 'package:unilodge/presentation/listing/pages/postAccommodation.dart';
+import 'package:unilodge/presentation/listing/pages/postLocation.dart';
+import 'package:unilodge/presentation/listing/pages/PostPrice.dart';
 
 final GoRouter appRouter = GoRouter(routes: [
   GoRoute(
