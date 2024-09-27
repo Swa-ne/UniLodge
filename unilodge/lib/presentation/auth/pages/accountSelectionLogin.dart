@@ -5,9 +5,14 @@ import 'package:unilodge/data/sources/auth/authFirebaseService.dart';
 import 'package:unilodge/presentation/auth/widgets/authButton.dart';
 import 'package:unilodge/presentation/auth/widgets/unilodgeText.dart';
 
-class AccountSelectionLogin extends StatelessWidget {
+class AccountSelectionLogin extends StatefulWidget {
   const AccountSelectionLogin({super.key});
 
+  @override
+  State<AccountSelectionLogin> createState() => _AccountSelectionLoginState();
+}
+
+class _AccountSelectionLoginState extends State<AccountSelectionLogin> {
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -62,9 +67,19 @@ class AccountSelectionLogin extends StatelessWidget {
                   const SizedBox(height: 5),
                   AuthButton(
                     text: 'Continue with Google',
-                    onPressed: () {
-                      // TODO: add google
-                      AuthFirebaseServiceImpl().signInWithGoogle();
+                    onPressed: () async {
+                      var googleUser =
+                          await AuthFirebaseServiceImpl().signInWithGoogle();
+
+                      if (!mounted) return;
+
+                      if (googleUser != null) {
+                        print("adfsaf $googleUser");
+                        context.go('/home');
+                      } else {
+                        // TODO: Handle sign-in failure, if needed
+                        print("Google sign-in failed");
+                      }
                     },
                     icon: Image.asset('assets/images/google_logo.png',
                         width: 22,
