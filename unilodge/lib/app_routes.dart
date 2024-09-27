@@ -12,9 +12,9 @@ import 'package:unilodge/presentation/home/pages/typeListingScreen.dart';
 import 'package:unilodge/presentation/listings/pages/editListingPost.dart';
 import 'package:unilodge/presentation/listings/pages/yourListingDetails.dart';
 import 'package:unilodge/presentation/profile/pages/userProfile.dart';
-import 'package:unilodge/presentation/post/pages/postAccommodation.dart';
-import 'package:unilodge/presentation/post/pages/postLocation.dart';
-import 'package:unilodge/presentation/Post/pages/PostPrice.dart';
+import 'package:unilodge/presentation/listing/pages/postAccommodation.dart';
+import 'package:unilodge/presentation/listing/pages/postLocation.dart';
+import 'package:unilodge/presentation/listing/pages/PostPrice.dart';
 
 final GoRouter appRouter = GoRouter(routes: [
   GoRoute(
