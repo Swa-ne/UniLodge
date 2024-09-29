@@ -52,10 +52,10 @@ export const signupUserController = async (req: Request, res: Response) => {
             if (data.httpCode !== 200) {
                 return res.status(500).json({ error: data.error });
             }
-            return res.status(data.httpCode).json({ message: data.message, user_details: data.access_token });
+            return res.status(data.httpCode).json({ message: data.message, access_token: data.access_token });
         }
 
-        return res.status(checkerForInput.httpCode).send({ message: checkerForInput.message });
+        return res.status(checkerForInput.httpCode).send({ error: checkerForInput.message });
     } catch (error) {
         res.status(500).json({ error: "Internal Server Error" });
     }
