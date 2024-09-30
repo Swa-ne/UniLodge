@@ -11,7 +11,9 @@ interface CustomRequestBody extends UserSchemaInterface {
 
 export const checkEmailAvailabilityController = async (req: Request, res: Response) => {
     try {
-        const personal_email: string = req.body.personal_email.toLowerCase();
+        let personal_email: string = req.body.personal_email;
+        if (!personal_email) return res.status(404).json({ error: "Email address not found" });
+        personal_email = personal_email.toLowerCase();
         if (!(await checkEmailAvailability(personal_email))) {
             return res.status(409).json({ error: 'This email address is being used.' });
         }
@@ -24,7 +26,9 @@ export const checkEmailAvailabilityController = async (req: Request, res: Respon
 export const signupUserController = async (req: Request, res: Response) => {
     try {
         const { first_name, middle_name, last_name, username, bio, password_hash, confirmation_password, personal_number, birthday }: CustomRequestBody = req.body;
-        const personal_email: string = req.body.personal_email.toLowerCase();
+        let personal_email: string = req.body.personal_email;
+        if (!personal_email) return res.status(404).json({ error: "Email address not found" });
+        personal_email = personal_email.toLowerCase()
 
         const requiredFields = {
             first_name,
@@ -48,7 +52,7 @@ export const signupUserController = async (req: Request, res: Response) => {
             birthday: "Birthday",
         }
         for (const [key, value] of Object.entries(requiredFields)) {
-            if (value == null) {
+            if (!value) {
                 return res.status(400).json({ error: `${updatedKey[key]} is required and cannot be null or undefined.` });
             }
         }
@@ -77,7 +81,7 @@ export const signupUserController = async (req: Request, res: Response) => {
                 .json({ message: "Success", access_token: data.access_token });
         }
 
-        return res.status(checkerForInput.httpCode).send({ error: checkerForInput.message });
+        return res.status(checkerForInput.httpCode).json({ error: checkerForInput.error });
     } catch (error) {
         res.status(500).json({ error: "Internal Server Error" });
     }
