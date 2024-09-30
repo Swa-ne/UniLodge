@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { signupUsertoDatabase } from '../../services/authentication/signup.services';
+import { checkEmailAvailability, signupUsertoDatabase } from '../../services/authentication/signup.services';
 import { UserSchemaInterface } from '../../models/authentication/user.model';
 import { checkEveryInputForSignup, validateBioLength } from '../../utils/input.validators';
 import { generateAccessAndRefereshTokens, sendEmailCode, verifyEmailCode } from '../../services/index.services';
@@ -7,6 +7,18 @@ import { UserType } from '../../middlewares/token.authentication';
 
 interface CustomRequestBody extends UserSchemaInterface {
     confirmation_password: string
+}
+
+export const checkEmailAvailabilityController = async (req: Request, res: Response) => {
+    try {
+        const personal_email: string = req.body.personal_email.toLowerCase();
+        if (!(await checkEmailAvailability(personal_email))) {
+            return res.status(409).json({ error: 'This email address is being used.' });
+        }
+        return res.status(200).json({ message: "Success" });
+    } catch (e) {
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
 }
 
 export const signupUserController = async (req: Request, res: Response) => {
