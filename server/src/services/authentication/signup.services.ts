@@ -1,8 +1,7 @@
 import * as bcrypt from "bcrypt";
 import { User, UserSchemaInterface } from "../../models/authentication/user.model";
 import { CustomResponse } from "../../utils/input.validators";
-import { sendEmailCode } from "../index.services";
-import { generateAccessToken } from "../../utils/generate.token";
+import { generateAccessAndRefereshTokens, sendEmailCode } from "../index.services";
 
 export const signupUsertoDatabase = async (
     first_name: string,
@@ -26,7 +25,7 @@ export const signupUsertoDatabase = async (
             last_name,
             username,
             bio,
-            full_name: `${first_name} ${middle_name && `${middle_name} `}${last_name}`,
+            full_name: `${first_name} ${middle_name ? ` ${middle_name}` : ''} ${last_name}`.trim(),
             personal_email,
             personal_number,
             birthday,
@@ -35,15 +34,16 @@ export const signupUsertoDatabase = async (
 
         await sendEmailCode(`${userCredentialResult._id}`, personal_email, first_name)
 
-        const access_token = await generateAccessToken(`${userCredentialResult._id}`,)
-        if (access_token.httpCode === 200) {
+        const result = await generateAccessAndRefereshTokens(userCredentialResult._id.toString());
+        if (result.httpCode === 200) {
             return {
                 message: "Congratulations, your account has been successfully created",
-                access_token: access_token.message,
+                access_token: result.message?.access_token,
+                refresh_token: result.message?.refresh_token,
                 httpCode: 200
             };
         }
-        return { error: access_token.error, httpCode: access_token.httpCode }
+        return { error: result.error, httpCode: result.httpCode }
     } catch (error) {
         if (userCredentialResult) {
             await userCredentialResult.deleteOne();

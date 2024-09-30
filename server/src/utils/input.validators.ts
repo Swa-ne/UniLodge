@@ -5,6 +5,7 @@ export interface CustomResponse {
     message?: string,
     error?: string,
     access_token?: string,
+    refresh_token?: string,
     httpCode: number
 }
 
@@ -79,7 +80,7 @@ export const validateReviewCommentLength = (description: string) => {
 
 export const validateBioLength = (input: string | undefined,) => {
     if (!input) {
-        return false
+        return true
     }
     const words = input.trim().split(/\s+/);
     return words.length > 80
