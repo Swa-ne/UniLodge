@@ -1,13 +1,15 @@
-import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:unilodge/data/models/user.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-abstract class AuthFirebaseService {
+final _apiUrl = "${dotenv.env['API_URL']}/authentication";
+
+abstract class AuthFirebaseRepo {
   Future<GoogleSignInAccount?> signInWithGoogle();
   Future<GoogleSignInAccount?> logoutWithGoogle();
 }
 
-class AuthFirebaseServiceImpl extends AuthFirebaseService {
+class AuthFirebaseRepoImpl extends AuthFirebaseRepo {
   static final _googleSignIn = GoogleSignIn();
   @override
   Future<GoogleSignInAccount?> signInWithGoogle() async {
@@ -15,7 +17,16 @@ class AuthFirebaseServiceImpl extends AuthFirebaseService {
 
     if (googleUser == null) {
       // TODO: SHOW SIGN IN FAILED
-      print("Login Failed");
+      return null;
+    }
+    var response = await http.post(
+      Uri.parse("$_apiUrl/check-email"),
+      body: {'personal_email': googleUser.email},
+    );
+
+    if (response.statusCode != 200) {
+      // TODO: SHOW EMAIL ALREADY HAS AN ACCOUNT
+      logoutWithGoogle();
       return null;
     }
     return googleUser;
