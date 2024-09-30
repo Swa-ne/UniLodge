@@ -23,7 +23,7 @@ export const checkEveryInputForSignup = async (username: string, emailAddress: s
         return { error: 'This email address is being used.', "httpCode": 409 };
     }
     if (!(await checkUsernameAvailability(username))) {
-        return { error: 'This usernmae is being used.', "httpCode": 409 };
+        return { error: 'This username is being used.', "httpCode": 409 };
     }
     if (password !== confirmationPassword) {
         return { error: "Those password didn't match. Try again.", "httpCode": 400 };
