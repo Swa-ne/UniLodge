@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { signupUsertoDatabase } from '../../services/authentication/signup.services';
-
 import { UserSchemaInterface } from '../../models/authentication/user.model';
 import { checkEveryInputForSignup, validateBioLength } from '../../utils/input.validators';
 import { generateAccessAndRefereshTokens, sendEmailCode, verifyEmailCode } from '../../services/index.services';
@@ -52,7 +51,18 @@ export const signupUserController = async (req: Request, res: Response) => {
             if (data.httpCode !== 200) {
                 return res.status(500).json({ error: data.error });
             }
-            return res.status(data.httpCode).json({ message: data.message, access_token: data.access_token });
+            return res
+                .status(200)
+                .cookie(
+                    "refresh_token",
+                    data.refresh_token,
+                    {
+                        httpOnly: true,
+                        secure: true,
+                        sameSite: 'none',
+                    }
+                )
+                .json({ message: "Success", access_token: data.access_token });
         }
 
         return res.status(checkerForInput.httpCode).send({ error: checkerForInput.message });
