@@ -12,6 +12,7 @@ import 'package:unilodge/data/models/signUpUser.dart';
 import 'package:unilodge/presentation/auth/bloc/auth_bloc.dart';
 import 'package:unilodge/presentation/auth/bloc/auth_event.dart';
 import 'package:unilodge/presentation/auth/bloc/auth_state.dart';
+import 'package:unilodge/presentation/auth/mixin/input_validation.dart';
 import 'package:unilodge/presentation/auth/widgets/authTextField.dart';
 import 'package:unilodge/presentation/auth/widgets/unilodgeText.dart';
 
@@ -27,7 +28,7 @@ class ThirdPartySignUp extends StatefulWidget {
   State<ThirdPartySignUp> createState() => _SignUpState();
 }
 
-class _SignUpState extends State<ThirdPartySignUp> {
+class _SignUpState extends State<ThirdPartySignUp> with InputValidationMixin {
   DateTime? _birthday;
   PhoneNumber _phoneNumber = PhoneNumber(isoCode: 'PH');
   PhoneNumberUtil phoneUtil = PhoneNumberUtil.instance;
@@ -35,6 +36,12 @@ class _SignUpState extends State<ThirdPartySignUp> {
   late TextEditingController usernameController;
 
   late GoogleSignInAccount _google_user;
+
+  String? fullNameError;
+  String? usernameError;
+  String? birthdayError;
+  String? phoneNumberError;
+  bool isPhoneNumberValid = false;
 
   @override
   void initState() {
@@ -65,6 +72,11 @@ class _SignUpState extends State<ThirdPartySignUp> {
     if (picked != null && picked != _birthday) {
       setState(() {
         _birthday = picked;
+        birthdayError = null;
+      });
+    } else {
+      setState(() {
+        birthdayError = "Please choose your birthday";
       });
     }
   }
@@ -122,12 +134,16 @@ class _SignUpState extends State<ThirdPartySignUp> {
                               labelText: "Full Name",
                               hintText: "Enter full name",
                               controller: fullnameController,
+                              onChanged: validateName,
+                              errorText: fullNameError,
                             ),
                             const SizedBox(height: 20.0),
                             AuthTextField(
                               labelText: "Username",
                               hintText: "Enter username",
                               controller: usernameController,
+                              onChanged: validateUsernameInUse,
+                              errorText: usernameError,
                             ),
                             const SizedBox(height: 20.0),
                             InkWell(
@@ -142,14 +158,39 @@ class _SignUpState extends State<ThirdPartySignUp> {
                                     borderRadius: BorderRadius.circular(10.0),
                                     borderSide: BorderSide.none,
                                   ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderSide: BorderSide(
+                                      color: Colors.grey.shade400,
+                                      width: 1.5,
+                                    ),
+                                  ),
                                   contentPadding: const EdgeInsets.symmetric(
                                     vertical: 16.0,
                                     horizontal: 16.0,
                                   ),
+                                  errorText: birthdayError,
+                                  errorStyle: const TextStyle(
+                                    color: Colors.redAccent,
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderSide: const BorderSide(
+                                      color: Colors.redAccent,
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderSide: const BorderSide(
+                                      color: Colors.redAccent,
+                                      width: 2.0,
+                                    ),
+                                  ),
                                 ),
                                 child: Text(
                                   _birthday == null
-                                      ? 'Select birthdate'
+                                      ? 'Select birthdate *'
                                       : DateFormat.yMMMd().format(_birthday!),
                                   style: const TextStyle(
                                     fontSize: 16,
@@ -165,19 +206,50 @@ class _SignUpState extends State<ThirdPartySignUp> {
                             CustomButton(
                               text: "Sign Up",
                               onPressed: () async {
+                                String? isNameValid =
+                                    validateName(fullnameController.text);
+                                if (isNameValid != null) {
+                                  setState(() {
+                                    fullNameError = isNameValid;
+                                  });
+                                  return;
+                                }
+                                String? isValidUsername =
+                                    await validateUsernameInUse(
+                                        usernameController.text);
+                                if (isValidUsername != null) {
+                                  setState(() {
+                                    usernameError = isValidUsername;
+                                  });
+                                  return;
+                                }
+                                if (_birthday == null) {
+                                  setState(() {
+                                    birthdayError =
+                                        "Please choose your birthday";
+                                  });
+                                  return;
+                                }
+                                if (!isPhoneNumberValid) {
+                                  setState(() {
+                                    phoneNumberError =
+                                        "This field cannot be empty";
+                                  });
+                                  return;
+                                }
                                 final newUser = SignUpUserModel(
-                                  first_name: fullnameController.text,
-                                  last_name: " ",
-                                  username: usernameController.text,
-                                  email: _google_user.email,
-                                  password_hash:
-                                      "$_secretKey${_google_user.id}",
-                                  confirmation_password:
-                                      "$_secretKey${_google_user.id}",
-                                  personal_number: _phoneNumber,
-                                  birthday: _birthday.toString(),
-                                );
-                                authBloc.add(SignUp(newUser));
+                                    first_name: fullnameController.text,
+                                    last_name: " ",
+                                    username: usernameController.text,
+                                    email: _google_user.email,
+                                    password_hash:
+                                        "$_secretKey${_google_user.id}",
+                                    confirmation_password:
+                                        "$_secretKey${_google_user.id}",
+                                    personal_number: _phoneNumber,
+                                    birthday: _birthday.toString(),
+                                    valid_email: true);
+                                authBloc.add(SignUpEvent(newUser));
                               },
                             ),
                             const SizedBox(height: 10),
@@ -200,10 +272,10 @@ class _SignUpState extends State<ThirdPartySignUp> {
     return InternationalPhoneNumberInput(
       onInputChanged: (PhoneNumber number) {
         _phoneNumber = number;
-        bool isValid = phoneUtil
+        isPhoneNumberValid = phoneUtil
             .isValidNumber(phoneUtil.parse(number.phoneNumber, number.isoCode));
       },
-      onInputValidated: (bool isValid) {},
+      onInputValidated: (bool isPhoneNumberValid) {},
       selectorConfig: const SelectorConfig(
         selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
       ),
@@ -221,6 +293,7 @@ class _SignUpState extends State<ThirdPartySignUp> {
         ),
         labelText: 'Phone Number',
         hintText: 'eg. 9123000000',
+        errorText: phoneNumberError,
         labelStyle: const TextStyle(
           color: AppColors.formTextColor,
           height: 1.3,
