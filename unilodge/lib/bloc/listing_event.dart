@@ -37,3 +37,12 @@ class UpdateListing extends ListingEvent {
   @override
   List<Object> get props => [id, listing];
 }
+
+class ToggleListing extends ListingEvent {
+  final String id;
+
+  const ToggleListing(this.id);
+
+  @override
+  List<Object> get props => [id];
+}

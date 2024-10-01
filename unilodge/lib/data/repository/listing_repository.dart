@@ -4,5 +4,6 @@ abstract class ListingRepository {
   Future<List<Listing>> fetchListings();
   Future<void> createListing(Listing listing);
   Future<void> deleteListing(String id);
+  Future<void> toggleListing(String id);
   Future<void> updateListing(String id, Listing listing);
 }

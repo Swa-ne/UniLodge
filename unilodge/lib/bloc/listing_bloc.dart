@@ -20,7 +20,7 @@ class ListingBloc extends Bloc<ListingEvent, ListingState> {
     on<CreateListing>((event, emit) async {
       try {
         await _listingRepository.createListing(event.listing);
-        add(FetchListings()); 
+        add(FetchListings());
       } catch (e) {
         emit(ListingError(e.toString()));
       }
@@ -35,14 +35,22 @@ class ListingBloc extends Bloc<ListingEvent, ListingState> {
       }
     });
 
-    on<DeleteListing>((event, emit) async {
+    on<ToggleListing>((event, emit) async {
       try {
-        await _listingRepository.deleteListing(event.id);
-        add(FetchListings()); 
+        await _listingRepository.toggleListing(event.id);
+        add(FetchListings());
       } catch (e) {
         emit(ListingError(e.toString()));
       }
     });
-    
+
+    on<DeleteListing>((event, emit) async {
+      try {
+        await _listingRepository.deleteListing(event.id);
+        add(FetchListings());
+      } catch (e) {
+        emit(ListingError(e.toString()));
+      }
+    });
   }
 }
