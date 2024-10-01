@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:unilodge/presentation/widgets/listing_widgets/custom_card.dart';
+import 'package:unilodge/presentation/widgets/listing/custom_card.dart';
 
 class PostAccommodation extends StatefulWidget {
   const PostAccommodation({super.key});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
-import 'package:unilodge/presentation/widgets/message_widgets/custom_text.dart';
-import 'package:unilodge/presentation/widgets/message_widgets/list_view.dart';
+import 'package:unilodge/presentation/widgets/message/custom_text.dart';
+import 'package:unilodge/presentation/widgets/message/list_view.dart';
 
 class Messages extends StatefulWidget {
   const Messages({super.key});

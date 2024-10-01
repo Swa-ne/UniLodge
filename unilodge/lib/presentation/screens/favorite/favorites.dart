@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
-import 'package:unilodge/presentation/widgets/favorite_widgets/favorites_list_view.dart';
-import 'package:unilodge/presentation/widgets/message_widgets/custom_text.dart';
+import 'package:unilodge/presentation/widgets/favorite/favorites_list_view.dart';
+import 'package:unilodge/presentation/widgets/message/custom_text.dart';
 
 class Favorites extends StatefulWidget {
   const Favorites({super.key});

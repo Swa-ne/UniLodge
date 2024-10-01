@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
-import 'package:unilodge/presentation/widgets/favorite_widgets/custom_text.dart';
+import 'package:unilodge/presentation/widgets/favorite/custom_text.dart';
 
 class FavoriteCard extends StatelessWidget {
   final String image;

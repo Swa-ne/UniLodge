@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/dummy_data/dummy_yourListing.dart';
-import 'package:unilodge/presentation/widgets/favorite_widgets/custom_text.dart';
-import 'package:unilodge/presentation/widgets/your_listing_widgets/listing_card.dart';
+import 'package:unilodge/presentation/widgets/favorite/custom_text.dart';
+import 'package:unilodge/presentation/widgets/your_listing/listing_card.dart';
 
 class Listings extends StatelessWidget {
   const Listings({super.key});

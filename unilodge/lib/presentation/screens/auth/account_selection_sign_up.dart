@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
-import 'package:unilodge/presentation/widgets/auth_widgets/auth_button.dart';
-import 'package:unilodge/presentation/widgets/auth_widgets/unilodge_text.dart';
+import 'package:unilodge/presentation/widgets/auth/auth_button.dart';
+import 'package:unilodge/presentation/widgets/auth/unilodge_text.dart';
 
-class AccountSelectionLogin extends StatelessWidget {
-  const AccountSelectionLogin({super.key});
+class AccountSelectionSignup extends StatelessWidget {
+  const AccountSelectionSignup({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,7 @@ class AccountSelectionLogin extends StatelessWidget {
                 height: screenHeight * 0.08,
               ),
               const Text(
-                'Log in',
+                'Sign up',
                 style: TextStyle(
                   color: AppColors.formTextColor,
                   fontSize: 16,
@@ -44,7 +44,7 @@ class AccountSelectionLogin extends StatelessWidget {
                   AuthButton(
                     text: 'Use email or username',
                     onPressed: () {
-                      context.push("/login");
+                      context.push("/sign-up");
                     },
                     icon: const Icon(Icons.person,
                         size: 25, color: Color.fromARGB(255, 53, 68, 80)),
@@ -74,7 +74,7 @@ class AccountSelectionLogin extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
-                        "Don't have an account? ",
+                        "Already have an account? ",
                         style: TextStyle(
                           fontSize: 14,
                           color: AppColors.formTextColor,
@@ -82,10 +82,10 @@ class AccountSelectionLogin extends StatelessWidget {
                       ),
                       InkWell(
                         onTap: () {
-                          context.go('/account-selection-signup');
+                          context.go('/account-selection-login');
                         },
                         child: const Text(
-                          "Sign up",
+                          "Log in",
                           textAlign: TextAlign.right,
                           style: TextStyle(
                               fontSize: 14,

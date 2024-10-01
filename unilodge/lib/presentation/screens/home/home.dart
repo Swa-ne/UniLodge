@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/assets/app_images.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
-import 'package:unilodge/presentation/widgets/home_widgets/listing_cards.dart';
-import 'package:unilodge/presentation/widgets/home_widgets/type_cards.dart';
-import 'package:unilodge/presentation/widgets/home_widgets/search.dart';
+import 'package:unilodge/presentation/widgets/home/listing_cards.dart';
+import 'package:unilodge/presentation/widgets/home/type_cards.dart';
+import 'package:unilodge/presentation/widgets/home/search.dart';
 import 'package:unilodge/data/dummy_data/dummy_data.dart';
 
 class Home extends StatefulWidget {

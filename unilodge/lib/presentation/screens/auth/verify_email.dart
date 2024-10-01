@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:unilodge/presentation/screens/auth_screens/login.dart';
+import 'package:unilodge/presentation/screens/auth/login.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class VerifyEmail extends StatelessWidget {

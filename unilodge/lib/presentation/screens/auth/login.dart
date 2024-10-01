@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/common/widgets/custom_button.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
-import 'package:unilodge/presentation/widgets/auth_widgets/unilodge_text.dart';
+import 'package:unilodge/presentation/widgets/auth/unilodge_text.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
-import 'package:unilodge/presentation/widgets/message_widgets/custom_text.dart';
-import 'package:unilodge/presentation/widgets/message_widgets/example_message.dart';
+import 'package:unilodge/presentation/widgets/message/custom_text.dart';
+import 'package:unilodge/presentation/widgets/message/example_message.dart';
 
 class MessagesListView extends StatelessWidget {
   final List<Message> messages = List.generate(

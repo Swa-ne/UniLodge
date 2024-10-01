@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
-import 'package:unilodge/presentation/screens/favorite_screens/favorites.dart';
-import 'package:unilodge/presentation/screens/home_screens/home.dart';
-import 'package:unilodge/presentation/screens/your_listing_screens/your_listings.dart';
-import 'package:unilodge/presentation/screens/message_screens/messages.dart';
+import 'package:unilodge/presentation/screens/favorite/favorites.dart';
+import 'package:unilodge/presentation/screens/home/home.dart';
+import 'package:unilodge/presentation/screens/your_listing/your_listings.dart';
+import 'package:unilodge/presentation/screens/message/messages.dart';
 // import 'package:unilodge/presentation/screens/listing_screens/listing_page.dart';
 
 class HomePage extends StatefulWidget {
