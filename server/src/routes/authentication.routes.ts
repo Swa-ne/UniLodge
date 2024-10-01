@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 
-import { checkEmailAvailabilityController, resendEmailCodeController, signupUserController, verifyEmailCodeController } from "../controllers/authentication/signup.controller";
+import { checkEmailAvailabilityController, checkUsernameAvailabilityController, resendEmailCodeController, signupUserController, verifyEmailCodeController } from "../controllers/authentication/signup.controller";
 import { authenticateToken } from "../middlewares/token.authentication";
 import { changePasswordController, editProfileController, forgotPasswordController, loginUserController, postResetPasswordController } from "../controllers/authentication/login.controller";
 import { logoutUserController } from "../controllers/authentication/logout.controller";
@@ -12,6 +12,7 @@ import { forgetPasswordLimiter, loginLimiter, sendCodeLimiter } from "../middlew
 const router = Router();
 
 router.post("/check-email", checkEmailAvailabilityController);
+router.post("/check-username", checkUsernameAvailabilityController);
 
 router.post("/signup", signupUserController);
 router.put("/resend-verification", sendCodeLimiter, authenticateToken, resendEmailCodeController);
