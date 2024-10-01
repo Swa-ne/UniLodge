@@ -12,7 +12,8 @@ export const signupUsertoDatabase = async (
     personal_email: string,
     personal_number: string | undefined,
     birthday: Date,
-    password: string
+    password: string,
+    valid_email: boolean,
 ): Promise<CustomResponse> => {
     let userCredentialResult;
 
@@ -29,7 +30,8 @@ export const signupUsertoDatabase = async (
             personal_email,
             personal_number,
             birthday,
-            password_hash
+            password_hash,
+            valid_email
         }).save();
 
         await sendEmailCode(`${userCredentialResult._id}`, personal_email, first_name)

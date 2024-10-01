@@ -6,7 +6,8 @@ import { generateAccessAndRefereshTokens, sendEmailCode, verifyEmailCode } from 
 import { UserType } from '../../middlewares/token.authentication';
 
 interface CustomRequestBody extends UserSchemaInterface {
-    confirmation_password: string
+    confirmation_password: string,
+    valid_email: boolean
 }
 
 export const checkUsernameAvailabilityController = async (req: Request, res: Response) => {
@@ -38,7 +39,7 @@ export const checkEmailAvailabilityController = async (req: Request, res: Respon
 
 export const signupUserController = async (req: Request, res: Response) => {
     try {
-        const { first_name, middle_name, last_name, username, bio, password_hash, confirmation_password, personal_number, birthday }: CustomRequestBody = req.body;
+        const { first_name, middle_name, last_name, username, bio, password_hash, confirmation_password, personal_number, birthday, valid_email }: CustomRequestBody = req.body;
         let personal_email: string = req.body.personal_email;
         if (!personal_email) return res.status(404).json({ error: "Email address not found" });
         personal_email = personal_email.toLowerCase()
@@ -76,7 +77,7 @@ export const signupUserController = async (req: Request, res: Response) => {
 
         const checkerForInput = await checkEveryInputForSignup(username, personal_email, password_hash, confirmation_password);
         if (checkerForInput.message === 'Success') {
-            const data = await signupUsertoDatabase(first_name, middle_name, last_name, username, bio, personal_email, personal_number, birthday, password_hash);
+            const data = await signupUsertoDatabase(first_name, middle_name, last_name, username, bio, personal_email, personal_number, birthday, password_hash, valid_email);
             if (data.httpCode !== 200) {
                 return res.status(500).json({ error: data.error });
             }
