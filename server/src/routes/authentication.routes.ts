@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 
-import { checkEmailAvailabilityController, checkUsernameAvailabilityController, resendEmailCodeController, signupUserController, verifyEmailCodeController } from "../controllers/authentication/signup.controller";
+import { checkEmailAvailabilityController, checkEmailVerifiedController, checkUsernameAvailabilityController, resendEmailCodeController, signupUserController, verifyEmailCodeController } from "../controllers/authentication/signup.controller";
 import { authenticateToken } from "../middlewares/token.authentication";
 import { changePasswordController, editProfileController, forgotPasswordController, loginUserController, postResetPasswordController } from "../controllers/authentication/login.controller";
 import { logoutUserController } from "../controllers/authentication/logout.controller";
@@ -17,6 +17,7 @@ router.post("/check-username", checkUsernameAvailabilityController);
 router.post("/signup", signupUserController);
 router.put("/resend-verification", sendCodeLimiter, authenticateToken, resendEmailCodeController);
 router.post("/verify-code", authenticateToken, verifyEmailCodeController);
+router.post("/check-email-verification", authenticateToken, checkEmailVerifiedController);
 
 router.post("/login", loginLimiter, loginUserController);
 router.delete("/logout", authenticateToken, logoutUserController);

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { checkEmailAvailability, checkUsernameAvailability, signupUsertoDatabase } from '../../services/authentication/signup.services';
+import { checkEmailAvailability, checkEmailVerified, checkUsernameAvailability, signupUsertoDatabase } from '../../services/authentication/signup.services';
 import { UserSchemaInterface } from '../../models/authentication/user.model';
 import { checkEveryInputForSignup, validateBioLength } from '../../utils/input.validators';
 import { generateAccessAndRefereshTokens, sendEmailCode, verifyEmailCode } from '../../services/index.services';
@@ -8,6 +8,25 @@ import { UserType } from '../../middlewares/token.authentication';
 interface CustomRequestBody extends UserSchemaInterface {
     confirmation_password: string,
     valid_email: boolean
+}
+
+export const checkEmailVerifiedController = async (req: Request & { user?: UserType }, res: Response) => {
+    try {
+        const user = req.user;
+
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        const { user_id } = user;
+        const result = await checkEmailVerified(user_id);
+        if (result) {
+            return res.status(200).json({ message: "Success" });
+        }
+        return res.status(403).json({ message: "Email is not yet verified" });
+    } catch (e) {
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
 }
 
 export const checkUsernameAvailabilityController = async (req: Request, res: Response) => {

@@ -72,6 +72,19 @@ export const checkEmailAvailability = async (emailAddress: string): Promise<bool
     }
 };
 
+export const checkEmailVerified = async (user_id: string): Promise<boolean> => {
+    try {
+        const result = await User.findById(user_id);
+        if (!result) {
+            return false;
+        }
+
+        return result.valid_email;
+    } catch (error) {
+        return false;
+    }
+};
+
 export const getDataByEmailAddress = async (emailAddress: string): Promise<UserSchemaInterface | null> => {
     try {
         const result: UserSchemaInterface | null = await User.findOne({ personal_email: { $regex: new RegExp(`^${emailAddress}$`, 'i') } });
