@@ -5,7 +5,8 @@ import 'package:unilodge/data/sources/auth/authRepo.dart';
 final _apiUrl = "${dotenv.env['API_URL']}/authentication";
 
 abstract class AuthFirebaseRepo {
-  Future<GoogleSignInAccount?> signInWithGoogle();
+  Future<GoogleSignInAccount?> signUpWithGoogle();
+  Future<GoogleSignInAccount?> loginWithGoogle();
   Future<GoogleSignInAccount?> logoutWithGoogle();
 }
 
@@ -13,7 +14,7 @@ class AuthFirebaseRepoImpl extends AuthFirebaseRepo {
   static final _googleSignIn = GoogleSignIn();
   static final _authRepo = AuthRepoImpl();
   @override
-  Future<GoogleSignInAccount?> signInWithGoogle() async {
+  Future<GoogleSignInAccount?> signUpWithGoogle() async {
     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
     logoutWithGoogle();
 
@@ -27,6 +28,18 @@ class AuthFirebaseRepoImpl extends AuthFirebaseRepo {
     if (!isEmailAvailable) {
       return null;
     }
+    return googleUser;
+  }
+
+  @override
+  Future<GoogleSignInAccount?> loginWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+    logoutWithGoogle();
+
+    if (googleUser == null) {
+      return null;
+    }
+
     return googleUser;
   }
 
