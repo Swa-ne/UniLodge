@@ -18,6 +18,15 @@ class SignUpSuccess extends AuthState {
   List<Object> get props => [token];
 }
 
+class ResendEmailCodeSuccess extends AuthState {
+  final bool isSuccess;
+
+  const ResendEmailCodeSuccess(this.isSuccess);
+
+  @override
+  List<Object> get props => [isSuccess];
+}
+
 class AuthError extends AuthState {
   final String error;
 
