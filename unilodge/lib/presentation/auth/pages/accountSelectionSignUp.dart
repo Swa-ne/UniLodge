@@ -61,18 +61,6 @@ class _AccountSelectionSignupState extends State<AccountSelectionSignup> {
                   ),
                   const SizedBox(height: 5),
                   AuthButton(
-                    text: 'Continue with Facebook',
-                    onPressed: () {
-                      context.go('/'); // TODO: add facebook
-                    },
-                    icon: const Icon(
-                      Icons.facebook,
-                      size: 25,
-                      color: Color.fromARGB(255, 53, 68, 80),
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-                  AuthButton(
                     text: 'Continue with Google',
                     onPressed: () async {
                       var google_user =
@@ -88,10 +76,21 @@ class _AccountSelectionSignupState extends State<AccountSelectionSignup> {
                             ),
                           );
                         } else {
-                          // TODO: Handle sign-in failure, if needed
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content:
+                                  Text('The email address is already used.'),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
                         }
                       } else {
-                        // TODO: Handle Connection failure
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('No internet connection'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
                       }
                     },
                     icon: Image.asset('assets/images/google_logo.png',

@@ -10,6 +10,7 @@ class SignUpUserModel {
   final String confirmation_password;
   final PhoneNumber personal_number;
   final String birthday;
+  final bool? valid_email;
 
   SignUpUserModel({
     required this.first_name,
@@ -21,6 +22,7 @@ class SignUpUserModel {
     required this.confirmation_password,
     required this.personal_number,
     required this.birthday,
+    this.valid_email = false,
   });
 
   Map<String, dynamic> toJson() {
@@ -34,6 +36,7 @@ class SignUpUserModel {
       'confirmation_password': confirmation_password,
       'personal_number': personal_number.phoneNumber,
       'birthday': birthday,
+      'valid_email': valid_email,
     };
   }
 }

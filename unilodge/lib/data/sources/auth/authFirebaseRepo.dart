@@ -18,7 +18,6 @@ class AuthFirebaseRepoImpl extends AuthFirebaseRepo {
     logoutWithGoogle();
 
     if (googleUser == null) {
-      // TODO: SHOW SIGN IN FAILED
       return null;
     }
 
@@ -26,7 +25,6 @@ class AuthFirebaseRepoImpl extends AuthFirebaseRepo {
         await _authRepo.checkEmailAvalability(googleUser.email);
 
     if (!isEmailAvailable) {
-      // TODO: SHOW EMAIL ALREADY HAS AN ACCOUNT
       return null;
     }
     return googleUser;
