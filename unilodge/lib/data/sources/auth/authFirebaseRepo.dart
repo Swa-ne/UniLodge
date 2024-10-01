@@ -1,6 +1,6 @@
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:unilodge/data/sources/auth/authRepo.dart';
 
 final _apiUrl = "${dotenv.env['API_URL']}/authentication";
 
@@ -11,22 +11,22 @@ abstract class AuthFirebaseRepo {
 
 class AuthFirebaseRepoImpl extends AuthFirebaseRepo {
   static final _googleSignIn = GoogleSignIn();
+  static final _authRepo = AuthRepoImpl();
   @override
   Future<GoogleSignInAccount?> signInWithGoogle() async {
     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+    logoutWithGoogle();
 
     if (googleUser == null) {
       // TODO: SHOW SIGN IN FAILED
       return null;
     }
-    var response = await http.post(
-      Uri.parse("$_apiUrl/check-email"),
-      body: {'personal_email': googleUser.email},
-    );
 
-    if (response.statusCode != 200) {
+    var isEmailAvailable =
+        await _authRepo.checkEmailAvalability(googleUser.email);
+
+    if (!isEmailAvailable) {
       // TODO: SHOW EMAIL ALREADY HAS AN ACCOUNT
-      logoutWithGoogle();
       return null;
     }
     return googleUser;
