@@ -2,10 +2,10 @@ import 'package:go_router/go_router.dart';
 import 'package:unilodge/data/dummy_data/dummy_data.dart';
 import 'package:unilodge/presentation/auth/pages/accountSelectionLogin.dart';
 import 'package:unilodge/presentation/auth/pages/accountSelectionSignUp.dart';
-import 'package:unilodge/presentation/auth/pages/email&password/forget_password.dart';
-import 'package:unilodge/presentation/auth/pages/email&password/verify_email.dart';
+import 'package:unilodge/presentation/auth/pages/forget_password.dart';
 import 'package:unilodge/presentation/auth/pages/login.dart';
 import 'package:unilodge/presentation/auth/pages/signUp.dart';
+import 'package:unilodge/presentation/auth/pages/verify_email.dart';
 import 'package:unilodge/presentation/home/pages/homepage.dart';
 import 'package:unilodge/presentation/home/pages/listingDetailScreen.dart';
 import 'package:unilodge/presentation/home/pages/typeListingScreen.dart';
@@ -94,13 +94,19 @@ final GoRouter appRouter = GoRouter(routes: [
   ),
   GoRoute(
     path: '/verify-email',
-    builder: (context, state) => const VerifyEmail(),
+    builder: (context, state) {
+      final extras = state.extra as Map<String, dynamic>;
+      final email = extras['email_address'] as String;
+      final token = extras['token'] as String;
+
+      return VerifyEmail(email_address: email, token: token);
+    },
   ),
   GoRoute(
     path: '/forget-password',
     builder: (context, state) => const ForgetPassword(),
   ),
-    GoRoute(
+  GoRoute(
     path: '/your-listing-detail/:id',
     builder: (context, state) {
       // Retrieve the listing ID from the route parameters
