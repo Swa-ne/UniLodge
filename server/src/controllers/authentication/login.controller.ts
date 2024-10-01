@@ -39,7 +39,7 @@ export const loginUserController = async (req: Request, res: Response) => {
             }
             return res.status(data.httpCode).json({ error: checker_for_input.error });
         }
-        return res.status(checker_for_input.httpCode).json(checker_for_input.error);;
+        return res.status(checker_for_input.httpCode).json({ error: checker_for_input.error });
     } catch (error) {
         return res.status(500).json({ 'error': 'Internal Server Error' });
     }
@@ -107,7 +107,7 @@ export const editProfileController = async (req: Request & { user?: UserType }, 
         if (data.httpCode !== 200) {
             return res.status(500).json({ error: data.error });
         }
-        return res.status(200).send({ message: data.message });
+        return res.status(200).json({ message: data.message });
     } catch (error) {
         return res.status(500).json({ 'error': 'Internal Server Error' });
     }
