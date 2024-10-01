@@ -7,12 +7,29 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepo _authRepo;
 
   AuthBloc(this._authRepo) : super(AuthLoading()) {
+    on<LoginEvent>(
+      (event, emit) async {
+        try {
+          emit(AuthLoading());
+          final accessToken = await _authRepo.login(event.user);
+          final isEmailVerified =
+              await _authRepo.checkEmailVerified(accessToken);
+          if (isEmailVerified) {
+            emit(AuthSuccess(accessToken));
+          } else {
+            emit(EmailNotVerified(accessToken));
+          }
+        } catch (e) {
+          emit(AuthError(e.toString()));
+        }
+      },
+    );
     on<SignUpEvent>(
       (event, emit) async {
         try {
           emit(AuthLoading());
           final access_token = await _authRepo.signUp(event.user);
-          emit(SignUpSuccess(access_token));
+          emit(AuthSuccess(access_token));
         } catch (e) {
           emit(AuthError(e.toString()));
         }
@@ -35,7 +52,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(AuthLoading());
           final access_token =
               await _authRepo.verifyEmail(event.token, event.code);
-          emit(SignUpSuccess(access_token));
+          emit(AuthSuccess(access_token));
         } catch (e) {
           emit(AuthError(e.toString()));
         }

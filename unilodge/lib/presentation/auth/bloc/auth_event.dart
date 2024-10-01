@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:unilodge/data/models/loginUser.dart';
 import 'package:unilodge/data/models/signUpUser.dart';
 
 abstract class AuthEvent extends Equatable {
@@ -12,6 +13,15 @@ class SignUpEvent extends AuthEvent {
   final SignUpUserModel user;
 
   const SignUpEvent(this.user);
+
+  @override
+  List<Object> get props => [user];
+}
+
+class LoginEvent extends AuthEvent {
+  final LoginUserModel user;
+
+  const LoginEvent(this.user);
 
   @override
   List<Object> get props => [user];

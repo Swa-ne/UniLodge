@@ -9,10 +9,19 @@ abstract class AuthState extends Equatable {
 
 class AuthLoading extends AuthState {}
 
-class SignUpSuccess extends AuthState {
+class AuthSuccess extends AuthState {
   final String token;
 
-  const SignUpSuccess(this.token);
+  const AuthSuccess(this.token);
+
+  @override
+  List<Object> get props => [token];
+}
+
+class EmailNotVerified extends AuthState {
+  final String token;
+
+  const EmailNotVerified(this.token);
 
   @override
   List<Object> get props => [token];
