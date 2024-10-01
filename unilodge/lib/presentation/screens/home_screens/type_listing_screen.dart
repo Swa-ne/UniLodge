@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/dummy_data/dummy_data.dart';
-import 'package:unilodge/presentation/widgets/home_widgets/listingCards.dart';
+import 'package:unilodge/presentation/widgets/home_widgets/listing_cards.dart';
 
 class TypeListingScreen extends StatelessWidget {
   const TypeListingScreen({super.key, required this.appbarTitle});
@@ -12,10 +12,13 @@ class TypeListingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(appbarTitle, style: TextStyle(
+          title: Text(
+            appbarTitle,
+            style: const TextStyle(
               color: AppColors.textColor,
               fontSize: 18,
-            ),),
+            ),
+          ),
         ),
         body: SingleChildScrollView(
           child: Column(children: [
@@ -24,7 +27,7 @@ class TypeListingScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: ListView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: dummyListings.length,
                 itemBuilder: (context, index) {
                   final listing = dummyListings[index];

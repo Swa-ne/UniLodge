@@ -25,7 +25,7 @@ class _PostPriceState extends State<PostPrice> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       const SizedBox(height: 60),
-                      Text(
+                      const Text(
                         'Property Information',
                         style: TextStyle(
                           color: AppColors.primary,
@@ -34,7 +34,7 @@ class _PostPriceState extends State<PostPrice> {
                         ),
                       ),
                       const SizedBox(height: 7),
-                      Text(
+                      const Text(
                         'Please fill in all fields below to continue',
                         style: TextStyle(
                           fontSize: 15,
@@ -121,7 +121,7 @@ class _PostPriceState extends State<PostPrice> {
             ],
           ),
           // Positioned icon at the top-right
-          Positioned(
+          const Positioned(
             top: 50,
             right: 20,
             child: Icon(

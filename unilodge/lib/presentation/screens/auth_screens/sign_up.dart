@@ -2,10 +2,10 @@ import 'package:dlibphonenumber/phone_number_util.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:unilodge/common/widgets/customButton.dart';
+import 'package:unilodge/common/widgets/custom_button.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:intl/intl.dart';
-import 'package:unilodge/presentation/widgets/auth_widgets/unilodgeText.dart';
+import 'package:unilodge/presentation/widgets/auth_widgets/unilodge_text.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -100,7 +100,7 @@ class _SignUpState extends State<SignUp> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SizedBox(height: screenHeight * 0.1),
-                    UnilodgeText(),
+                    const UnilodgeText(),
                     SizedBox(height: screenHeight * 0.05),
                     Expanded(
                       child: PageView(

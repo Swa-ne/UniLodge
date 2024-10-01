@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
-import 'package:unilodge/presentation/widgets/auth_widgets/authButton.dart';
-import 'package:unilodge/presentation/widgets/auth_widgets/unilodgeText.dart';
+import 'package:unilodge/presentation/widgets/auth_widgets/auth_button.dart';
+import 'package:unilodge/presentation/widgets/auth_widgets/unilodge_text.dart';
 
-class AccountSelectionSignup extends StatelessWidget {
-  const AccountSelectionSignup({super.key});
+class AccountSelectionLogin extends StatelessWidget {
+  const AccountSelectionLogin({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,12 +25,12 @@ class AccountSelectionSignup extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(height: screenHeight * 0.14),
-              UnilodgeText(),
+              const UnilodgeText(),
               SizedBox(
                 height: screenHeight * 0.08,
               ),
               const Text(
-                'Sign up',
+                'Log in',
                 style: TextStyle(
                   color: AppColors.formTextColor,
                   fontSize: 16,
@@ -44,7 +44,7 @@ class AccountSelectionSignup extends StatelessWidget {
                   AuthButton(
                     text: 'Use email or username',
                     onPressed: () {
-                      context.push("/sign-up");
+                      context.push("/login");
                     },
                     icon: const Icon(Icons.person,
                         size: 25, color: Color.fromARGB(255, 53, 68, 80)),
@@ -67,14 +67,14 @@ class AccountSelectionSignup extends StatelessWidget {
                     icon: Image.asset('assets/images/google_logo.png',
                         width: 22,
                         height: 22,
-                        color: Color.fromARGB(255, 53, 68, 80)),
+                        color: const Color.fromARGB(255, 53, 68, 80)),
                   ),
                   SizedBox(height: screenHeight * 0.2),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
-                        "Already have an account? ",
+                        "Don't have an account? ",
                         style: TextStyle(
                           fontSize: 14,
                           color: AppColors.formTextColor,
@@ -82,10 +82,10 @@ class AccountSelectionSignup extends StatelessWidget {
                       ),
                       InkWell(
                         onTap: () {
-                          context.go('/account-selection-login');
+                          context.go('/account-selection-signup');
                         },
                         child: const Text(
-                          "Log in",
+                          "Sign up",
                           textAlign: TextAlign.right,
                           style: TextStyle(
                               fontSize: 14,

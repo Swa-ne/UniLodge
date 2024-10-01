@@ -56,7 +56,7 @@ class ListingCard extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.topLeft,
                   child: Text(listing.property_name,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: AppColors.textColor,
                         fontWeight: FontWeight.w500,
                         fontSize: 16,

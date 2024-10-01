@@ -3,7 +3,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
-import 'package:unilodge/presentation/widgets/home_widgets/textRow.dart';
+import 'package:unilodge/presentation/widgets/home_widgets/text_row.dart';
 
 class YourListingDetails extends StatelessWidget {
   const YourListingDetails({super.key, required this.listing});
@@ -17,32 +17,32 @@ class YourListingDetails extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             Row(
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 GestureDetector(
                     onTap: () {
                       Navigator.pop(context);
                     },
-                    child: Icon(Icons.cancel,
+                    child: const Icon(Icons.cancel,
                         color: Color.fromARGB(169, 60, 60, 67))),
-                Spacer(),
+                const Spacer(),
                 GestureDetector(
                     onTap: () async {
                       _displayBottomSheet(context);
                     },
-                    child: Icon(Icons.more_vert)),
-                SizedBox(
+                    child: const Icon(Icons.more_vert)),
+                const SizedBox(
                   width: 10,
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             Padding(
@@ -58,7 +58,7 @@ class YourListingDetails extends StatelessWidget {
               padding:
                   const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
               child: Text(listing.property_name,
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                       color: Color(0xff434343))),
@@ -76,10 +76,9 @@ class YourListingDetails extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: TextRow(text1: "Amenities:", text2: listing.amenities[0]),
             ),
-            SizedBox(height: 20),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+            const SizedBox(height: 20),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
               child: Text(
                 "Description",
                 style: TextStyle(color: Color(0xff434343), fontSize: 15),
@@ -90,20 +89,21 @@ class YourListingDetails extends StatelessWidget {
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
               child: Text(
                 listing.description,
-                style: TextStyle(color: AppColors.formTextColor, fontSize: 15),
+                style: const TextStyle(
+                    color: AppColors.formTextColor, fontSize: 15),
               ),
             ),
-            SizedBox(height: 15),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              child: const Divider(
+            const SizedBox(height: 15),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15.0),
+              child: Divider(
                   height: 20, color: Color.fromARGB(255, 223, 223, 223)),
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             Row(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 15.0),
+                const Padding(
+                  padding: EdgeInsets.only(left: 15.0),
                   child: Text("Rating: ",
                       style: TextStyle(color: Color(0xff434343), fontSize: 15)),
                 ),
@@ -118,8 +118,8 @@ class YourListingDetails extends StatelessWidget {
                         direction: Axis.horizontal,
                         itemCount: 5,
                         itemSize: 18,
-                        itemPadding: EdgeInsets.symmetric(horizontal: 1),
-                        itemBuilder: (context, _) => Icon(
+                        itemPadding: const EdgeInsets.symmetric(horizontal: 1),
+                        itemBuilder: (context, _) => const Icon(
                               Icons.star,
                               color: AppColors.ratingYellow,
                             ),
@@ -130,23 +130,21 @@ class YourListingDetails extends StatelessWidget {
                 ),
               ],
             ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
               child: Text(
                 "Reviews (14)",
                 style: TextStyle(color: Color(0xff434343), fontSize: 15),
               ),
             ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
               child: Text(
                 "dropdown reviews or direct to another screen",
                 style: TextStyle(color: AppColors.formTextColor, fontSize: 15),
               ),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
           ],
         ),
       ),
@@ -159,11 +157,11 @@ class YourListingDetails extends StatelessWidget {
         backgroundColor: AppColors.lightBackground,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(30))),
-        builder: (context) => Container(
+        builder: (context) => SizedBox(
               height: 150,
               child: Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   Padding(
@@ -172,7 +170,7 @@ class YourListingDetails extends StatelessWidget {
                       onTap: () {
                         context.push("/edit-listing-post");
                       },
-                      child: Row(
+                      child: const Row(
                         children: [
                           Icon(
                             Icons.edit,
@@ -185,11 +183,11 @@ class YourListingDetails extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30.0),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 30.0),
                     child: Row(
                       children: [
                         Icon(

@@ -30,7 +30,7 @@ class VerifyEmail extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // Icon
-              FaIcon(
+              const FaIcon(
                 FontAwesomeIcons.inbox,
                 size: 200,
                 color: Colors.black,
@@ -38,7 +38,7 @@ class VerifyEmail extends StatelessWidget {
               const SizedBox(height: 16),
 
               // Title
-              Text(
+              const Text(
                 'Email Verification',
                 style: TextStyle(
                   fontSize: 24,
@@ -50,7 +50,7 @@ class VerifyEmail extends StatelessWidget {
               const SizedBox(height: 8),
 
               // Subtitle
-              Text(
+              const Text(
                 'Enter the code sent to *****@gmail.com',
                 style: TextStyle(
                   fontSize: 10, // Adjusted font size
@@ -148,8 +148,7 @@ class VerifyEmail extends StatelessWidget {
                     onPressed: () {},
                     child: const Text(
                       'Resend Code',
-                      style: TextStyle(color: Color(0xFF51DAF6)
-                      ),
+                      style: TextStyle(color: Color(0xFF51DAF6)),
                     ),
                   ),
                 ],
@@ -169,7 +168,7 @@ class VerifyEmail extends StatelessWidget {
                   child: const Text(
                     'Verify',
                     style: TextStyle(
-                      color: Colors.white, 
+                      color: Colors.white,
                     ),
                   ),
                 ),

@@ -34,7 +34,7 @@ class CustomSearchDelegate extends SearchDelegate {
           onPressed: () {
             query = '';
           },
-          icon: Icon(Icons.clear))
+          icon: const Icon(Icons.clear))
     ];
   }
 
@@ -44,7 +44,7 @@ class CustomSearchDelegate extends SearchDelegate {
         onPressed: () {
           close(context, null);
         },
-        icon: Icon(Icons.arrow_back));
+        icon: const Icon(Icons.arrow_back));
   }
 
   @override
@@ -82,11 +82,16 @@ class CustomSearchDelegate extends SearchDelegate {
         return Column(children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: ListTile(title: Text(result, style: TextStyle(color: AppColors.textColor,))),
+            child: ListTile(
+                title: Text(result,
+                    style: const TextStyle(
+                      color: AppColors.textColor,
+                    ))),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Divider(height: 10, color: Color.fromARGB(255, 240, 239, 239)),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child:
+                Divider(height: 10, color: Color.fromARGB(255, 240, 239, 239)),
           ),
         ]);
       },

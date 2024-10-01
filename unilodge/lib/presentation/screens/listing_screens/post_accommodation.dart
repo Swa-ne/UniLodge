@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:unilodge/presentation/widgets/listing_widgets/customcard.dart';
+import 'package:unilodge/presentation/widgets/listing_widgets/custom_card.dart';
 
 class PostAccommodation extends StatefulWidget {
   const PostAccommodation({super.key});
@@ -87,13 +87,13 @@ class _PostAccommodationState extends State<PostAccommodation> {
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white, //
-                  borderRadius: BorderRadius.horizontal(),
+                  borderRadius: const BorderRadius.horizontal(),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.2),
                       spreadRadius: 1,
                       blurRadius: 10,
-                      offset: Offset(0, -3),
+                      offset: const Offset(0, -3),
                     ),
                   ],
                 ),
@@ -106,32 +106,32 @@ class _PostAccommodationState extends State<PostAccommodation> {
                       onPressed: () {
                         context.go('/home');
                       },
-                      child: const Text("Back"),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: Colors.black,
                         backgroundColor: Colors.transparent,
-                        side: BorderSide(color: Colors.black, width: 1),
-                        minimumSize: Size(120, 50),
+                        side: const BorderSide(color: Colors.black, width: 1),
+                        minimumSize: const Size(120, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
+                      child: const Text("Back"),
                     ),
-                    SizedBox(width: 20),
+                    const SizedBox(width: 20),
                     ElevatedButton(
                       onPressed: () {
                         context.go('/post-location');
                       },
-                      child: const Text('Next'),
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
-                        backgroundColor: Color(0xff2E3E4A),
-                        minimumSize: Size(120, 50),
+                        backgroundColor: const Color(0xff2E3E4A),
+                        minimumSize: const Size(120, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
                         elevation: 0,
                       ),
+                      child: const Text('Next'),
                     ),
                   ],
                 ),

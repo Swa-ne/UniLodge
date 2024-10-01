@@ -41,7 +41,7 @@ class NearbyCard extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(propertyName,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: AppColors.textColor,
                         )),
                   ),
@@ -56,8 +56,8 @@ class NearbyCard extends StatelessWidget {
                         direction: Axis.horizontal,
                         itemCount: 5,
                         itemSize: 18,
-                        itemPadding: EdgeInsets.symmetric(horizontal: 1),
-                        itemBuilder: (context, _) => Icon(
+                        itemPadding: const EdgeInsets.symmetric(horizontal: 1),
+                        itemBuilder: (context, _) => const Icon(
                               Icons.star,
                               color: AppColors.ratingYellow,
                             ),

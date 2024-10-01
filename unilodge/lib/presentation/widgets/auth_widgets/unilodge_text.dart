@@ -7,7 +7,7 @@ class UnilodgeText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
+    return const Text(
       'UniLodge',
       style: TextStyle(
         fontFamily: AppTheme.logoFont,

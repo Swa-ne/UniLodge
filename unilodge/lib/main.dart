@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
-    SystemUiOverlayStyle(
+    const SystemUiOverlayStyle(
       statusBarColor: AppColors.lightBackground,
       statusBarIconBrightness: Brightness.dark,
     ),

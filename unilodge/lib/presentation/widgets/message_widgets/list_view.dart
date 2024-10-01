@@ -32,14 +32,12 @@ class MessagesListView extends StatelessWidget {
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFF636464)
-                          .withOpacity(0.15), 
-                      offset: const Offset(0, 2), 
-                      blurRadius: 8, 
+                      color: const Color(0xFF636464).withOpacity(0.15),
+                      offset: const Offset(0, 2),
+                      blurRadius: 8,
                     ),
                   ],
                 ),

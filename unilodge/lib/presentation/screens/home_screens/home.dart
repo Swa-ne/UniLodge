@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/assets/app_images.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
-import 'package:unilodge/presentation/widgets/home_widgets/listingCards.dart';
-import 'package:unilodge/presentation/widgets/home_widgets/typeCards.dart';
+import 'package:unilodge/presentation/widgets/home_widgets/listing_cards.dart';
+import 'package:unilodge/presentation/widgets/home_widgets/type_cards.dart';
 import 'package:unilodge/presentation/widgets/home_widgets/search.dart';
 import 'package:unilodge/data/dummy_data/dummy_data.dart';
 
@@ -33,20 +33,20 @@ class _HomeState extends State<Home> {
                   );
                 },
                 child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 8),
+                  margin: const EdgeInsets.symmetric(vertical: 8),
                   width: 300,
                   padding: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
                     color: Colors.grey.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(25),
                   ),
-                  child: Row(
+                  child: const Row(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
+                        padding: EdgeInsets.only(right: 8.0),
                         child: Icon(Icons.search),
                       ),
-                      const Text("Search"),
+                      Text("Search"),
                     ],
                   ),
                 ),
@@ -56,7 +56,7 @@ class _HomeState extends State<Home> {
                 onTap: () {
                   context.push("/user-profile");
                 },
-                child: CircleAvatar(
+                child: const CircleAvatar(
                   backgroundImage: AssetImage(AppImages.emptyProfile),
                 ),
               ),
@@ -78,7 +78,7 @@ class _HomeState extends State<Home> {
                           onTap: () {
                             context.push('/type-listing/Dorm');
                           },
-                          child: Cards(
+                          child: const Cards(
                             text: "Dorm",
                             imageUrl: AppImages.dorm,
                             color: Color.fromARGB(137, 235, 214, 183),
@@ -88,7 +88,7 @@ class _HomeState extends State<Home> {
                           onTap: () {
                             context.push('/type-listing/Solo room');
                           },
-                          child: Cards(
+                          child: const Cards(
                             text: "Solo Room",
                             imageUrl: AppImages.soloRoom,
                             color: Color(0xffCCE1D4),
@@ -98,7 +98,7 @@ class _HomeState extends State<Home> {
                           onTap: () {
                             context.push('/type-listing/Bedspacer');
                           },
-                          child: Cards(
+                          child: const Cards(
                             text: "Bedspacer",
                             imageUrl: AppImages.bedspacer,
                             color: Color.fromARGB(141, 235, 233, 183),
@@ -108,7 +108,7 @@ class _HomeState extends State<Home> {
                           onTap: () {
                             context.push('/type-listing/Apartment');
                           },
-                          child: Cards(
+                          child: const Cards(
                             text: "Apartment",
                             imageUrl: AppImages.apartment,
                             color: Color(0xffCDDDEA),
@@ -133,7 +133,7 @@ class _HomeState extends State<Home> {
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: ListView.builder(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: dummyListings.length,
                     itemBuilder: (context, index) {
                       final listing = dummyListings[index];

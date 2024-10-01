@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/presentation/screens/favorite_screens/favorites.dart';
 import 'package:unilodge/presentation/screens/home_screens/home.dart';
-import 'package:unilodge/presentation/screens/your_listing_screens/yourListings.dart';
+import 'package:unilodge/presentation/screens/your_listing_screens/your_listings.dart';
 import 'package:unilodge/presentation/screens/message_screens/messages.dart';
-import 'package:unilodge/presentation/screens/listing_screens/listingPage.dart';
+// import 'package:unilodge/presentation/screens/listing_screens/listing_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, this.initialTabIndex = 0});
@@ -31,10 +31,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   final List<Widget> _pages = [
-    Home(),
-    Listings(),
-    Favorites(),
-    Messages(),
+    const Home(),
+    const Listings(),
+    const Favorites(),
+    const Messages(),
   ];
 
   @override
@@ -55,7 +55,7 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.black.withOpacity(0.1),
                 spreadRadius: 5,
                 blurRadius: 10,
-                offset: Offset(0, -3),
+                offset: const Offset(0, -3),
               ),
             ],
           ),
@@ -66,14 +66,13 @@ class _HomePageState extends State<HomePage> {
             currentIndex: _selectedIndex,
             onTap: _navigateBottomBar,
             type: BottomNavigationBarType.fixed,
-            items: [
-              const BottomNavigationBarItem(
-                  icon: Icon(Icons.home), label: 'Home'),
-              const BottomNavigationBarItem(
+            items: const [
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+              BottomNavigationBarItem(
                   icon: Icon(Icons.domain), label: 'Listings'),
-              const BottomNavigationBarItem(
+              BottomNavigationBarItem(
                   icon: Icon(Icons.favorite), label: 'Favorites'),
-              const BottomNavigationBarItem(
+              BottomNavigationBarItem(
                   icon: Icon(Icons.forum), label: 'Messages'),
             ],
             // items: [

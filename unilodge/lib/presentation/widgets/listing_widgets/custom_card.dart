@@ -20,10 +20,10 @@ class CustomCard extends StatefulWidget {
   final double iconSize;
 
   @override
-  _CustomCardState createState() => _CustomCardState();
+  CustomCardState createState() => CustomCardState();
 }
 
-class _CustomCardState extends State<CustomCard>
+class CustomCardState extends State<CustomCard>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
@@ -94,8 +94,8 @@ class _CustomCardState extends State<CustomCard>
                         width: widget.leadingWidth,
                         height: widget.leadingHeight,
                         child: FittedBox(
-                          child: widget.leading,
                           fit: BoxFit.scaleDown,
+                          child: widget.leading,
                         ),
                       ),
                     ),
