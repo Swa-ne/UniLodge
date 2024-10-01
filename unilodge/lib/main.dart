@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/core/configs/theme/app_theme.dart';
-import 'app_routes.dart';
+import 'router/app_routes.dart';
 import 'package:flutter/services.dart';
 
 void main() {
