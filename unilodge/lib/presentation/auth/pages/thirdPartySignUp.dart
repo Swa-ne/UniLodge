@@ -18,7 +18,6 @@ import 'package:unilodge/presentation/auth/widgets/unilodgeText.dart';
 
 final _secretKey = dotenv.env['SECRET_KEY'];
 
-// TODO: add error on empty textfields on submit
 class ThirdPartySignUp extends StatefulWidget {
   final GoogleSignInAccount google_user;
 

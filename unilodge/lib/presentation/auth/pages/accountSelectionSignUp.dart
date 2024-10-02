@@ -49,7 +49,7 @@ class _AccountSelectionSignupState extends State<AccountSelectionSignup> {
               Column(
                 children: [
                   AuthButton(
-                    text: 'Use email or username',
+                    text: 'Use Email Address',
                     onPressed: () {
                       context.push("/sign-up");
                     },
@@ -64,7 +64,7 @@ class _AccountSelectionSignupState extends State<AccountSelectionSignup> {
                     text: 'Continue with Google',
                     onPressed: () async {
                       var google_user =
-                          await AuthFirebaseRepoImpl().signInWithGoogle();
+                          await AuthFirebaseRepoImpl().signUpWithGoogle();
                       if (mounted) {
                         if (google_user != null) {
                           Navigator.push(

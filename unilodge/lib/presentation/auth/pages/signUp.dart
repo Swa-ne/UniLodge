@@ -121,7 +121,7 @@ class _SignUpState extends State<SignUp> with InputValidationMixin {
       listener: (context, state) {
         if (state is SignUpSuccess) {
           context.go("/verify-email", extra: {
-            "email_address": emailController.text,
+            "email_address": obfuscateEmail(emailController.text),
             "token": state.token,
           });
         } else if (state is AuthError) {
