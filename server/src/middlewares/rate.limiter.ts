@@ -1,18 +1,18 @@
 import rateLimit from "express-rate-limit";
 
 export const loginLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 5,
+    windowMs: 5 * 60 * 1000,
+    max: 20,
 });
 export const forgetPasswordLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 3,
+    windowMs: 10 * 60 * 1000,
+    max: 5,
 });
 export const sendCodeLimiter = rateLimit({
     windowMs: 1 * 60 * 1000,
-    max: 1,
+    max: 2,
 });
 export const saveDormLimiter = rateLimit({
     windowMs: 1 * 60 * 1000,
-    max: 10,
+    max: 20,
 });
