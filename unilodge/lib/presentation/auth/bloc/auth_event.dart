@@ -45,3 +45,24 @@ class ResendEmailCodeEvent extends AuthEvent {
   @override
   List<Object> get props => [token];
 }
+
+class ForgotPasswordEvent extends AuthEvent {
+  final String email;
+
+  const ForgotPasswordEvent(this.email);
+
+  @override
+  List<Object> get props => [email];
+}
+
+class PostResetPasswordEvent extends AuthEvent {
+  final String token;
+  final String password;
+  final String confirmation_password;
+
+  const PostResetPasswordEvent(
+      this.token, this.password, this.confirmation_password);
+
+  @override
+  List<Object> get props => [token, password, confirmation_password];
+}

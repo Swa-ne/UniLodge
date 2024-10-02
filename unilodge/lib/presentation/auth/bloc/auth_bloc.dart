@@ -15,7 +15,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           final isEmailVerified =
               await _authRepo.checkEmailVerified(accessToken);
           if (isEmailVerified) {
-            emit(AuthSuccess(accessToken));
+            emit(LoginSuccess(accessToken));
           } else {
             emit(EmailNotVerified(accessToken));
           }
@@ -29,7 +29,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         try {
           emit(AuthLoading());
           final access_token = await _authRepo.signUp(event.user);
-          emit(AuthSuccess(access_token));
+          emit(SignUpSuccess(access_token));
         } catch (e) {
           emit(AuthError(e.toString()));
         }
@@ -42,7 +42,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           final isSuccess = await _authRepo.resendEmailCode(event.token);
           emit(ResendEmailCodeSuccess(isSuccess));
         } catch (e) {
-          emit(AuthError(e.toString()));
+          emit(VerificationError(e.toString()));
         }
       },
     );
@@ -52,9 +52,32 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(AuthLoading());
           final access_token =
               await _authRepo.verifyEmail(event.token, event.code);
-          emit(AuthSuccess(access_token));
+          emit(VerifyEmailSuccess(access_token));
         } catch (e) {
-          emit(AuthError(e.toString()));
+          emit(VerificationError(e.toString()));
+        }
+      },
+    );
+    on<ForgotPasswordEvent>(
+      (event, emit) async {
+        try {
+          emit(AuthLoading());
+          final access_token = await _authRepo.forgotPassword(event.email);
+          emit(ForgetPasswordSuccess(access_token));
+        } catch (e) {
+          emit(VerificationError(e.toString()));
+        }
+      },
+    );
+    on<PostResetPasswordEvent>(
+      (event, emit) async {
+        try {
+          emit(AuthLoading());
+          final access_token = await _authRepo.postResetPassword(
+              event.token, event.password, event.confirmation_password);
+          emit(ChangePasswordSuccess(access_token));
+        } catch (e) {
+          emit(VerificationError(e.toString()));
         }
       },
     );

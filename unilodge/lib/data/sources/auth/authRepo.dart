@@ -14,6 +14,9 @@ abstract class AuthRepo {
   Future<bool> checkEmailVerified(String token);
   Future<bool> resendEmailCode(String token);
   Future<String> verifyEmail(String token, String code);
+  Future<String> forgotPassword(String email);
+  Future<bool> postResetPassword(
+      String token, String password, String confirmation_password);
 }
 
 class AuthRepoImpl extends AuthRepo {
@@ -120,24 +123,19 @@ class AuthRepoImpl extends AuthRepo {
 
   @override
   Future<bool> resendEmailCode(String token) async {
-    try {
-      var response = await http.put(
-        Uri.parse("$_apiUrl/resend-verification"),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': token,
-        },
-      );
-      final response_body = json.decode(response.body);
-      if ([200, 404].contains(response.statusCode)) {
-        return response_body['message'] == "Success";
-      } else {
-        throw Exception(response_body['error']);
-      }
-    } catch (e) {
-      // TODO: fix error handling
-      throw Exception(e);
+    var response = await http.put(
+      Uri.parse("$_apiUrl/resend-verification"),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': token,
+      },
+    );
+    if ([200, 404, 401].contains(response.statusCode)) {
+      return true;
+    } else {
+      throw Exception(
+          "Too many requests, please wait a while before retrying.");
     }
   }
 
@@ -160,6 +158,53 @@ class AuthRepoImpl extends AuthRepo {
     if (response.statusCode == 200) {
       // TODO: save access token
       return response_body['access_token'];
+    } else {
+      throw Exception("Incorrect Verification Code");
+    }
+  }
+
+  @override
+  Future<String> forgotPassword(String email) async {
+    final response = await http.post(
+      Uri.parse("$_apiUrl/forgot-password"),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: json.encode(
+        {
+          'personal_email': email,
+        },
+      ),
+    );
+    final response_body = json.decode(response.body);
+    if (response.statusCode == 200) {
+      return response_body['token'];
+    } else {
+      throw Exception(response_body['error']);
+    }
+  }
+
+  @override
+  Future<bool> postResetPassword(
+      String token, String password, String confirmation_password) async {
+    var response = await http.post(
+      Uri.parse("$_apiUrl/reset-password"),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': token,
+      },
+      body: json.encode(
+        {
+          'password': password,
+          'confirmation_password': confirmation_password,
+        },
+      ),
+    );
+    final response_body = json.decode(response.body);
+    if ([200, 400, 404].contains(response.statusCode)) {
+      return response_body['message'] == "Success";
     } else {
       throw Exception(response_body['error']);
     }
