@@ -28,7 +28,7 @@ router.put("/change-password", authenticateToken, changePasswordController);
 
 router.put("/edit-profile", authenticateToken, editProfileController);
 router.post("/forgot-password", forgetPasswordLimiter, forgotPasswordController);
-router.post("/reset-password/:token", postResetPasswordController);
+router.post("/reset-password", authenticateToken, postResetPasswordController);
 
 router.get("/current-user", authenticateToken, getCurrentUserController);
 
