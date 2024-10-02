@@ -31,9 +31,23 @@ export const sendEmailCode = async (user_id: string, receiver: string, name: str
         return { error: "Internal Server Error", httpCode: 500 }
     }
 }
-export const sendEmailForgetPassword = async (user_id: string, receiver: string, name: string, token: string) => {
+export const sendEmailForgetPassword = async (user_id: string, receiver: string, name: string) => {
     try {
-        const data = { token, receiver, name };
+        const code = Math.floor(100000 + Math.random() * 900000);
+        const data = { code, receiver, name };
+        const user: UserValidCodeSchemaInterface | null = await UserValidCode.findOne({ user_id });
+        if (user) {
+            user.code = code.toString();
+            user.expiresAt = new Date(Date.now() + 2 * 60 * 60 * 1000);
+            await user.save();
+        } else {
+            await new UserValidCode({
+                user_id,
+                code,
+                expiresAt: new Date(Date.now() + 2 * 60 * 60 * 1000)
+            }).save();
+        }
+        console.log(code)
         await python_server.post(`/send-email-forget-password`, data);
 
         return { message: "Success", httpCode: 200 }

@@ -1,8 +1,7 @@
 import * as bcrypt from "bcrypt";
 import { User, UserSchemaInterface } from "../../models/authentication/user.model";
 import { CustomResponse } from "../../utils/input.validators";
-import { sendEmailCode } from "../index.services";
-import { generateAccessToken } from "../../utils/generate.token";
+import { generateAccessAndRefereshTokens, sendEmailCode } from "../index.services";
 
 export const signupUsertoDatabase = async (
     first_name: string,
@@ -13,7 +12,8 @@ export const signupUsertoDatabase = async (
     personal_email: string,
     personal_number: string | undefined,
     birthday: Date,
-    password: string
+    password: string,
+    valid_email: boolean,
 ): Promise<CustomResponse> => {
     let userCredentialResult;
 
@@ -26,24 +26,26 @@ export const signupUsertoDatabase = async (
             last_name,
             username,
             bio,
-            full_name: `${first_name} ${middle_name && `${middle_name} `}${last_name}`,
+            full_name: `${first_name} ${middle_name ? ` ${middle_name}` : ''} ${last_name}`.trim(),
             personal_email,
             personal_number,
             birthday,
-            password_hash
+            password_hash,
+            valid_email
         }).save();
 
         await sendEmailCode(`${userCredentialResult._id}`, personal_email, first_name)
 
-        const access_token = await generateAccessToken(`${userCredentialResult._id}`,)
-        if (access_token.httpCode === 200) {
+        const result = await generateAccessAndRefereshTokens(userCredentialResult._id.toString());
+        if (result.httpCode === 200) {
             return {
                 message: "Congratulations, your account has been successfully created",
-                access_token: access_token.message,
+                access_token: result.message?.access_token,
+                refresh_token: result.message?.refresh_token,
                 httpCode: 200
             };
         }
-        return { error: access_token.error, httpCode: access_token.httpCode }
+        return { error: result.error, httpCode: result.httpCode }
     } catch (error) {
         if (userCredentialResult) {
             await userCredentialResult.deleteOne();
@@ -63,8 +65,21 @@ export const checkUsernameAvailability = async (username: string): Promise<boole
 
 export const checkEmailAvailability = async (emailAddress: string): Promise<boolean> => {
     try {
-        const result: boolean = (await User.findOne({ personal_email: { $regex: new RegExp(`^ ${emailAddress} $`, 'i') } })) === null;
+        const result: boolean = (await User.findOne({ personal_email: { $regex: new RegExp(`^${emailAddress}$`, 'i') } })) === null;
         return result;
+    } catch (error) {
+        return false;
+    }
+};
+
+export const checkEmailVerified = async (user_id: string): Promise<boolean> => {
+    try {
+        const result = await User.findById(user_id);
+        if (!result) {
+            return false;
+        }
+
+        return result.valid_email;
     } catch (error) {
         return false;
     }
@@ -72,7 +87,7 @@ export const checkEmailAvailability = async (emailAddress: string): Promise<bool
 
 export const getDataByEmailAddress = async (emailAddress: string): Promise<UserSchemaInterface | null> => {
     try {
-        const result: UserSchemaInterface | null = await User.findOne({ personal_email: { $regex: new RegExp(`^ ${emailAddress} $`, 'i') } });
+        const result: UserSchemaInterface | null = await User.findOne({ personal_email: { $regex: new RegExp(`^${emailAddress}$`, 'i') } });
         return result;
     } catch (error) {
         return null;

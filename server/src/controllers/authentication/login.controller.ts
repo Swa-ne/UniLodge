@@ -39,7 +39,7 @@ export const loginUserController = async (req: Request, res: Response) => {
             }
             return res.status(data.httpCode).json({ error: checker_for_input.error });
         }
-        return res.status(checker_for_input.httpCode).json(checker_for_input.error);;
+        return res.status(checker_for_input.httpCode).json({ error: checker_for_input.error });
     } catch (error) {
         return res.status(500).json({ 'error': 'Internal Server Error' });
     }
@@ -107,7 +107,7 @@ export const editProfileController = async (req: Request & { user?: UserType }, 
         if (data.httpCode !== 200) {
             return res.status(500).json({ error: data.error });
         }
-        return res.status(200).send({ message: data.message });
+        return res.status(200).json({ message: data.message });
     } catch (error) {
         return res.status(500).json({ 'error': 'Internal Server Error' });
     }
@@ -115,29 +115,36 @@ export const editProfileController = async (req: Request & { user?: UserType }, 
 
 export const forgotPasswordController = async (req: Request, res: Response) => {
     try {
-        const { email } = req.body;
-        const user = await getCurrentUserByEmail(email);
+        const { personal_email } = req.body;
+        const user = await getCurrentUserByEmail(personal_email);
         if (!user) return res.status(404).json({ error: "User not found" })
 
         const token = jwt.sign({ email: user.personal_email, user_id: user._id }, process.env.ACCESS_TOKEN_SECRET as string, {
             expiresIn: "120m",
         });
-        await sendEmailForgetPassword(user._id.toString(), email, user.full_name, token)
-        return res.status(200).json({ message: "Success" });
+        await sendEmailForgetPassword(user._id.toString(), personal_email, user.full_name)
+        return res.status(200).json({ message: "Success", token });
     } catch (error) {
         return res.status(500).json({ 'error': 'Internal Server Error' });
     }
 }
 
-export const postResetPasswordController = async (req: Request, res: Response) => {
+export const postResetPasswordController = async (req: Request & { user?: UserType }, res: Response) => {
     try {
-        const { token } = req.params;
-        const { password } = req.body;
+        const user = req.user;
 
-        const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string);
-        const user_id = (decoded as { user_id: string }).user_id;
-        const user = await getCurrentUserById(user_id);
-        if (!user) return res.status(404).json({ error: "User not found" });
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        const { user_id } = user;
+        const { password, confirmation_password } = req.body;
+
+        if (password !== confirmation_password) {
+            return res.status(400).json({ error: "Those password didn't match. Try again." });
+        }
+
+        const result = await getCurrentUserById(user_id);
+        if (!result) return res.status(404).json({ error: "User not found" });
 
         const { httpCode, message, error } = await changePassword(user_id, password);
 
