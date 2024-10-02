@@ -91,7 +91,7 @@ class _SignUpState extends State<ThirdPartySignUp> with InputValidationMixin {
       listener: (context, state) {
         if (state is SignUpSuccess) {
           context.go("/home");
-        } else if (state is AuthError) {
+        } else if (state is SignUpError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.error)),
           );

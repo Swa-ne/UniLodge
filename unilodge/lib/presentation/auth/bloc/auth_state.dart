@@ -72,10 +72,19 @@ class EmailNotVerified extends AuthState {
   List<Object> get props => [token];
 }
 
-class AuthError extends AuthState {
+class LoginError extends AuthState {
   final String error;
 
-  const AuthError(this.error);
+  const LoginError(this.error);
+
+  @override
+  List<Object> get props => [error];
+}
+
+class SignUpError extends AuthState {
+  final String error;
+
+  const SignUpError(this.error);
 
   @override
   List<Object> get props => [error];
@@ -85,6 +94,24 @@ class VerificationError extends AuthState {
   final String error;
 
   const VerificationError(this.error);
+
+  @override
+  List<Object> get props => [error];
+}
+
+class ForgetPasswordError extends AuthState {
+  final String error;
+
+  const ForgetPasswordError(this.error);
+
+  @override
+  List<Object> get props => [error];
+}
+
+class ChangePasswordError extends AuthState {
+  final String error;
+
+  const ChangePasswordError(this.error);
 
   @override
   List<Object> get props => [error];

@@ -40,7 +40,7 @@ class _ChangePasswordState extends State<ChangePassword>
       listener: (context, state) {
         if (state is ChangePasswordSuccess) {
           context.go("/login");
-        } else if (state is AuthError) {
+        } else if (state is ChangePasswordError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.error)),
           );

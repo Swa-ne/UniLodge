@@ -124,7 +124,7 @@ class _SignUpState extends State<SignUp> with InputValidationMixin {
             "email_address": obfuscateEmail(emailController.text),
             "token": state.token,
           });
-        } else if (state is AuthError) {
+        } else if (state is SignUpError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.error)),
           );

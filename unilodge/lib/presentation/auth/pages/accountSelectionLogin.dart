@@ -32,10 +32,9 @@ class _AccountSelectionLoginState extends State<AccountSelectionLogin> {
       listener: (context, state) {
         if (state is LoginSuccess) {
           context.go("/home");
-        } else if (state is AuthError) {
+        } else if (state is LoginError) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-                content: Text("This Google account is not registered")),
+            SnackBar(content: Text(state.error)),
           );
         }
       },

@@ -20,7 +20,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             emit(EmailNotVerified(accessToken));
           }
         } catch (e) {
-          emit(AuthError(e.toString()));
+          emit(LoginError(e.toString()));
         }
       },
     );
@@ -31,7 +31,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           final access_token = await _authRepo.signUp(event.user);
           emit(SignUpSuccess(access_token));
         } catch (e) {
-          emit(AuthError(e.toString()));
+          emit(SignUpError(e.toString()));
         }
       },
     );
@@ -65,7 +65,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           final access_token = await _authRepo.forgotPassword(event.email);
           emit(ForgetPasswordSuccess(access_token));
         } catch (e) {
-          emit(VerificationError(e.toString()));
+          emit(ForgetPasswordError(e.toString()));
         }
       },
     );
@@ -77,7 +77,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               event.token, event.password, event.confirmation_password);
           emit(ChangePasswordSuccess(access_token));
         } catch (e) {
-          emit(VerificationError(e.toString()));
+          emit(ChangePasswordError(e.toString()));
         }
       },
     );

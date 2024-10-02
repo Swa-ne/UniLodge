@@ -36,7 +36,7 @@ class _ForgetPasswordState extends State<ForgetPassword>
               ),
             ),
           );
-        } else if (state is AuthError) {
+        } else if (state is ForgetPasswordError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.error)),
           );

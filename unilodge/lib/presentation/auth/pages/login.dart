@@ -41,18 +41,13 @@ class _LoginState extends State<Login> with InputValidationMixin {
 
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-        if (state is LoginSuccess) {
-          context.go("/home");
-        } else if (state is EmailNotVerified) {
+        if (state is EmailNotVerified) {
           _authBloc.add(ResendEmailCodeEvent(state.token));
           context.go("/verify-email", extra: {
             "email_address": obfuscateEmail(emailController.text),
             "token": state.token,
           });
-        } else if (state is AuthError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.error)),
-          );
+        } else if (state is LoginError) {
           // TODO: fix this if it looks ugly hahahaha
           setState(() {
             emailError = "Incorrect Email or Password";
