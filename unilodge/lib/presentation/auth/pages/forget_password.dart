@@ -1,83 +1,105 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unilodge/common/widgets/customButton.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
+import 'package:unilodge/presentation/auth/bloc/auth_bloc.dart';
+import 'package:unilodge/presentation/auth/bloc/auth_event.dart';
+import 'package:unilodge/presentation/auth/bloc/auth_state.dart';
+import 'package:unilodge/presentation/auth/mixin/input_validation.dart';
+import 'package:unilodge/presentation/auth/pages/verify_email.dart';
+import 'package:unilodge/presentation/auth/widgets/authTextField.dart';
 
-class ForgetPassword extends StatelessWidget {
+class ForgetPassword extends StatefulWidget {
   const ForgetPassword({super.key});
 
   @override
+  State<ForgetPassword> createState() => _ForgetPasswordState();
+}
+
+class _ForgetPasswordState extends State<ForgetPassword>
+    with InputValidationMixin {
+  final TextEditingController emailController = TextEditingController();
+  String? emailError;
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.lightBackground,
-      appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Align(
-              alignment: Alignment.center,
-              child: Text(
-                'Forget Password',
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.primary),
-                textAlign: TextAlign.center,
+    final authBloc = BlocProvider.of<AuthBloc>(context);
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is ForgetPasswordSuccess) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => VerifyEmail(
+                email_address: obfuscateEmail(emailController.text),
+                token: state.token,
+                isEmailVerification: false,
               ),
             ),
-            const SizedBox(height: 20),
-            Center(
-              child: Container(
-                width: 400,
-                height: 240,
-                decoration: BoxDecoration(
-                  color: Color(0xff7D8387).withOpacity(0.05),
-                  borderRadius: BorderRadius.circular(10),
+          );
+        } else if (state is AuthError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.error)),
+          );
+        }
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.lightBackground,
+        appBar: AppBar(),
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Align(
+                alignment: Alignment.center,
+                child: Text(
+                  'Forget Password',
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.primary),
+                  textAlign: TextAlign.center,
                 ),
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 30),
-
-                    SizedBox(
-                      width: 368,
-                      height: 55,
-                      child: TextField(
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: AppColors.blueTextColor,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                            borderSide: BorderSide.none,
-                          ),
-                          labelStyle: const TextStyle(
-                            color: AppColors.formTextColor,
-                            height: 1.3,
-                          ),
+              ),
+              const SizedBox(height: 20),
+              Center(
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        child: AuthTextField(
                           labelText: "Email",
-                          hintText: "Enter email address",
-                          hintStyle: const TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.grey,
-                          ),
+                          hintText: "Enter email",
+                          controller: emailController,
+                          onChanged: validateEmail,
+                          errorText: emailError,
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 25),
+                      const SizedBox(height: 25),
+                      CustomButton(
+                          text: "Send",
+                          onPressed: () {
+                            String? isValidEmail =
+                                validateEmail(emailController.text);
+                            if (isValidEmail != null) {
+                              setState(() {
+                                emailError = isValidEmail;
+                              });
+                              return;
+                            }
 
-                    // Elevated Button
-                    
-
-                    CustomButton(text: "Send", onPressed: (){})
-                  ],
+                            authBloc
+                                .add(ForgotPasswordEvent(emailController.text));
+                          })
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
