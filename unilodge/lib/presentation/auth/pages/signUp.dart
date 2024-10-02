@@ -183,7 +183,7 @@ class _SignUpState extends State<SignUp> with InputValidationMixin {
                     icon: const Icon(Icons.arrow_back),
                     onPressed: () => {
                       if (_currentPage == 0)
-                        {Navigator.pop(context)}
+                        {context.go("/account-selection-signup")}
                       else
                         {_previousPage()}
                     },

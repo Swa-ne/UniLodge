@@ -185,7 +185,7 @@ class _LoginState extends State<Login> with InputValidationMixin {
                   child: IconButton(
                     icon: const Icon(Icons.arrow_back),
                     onPressed: () {
-                      Navigator.pop(context);
+                      context.go("/account-selection-login");
                     },
                   ),
                 ),
