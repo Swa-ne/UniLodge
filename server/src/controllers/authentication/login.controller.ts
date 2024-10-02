@@ -37,7 +37,7 @@ export const loginUserController = async (req: Request, res: Response) => {
                     )
                     .json({ message: "Success", access_token: result.message?.access_token });
             }
-            return res.status(data.httpCode).json({ error: checker_for_input.error });
+            return res.status(data.httpCode).json({ error: data.error });
         }
         return res.status(checker_for_input.httpCode).json({ error: checker_for_input.error });
     } catch (error) {
