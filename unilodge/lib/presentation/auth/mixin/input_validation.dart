@@ -77,4 +77,20 @@ mixin InputValidationMixin {
     }
     return null;
   }
+
+  String obfuscateEmail(String email) {
+    List<String> emailParts = email.split('@');
+
+    if (emailParts.length != 2) return email;
+
+    String localPart = emailParts[0];
+    String domainPart = emailParts[1];
+
+    int visibleLength = 3;
+
+    String obfuscatedLocalPart = '*' * (localPart.length - visibleLength) +
+        localPart.substring(localPart.length - visibleLength);
+
+    return "$obfuscatedLocalPart@$domainPart";
+  }
 }
