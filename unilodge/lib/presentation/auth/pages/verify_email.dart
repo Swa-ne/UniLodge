@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:get/get.dart';
 import 'package:unilodge/presentation/auth/bloc/auth_bloc.dart';
 import 'package:unilodge/presentation/auth/bloc/auth_event.dart';
 import 'package:unilodge/presentation/auth/bloc/auth_state.dart';
-import 'package:unilodge/presentation/auth/pages/login.dart';
+import 'package:unilodge/presentation/auth/pages/change_password.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class VerifyEmail extends StatefulWidget {
   final String email_address;
   final String token;
+  final bool isEmailVerification;
 
   const VerifyEmail(
-      {super.key, required this.email_address, required this.token});
+      {super.key,
+      required this.email_address,
+      required this.token,
+      this.isEmailVerification = true});
 
   @override
   State<VerifyEmail> createState() => _VerifyEmailState();
@@ -51,22 +53,31 @@ class _VerifyEmailState extends State<VerifyEmail> {
               backgroundColor: Colors.red,
             ),
           );
-        } else if (state is SignUpSuccess) {
-          context.go("/home");
+        } else if (state is VerifyEmailSuccess) {
+          if (widget.isEmailVerification) {
+            context.go("/home");
+            return;
+          }
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChangePassword(
+                token: state.token,
+              ),
+            ),
+          );
+        } else if (state is VerificationError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.error),
+              backgroundColor: Colors.red,
+            ),
+          );
         }
       },
       child: Scaffold(
+        appBar: !widget.isEmailVerification ? AppBar() : null,
         backgroundColor: const Color(0xffF2F2F2),
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          actions: [
-            IconButton(
-              onPressed: () => Get.offAll(() => const Login()),
-              icon: const Icon(CupertinoIcons.clear),
-            ),
-          ],
-        ),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16),
@@ -80,9 +91,11 @@ class _VerifyEmailState extends State<VerifyEmail> {
                   color: Colors.black,
                 ),
                 const SizedBox(height: 16),
-                const Text(
-                  'Email Verification',
-                  style: TextStyle(
+                Text(
+                  widget.isEmailVerification
+                      ? 'Email Verification'
+                      : 'Forget Password',
+                  style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
@@ -99,8 +112,6 @@ class _VerifyEmailState extends State<VerifyEmail> {
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 32),
-
-                // Form with TextFields
                 Form(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -109,7 +120,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
                         height: 58,
                         width: 54,
                         child: TextField(
-                          controller: code1Controller, // Attach controller
+                          controller: code1Controller,
                           onChanged: (value) {
                             if (value.length == 1) {
                               FocusScope.of(context).nextFocus();
@@ -127,7 +138,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
                         height: 58,
                         width: 54,
                         child: TextField(
-                          controller: code2Controller, // Attach controller
+                          controller: code2Controller,
                           onChanged: (value) {
                             if (value.length == 1) {
                               FocusScope.of(context).nextFocus();
@@ -145,7 +156,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
                         height: 58,
                         width: 54,
                         child: TextField(
-                          controller: code3Controller, // Attach controller
+                          controller: code3Controller,
                           onChanged: (value) {
                             if (value.length == 1) {
                               FocusScope.of(context).nextFocus();
@@ -163,7 +174,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
                         height: 58,
                         width: 54,
                         child: TextField(
-                          controller: code4Controller, // Attach controller
+                          controller: code4Controller,
                           onChanged: (value) {
                             if (value.length == 1) {
                               FocusScope.of(context).nextFocus();
@@ -181,7 +192,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
                         height: 58,
                         width: 54,
                         child: TextField(
-                          controller: code5Controller, // Attach controller
+                          controller: code5Controller,
                           onChanged: (value) {
                             if (value.length == 1) {
                               FocusScope.of(context).nextFocus();
@@ -199,7 +210,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
                         height: 58,
                         width: 54,
                         child: TextField(
-                          controller: code6Controller, // Attach controller
+                          controller: code6Controller,
                           onChanged: (value) {
                             if (value.length == 1) {
                               FocusScope.of(context).nextFocus();
@@ -217,8 +228,6 @@ class _VerifyEmailState extends State<VerifyEmail> {
                   ),
                 ),
                 const SizedBox(height: 5),
-
-                // Resend Button
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -237,8 +246,6 @@ class _VerifyEmailState extends State<VerifyEmail> {
                   ],
                 ),
                 const SizedBox(height: 16),
-
-                // Verify Button
                 SizedBox(
                   width: 300,
                   height: 55,
