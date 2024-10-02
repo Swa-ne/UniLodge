@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
+import 'package:unilodge/presentation/listing/widgets/image_helper.dart';
+import 'package:unilodge/presentation/listing/widgets/MultipleImages.dart';
+import 'package:go_router/go_router.dart';
 
-class PostPrice extends StatelessWidget {
-  const PostPrice({super.key});
+class Postimage extends StatefulWidget {
+  const Postimage({super.key});
+
+  @override
+  _PostimageState createState() => _PostimageState();
+}
+
+class _PostimageState extends State<Postimage> {
+  final imageHelper = ImageHelper();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          Column(
+          const Column(
             children: <Widget>[
               Expanded(
                 child: SingleChildScrollView(
@@ -19,8 +29,8 @@ class PostPrice extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       const SizedBox(height: 60),
-                      const Text(
-                        'Property Information',
+                      Text(
+                        'Add property images',
                         style: TextStyle(
                           color: AppColors.primary,
                           fontSize: 18,
@@ -28,42 +38,33 @@ class PostPrice extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 7),
-                      const Text(
-                        'Please fill in all fields below to continue',
+                      Text(
+                        'Upload at least 6 images',
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.normal,
                           color: AppColors.primary,
                         ),
                       ),
-                      const SizedBox(height: 50),
-                      _buildTextField(
-                        label: 'Price',
-                        hint: 'Enter price',
-                        contentPadding: const EdgeInsets.all(16),
-                      ),
-                      _buildTextField(
-                        label: 'Description',
-                        hint: 'Enter description',
-                        maxLines: 5,
-                        minLines: 5,
-                        contentPadding: const EdgeInsets.all(16),
-                      ),
-                      _buildTextField(
-                        label: 'Least Terms',
-                        hint: 'Least Terms',
-                        maxLines: 5,
-                        minLines: 5,
-                        contentPadding: const EdgeInsets.all(16),
-                      ),
+                      const SizedBox(height: 40),
+                      const MultipleImages(),
                     ],
                   ),
                 ),
               ),
-              // Bottom buttons
-              Container(
+            ],
+          ),
+          // Bottom buttons
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Padding(
+              padding: const EdgeInsets.all(1.0),
+              child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
+                  borderRadius: const BorderRadius.horizontal(),
                   boxShadow: [
                     BoxShadow(
                       color: const Color.fromARGB(255, 119, 119, 119)
@@ -81,22 +82,23 @@ class PostPrice extends StatelessWidget {
                   children: [
                     OutlinedButton(
                       onPressed: () {
-                        context.pop();
+                        Navigator.of(context).pop();
                       },
                       style: OutlinedButton.styleFrom(
                         foregroundColor: Colors.black,
+                        backgroundColor: Colors.transparent,
                         side: const BorderSide(color: Colors.black, width: 1),
                         minimumSize: const Size(120, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      child: const Text('Back'),
+                      child: const Text("Back"),
                     ),
                     const SizedBox(width: 20),
                     ElevatedButton(
                       onPressed: () {
-                        context.push('/post-Facility');
+                        context.push('/post-review');
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
@@ -112,56 +114,9 @@ class PostPrice extends StatelessWidget {
                   ],
                 ),
               ),
-            ],
-          ),
-          // Positioned icon at the top-right
-          const Positioned(
-            top: 20,
-            right: 20,
-            child: Icon(
-              Icons.draw,
-              size: 70,
-              color: AppColors.primary,
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildTextField({
-    required String label,
-    required String hint,
-    int maxLines = 1,
-    int minLines = 1,
-    EdgeInsetsGeometry contentPadding =
-        const EdgeInsets.symmetric(vertical: 16.0),
-  }) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
-      child: TextFormField(
-        maxLines: maxLines,
-        minLines: minLines,
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: AppColors.blueTextColor,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: BorderSide.none,
-          ),
-          labelStyle: const TextStyle(
-            color: AppColors.formTextColor,
-            height: 1.3,
-          ),
-          labelText: label,
-          hintText: hint,
-          hintStyle: const TextStyle(
-            fontSize: 14.0,
-            fontWeight: FontWeight.w400,
-            color: Colors.grey,
-          ),
-          contentPadding: contentPadding,
-        ),
       ),
     );
   }

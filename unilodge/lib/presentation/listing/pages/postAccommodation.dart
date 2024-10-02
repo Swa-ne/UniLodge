@@ -2,14 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/presentation/listing/widgets/customcard.dart';
 
-class PostAccommodation extends StatefulWidget {
+class PostAccommodation extends StatelessWidget {
   const PostAccommodation({super.key});
 
-  @override
-  State<PostAccommodation> createState() => _PostAccommodationState();
-}
-
-class _PostAccommodationState extends State<PostAccommodation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +23,7 @@ class _PostAccommodationState extends State<PostAccommodation> {
         ),
         child: Column(
           children: [
-             const Expanded(
+            const Expanded(
               child: Stack(
                 children: <Widget>[
                   Positioned(
@@ -86,14 +81,14 @@ class _PostAccommodationState extends State<PostAccommodation> {
               padding: const EdgeInsets.all(1.0),
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white, //
-                  borderRadius: BorderRadius.horizontal(),
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.horizontal(),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.2),
                       spreadRadius: 1,
                       blurRadius: 10,
-                      offset: Offset(0, -3),
+                      offset: const Offset(0, -3),
                     ),
                   ],
                 ),
@@ -106,32 +101,32 @@ class _PostAccommodationState extends State<PostAccommodation> {
                       onPressed: () {
                         context.go('/home');
                       },
-                      child: const Text("Back"),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: Colors.black,
                         backgroundColor: Colors.transparent,
-                        side: BorderSide(color: Colors.black, width: 1),
-                        minimumSize: Size(120, 50),
+                        side: const BorderSide(color: Colors.black, width: 1),
+                        minimumSize: const Size(120, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
+                      child: const Text("Back"),
                     ),
-                    SizedBox(width: 20),
+                    const SizedBox(width: 20),
                     ElevatedButton(
                       onPressed: () {
-                        context.go('/post-location');
+                        context.push('/post-location');
                       },
-                      child: const Text('Next'),
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
-                        backgroundColor: Color(0xff2E3E4A),
-                        minimumSize: Size(120, 50),
+                        backgroundColor: const Color(0xff2E3E4A),
+                        minimumSize: const Size(120, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
                         elevation: 0,
                       ),
+                      child: const Text('Next'),
                     ),
                   ],
                 ),

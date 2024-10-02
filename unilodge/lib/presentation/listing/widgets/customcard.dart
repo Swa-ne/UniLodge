@@ -50,7 +50,7 @@ class _CustomCardState extends State<CustomCard>
   }
 
   void _onTapDown(TapDownDetails details) {
-    _animationController.reverse(); // Scale down the card
+    _animationController.reverse(); 
   }
 
   void _onTapUp(TapUpDetails details) {

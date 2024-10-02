@@ -3,7 +3,8 @@ import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/presentation/favorite/pages/favorites.dart';
 import 'package:unilodge/presentation/home/pages/home.dart';
 import 'package:unilodge/presentation/message/pages/messages.dart';
-import 'package:unilodge/presentation/listing/pages/listingPage.dart';
+import 'package:unilodge/presentation/listing/pages/postAccommodation.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -21,7 +22,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  final List<Widget> _pages = [Home(), listingPage(), Favorites(), Messages()];
+  final List<Widget> _pages = [Home(), PostAccommodation(), Favorites(), Messages()];
 
   @override
   Widget build(BuildContext context) {
