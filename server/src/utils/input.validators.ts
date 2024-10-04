@@ -5,6 +5,7 @@ export interface CustomResponse {
     message?: string,
     error?: string,
     access_token?: string,
+    refresh_token?: string,
     httpCode: number
 }
 
@@ -22,7 +23,7 @@ export const checkEveryInputForSignup = async (username: string, emailAddress: s
         return { error: 'This email address is being used.', "httpCode": 409 };
     }
     if (!(await checkUsernameAvailability(username))) {
-        return { error: 'This usernmae is being used.', "httpCode": 409 };
+        return { error: 'This username is being used.', "httpCode": 409 };
     }
     if (password !== confirmationPassword) {
         return { error: "Those password didn't match. Try again.", "httpCode": 400 };
@@ -79,7 +80,7 @@ export const validateReviewCommentLength = (description: string) => {
 
 export const validateBioLength = (input: string | undefined,) => {
     if (!input) {
-        return false
+        return true
     }
     const words = input.trim().split(/\s+/);
     return words.length > 80

@@ -11,7 +11,7 @@ export const loginUsertoDatabase = async (user_identifier: string, password: str
             }
             return { 'error': 'Sorry, looks like that\'s the wrong email or password.', "httpCode": 401 };
         }
-        return { 'error': 'User not Found.', "httpCode": 404 };
+        return { 'error': 'It looks like you haven\'t signed up yet. Please create an account to log in.', "httpCode": 404 };
     } catch {
         return { 'error': 'Internal Server Error.', "httpCode": 500 };
     }

@@ -2,19 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/presentation/favorite/pages/favorites.dart';
 import 'package:unilodge/presentation/home/pages/home.dart';
-import 'package:unilodge/presentation/message/pages/messages.dart';
+import 'package:unilodge/presentation/listing/pages/listingPage.dart';
 import 'package:unilodge/presentation/listing/pages/postAccommodation.dart';
-
+import 'package:unilodge/presentation/message/pages/messages.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({super.key, this.initialTabIndex = 0});
+
+  final int initialTabIndex;
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
+  late int _selectedIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.initialTabIndex;
+  }
 
   void _navigateBottomBar(int index) {
     setState(() {
@@ -22,7 +30,12 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  final List<Widget> _pages = [Home(), PostAccommodation(), Favorites(), Messages()];
+  final List<Widget> _pages = [
+    Home(),
+    PostAccommodation(),
+    Favorites(),
+    Messages()
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +47,7 @@ class _HomePageState extends State<HomePage> {
           topRight: Radius.circular(30),
         ),
         child: Container(
-          height: 70,
+          height: 60,
           decoration: BoxDecoration(
             color: AppColors.lightBackground,
             boxShadow: [
@@ -47,21 +60,34 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
           child: BottomNavigationBar(
-              selectedItemColor: AppColors.primary,
-              unselectedItemColor: AppColors.primary.withOpacity(0.8),
-              backgroundColor: AppColors.lightBackground,
-              currentIndex: _selectedIndex,
-              onTap: _navigateBottomBar,
-              type: BottomNavigationBarType.fixed,
-              items: [
-                BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.domain), label: 'Listings'),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.favorite), label: 'Favorites'),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.forum), label: 'Messages')
-              ]),
+            selectedItemColor: AppColors.primary,
+            unselectedItemColor: AppColors.primary.withOpacity(0.8),
+            backgroundColor: AppColors.lightBackground,
+            currentIndex: _selectedIndex,
+            onTap: _navigateBottomBar,
+            type: BottomNavigationBarType.fixed,
+            items: [
+              const BottomNavigationBarItem(
+                  icon: Icon(Icons.home), label: 'Home'),
+              const BottomNavigationBarItem(
+                  icon: Icon(Icons.domain), label: 'Listings'),
+              const BottomNavigationBarItem(
+                  icon: Icon(Icons.favorite), label: 'Favorites'),
+              const BottomNavigationBarItem(
+                  icon: Icon(Icons.forum), label: 'Messages'),
+            ],
+            // items: [
+            //   BottomNavigationBarItem(
+            //       icon: Image.asset(AppImages.homeIcon), label: 'Home'),
+            //   BottomNavigationBarItem(
+            //       icon: Image.asset(AppImages.listingIcon), label: 'Listings'),
+            //   BottomNavigationBarItem(
+            //       icon: Image.asset(AppImages.favoriteIcon),
+            //       label: 'Favorites'),
+            //   BottomNavigationBarItem(
+            //       icon: Image.asset(AppImages.messageIcon), label: 'Messages'),
+            // ],
+          ),
         ),
       ),
     );

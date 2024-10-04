@@ -28,16 +28,50 @@ def sendEmailCode():
     image_url = request.url_root + 'image-logo'
     body = f"""
     <html>
-    <head></head>
+    <head>
+        <style>
+            .container {{
+                font-family: Arial, sans-serif;
+                max-width: 600px;
+                margin: 0 auto;
+                text-align: center;
+                color: #484848;
+            }}
+            .header-logo img {{
+                width: 72px;
+                margin-bottom: 20px;
+            }}
+            .button {{
+                background-color: #FF5A5F;
+                color: white;
+                text-decoration: none;
+                padding: 12px 24px;
+                border-radius: 4px;
+                display: inline-block;
+                margin: 20px 0;
+                font-weight: bold;
+            }}
+            .footer {{
+                font-size: 12px;
+                color: #9E9E9E;
+                margin-top: 40px;
+            }}
+            .footer a {{
+                color: #9E9E9E;
+                text-decoration: none;
+            }}
+        </style>
+    </head>
     <body>
-        <div style="font-family: Arial, sans-serif; text-align: center;">
-            <img src="{image_url}" alt="UniLodge Logo" style="width: 100px; margin-bottom: 20px;">
-            <h2>Your Security Code</h2>
-            <p>Hello, {name}</p>
+        <div class="container">
+            <div class="header-logo">
+                <img src="{image_url}" alt="UniLodge Logo">
+            </div>
+            <p>Hi {name},</p>
             <p>Verifying your email address improves the security of your UniLodge account. Please enter the following code when prompted:</p>
+            <p>Please note: This code will expire in 20 minutes</p>
             <h1 style="letter-spacing: 5px;">{code}</h1>
-            <p>Please note: This code will expire in 20 minutes.</p>
-            <p>Thank you,<br>The UniLodge Team</p>
+            <p>Thanks,<br>The UniLodge Team</p>
         </div>
     </body>
     </html>
@@ -62,15 +96,13 @@ def sendEmailCode():
 def sendEmailForgetPassword():
     data = request.json
     name = data.get('name')
-    token = data.get('token')
+    code = data.get('code')
     emailReceiver = data.get('receiver')
     
-    if not name or not token or not emailReceiver:
+    if not name or not code or not emailReceiver:
         return jsonify(message="Missing required fields"), 400
 
     em = EmailMessage()
-    frontend_url = os.getenv("FRONTEND_URL")
-    url_verifier = f'{frontend_url}/' + token
     image_url = request.url_root + 'image-logo'
     body = f"""
     <html>
@@ -116,16 +148,16 @@ def sendEmailForgetPassword():
             <p>Hi {name},</p>
             <p>We've received a request to verify your email address for your UniLodge account.</p>
             <p>If you didn't make the request, just ignore this message. Otherwise, you can use the code below to verify your email:</p>
-            <p>Please note: This link will expire in 2 hours.</p>
-            <a href="{url_verifier}" class="button">Verify Email</a>
+            <p>Please note: This code will expire in 2 hours.</p>
+            <h1 style="letter-spacing: 5px;">{code}</h1>
             <p>Thanks,<br>The UniLodge Team</p>
-            <div class="footer">
-                <p>UniLodge, Inc., 123 Street Name, City, Country</p>
-            </div>
         </div>
     </body>
     </html>
     """
+            # <div class="footer">
+            #     <p>UniLodge, Inc., 123 Street Name, City, Country</p>
+            # </div> 
     
     em['Subject'] = "Email Verification"
     em['From'] = _emailSender

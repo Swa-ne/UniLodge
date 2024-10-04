@@ -136,8 +136,7 @@ class PostLocation extends StatelessWidget {
       child: TextField(
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
-          filled: true,
-          fillColor: AppColors.blueTextColor,
+          labelText: label,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0),
             borderSide: BorderSide.none,
@@ -146,7 +145,6 @@ class PostLocation extends StatelessWidget {
             color: AppColors.formTextColor,
             height: 1.3,
           ),
-          labelText: label,
           hintText: hint,
           hintStyle: const TextStyle(
             fontSize: 14.0,

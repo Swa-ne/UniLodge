@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
-import 'package:unilodge/presentation/home/pages/listingDetailScreen.dart';
 
 class ListingCards extends StatefulWidget {
-  final String imageUrl;
-  final String property_name;
-  final String address;
-  final String price;
+  final Listing listing; 
 
   const ListingCards({
     super.key,
-    required this.imageUrl,
-    required this.property_name,
-    required this.address,
-    required this.price,
+    required this.listing,
   });
 
   @override
@@ -27,27 +22,7 @@ class _ListingCardsState extends State<ListingCards> {
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: GestureDetector(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ListingDetailScreen(
-                listing: Listing(
-                  property_name: widget.property_name,
-                  address: widget.address,
-                  price: widget.price,
-                  description:
-                      "Description here", // You might need to pass this from a real source
-                  ownerInfo:
-                      "Owner info here", // You might need to handle this differently
-                  amenities: [
-                    "Amenity1",
-                    "Amenity2"
-                  ], // Handle this based on real data
-                  imageUrl: widget.imageUrl,
-                ),
-              ),
-            ),
-          );
+          context.push('/listing-detail/${widget.listing.id}');
         },
         child: Container(
           child: Column(
@@ -58,9 +33,8 @@ class _ListingCardsState extends State<ListingCards> {
                   child: Opacity(
                     opacity: 0.9,
                     child: Image.network(
-                      widget
-                          .imageUrl, // Use widget.imageUrl instead of AppImages.dorm1
-                      width: 345,
+                      widget.listing.imageUrl,
+                      width: 360,
                       height: 200,
                       fit: BoxFit.cover,
                     ),
@@ -68,17 +42,18 @@ class _ListingCardsState extends State<ListingCards> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.all(12.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
                         Text(
-                          widget.property_name,
+                          widget.listing.property_name,
                           style: TextStyle(
-                            color: Color(0xff454545),
+                            color: AppColors.textColor,
                             fontWeight: FontWeight.w500,
+                            fontSize: 16,
                           ),
                         ),
                         Spacer(),
@@ -86,31 +61,33 @@ class _ListingCardsState extends State<ListingCards> {
                           Icons.star,
                           color: Color(0xffFFB800),
                         ),
-                        Text("4.9(14)",
-                            style: TextStyle(color: Color(0xff454545)))
+                        Text(
+                          widget.listing.rating.toString() + "(14)",
+                          style: TextStyle(color: AppColors.textColor),
+                        ),
                       ],
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
+                    SizedBox(height: 10),
                     Text(
-                      widget.address,
-                      style: TextStyle(color: Color(0xff454545)),
+                      widget.listing.address,
+                      style: TextStyle(color: AppColors.textColor),
                     ),
                     Row(
                       children: [
-                        Text(widget.price,
-                            style: TextStyle(color: Color(0xff454545))),
+                        Text(
+                          widget.listing.price,
+                          style: TextStyle(color: AppColors.textColor),
+                        ),
                         Spacer(),
                         Icon(
                           Icons.favorite,
                           color: Color(0xffF04F43),
-                        )
+                        ),
                       ],
                     ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),

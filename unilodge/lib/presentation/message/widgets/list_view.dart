@@ -37,9 +37,9 @@ class MessagesListView extends StatelessWidget {
                   boxShadow: [
                     BoxShadow(
                       color: const Color(0xFF636464)
-                          .withOpacity(0.15), // 636464 with 25% opacity
-                      offset: const Offset(0, 2), // Y offset of 2
-                      blurRadius: 8, // Blur radius of 8
+                          .withOpacity(0.15), 
+                      offset: const Offset(0, 2), 
+                      blurRadius: 8, 
                     ),
                   ],
                 ),
