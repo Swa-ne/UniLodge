@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/presentation/favorite/pages/favorites.dart';
 import 'package:unilodge/presentation/home/pages/home.dart';
+import 'package:unilodge/presentation/listings/pages/yourListings.dart';
 import 'package:unilodge/presentation/message/pages/messages.dart';
-import 'package:unilodge/presentation/listing/pages/postAccommodation.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, this.initialTabIndex = 0});
@@ -31,9 +31,9 @@ class _HomePageState extends State<HomePage> {
 
   final List<Widget> _pages = [
     Home(),
-    PostAccommodation(),
+    Listings(),
     Favorites(),
-    Messages()
+    Messages(),
   ];
 
   @override

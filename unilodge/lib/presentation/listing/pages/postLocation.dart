@@ -144,11 +144,9 @@ class PostLocation extends StatelessWidget {
             borderSide: BorderSide(color: Color(0xff2E3E4A)),
             borderRadius: BorderRadius.circular(10),
           ),
-          hintText: hint,
-          hintStyle: const TextStyle(
-            fontSize: 14.0,
-            fontWeight: FontWeight.w400,
-            color: Colors.grey,
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey),
+            borderRadius: BorderRadius.circular(10),
           ),
         ),
       ),
