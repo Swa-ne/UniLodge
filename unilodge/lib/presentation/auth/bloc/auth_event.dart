@@ -66,3 +66,5 @@ class PostResetPasswordEvent extends AuthEvent {
   @override
   List<Object> get props => [token, password, confirmation_password];
 }
+
+class AuthenticateTokenEvent extends AuthEvent {}
