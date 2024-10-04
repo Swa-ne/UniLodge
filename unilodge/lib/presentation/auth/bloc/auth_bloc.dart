@@ -81,5 +81,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         }
       },
     );
+    on<AuthenticateTokenEvent>((event, emit) async {
+      try {
+        emit(AuthLoading());
+        final isAuthenticated = await _authRepo.authenticateToken();
+        if (isAuthenticated) {
+          emit(AuthSuccess());
+        } else {
+          emit(AuthFailure());
+        }
+      } catch (e) {
+        emit(AuthFailure());
+      }
+    });
   }
 }

@@ -9,6 +9,10 @@ abstract class AuthState extends Equatable {
 
 class AuthLoading extends AuthState {}
 
+class AuthSuccess extends AuthState {}
+
+class AuthFailure extends AuthState {}
+
 class SignUpSuccess extends AuthState {
   final String token;
 

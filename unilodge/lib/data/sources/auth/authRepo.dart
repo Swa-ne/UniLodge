@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:unilodge/data/models/loginUser.dart';
 import 'package:unilodge/data/models/signUpUser.dart';
+import 'package:unilodge/data/sources/auth/token_controller.dart';
 
 final _apiUrl = "${dotenv.env['API_URL']}/authentication";
 
@@ -17,9 +18,13 @@ abstract class AuthRepo {
   Future<String> forgotPassword(String email);
   Future<bool> postResetPassword(
       String token, String password, String confirmation_password);
+  Future<bool> logout();
+  Future<bool> authenticateToken();
 }
 
 class AuthRepoImpl extends AuthRepo {
+  final TokenControllerImpl _tokenController = TokenControllerImpl();
+
   @override
   Future<String> login(LoginUserModel user) async {
     var response = await http.post(
@@ -31,7 +36,21 @@ class AuthRepoImpl extends AuthRepo {
       body: json.encode(user.toJson()),
     );
     final response_body = json.decode(response.body);
+
     if (response.statusCode == 200) {
+      _tokenController.updateAccessToken(response_body['access_token']);
+
+      String? cookies = response.headers['set-cookie'];
+      if (cookies == null) {
+        throw Exception("Server connection error");
+      }
+
+      String? refresh_token = _tokenController.extractRefreshToken(cookies);
+      if (refresh_token == null) {
+        throw Exception("Server connection error");
+      }
+
+      _tokenController.updateRefreshToken(refresh_token);
       return response_body['access_token'];
     } else {
       throw Exception(response_body['error']);
@@ -156,7 +175,19 @@ class AuthRepoImpl extends AuthRepo {
     );
     final response_body = json.decode(response.body);
     if (response.statusCode == 200) {
-      // TODO: save access token
+      _tokenController.updateAccessToken(response_body['access_token']);
+
+      String? cookies = response.headers['set-cookie'];
+      if (cookies == null) {
+        throw Exception("Server connection error");
+      }
+
+      String? refresh_token = _tokenController.extractRefreshToken(cookies);
+      if (refresh_token == null) {
+        throw Exception("Server connection error");
+      }
+
+      _tokenController.updateRefreshToken(refresh_token);
       return response_body['access_token'];
     } else {
       throw Exception("Incorrect Verification Code");
@@ -205,6 +236,55 @@ class AuthRepoImpl extends AuthRepo {
     final response_body = json.decode(response.body);
     if ([200, 400, 404].contains(response.statusCode)) {
       return response_body['message'] == "Success";
+    } else {
+      throw Exception(response_body['error']);
+    }
+  }
+
+  @override
+  Future<bool> logout() async {
+    final token = await _tokenController.getAccessToken();
+    var response = await http.delete(
+      Uri.parse("$_apiUrl/logout"),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': token,
+      },
+    );
+    final response_body = json.decode(response.body);
+    if (response.statusCode == 200) {
+      _tokenController.removeAccessToken();
+      _tokenController.removeRefreshToken();
+      return response_body['message'] == "User logged Out";
+    } else {
+      throw Exception(response_body['error']);
+    }
+  }
+
+  @override
+  Future<bool> authenticateToken() async {
+    final access_token = await _tokenController.getAccessToken();
+    final refresh_token = await _tokenController.getRefreshToken();
+    var response = await http.get(
+      Uri.parse("$_apiUrl/current-user"),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': access_token,
+        'Cookie': 'refresh_token=$refresh_token',
+      },
+    );
+    final response_body = json.decode(response.body);
+    if (response.statusCode == 200) {
+      var newAccessToken = response.headers['authorization'];
+      if (newAccessToken != null) {
+        var tokenValue = newAccessToken.split(' ')[1];
+        await _tokenController.updateAccessToken(tokenValue);
+      }
+      return true;
+    } else if (response.statusCode == 401) {
+      throw Exception('Unauthorized');
     } else {
       throw Exception(response_body['error']);
     }

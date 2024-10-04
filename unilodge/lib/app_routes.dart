@@ -18,16 +18,13 @@ import 'package:unilodge/presentation/listing/pages/PostPrice.dart';
 import 'package:unilodge/presentation/listing/pages/postFacility.dart';
 import 'package:unilodge/presentation/listing/pages/postImage.dart';
 import 'package:unilodge/presentation/listing/pages/postReview.dart';
+import 'package:unilodge/presentation/splashscreen/pages/spashScreen.dart';
 
 final GoRouter appRouter = GoRouter(routes: [
   GoRoute(
     path: '/',
-    redirect: (context, state) {
-      // add some auth logic heree
-      final isLoggedIn = false;
-      // ignore: dead_code
-      return isLoggedIn ? '/home' : '/account-selection-login';
-    },
+    builder: (context, state) =>
+        const SplashScreen(), // Start with splash screen
   ),
   GoRoute(
     path: '/account-selection-login',
