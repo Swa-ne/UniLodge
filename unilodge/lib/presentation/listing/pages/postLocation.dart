@@ -2,14 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 
-class PostLocation extends StatefulWidget {
+class PostLocation extends StatelessWidget {
   const PostLocation({super.key});
 
-  @override
-  State<PostLocation> createState() => _PostLocationState();
-}
-
-class _PostLocationState extends State<PostLocation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +13,7 @@ class _PostLocationState extends State<PostLocation> {
           Expanded(
             child: Stack(
               children: <Widget>[
-                Positioned(
+                const Positioned(
                   top: 60,
                   left: 16,
                   child: Text(
@@ -30,7 +25,7 @@ class _PostLocationState extends State<PostLocation> {
                     ),
                   ),
                 ),
-                Positioned(
+                const Positioned(
                   top: 90,
                   left: 16,
                   right: 16,
@@ -42,8 +37,14 @@ class _PostLocationState extends State<PostLocation> {
                         color: AppColors.primary),
                   ),
                 ),
-                Positioned(
-                    top: 50, right: 20, child: Icon(Icons.draw, size: 70, color: AppColors.primary,)),
+                const Positioned(
+                    top: 20,
+                    right: 20,
+                    child: Icon(
+                      Icons.draw,
+                      size: 70,
+                      color: AppColors.primary,
+                    )),
                 Positioned(
                   top: 160,
                   left: 16,
@@ -52,42 +53,40 @@ class _PostLocationState extends State<PostLocation> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _buildTextField2(
-                          label: 'Property Name',
-                          hint: "Enter property name"),
+                          label: 'Property Name', hint: "Enter property name"),
                       _buildTextField2(label: 'City', hint: "Enter city"),
                       _buildTextField2(label: 'Street', hint: "Enter street"),
                       _buildTextField2(
                           label: 'Barangay', hint: "Enter barangay"),
                       _buildTextField2(
                           label: 'House Number', hint: "Enter house number"),
-                      _buildTextField2(
-                          label: 'Zipcode', hint: "Enter zipcode"),
+                      _buildTextField2(label: 'Zipcode', hint: "Enter zipcode"),
                     ],
                   ),
                 ),
               ],
             ),
           ),
-      
+
           // Bottom buttons
           Padding(
             padding: const EdgeInsets.all(1.0),
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.white, //
-                borderRadius: BorderRadius.horizontal(),
+                borderRadius: const BorderRadius.horizontal(),
                 boxShadow: [
                   BoxShadow(
                     color: const Color.fromARGB(255, 119, 119, 119)
                         .withOpacity(0.2),
                     spreadRadius: 1,
                     blurRadius: 5,
-                    offset: Offset(0, -1),
+                    offset: const Offset(0, -1),
                   ),
                 ],
               ),
-              padding: const EdgeInsets.symmetric(
-                  vertical: 10.0, horizontal: 20.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -95,32 +94,32 @@ class _PostLocationState extends State<PostLocation> {
                     onPressed: () {
                       context.pop();
                     },
-                    child: const Text("Back"),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: Colors.black,
                       backgroundColor: Colors.transparent,
-                      side: BorderSide(color: Colors.black, width: 1),
-                      minimumSize: Size(120, 50),
+                      side: const BorderSide(color: Colors.black, width: 1),
+                      minimumSize: const Size(120, 50),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
+                    child: const Text("Back"),
                   ),
-                  SizedBox(width: 20),
+                  const SizedBox(width: 20),
                   ElevatedButton(
                     onPressed: () {
                       context.push('/post-price');
                     },
-                    child: const Text('Next'),
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
-                      backgroundColor: Color(0xff2E3E4A),
-                      minimumSize: Size(120, 50),
+                      backgroundColor: const Color(0xff2E3E4A),
+                      minimumSize: const Size(120, 50),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
                       elevation: 0,
                     ),
+                    child: const Text('Next'),
                   ),
                 ],
               ),
@@ -131,10 +130,11 @@ class _PostLocationState extends State<PostLocation> {
     );
   }
 
-  Widget _buildTextField({required String label}) {
+  Widget _buildTextField2({required String label, required String hint}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
-      child: TextFormField(
+      child: TextField(
+        keyboardType: TextInputType.text,
         decoration: InputDecoration(
           labelText: label,
           border: OutlineInputBorder(
@@ -147,34 +147,6 @@ class _PostLocationState extends State<PostLocation> {
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.grey),
             borderRadius: BorderRadius.circular(10),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTextField2({required String label, required String hint}) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
-      child: TextField(
-        keyboardType: TextInputType.text,
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: AppColors.blueTextColor,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: BorderSide.none,
-          ),
-          labelStyle: const TextStyle(
-            color: AppColors.formTextColor,
-            height: 1.3,
-          ),
-          labelText: label,
-          hintText: hint,
-          hintStyle: const TextStyle(
-            fontSize: 14.0,
-            fontWeight: FontWeight.w400,
-            color: Colors.grey,
           ),
         ),
       ),
