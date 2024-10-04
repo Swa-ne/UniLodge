@@ -138,12 +138,11 @@ class PostLocation extends StatelessWidget {
         decoration: InputDecoration(
           labelText: label,
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
-            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(10),
           ),
-          labelStyle: const TextStyle(
-            color: AppColors.formTextColor,
-            height: 1.3,
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Color(0xff2E3E4A)),
+            borderRadius: BorderRadius.circular(10),
           ),
           hintText: hint,
           hintStyle: const TextStyle(
