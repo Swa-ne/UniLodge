@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:unilodge/core/configs/theme/app_colors.dart';
+
 
 
 class CustomCard extends StatefulWidget {
