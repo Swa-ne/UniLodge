@@ -1,4 +1,4 @@
-import 'package:unilodge/data/sources/auth/authRepo.dart';
+import 'package:unilodge/data/sources/auth/auth_repo.dart';
 
 mixin InputValidationMixin {
   static final _authRepo = AuthRepoImpl();
