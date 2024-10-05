@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/presentation/screens/favorite/favorites.dart';
 import 'package:unilodge/presentation/screens/home/home.dart';
-import 'package:unilodge/presentation/screens/yourLIsting/yourListings.dart';
+import 'package:unilodge/presentation/screens/your_listing/your_listings.dart';
 import 'package:unilodge/presentation/screens/message/messages.dart';
 
 class HomePage extends StatefulWidget {

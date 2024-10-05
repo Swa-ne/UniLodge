@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:unilodge/data/sources/auth/authRepo.dart';
-import 'package:unilodge/presentation/auth/bloc/auth_event.dart';
-import 'package:unilodge/presentation/auth/bloc/auth_state.dart';
+import 'package:unilodge/data/sources/auth/auth_repo.dart';
+import 'package:unilodge/bloc/authentication/auth_event.dart';
+import 'package:unilodge/bloc/authentication/auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepo _authRepo;

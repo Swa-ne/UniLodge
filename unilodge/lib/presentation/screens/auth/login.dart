@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:unilodge/common/widgets/customButton.dart';
+import 'package:unilodge/common/widgets/custom_button.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
-import 'package:unilodge/data/models/loginUser.dart';
-import 'package:unilodge/presentation/auth/bloc/auth_bloc.dart';
-import 'package:unilodge/presentation/auth/bloc/auth_event.dart';
-import 'package:unilodge/presentation/auth/bloc/auth_state.dart';
+import 'package:unilodge/data/models/login_user.dart';
+import 'package:unilodge/bloc/authentication/auth_bloc.dart';
+import 'package:unilodge/bloc/authentication/auth_event.dart';
+import 'package:unilodge/bloc/authentication/auth_state.dart';
 import 'package:unilodge/presentation/auth/mixin/input_validation.dart';
-import 'package:unilodge/presentation/widgets/auth/authTextField.dart';
-import 'package:unilodge/presentation/widgets/auth/unilodgeText.dart';
+import 'package:unilodge/presentation/widgets/auth/auth_text_field.dart';
+import 'package:unilodge/presentation/widgets/auth/unilodge_text.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});

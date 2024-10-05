@@ -1,24 +1,24 @@
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/data/dummy_data/dummy_data.dart';
-import 'package:unilodge/presentation/screens/auth/accountSelectionLogin.dart';
-import 'package:unilodge/presentation/screens/auth/accountSelectionSignUp.dart';
+import 'package:unilodge/presentation/screens/auth/account_selection_login.dart';
+import 'package:unilodge/presentation/screens/auth/account_selection_sign_up.dart';
 import 'package:unilodge/presentation/screens/auth/forget_password.dart';
 import 'package:unilodge/presentation/screens/auth/login.dart';
-import 'package:unilodge/presentation/screens/auth/signUp.dart';
+import 'package:unilodge/presentation/screens/auth/sign_up.dart';
 import 'package:unilodge/presentation/screens/auth/verify_email.dart';
 import 'package:unilodge/presentation/screens/home/homepage.dart';
-import 'package:unilodge/presentation/screens/home/listingDetailScreen.dart';
-import 'package:unilodge/presentation/screens/home/typeListingScreen.dart';
-import 'package:unilodge/presentation/screens/yourLIsting/editListingPost.dart';
-import 'package:unilodge/presentation/screens/yourLIsting/yourListingDetails.dart';
-import 'package:unilodge/presentation/screens/profile/userProfile.dart';
-import 'package:unilodge/presentation/screens/listing/postAccommodation.dart';
-import 'package:unilodge/presentation/screens/listing/postLocation.dart';
-import 'package:unilodge/presentation/listing/pages/PostPrice.dart';
-import 'package:unilodge/presentation/screens/listing/postFacility.dart';
-import 'package:unilodge/presentation/screens/listing/postImage.dart';
-import 'package:unilodge/presentation/screens/listing/postReview.dart';
-import 'package:unilodge/presentation/splashscreen/pages/spashScreen.dart';
+import 'package:unilodge/presentation/screens/home/listing_details_screen.dart';
+import 'package:unilodge/presentation/screens/home/type_listing_screen.dart';
+import 'package:unilodge/presentation/screens/your_listing/edit_listing_post.dart';
+import 'package:unilodge/presentation/screens/your_listing/your_listing_details.dart';
+import 'package:unilodge/presentation/screens/profile/user_profile.dart';
+import 'package:unilodge/presentation/screens/listing/post_accommodation.dart';
+import 'package:unilodge/presentation/screens/listing/post_location.dart';
+import 'package:unilodge/presentation/screens/listing/post_price.dart';
+import 'package:unilodge/presentation/screens/listing/post_facility.dart';
+import 'package:unilodge/presentation/screens/listing/post_image.dart';
+import 'package:unilodge/presentation/screens/listing/post_review.dart';
+import 'package:unilodge/presentation/splashscreen/pages/spash_screen.dart';
 
 final GoRouter appRouter = GoRouter(routes: [
   GoRoute(

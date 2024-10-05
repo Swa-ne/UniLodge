@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/data/models/listing.dart';
-import 'package:unilodge/presentation/widgets/home/nearbyListingCard.dart';
+import 'package:unilodge/presentation/widgets/home/nearby_listing_card.dart';
 
 class NearbyProperties extends StatelessWidget {
   const NearbyProperties({super.key, required this.listings});

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/presentation/widgets/listing/image_helper.dart';
-import 'package:unilodge/presentation/widgets/listing/MultipleImages.dart';
+import 'package:unilodge/presentation/widgets/listing/multiple_images.dart';
 import 'package:go_router/go_router.dart';
 
 class Postimage extends StatefulWidget {

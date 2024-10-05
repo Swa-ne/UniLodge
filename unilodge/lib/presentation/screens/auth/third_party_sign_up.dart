@@ -5,16 +5,16 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:unilodge/common/widgets/customButton.dart';
+import 'package:unilodge/common/widgets/custom_button.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:intl/intl.dart';
-import 'package:unilodge/data/models/signUpUser.dart';
-import 'package:unilodge/presentation/auth/bloc/auth_bloc.dart';
-import 'package:unilodge/presentation/auth/bloc/auth_event.dart';
-import 'package:unilodge/presentation/auth/bloc/auth_state.dart';
+import 'package:unilodge/data/models/sign_up_user.dart';
+import 'package:unilodge/bloc/authentication/auth_bloc.dart';
+import 'package:unilodge/bloc/authentication/auth_event.dart';
+import 'package:unilodge/bloc/authentication/auth_state.dart';
 import 'package:unilodge/presentation/auth/mixin/input_validation.dart';
-import 'package:unilodge/presentation/widgets/auth/authTextField.dart';
-import 'package:unilodge/presentation/widgets/auth/unilodgeText.dart';
+import 'package:unilodge/presentation/widgets/auth/auth_text_field.dart';
+import 'package:unilodge/presentation/widgets/auth/unilodge_text.dart';
 
 final _secretKey = dotenv.env['SECRET_KEY'];
 

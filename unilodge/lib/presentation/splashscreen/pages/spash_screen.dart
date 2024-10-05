@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:unilodge/presentation/auth/bloc/auth_bloc.dart';
-import 'package:unilodge/presentation/auth/bloc/auth_event.dart';
-import 'package:unilodge/presentation/auth/bloc/auth_state.dart';
+import 'package:unilodge/bloc/authentication/auth_bloc.dart';
+import 'package:unilodge/bloc/authentication/auth_event.dart';
+import 'package:unilodge/bloc/authentication/auth_state.dart';
 import 'package:go_router/go_router.dart';
 
 class SplashScreen extends StatefulWidget {

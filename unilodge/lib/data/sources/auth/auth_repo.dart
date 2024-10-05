@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:unilodge/data/models/loginUser.dart';
-import 'package:unilodge/data/models/signUpUser.dart';
+import 'package:unilodge/data/models/login_user.dart';
+import 'package:unilodge/data/models/sign_up_user.dart';
 import 'package:unilodge/data/sources/auth/token_controller.dart';
 
 final _apiUrl = "${dotenv.env['API_URL']}/authentication";

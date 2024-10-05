@@ -3,13 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
-import 'package:unilodge/data/models/loginUser.dart';
-import 'package:unilodge/data/sources/auth/authFirebaseRepo.dart';
-import 'package:unilodge/presentation/auth/bloc/auth_bloc.dart';
-import 'package:unilodge/presentation/auth/bloc/auth_event.dart';
-import 'package:unilodge/presentation/auth/bloc/auth_state.dart';
-import 'package:unilodge/presentation/widgets/auth/authButton.dart';
-import 'package:unilodge/presentation/widgets/auth/unilodgeText.dart';
+import 'package:unilodge/data/models/login_user.dart';
+import 'package:unilodge/data/sources/auth/auth_firebase_repo.dart';
+import 'package:unilodge/bloc/authentication/auth_bloc.dart';
+import 'package:unilodge/bloc/authentication/auth_event.dart';
+import 'package:unilodge/bloc/authentication/auth_state.dart';
+import 'package:unilodge/presentation/widgets/auth/auth_button.dart';
+import 'package:unilodge/presentation/widgets/auth/unilodge_text.dart';
 
 final _secretKey = dotenv.env['SECRET_KEY'];
 

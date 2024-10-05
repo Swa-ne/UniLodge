@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/assets/app_images.dart';
-import 'package:unilodge/presentation/widgets/profile/textRow.dart';
+import 'package:unilodge/presentation/widgets/profile/text_row.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key});

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
-import 'package:unilodge/data/sources/auth/authFirebaseRepo.dart';
-import 'package:unilodge/presentation/screens/auth/thirdPartySignUp.dart';
-import 'package:unilodge/presentation/widgets/auth/authButton.dart';
-import 'package:unilodge/presentation/widgets/auth/unilodgeText.dart';
+import 'package:unilodge/data/sources/auth/auth_firebase_repo.dart';
+import 'package:unilodge/presentation/screens/auth/third_party_sign_up.dart';
+import 'package:unilodge/presentation/widgets/auth/auth_button.dart';
+import 'package:unilodge/presentation/widgets/auth/unilodge_text.dart';
 
 class AccountSelectionSignup extends StatefulWidget {
   const AccountSelectionSignup({super.key});

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:unilodge/data/models/loginUser.dart';
-import 'package:unilodge/data/models/signUpUser.dart';
+import 'package:unilodge/data/models/login_user.dart';
+import 'package:unilodge/data/models/sign_up_user.dart';
 
 abstract class AuthEvent extends Equatable {
   const AuthEvent();

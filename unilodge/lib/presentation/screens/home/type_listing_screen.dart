@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/dummy_data/dummy_data.dart';
-import 'package:unilodge/presentation/widgets/home/listingCards.dart';
+import 'package:unilodge/presentation/widgets/home/listing_cards.dart';
 
 class TypeListingScreen extends StatelessWidget {
   const TypeListingScreen({super.key, required this.appbarTitle});

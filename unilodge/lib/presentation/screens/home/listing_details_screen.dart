@@ -1,29 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:go_router/go_router.dart';
+import 'package:unilodge/common/widgets/custom_button.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
+import 'package:unilodge/data/dummy_data/dummy_data.dart';
 import 'package:unilodge/data/models/listing.dart';
-import 'package:unilodge/presentation/widgets/home/textRow.dart';
+import 'package:unilodge/presentation/widgets/home/nearby_listing.dart';
+import 'package:unilodge/presentation/widgets/home/text_row.dart';
 
-class YourListingDetails extends StatelessWidget {
-  const YourListingDetails({super.key, required this.listing});
-
+class ListingDetailScreen extends StatelessWidget {
   final Listing listing;
+
+  const ListingDetailScreen({Key? key, required this.listing})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // floatingActionButton: FloatingActionButton(onPressed: (){
+      // },
+      // child: Icon(Icons.message, color: Color(0xfffdfdfd),),
+      // backgroundColor: Color(0xff2E3E4A),),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              height: 30,
+              height: 20,
             ),
             Row(
               children: [
                 SizedBox(
-                  width: 10,
+                  width: 15,
                 ),
                 GestureDetector(
                     onTap: () {
@@ -31,19 +38,10 @@ class YourListingDetails extends StatelessWidget {
                     },
                     child: Icon(Icons.cancel,
                         color: Color.fromARGB(169, 60, 60, 67))),
-                Spacer(),
-                GestureDetector(
-                    onTap: () async {
-                      _displayBottomSheet(context);
-                    },
-                    child: Icon(Icons.more_vert)),
-                SizedBox(
-                  width: 10,
-                ),
               ],
             ),
             SizedBox(
-              height: 30,
+              height: 20,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -147,65 +145,71 @@ class YourListingDetails extends StatelessWidget {
               ),
             ),
             SizedBox(height: 30),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+              child: Text(
+                "Nearby Listings",
+                style: TextStyle(color: Color(0xff434343), fontSize: 15),
+              ),
+            ),
+            // i should pass the data here
+            NearbyProperties(listings: dummyListings)
           ],
         ),
       ),
-    );
-  }
-
-  Future _displayBottomSheet(BuildContext context) {
-    return showModalBottomSheet(
-        context: context,
-        backgroundColor: AppColors.lightBackground,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(30))),
-        builder: (context) => Container(
-              height: 150,
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        context.push("/edit-listing-post");
-                      },
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.edit,
-                            color: AppColors.primary,
-                          ),
-                          SizedBox(width: 12),
-                          Text("Edit post",
-                              style: TextStyle(color: AppColors.textColor)),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30.0),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.delete,
-                          color: AppColors.primary,
-                        ),
-                        SizedBox(width: 12),
-                        Text(
-                          "Remove post",
-                          style: TextStyle(color: AppColors.textColor),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
+      bottomNavigationBar: ClipRRect(
+        child: Container(
+          decoration: BoxDecoration(
+            color: AppColors.lightBackground,
+            boxShadow: [
+              BoxShadow(
+                color: const Color.fromARGB(255, 59, 59, 59).withOpacity(1),
+                spreadRadius: 10,
+                blurRadius: 30,
+                offset: Offset(0, 2),
               ),
-            ));
+            ],
+          ),
+          height: 65,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SizedBox(width: 10),
+                Expanded(
+                  flex: 7,
+                  child: CustomButton(
+                    text: "Chat with owner",
+                    onPressed: () {},
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 6.0),
+                  child: const VerticalDivider(
+                    color: Color.fromARGB(75, 67, 67, 67),
+                    thickness: 1,
+                    width: 20,
+                  ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: Icon(
+                      Icons.favorite_border,
+                      color: AppColors.primary,
+                      size: 28,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
