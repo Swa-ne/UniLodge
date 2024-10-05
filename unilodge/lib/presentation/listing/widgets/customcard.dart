@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 
+
 class CustomCard extends StatefulWidget {
   const CustomCard({
     super.key,
@@ -9,7 +10,9 @@ class CustomCard extends StatefulWidget {
     required this.leading,
     this.leadingWidth = 40.0,
     this.leadingHeight = 40.0,
-    this.iconSize = 24.0,
+    this.iconSize = 22.0,
+    this.isSelected = false, 
+    required this.onTap, 
   });
 
   final String cardName;
@@ -18,6 +21,8 @@ class CustomCard extends StatefulWidget {
   final double leadingWidth;
   final double leadingHeight;
   final double iconSize;
+  final bool isSelected;
+  final VoidCallback onTap; 
 
   @override
   _CustomCardState createState() => _CustomCardState();
@@ -51,11 +56,15 @@ class _CustomCardState extends State<CustomCard>
   }
 
   void _onTapDown(TapDownDetails details) {
-    _animationController.reverse(); 
+    if (!widget.isSelected) {
+      _animationController.reverse();
+    }
   }
 
   void _onTapUp(TapUpDetails details) {
-    _animationController.forward();
+    if (!widget.isSelected) {
+      _animationController.forward();
+    }
   }
 
   @override
@@ -65,11 +74,16 @@ class _CustomCardState extends State<CustomCard>
       child: GestureDetector(
         onTapDown: _onTapDown,
         onTapUp: _onTapUp,
-        onTapCancel: () => _animationController.forward(),
+        onTapCancel: () {
+          if (!widget.isSelected) {
+            _animationController.forward();
+          }
+        },
+        onTap: widget.onTap,
         child: ScaleTransition(
           scale: _scaleAnimation,
           child: SizedBox(
-            width: 450,
+            width: 350,
             height: 130,
             child: Container(
               decoration: BoxDecoration(
@@ -82,6 +96,9 @@ class _CustomCardState extends State<CustomCard>
                     blurRadius: 8,
                   ),
                 ],
+                border: widget.isSelected
+                    ? Border.all(color: Colors.black, width: 1.0)
+                    : null,
               ),
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -94,8 +111,8 @@ class _CustomCardState extends State<CustomCard>
                         width: widget.leadingWidth,
                         height: widget.leadingHeight,
                         child: FittedBox(
-                          child: widget.leading,
                           fit: BoxFit.scaleDown,
+                          child: widget.leading,
                         ),
                       ),
                     ),
@@ -110,15 +127,15 @@ class _CustomCardState extends State<CustomCard>
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: AppColors.primary,
+                              color: Colors.black,
                             ),
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: 1),
                           Text(
                             widget.description,
                             style: const TextStyle(
-                              fontSize: 14,
-                              color: AppColors.formTextColor,
+                              fontSize: 10,
+                              color: Colors.black54,
                             ),
                           ),
                         ],
