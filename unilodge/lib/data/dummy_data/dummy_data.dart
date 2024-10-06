@@ -10,7 +10,7 @@ List<Listing> dummyListings = [
     ownerInfo: "John Doe - (123) 456-7890",
     amenities: ["WiFi", "Parking", "Gym"],
     imageUrl:
-        "https://scontent.fcrk4-2.fna.fbcdn.net/v/t39.30808-6/414694984_6884371401681658_2075635392075674084_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=aa7b47&_nc_eui2=AeGAN35M9wbfljVI9znnTR3fNovM67BojmQ2i8zrsGiOZNCd1PCsJuALIa9n_i1ev3hwZR5zfv6mytqRn9AAgMaz&_nc_ohc=DZPKUB-w_38Q7kNvgHS6cZ7&_nc_ht=scontent.fcrk4-2.fna&oh=00_AYC0k2YQkLsdDdnQluLSBGi0ZoUrnDdwF7daS4BGWtcPMA&oe=66F3509A",
+        "https://media.istockphoto.com/id/492965743/photo/empty-university-college-dorm-room-with-bunkbed-desk-and-closet.jpg?s=170667a&w=0&k=20&c=iqe28qa_mLcpgWZtMOn-SHTHgxLHX8PacAgRH_KsYho=",
     rating: 5,
   ),
   Listing(
@@ -22,7 +22,7 @@ List<Listing> dummyListings = [
     ownerInfo: "Jane Smith - (987) 654-3210",
     amenities: ["Pool", "Gym", "Spa"],
     imageUrl:
-        "https://scontent.fcrk4-2.fna.fbcdn.net/v/t39.30808-6/459954869_8200842746701724_5831737923705427985_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=833d8c&_nc_eui2=AeFIDRRDYwX_pGBTzS3RbH3Af6ITUdVZCup_ohNR1VkK6uNie1oGcs23oNndrmEjXxVkIVMwWYw9o7-piU9FLJCH&_nc_ohc=9lYad69_wYMQ7kNvgFmMi4D&_nc_ht=scontent.fcrk4-2.fna&_nc_gid=ATfBecKkWxmCwq0xTFY6Tc4&oh=00_AYCI7sDkt5rNzQvH9SLzgeHlHYF-x_5I1AtJgRMPI6zwEg&oe=66F369D3",
+        "https://www.shutterstock.com/image-photo/college-dorm-room-empty-freshman-600nw-2487430993.jpg",
     rating: 4,
   ),
   Listing(
@@ -34,7 +34,7 @@ List<Listing> dummyListings = [
     ownerInfo: "John Doe - (123) 456-7890",
     amenities: ["WiFi", "Parking", "Gym"],
     imageUrl:
-        "https://scontent.fcrk2-1.fna.fbcdn.net/v/t39.30808-6/460662617_501798259445533_2082167429223847884_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=aa7b47&_nc_eui2=AeGqYjqt9ZVC30SmCx9fPDP9u5-yMLiwZLm7n7IwuLBkuekkqI6uLTbHntbxhI94MhrCY2NGgrl2QT8VvCnoY1lX&_nc_ohc=zUHvoxGZalsQ7kNvgGoZIUf&_nc_ht=scontent.fcrk2-1.fna&_nc_gid=A3v-YUlcY1QtC3QOJY8se_v&oh=00_AYCVx3Wh3ssgQTslyxj6MwYo4qhdqKVHGRKIfloAwJhSKg&oe=66F4917A",
+        "https://www.une.edu/sites/default/files/styles/block_image_large/public/2020-12/Avila-6259.jpg?itok=5HTs3fnj",
     rating: 5,
   ),
   Listing(
@@ -46,7 +46,7 @@ List<Listing> dummyListings = [
     ownerInfo: "Jane Smith - (987) 654-3210",
     amenities: ["Pool", "Gym", "Spa"],
     imageUrl:
-        "https://scontent.fcrk2-1.fna.fbcdn.net/v/t39.30808-6/441338695_7862183873832336_7700222853071800481_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=aa7b47&_nc_eui2=AeFg5ttkLbvHeH6IOijC9ReogrTWRB9C5u6CtNZEH0Lm7vJb_mE3jppGe4Rccr52rZZfsQXNnP7HuqA3X-hbllT1&_nc_ohc=pvwB2ZfxsUwQ7kNvgFdwfVt&_nc_ht=scontent.fcrk2-1.fna&_nc_gid=A3-rX09Bwnj3l7xIDX35zvV&oh=00_AYCwQzXQ2Faa-rvLI22ocnylVg0KNPV7gQVecHkuFwf9_w&oe=66F4A36F",
+        "https://media.istockphoto.com/id/492965743/photo/empty-university-college-dorm-room-with-bunkbed-desk-and-closet.jpg?s=170667a&w=0&k=20&c=iqe28qa_mLcpgWZtMOn-SHTHgxLHX8PacAgRH_KsYho=",
     rating: 4,
   ),
   Listing(

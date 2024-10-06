@@ -19,12 +19,12 @@ class _BottomNavbarState extends State<BottomNavbar> {
           color: AppColors.primary.withOpacity(.8),
           activeColor: AppColors.lightBackground,
           tabBackgroundColor: AppColors.primary.withOpacity(.8),
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           gap: 8,
           onTabChange: (index) {
             print(index);
           },
-          tabs: [
+          tabs: const [
             GButton(
               icon: Icons.home,
               text: 'Home',

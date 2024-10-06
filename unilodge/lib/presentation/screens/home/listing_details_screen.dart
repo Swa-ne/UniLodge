@@ -10,8 +10,7 @@ import 'package:unilodge/presentation/widgets/home/text_row.dart';
 class ListingDetailScreen extends StatelessWidget {
   final Listing listing;
 
-  const ListingDetailScreen({Key? key, required this.listing})
-      : super(key: key);
+  const ListingDetailScreen({super.key, required this.listing});
 
   @override
   Widget build(BuildContext context) {
@@ -24,23 +23,23 @@ class ListingDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Row(
               children: [
-                SizedBox(
+                const SizedBox(
                   width: 15,
                 ),
                 GestureDetector(
                     onTap: () {
                       Navigator.pop(context);
                     },
-                    child: Icon(Icons.cancel,
+                    child: const Icon(Icons.cancel,
                         color: Color.fromARGB(169, 60, 60, 67))),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Padding(
@@ -56,7 +55,7 @@ class ListingDetailScreen extends StatelessWidget {
               padding:
                   const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
               child: Text(listing.property_name,
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                       color: Color(0xff434343))),
@@ -74,10 +73,10 @@ class ListingDetailScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: TextRow(text1: "Amenities:", text2: listing.amenities[0]),
             ),
-            SizedBox(height: 20),
-            Padding(
+            const SizedBox(height: 20),
+            const Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
               child: Text(
                 "Description",
                 style: TextStyle(color: Color(0xff434343), fontSize: 15),
@@ -88,20 +87,20 @@ class ListingDetailScreen extends StatelessWidget {
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
               child: Text(
                 listing.description,
-                style: TextStyle(color: AppColors.formTextColor, fontSize: 15),
+                style: const TextStyle(color: AppColors.formTextColor, fontSize: 15),
               ),
             ),
-            SizedBox(height: 15),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
-              child: const Divider(
+            const SizedBox(height: 15),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15.0),
+              child: Divider(
                   height: 20, color: Color.fromARGB(255, 223, 223, 223)),
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             Row(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 15.0),
+                const Padding(
+                  padding: EdgeInsets.only(left: 15.0),
                   child: Text("Rating: ",
                       style: TextStyle(color: Color(0xff434343), fontSize: 15)),
                 ),
@@ -116,8 +115,8 @@ class ListingDetailScreen extends StatelessWidget {
                         direction: Axis.horizontal,
                         itemCount: 5,
                         itemSize: 18,
-                        itemPadding: EdgeInsets.symmetric(horizontal: 1),
-                        itemBuilder: (context, _) => Icon(
+                        itemPadding: const EdgeInsets.symmetric(horizontal: 1),
+                        itemBuilder: (context, _) => const Icon(
                               Icons.star,
                               color: AppColors.ratingYellow,
                             ),
@@ -128,26 +127,26 @@ class ListingDetailScreen extends StatelessWidget {
                 ),
               ],
             ),
-            Padding(
+            const Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
               child: Text(
                 "Reviews (14)",
                 style: TextStyle(color: Color(0xff434343), fontSize: 15),
               ),
             ),
-            Padding(
+            const Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
               child: Text(
                 "dropdown reviews or direct to another screen",
                 style: TextStyle(color: AppColors.formTextColor, fontSize: 15),
               ),
             ),
-            SizedBox(height: 30),
-            Padding(
+            const SizedBox(height: 30),
+            const Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
               child: Text(
                 "Nearby Listings",
                 style: TextStyle(color: Color(0xff434343), fontSize: 15),
@@ -167,7 +166,7 @@ class ListingDetailScreen extends StatelessWidget {
                 color: const Color.fromARGB(255, 59, 59, 59).withOpacity(1),
                 spreadRadius: 10,
                 blurRadius: 30,
-                offset: Offset(0, 2),
+                offset: const Offset(0, 2),
               ),
             ],
           ),
@@ -186,9 +185,9 @@ class ListingDetailScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 6.0),
-                  child: const VerticalDivider(
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 6.0),
+                  child: VerticalDivider(
                     color: Color.fromARGB(75, 67, 67, 67),
                     thickness: 1,
                     width: 20,
@@ -198,7 +197,7 @@ class ListingDetailScreen extends StatelessWidget {
                   flex: 1,
                   child: GestureDetector(
                     onTap: () {},
-                    child: Icon(
+                    child: const Icon(
                       Icons.favorite_border,
                       color: AppColors.primary,
                       size: 28,

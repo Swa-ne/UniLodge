@@ -31,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
         if (state is AuthSuccess) {
           context.go('/home');
         } else if (state is AuthFailure) {
-          context.go('/account-selection-login');
+          context.go('/onboarding');
         }
       },
       child: const Scaffold(

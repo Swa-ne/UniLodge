@@ -15,10 +15,10 @@ class TextRow extends StatelessWidget {
         children: [
           Text(
             text1,
-            style: TextStyle(fontSize: 15, color: Color(0xff434343)),
+            style: const TextStyle(fontSize: 15, color: Color(0xff434343)),
           ),
-          Spacer(),
-          Text(text2, style: TextStyle(fontSize: 15, color: AppColors.formTextColor))
+          const Spacer(),
+          Text(text2, style: const TextStyle(fontSize: 15, color: AppColors.formTextColor))
         ],
       ),
     );

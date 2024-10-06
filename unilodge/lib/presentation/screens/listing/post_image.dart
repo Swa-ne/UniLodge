@@ -24,11 +24,11 @@ class _PostimageState extends State<Postimage> {
             children: <Widget>[
               Expanded(
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const SizedBox(height: 60),
+                      SizedBox(height: 60),
                       Text(
                         'Add property images',
                         style: TextStyle(
@@ -37,7 +37,7 @@ class _PostimageState extends State<Postimage> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 7),
+                      SizedBox(height: 7),
                       Text(
                         'Upload at least 6 images',
                         style: TextStyle(
@@ -46,8 +46,8 @@ class _PostimageState extends State<Postimage> {
                           color: AppColors.primary,
                         ),
                       ),
-                      const SizedBox(height: 40),
-                      const MultipleImages(),
+                      SizedBox(height: 40),
+                      MultipleImages(),
                     ],
                   ),
                 ),
