@@ -18,6 +18,7 @@ export interface UserSchemaInterface extends Document {
     refresh_token_version: number,
     createdAt?: Date,
     updatedAt?: Date,
+    inbox: ObjectId,
 }
 
 const UserSchema: Schema = new Schema({
@@ -45,8 +46,7 @@ const UserSchema: Schema = new Schema({
     },
     profile_picture_url: {
         type: String,
-        default: "IMAGE URL HERE",
-        required: [true, 'Please enter your personal Email.'],
+        default: "https://i.pinimg.com/originals/58/51/2e/58512eb4e598b5ea4e2414e3c115bef9.jpg"
     },
     personal_email: {
         type: String,
@@ -76,7 +76,14 @@ const UserSchema: Schema = new Schema({
     refresh_token_version: {
         type: Number,
         default: 0
-    }
+    },
+    inbox: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Inbox',
+            default: null,
+        },
+    ]
 }, {
     timestamps: true,
 });
