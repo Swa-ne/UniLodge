@@ -28,7 +28,7 @@ class ListingCard extends StatelessWidget {
             boxShadow: [
               BoxShadow(
                 color: Color.fromARGB(43, 99, 100, 100),
-                offset: const Offset(0, 2),
+                offset: Offset(0, 2),
                 blurRadius: 8,
               ),
             ],
@@ -56,7 +56,7 @@ class ListingCard extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.topLeft,
                   child: Text(listing.property_name,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: AppColors.textColor,
                         fontWeight: FontWeight.w500,
                         fontSize: 16,

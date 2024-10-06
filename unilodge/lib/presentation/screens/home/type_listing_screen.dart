@@ -12,7 +12,7 @@ class TypeListingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(appbarTitle, style: TextStyle(
+          title: Text(appbarTitle, style: const TextStyle(
               color: AppColors.textColor,
               fontSize: 18,
             ),),
@@ -24,7 +24,7 @@ class TypeListingScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: ListView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: dummyListings.length,
                 itemBuilder: (context, index) {
                   final listing = dummyListings[index];

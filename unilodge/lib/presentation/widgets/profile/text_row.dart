@@ -18,11 +18,11 @@ class TextRow extends StatelessWidget {
           ),
           Text(
             text,
-            style: TextStyle(color: Color(0xff434343)),
+            style: const TextStyle(color: Color(0xff434343)),
           ),
-          Spacer(),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          const Spacer(),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
             child: Icon(
               Icons.arrow_forward_ios,
               size: 16,

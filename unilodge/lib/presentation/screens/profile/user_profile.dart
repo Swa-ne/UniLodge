@@ -29,7 +29,7 @@ class _UserProfileState extends State<UserProfile> {
         // ),
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 40,
             ),
             Center(
@@ -37,7 +37,7 @@ class _UserProfileState extends State<UserProfile> {
                 width: 350,
                 height: 80,
                 decoration: BoxDecoration(
-                  color: Color(0xFFFFFFFF),
+                  color: const Color(0xFFFFFFFF),
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
@@ -55,17 +55,17 @@ class _UserProfileState extends State<UserProfile> {
                         width: 55,
                         height: 55,
                         decoration: BoxDecoration(
-                            color: Color(0xff2E3E4A),
+                            color: const Color(0xff2E3E4A),
                             borderRadius: BorderRadius.circular(30)),
-                        child: Icon(
+                        child: const Icon(
                           Icons.person,
                           color: Color(0xFFFFFFFF),
                           size: 36,
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
+                    const Padding(
+                      padding: EdgeInsets.all(20.0),
                       child: Column(
                         children: [
                           Text(
@@ -83,12 +83,12 @@ class _UserProfileState extends State<UserProfile> {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Container(
               width: 350,
               height: 220,
               decoration: BoxDecoration(
-                color: Color(0xFFFFFFFF),
+                color: const Color(0xFFFFFFFF),
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
@@ -102,7 +102,7 @@ class _UserProfileState extends State<UserProfile> {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
-                    TextRow(
+                    const TextRow(
                         text: "Details",
                         icon: Icon(
                           Icons.person,
@@ -113,7 +113,7 @@ class _UserProfileState extends State<UserProfile> {
                       onTap: () {
                         context.go("/listings");
                       },
-                      child: TextRow(
+                      child: const TextRow(
                           text: "Bookings",
                           icon: Icon(
                             Icons.shopping_bag,
@@ -121,14 +121,14 @@ class _UserProfileState extends State<UserProfile> {
                             size: 25,
                           )),
                     ),
-                    TextRow(
+                    const TextRow(
                         text: "Reviews",
                         icon: Icon(
                           Icons.star,
                           color: Color.fromARGB(176, 46, 62, 74),
                           size: 25,
                         )),
-                    TextRow(
+                    const TextRow(
                         text: "Settings",
                         icon: Icon(
                           Icons.settings,
@@ -139,12 +139,12 @@ class _UserProfileState extends State<UserProfile> {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Container(
               height: 130,
               width: 350,
               decoration: BoxDecoration(
-                gradient: LinearGradient(
+                gradient: const LinearGradient(
                   colors: [
                     Color(0xFFFFFFFF),
                     Color(0xFFFFFFFF),
@@ -155,7 +155,7 @@ class _UserProfileState extends State<UserProfile> {
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
                 ),
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topRight: Radius.circular(50),
                   bottomLeft: Radius.circular(10),
                   bottomRight: Radius.circular(10),
@@ -178,9 +178,9 @@ class _UserProfileState extends State<UserProfile> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
+                          const Padding(
                             padding:
-                                const EdgeInsets.only(top: 8.0, left: 10.0),
+                                EdgeInsets.only(top: 8.0, left: 10.0),
                             child: Text(
                               "Need a place to stay?",
                               style: TextStyle(
@@ -189,8 +189,8 @@ class _UserProfileState extends State<UserProfile> {
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10.0),
+                          const Padding(
+                            padding: EdgeInsets.only(left: 10.0),
                             child: Text(
                               "Find your accomodation and book now!",
                               style: TextStyle(
@@ -198,22 +198,22 @@ class _UserProfileState extends State<UserProfile> {
                               ),
                             ),
                           ),
-                          Spacer(),
+                          const Spacer(),
                           Padding(
                             padding: const EdgeInsets.only(left: 8.0),
                             child: TextButton(
                               onPressed: () async {
                                 Navigator.pop(context);
                               },
-                              child: Text("Book now"),
                               style: TextButton.styleFrom(
-                                foregroundColor: Color(0xfffdfdfd),
-                                backgroundColor: Color(0xff2E3E4A),
-                                minimumSize: Size(150, 40),
+                                foregroundColor: const Color(0xfffdfdfd),
+                                backgroundColor: const Color(0xff2E3E4A),
+                                minimumSize: const Size(150, 40),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
+                              child: Text("Book now"),
                             ),
                           ),
                         ],

@@ -18,14 +18,19 @@ import 'package:unilodge/presentation/screens/listing/post_price.dart';
 import 'package:unilodge/presentation/screens/listing/post_facility.dart';
 import 'package:unilodge/presentation/screens/listing/post_image.dart';
 import 'package:unilodge/presentation/screens/listing/post_review.dart';
+import 'package:unilodge/presentation/onboardingscreen/onboarding_view.dart';
 import 'package:unilodge/presentation/splashscreen/pages/spash_screen.dart';
-
-final GoRouter appRouter = GoRouter(routes: [
-  GoRoute(
-    path: '/',
+final GoRouter appRouter = GoRouter(
+  routes: [
+    GoRoute(
+      path: '/',
     builder: (context, state) =>
         const SplashScreen(), // Start with splash screen
   ),
+  GoRoute(
+    path: '/onboarding',
+    builder: (context, state) => const OnboardingView(),
+    ),
   GoRoute(
     path: '/account-selection-login',
     builder: (context, state) => const AccountSelectionLogin(),

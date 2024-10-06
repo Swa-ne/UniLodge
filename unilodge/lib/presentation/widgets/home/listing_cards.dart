@@ -50,36 +50,36 @@ class _ListingCardsState extends State<ListingCards> {
                       children: [
                         Text(
                           widget.listing.property_name,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: AppColors.textColor,
                             fontWeight: FontWeight.w500,
                             fontSize: 16,
                           ),
                         ),
-                        Spacer(),
-                        Icon(
+                        const Spacer(),
+                        const Icon(
                           Icons.star,
                           color: Color(0xffFFB800),
                         ),
                         Text(
-                          widget.listing.rating.toString() + "(14)",
-                          style: TextStyle(color: AppColors.textColor),
+                          "${widget.listing.rating}(14)",
+                          style: const TextStyle(color: AppColors.textColor),
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Text(
                       widget.listing.address,
-                      style: TextStyle(color: AppColors.textColor),
+                      style: const TextStyle(color: AppColors.textColor),
                     ),
                     Row(
                       children: [
                         Text(
                           widget.listing.price,
-                          style: TextStyle(color: AppColors.textColor),
+                          style: const TextStyle(color: AppColors.textColor),
                         ),
-                        Spacer(),
-                        Icon(
+                        const Spacer(),
+                        const Icon(
                           Icons.favorite,
                           color: Color(0xffF04F43),
                         ),
