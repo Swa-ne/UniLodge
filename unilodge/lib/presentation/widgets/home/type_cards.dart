@@ -18,7 +18,7 @@ class Cards extends StatelessWidget {
       padding: const EdgeInsets.all(6.0),
       child: Container(
         width: 175,
-        height: 110,
+        height: MediaQuery.of(context).size.height * 0.13,
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: color,
