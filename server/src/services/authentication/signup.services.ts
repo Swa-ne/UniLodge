@@ -42,6 +42,7 @@ export const signupUsertoDatabase = async (
                 message: "Congratulations, your account has been successfully created",
                 access_token: result.message?.access_token,
                 refresh_token: result.message?.refresh_token,
+                user_id: userCredentialResult._id,
                 httpCode: 200
             };
         }

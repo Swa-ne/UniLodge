@@ -111,7 +111,7 @@ export const signupUserController = async (req: Request, res: Response) => {
                         sameSite: 'none',
                     }
                 )
-                .json({ message: "Success", access_token: data.access_token });
+                .json({ message: "Success", access_token: data.access_token, user_id: data.user_id });
         }
 
         return res.status(checkerForInput.httpCode).json({ error: checkerForInput.error });
@@ -160,7 +160,7 @@ export const verifyEmailCodeController = async (req: Request & { user?: UserType
                         sameSite: 'none',
                     }
                 )
-                .json({ message: "Success", access_token: result_token.message?.access_token });
+                .json({ message: "Success", access_token: result_token.message?.access_token, user_id });
         }
         return res.status(result.httpCode).json({ error: result.error });
     } catch (error) {

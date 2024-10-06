@@ -1,7 +1,9 @@
+import { ObjectId } from "mongoose";
 import { checkEmailAvailability, checkUsernameAvailability } from "../services/authentication/signup.services";
 
 
 export interface CustomResponse {
+    user_id?: ObjectId,
     message?: string,
     error?: string,
     access_token?: string,
