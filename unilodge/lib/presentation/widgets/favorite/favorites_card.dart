@@ -59,7 +59,7 @@ class FavoriteCard extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
-                      color: Color(0xffF8F8F8),
+                      color: const Color(0xffF8F8F8),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: CustomText(
@@ -84,12 +84,12 @@ class FavoriteCard extends StatelessWidget {
             ),
           ),
           // hart
-          Column(
+          const Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               SizedBox(height: 8),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                padding: EdgeInsets.symmetric(horizontal: 5.0),
                 child: Icon(Icons.favorite, color: Color(0xffF04F43)),
               ),
             ],

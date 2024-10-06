@@ -30,10 +30,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   final List<Widget> _pages = [
-    Home(),
-    Listings(),
-    Favorites(),
-    Messages(),
+    const Home(),
+    const Listings(),
+    const Favorites(),
+    const Messages(),
   ];
 
   @override
@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.black.withOpacity(0.1),
                 spreadRadius: 5,
                 blurRadius: 10,
-                offset: Offset(0, -3),
+                offset: const Offset(0, -3),
               ),
             ],
           ),
@@ -65,14 +65,14 @@ class _HomePageState extends State<HomePage> {
             currentIndex: _selectedIndex,
             onTap: _navigateBottomBar,
             type: BottomNavigationBarType.fixed,
-            items: [
-              const BottomNavigationBarItem(
+            items: const [
+              BottomNavigationBarItem(
                   icon: Icon(Icons.home), label: 'Home'),
-              const BottomNavigationBarItem(
+              BottomNavigationBarItem(
                   icon: Icon(Icons.domain), label: 'Listings'),
-              const BottomNavigationBarItem(
+              BottomNavigationBarItem(
                   icon: Icon(Icons.favorite), label: 'Favorites'),
-              const BottomNavigationBarItem(
+              BottomNavigationBarItem(
                   icon: Icon(Icons.forum), label: 'Messages'),
             ],
             // items: [

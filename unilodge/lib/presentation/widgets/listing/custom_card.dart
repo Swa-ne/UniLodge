@@ -94,8 +94,8 @@ class _CustomCardState extends State<CustomCard>
                         width: widget.leadingWidth,
                         height: widget.leadingHeight,
                         child: FittedBox(
-                          child: widget.leading,
                           fit: BoxFit.scaleDown,
+                          child: widget.leading,
                         ),
                       ),
                     ),
