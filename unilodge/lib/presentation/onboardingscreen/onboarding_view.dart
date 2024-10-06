@@ -102,7 +102,7 @@ class _OnboardingViewState extends State<OnboardingView> {
           },
           child: const Text(
             "Get started",
-            style: TextStyle(color: AppColors.lightBackground),
+            style: TextStyle(color: AppColors.linearGreen),
           )),
     );
   }
