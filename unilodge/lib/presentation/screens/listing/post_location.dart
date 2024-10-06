@@ -141,11 +141,11 @@ class PostLocation extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Color(0xff2E3E4A)),
+            borderSide: const BorderSide(color: Color(0xff2E3E4A)),
             borderRadius: BorderRadius.circular(10),
           ),
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey),
+            borderSide: const BorderSide(color: Colors.grey),
             borderRadius: BorderRadius.circular(10),
           ),
         ),

@@ -7,13 +7,13 @@ class Postreview extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("bukas ko na ayusin"),
+        title: const Text("bukas ko na ayusin"),
       ),
-      body: Stack(
+      body: const Stack(
         children: <Widget>[
           Expanded(
               child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.symmetric(horizontal: 16),
           ))
         ],
       ),

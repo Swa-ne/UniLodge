@@ -8,11 +8,11 @@ class EditListingPost extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Edit Listing", style: TextStyle(
+        title: const Text("Edit Listing", style: TextStyle(
           color: AppColors.textColor,
           fontSize: 18,),),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -24,19 +24,19 @@ class EditListingPost extends StatelessWidget {
               style: TextButton.styleFrom(
                 foregroundColor: Colors.white,
                 backgroundColor: AppColors.primary,
-                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
               ),
               onPressed: () {
                 print("Save button pressed");
               },
-              child: Text(
+              child: const Text(
                 "Save",
               ),
             ),
           ),
         ],
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

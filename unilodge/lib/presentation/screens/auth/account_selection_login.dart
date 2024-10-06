@@ -109,7 +109,7 @@ class _AccountSelectionLoginState extends State<AccountSelectionLogin> {
                       icon: Image.asset('assets/images/google_logo.png',
                           width: 22,
                           height: 22,
-                          color: Color.fromARGB(255, 53, 68, 80)),
+                          color: const Color.fromARGB(255, 53, 68, 80)),
                     ),
                     SizedBox(height: screenHeight * 0.2),
                     Row(
