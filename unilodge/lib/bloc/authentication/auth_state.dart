@@ -31,6 +31,8 @@ class LoginSuccess extends AuthState {
   List<Object> get props => [token];
 }
 
+class LogOutSuccess extends AuthState {}
+
 class VerifyEmailSuccess extends AuthState {
   final String token;
 
@@ -89,6 +91,15 @@ class SignUpError extends AuthState {
   final String error;
 
   const SignUpError(this.error);
+
+  @override
+  List<Object> get props => [error];
+}
+
+class LogOutError extends AuthState {
+  final String error;
+
+  const LogOutError(this.error);
 
   @override
   List<Object> get props => [error];

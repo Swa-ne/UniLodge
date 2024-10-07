@@ -94,5 +94,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthFailure());
       }
     });
+    on<LogOutEvent>((event, emit) async {
+      try {
+        emit(AuthLoading());
+        final isLogout = await _authRepo.logout();
+        if (isLogout) {
+          emit(LogOutSuccess());
+        } else {
+          emit(const LogOutError("Internet Connection Error"));
+        }
+      } catch (e) {
+        emit(LogOutError("Error: $e"));
+      }
+    });
   }
 }
