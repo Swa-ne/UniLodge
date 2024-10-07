@@ -76,7 +76,7 @@ class _PostFacilityState extends State<PostFacility> {
             contentPadding: const EdgeInsets.symmetric(horizontal: 0.0),
             visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
           );
-        }).toList(),
+        }),
         const SizedBox(height: 20),
       ],
     );

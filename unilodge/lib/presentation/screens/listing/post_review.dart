@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:unilodge/data/models/listing.dart';
 import 'package:go_router/go_router.dart';
+
 class PostReview extends StatelessWidget {
   const PostReview({super.key, required this.listing});
 
@@ -9,7 +10,6 @@ class PostReview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     List<String> imagePaths = listing.imageUrl?.isNotEmpty == true
         ? listing.imageUrl!.split(',').map((e) => e.trim()).toList()
         : [];
@@ -80,7 +80,9 @@ class PostReview extends StatelessWidget {
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             if (listing.amenities != null && listing.amenities!.isNotEmpty)
-              ...listing.amenities!.map((amenity) => Text('- $amenity')).toList()
+              ...listing.amenities!
+                  .map((amenity) => Text('- $amenity'))
+                  .toList()
             else
               const Text('No amenities selected'),
 
@@ -92,7 +94,9 @@ class PostReview extends StatelessWidget {
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             if (listing.utilities != null && listing.utilities!.isNotEmpty)
-              ...listing.utilities!.map((utility) => Text('- $utility')).toList()
+              ...listing.utilities!
+                  .map((utility) => Text('- $utility'))
+                  .toList()
             else
               const Text('No utilities selected'),
           ],
@@ -106,7 +110,8 @@ class PostReview extends StatelessWidget {
             borderRadius: const BorderRadius.horizontal(),
             boxShadow: [
               BoxShadow(
-                color: const Color.fromARGB(255, 119, 119, 119).withOpacity(0.2),
+                color:
+                    const Color.fromARGB(255, 119, 119, 119).withOpacity(0.2),
                 spreadRadius: 1,
                 blurRadius: 5,
                 offset: const Offset(0, -1),
@@ -135,7 +140,6 @@ class PostReview extends StatelessWidget {
               const SizedBox(width: 20),
               ElevatedButton(
                 onPressed: () {
-                  
                   context.push('/home');
                 },
                 style: ElevatedButton.styleFrom(

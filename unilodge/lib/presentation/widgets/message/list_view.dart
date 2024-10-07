@@ -78,10 +78,10 @@ class MessagesListView extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Column(
+                    const Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text(
                           '15/08/24',
                           style: TextStyle(color: Color(0xFFC3C1C9)),

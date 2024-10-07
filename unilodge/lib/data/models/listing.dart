@@ -56,4 +56,32 @@ class Listing {
       selectedPropertyType: selectedPropertyType ?? this.selectedPropertyType,
     );
   }
+
+  factory Listing.fromJson(Map<String, dynamic> json) {
+    return Listing(
+      id: json['_id'],
+      property_name: json['property_name'],
+      address: json['address'],
+      price: json['price'],
+      description: json['description'],
+      ownerInfo: json['owner_info'],
+      amenities: List<String>.from(json['amenities']),
+      imageUrl: json['image_url'],
+      rating: json['rating'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      '_id': id,
+      'property_name': property_name,
+      'address': address,
+      'price': price,
+      'description': description,
+      'owner_info': ownerInfo,
+      'amenities': amenities,
+      'image_url': imageUrl,
+      'rating': rating,
+    };
+  }
 }

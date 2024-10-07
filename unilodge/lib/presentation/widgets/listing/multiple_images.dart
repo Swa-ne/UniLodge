@@ -13,7 +13,7 @@ class MultipleImages extends StatefulWidget {
 }
 
 class _MultipleImagesState extends State<MultipleImages> {
-  List<File> _images = [];
+  final List<File> _images = [];
 
   final double imageSize = 150.0;
   final double buttonSize = 100.0;

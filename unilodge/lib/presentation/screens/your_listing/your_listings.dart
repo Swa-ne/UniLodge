@@ -23,11 +23,11 @@ class Listings extends StatelessWidget {
         onPressed: () {
           context.push('/post-accommodation');
         },
+        backgroundColor: const Color(0xff2E3E4A),
         child: Icon(
           Icons.add,
           color: Color(0xfffdfdfd),
         ),
-        backgroundColor: Color(0xff2E3E4A),
       ),
       body: Container(
         child: ListView.builder(

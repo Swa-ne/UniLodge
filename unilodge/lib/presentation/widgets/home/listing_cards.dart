@@ -56,18 +56,18 @@ class _ListingCardsState extends State<ListingCards> {
                             fontSize: 16,
                           ),
                         ),
-                        Spacer(),
-                        Icon(
+                        const Spacer(),
+                        const Icon(
                           Icons.star,
                           color: Color(0xffFFB800),
                         ),
                         Text(
-                          widget.listing.rating.toString() + "(14)",
-                          style: TextStyle(color: AppColors.textColor),
+                          "${widget.listing.rating}(14)",
+                          style: const TextStyle(color: AppColors.textColor),
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Text(
                       widget.listing.address ?? '',
                       style: TextStyle(color: AppColors.textColor),
@@ -80,8 +80,8 @@ class _ListingCardsState extends State<ListingCards> {
                               : 'N/A', // Ensure price is String
                           style: TextStyle(color: AppColors.textColor),
                         ),
-                        Spacer(),
-                        Icon(
+                        const Spacer(),
+                        const Icon(
                           Icons.favorite,
                           color: Color(0xffF04F43),
                         ),

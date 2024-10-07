@@ -25,7 +25,7 @@ class _PostImageState extends State<PostImage> {
             children: <Widget>[
               Expanded(
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -52,7 +52,7 @@ class _PostImageState extends State<PostImage> {
                       MultipleImages(
                         onImagesSelected: (images) {
                           setState(() {
-                            selectedImages = images;  
+                            selectedImages = images;
                           });
                         },
                       ),
@@ -104,19 +104,19 @@ class _PostImageState extends State<PostImage> {
                     ),
                     const SizedBox(width: 20),
                     ElevatedButton(
-                      onPressed: selectedImages.length >= 6  // Ensure at least 6 images
+                      onPressed: selectedImages.length >=
+                              6 // Ensure at least 6 images
                           ? () {
                               // Pass the updated listing object to the PostReview page
                               context.push(
                                 '/post-review',
                                 extra: widget.listing.copyWith(
-                                  imageUrl: selectedImages
-                                      .map((e) => e.path)
-                                      .join(','), // Convert to comma-separated string
+                                  imageUrl: selectedImages.map((e) => e.path).join(
+                                      ','), // Convert to comma-separated string
                                 ),
                               );
                             }
-                          : null,  // Disable if less than 6 images
+                          : null, // Disable if less than 6 images
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
                         backgroundColor: const Color(0xff2E3E4A),
