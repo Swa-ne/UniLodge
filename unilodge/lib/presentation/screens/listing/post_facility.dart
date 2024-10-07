@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
+import 'package:unilodge/data/models/listing.dart'; 
+
 
 class PostFacility extends StatefulWidget {
-  const PostFacility({super.key});
+  const PostFacility({super.key, required this.listing});
+  final Listing listing;
 
   @override
   _PostFacilityState createState() => _PostFacilityState();
@@ -27,6 +30,21 @@ class _PostFacilityState extends State<PostFacility> {
     'Gas': false,
     'Internet': false,
   };
+
+  // Convert the amenities and utilities maps to a list of selected items
+  List<String> _getSelectedAmenities() {
+    return rentalAmenities.entries
+        .where((element) => element.value == true)
+        .map((e) => e.key)
+        .toList();
+  }
+
+  List<String> _getSelectedUtilities() {
+    return utilitiesIncluded.entries
+        .where((element) => element.value == true)
+        .map((e) => e.key)
+        .toList();
+  }
 
   Widget _buildCheckboxSection(String title, Map<String, bool> options) {
     return Column(
@@ -84,17 +102,9 @@ class _PostFacilityState extends State<PostFacility> {
                   ),
                 ),
                 const SizedBox(height: 4),
-                const Text(
-                  'Please fill in all the fields below to proceed',
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 14,
-                  ),
-                ),
                 const SizedBox(height: 10),
                 _buildCheckboxSection('Rental Amenities', rentalAmenities),
-                _buildCheckboxSection(
-                    'Utility Included in rent', utilitiesIncluded),
+                _buildCheckboxSection('Utility Included in rent', utilitiesIncluded),
               ],
             ),
           ),
@@ -116,8 +126,7 @@ class _PostFacilityState extends State<PostFacility> {
                   ),
                 ],
               ),
-              padding:
-                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+              padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -139,7 +148,13 @@ class _PostFacilityState extends State<PostFacility> {
                   const SizedBox(width: 20),
                   ElevatedButton(
                     onPressed: () {
-                      context.push('/post-image');
+                      // Update the listing object with the selected amenities and utilities
+                      final updatedListing = widget.listing.copyWith(
+                        amenities: _getSelectedAmenities(),
+                        utilities: _getSelectedUtilities(),
+                      );
+                      
+                      context.push('/post-image', extra: updatedListing);
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
