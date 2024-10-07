@@ -5,14 +5,18 @@ import 'package:unilodge/presentation/widgets/listing/custom_card.dart';
 import 'package:unilodge/presentation/listing/bloc/listing_bloc.dart';
 import 'package:unilodge/presentation/listing/bloc/listing_event.dart';
 import 'package:unilodge/presentation/listing/bloc/listing_state.dart';
+import 'package:unilodge/data/models/listing.dart';
+import 'package:unilodge/data/sources/listing/listing_repo.dart';
 
 class PostAccommodation extends StatelessWidget {
-  const PostAccommodation({super.key});
+  final Listing listing;
+
+  PostAccommodation({super.key, required this.listing});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ListingBloc(),
+      create: (_) => ListingBloc(ListingRepoImpl()), 
       child: Scaffold(
         body: Column(
           children: [
@@ -33,11 +37,11 @@ class PostAccommodation extends StatelessWidget {
             ),
             const SizedBox(height: 60),
             Expanded(
-              child: _PropertySelection(),
+              child: _PropertySelection(listing: listing),
             ),
             Padding(
               padding: const EdgeInsets.all(1.0),
-              child: _BottomNavigation(),
+              child: _BottomNavigation(listing: listing),
             ),
           ],
         ),
@@ -47,6 +51,10 @@ class PostAccommodation extends StatelessWidget {
 }
 
 class _PropertySelection extends StatelessWidget {
+  final Listing listing;
+
+  const _PropertySelection({required this.listing});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -63,20 +71,25 @@ class _PropertySelection extends StatelessWidget {
     );
   }
 
+
+
   Widget _buildCard(BuildContext context, String cardName, String description) {
     return BlocBuilder<ListingBloc, ListingState>(
       builder: (context, state) {
-        bool isSelected =
-            state is CardSelectedState && state.selectedCard == cardName;
+        bool isSelected = state is CardSelectedState && state.selectedCard == cardName;
 
         return CustomCard(
-          leading: Icon(Icons.bed, size: 90),
+          leading: const Icon(Icons.bed, size: 90),
           cardName: cardName,
           description: description,
           leadingWidth: 50,
           leadingHeight: 80,
           isSelected: isSelected,
           onTap: () {
+            // Use the copyWith to create a new Listing object with the selected card
+            // final updatedListing = listing.copyWith(selectedPropertyType: cardName);
+
+            // Dispatch the updated card to BLoC
             context.read<ListingBloc>().add(SelectCardEvent(cardName));
             print('Selected: $cardName');
           },
@@ -87,13 +100,20 @@ class _PropertySelection extends StatelessWidget {
 }
 
 class _BottomNavigation extends StatelessWidget {
+  final Listing listing;
+
+  const _BottomNavigation({required this.listing});
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ListingBloc, ListingState>(
       builder: (context, state) {
         String selectedType = '';
+        Listing updatedListing = listing;
+
         if (state is CardSelectedState) {
           selectedType = state.selectedCard;
+          updatedListing = listing.copyWith(selectedPropertyType: selectedType);
         }
 
         return Container(
@@ -132,7 +152,7 @@ class _BottomNavigation extends StatelessWidget {
               ElevatedButton(
                 onPressed: selectedType.isNotEmpty
                     ? () {
-                        context.push('/post-location');
+                        context.push('/post-location', extra: updatedListing);
                       }
                     : null,
                 style: ElevatedButton.styleFrom(

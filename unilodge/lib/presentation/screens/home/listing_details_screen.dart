@@ -46,7 +46,7 @@ class ListingDetailScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: Image.network(listing.imageUrl,
+                child: Image.network(listing.imageUrl ?? '',
                     width: double.infinity, height: 200, fit: BoxFit.cover),
               ),
             ),
@@ -54,29 +54,34 @@ class ListingDetailScreen extends StatelessWidget {
             Padding(
               padding:
                   const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
-              child: Text(listing.property_name,
-                  style: const TextStyle(
+              child: Text(listing.property_name ?? '',
+                  style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
                       color: Color(0xff434343))),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: TextRow(text1: "Address:", text2: listing.address),
+              child: TextRow(text1: "Address:", text2: listing.address ?? ''),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: TextRow(
-                  text1: "Owner Information:", text2: listing.ownerInfo),
+                  text1: "Owner Information:", text2: listing.ownerInfo ?? ''),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: TextRow(text1: "Amenities:", text2: listing.amenities[0]),
+              child: TextRow(
+                text1: "Amenities:",
+                text2: (listing.amenities != null &&
+                        listing.amenities!.isNotEmpty)
+                    ? listing.amenities![0]
+                    : "No amenities available", // Fallback if amenities is null or empty
+              ),
             ),
             const SizedBox(height: 20),
             const Padding(
-              padding:
-                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
               child: Text(
                 "Description",
                 style: TextStyle(color: Color(0xff434343), fontSize: 15),
@@ -86,8 +91,8 @@ class ListingDetailScreen extends StatelessWidget {
               padding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
               child: Text(
-                listing.description,
-                style: const TextStyle(color: AppColors.formTextColor, fontSize: 15),
+                listing.description ?? '',
+                style: TextStyle(color: AppColors.formTextColor, fontSize: 15),
               ),
             ),
             const SizedBox(height: 15),
@@ -110,34 +115,34 @@ class ListingDetailScreen extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: RatingBar.builder(
-                        initialRating: listing.rating.toDouble(),
-                        minRating: 1,
-                        direction: Axis.horizontal,
-                        itemCount: 5,
-                        itemSize: 18,
-                        itemPadding: const EdgeInsets.symmetric(horizontal: 1),
-                        itemBuilder: (context, _) => const Icon(
-                              Icons.star,
-                              color: AppColors.ratingYellow,
-                            ),
-                        onRatingUpdate: (rating) {
-                          print(rating);
-                        }),
+                      initialRating: (listing.rating?.toDouble() ??
+                          0.0), // Fallback to 0.0 if rating is null
+                      minRating: 1,
+                      direction: Axis.horizontal,
+                      itemCount: 5,
+                      itemSize: 18,
+                      itemPadding: EdgeInsets.symmetric(horizontal: 1),
+                      itemBuilder: (context, _) => Icon(
+                        Icons.star,
+                        color: AppColors.ratingYellow,
+                      ),
+                      onRatingUpdate: (rating) {
+                        print(rating);
+                      },
+                    ),
                   ),
                 ),
               ],
             ),
             const Padding(
-              padding:
-                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
               child: Text(
                 "Reviews (14)",
                 style: TextStyle(color: Color(0xff434343), fontSize: 15),
               ),
             ),
             const Padding(
-              padding:
-                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
               child: Text(
                 "dropdown reviews or direct to another screen",
                 style: TextStyle(color: AppColors.formTextColor, fontSize: 15),
@@ -145,8 +150,7 @@ class ListingDetailScreen extends StatelessWidget {
             ),
             const SizedBox(height: 30),
             const Padding(
-              padding:
-                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
               child: Text(
                 "Nearby Listings",
                 style: TextStyle(color: Color(0xff434343), fontSize: 15),

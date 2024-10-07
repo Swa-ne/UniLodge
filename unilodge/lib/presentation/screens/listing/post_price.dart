@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
+import 'package:unilodge/data/models/listing.dart'; // Import your Listing model
 
-class PostPrice extends StatelessWidget {
-  const PostPrice({super.key});
+class PostPrice extends StatefulWidget {
+  final Listing listing;
+
+  const PostPrice({super.key, required this.listing});
+
+  @override
+  _PostPriceState createState() => _PostPriceState();
+}
+
+class _PostPriceState extends State<PostPrice> {
+  final TextEditingController _priceController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _leaseTermsController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -37,21 +49,53 @@ class PostPrice extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 50),
+
+                      // // Display the selected property type here
+                      // Text(
+                      //   'Selected Property Type: ${widget.listing.selectedPropertyType ?? 'N/A'}',
+                      //   style: const TextStyle(
+                      //     fontSize: 16,
+                      //     fontWeight: FontWeight.bold,
+                      //   ),
+                      // ),
+                      // Text(
+                      //   'Address: ${widget.listing.address ?? 'N/A'}',
+                      //   style: const TextStyle(
+                      //     fontSize: 16,
+                      //     fontWeight: FontWeight.bold,
+                      //   ),
+                      // ),
+                      // Text(
+                      //   'Property Name: ${widget.listing.property_name ?? "N/A"}',
+                      //   style: const TextStyle(
+                      //     fontSize: 16,
+                      //     fontWeight: FontWeight.bold,
+                      //   ),
+                      // ),
+
+                      const SizedBox(height: 20), // Add spacing after text
+
+                      // Capture Price input
                       _buildTextField(
+                        controller: _priceController,
                         label: 'Price',
                         hint: 'Enter price',
                         contentPadding: const EdgeInsets.all(16),
                       ),
+                      // Capture Description input
                       _buildTextField(
+                        controller: _descriptionController,
                         label: 'Description',
                         hint: 'Enter description',
                         maxLines: 5,
                         minLines: 5,
                         contentPadding: const EdgeInsets.all(16),
                       ),
+                      // Capture Least Terms input
                       _buildTextField(
+                        controller: _leaseTermsController,
                         label: 'Least Terms',
-                        hint: 'Least Terms',
+                        hint: 'Enter least terms',
                         maxLines: 5,
                         minLines: 5,
                         contentPadding: const EdgeInsets.all(16),
@@ -96,7 +140,15 @@ class PostPrice extends StatelessWidget {
                     const SizedBox(width: 20),
                     ElevatedButton(
                       onPressed: () {
-                        context.push('/post-Facility');
+                        // Update the listing with the new data from this page
+                        final updatedListing = widget.listing.copyWith(
+                          price: _priceController.text,
+                          description: _descriptionController.text,
+                          leaseTerms: _leaseTermsController.text,  
+                        );
+
+          
+                        context.push('/post-Facility', extra: updatedListing);
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
@@ -129,7 +181,9 @@ class PostPrice extends StatelessWidget {
     );
   }
 
+  // Helper function to build text fields
   Widget _buildTextField({
+    required TextEditingController controller,
     required String label,
     required String hint,
     int maxLines = 1,
@@ -140,6 +194,7 @@ class PostPrice extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
       child: TextFormField(
+        controller: controller, // Bind the controller to capture input
         maxLines: maxLines,
         minLines: minLines,
         decoration: InputDecoration(
