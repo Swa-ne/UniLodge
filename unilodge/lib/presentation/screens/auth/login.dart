@@ -66,7 +66,8 @@ class _LoginState extends State<Login> with InputValidationMixin {
           }
         },
         child: Scaffold(
-          resizeToAvoidBottomInset: false,
+          resizeToAvoidBottomInset:
+              false,
           body: SizedBox(
             width: screenWidth,
             height: screenHeight,
@@ -78,70 +79,78 @@ class _LoginState extends State<Login> with InputValidationMixin {
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
                     children: [
                       SizedBox(height: screenHeight * 0.1),
                       const UnilodgeText(),
                       SizedBox(height: screenHeight * 0.10),
-                      Form(
-                        child: Column(
-                          children: [
-                            AuthTextField(
-                              labelText: "Email",
-                              hintText: "Enter email",
-                              controller: emailController,
-                              onChanged: validateEmail,
-                              errorText: emailError,
-                            ),
-                            const SizedBox(height: 20.0),
-                            AuthTextField(
-                              labelText: "Password",
-                              hintText: "Enter password",
-                              obscureText: true,
-                              controller: passwordController,
-                              errorText: passwordError,
-                            ),
-                            const SizedBox(height: 5),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: InkWell(
-                                onTap: () {
-                                  context.push("/forget-password");
-                                },
-                                child: const Text(
-                                  "Forgot your password?",
-                                  textAlign: TextAlign.right,
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Color.fromARGB(255, 36, 141, 221),
+                      Flexible(
+                        child: Form(
+                          child: Column(
+                            children: [
+                              AuthTextField(
+                                labelText: "Email",
+                                hintText: "Enter email",
+                                controller: emailController,
+                                onChanged: validateEmail,
+                                errorText: emailError,
+                              ),
+                              const SizedBox(height: 20.0),
+                              AuthTextField(
+                                labelText: "Password",
+                                hintText: "Enter password",
+                                obscureText: true,
+                                controller: passwordController,
+                                errorText: passwordError,
+                              ),
+                              const SizedBox(height: 5),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: InkWell(
+                                  onTap: () {
+                                    context.push("/forget-password");
+                                  },
+                                  child: const Text(
+                                    "Forgot your password?",
+                                    textAlign: TextAlign.right,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Color.fromARGB(255, 36, 141, 221),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            SizedBox(height: screenHeight * 0.37),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
                             CustomButton(
-                                text: "Log in",
-                                onPressed: () {
-                                  String? isValidEmail =
-                                      validateEmail(emailController.text);
-                                  if (isValidEmail != null) {
-                                    setState(() {
-                                      emailError = "Email can't be empty";
-                                    });
-                                    return;
-                                  }
-                                  if (passwordController.text.isEmpty) {
-                                    setState(() {
-                                      passwordError = "Password can't be empty";
-                                    });
-                                    return;
-                                  }
-                                  final newUser = LoginUserModel(
-                                    email: emailController.text,
-                                    password: passwordController.text,
-                                  );
-                                  _authBloc.add(LoginEvent(newUser));
-                                }),
+                              text: "Log in",
+                              onPressed: () {
+                                String? isValidEmail =
+                                    validateEmail(emailController.text);
+                                if (isValidEmail != null) {
+                                  setState(() {
+                                    emailError = "Email can't be empty";
+                                  });
+                                  return;
+                                }
+                                if (passwordController.text.isEmpty) {
+                                  setState(() {
+                                    passwordError = "Password can't be empty";
+                                  });
+                                  return;
+                                }
+                                final newUser = LoginUserModel(
+                                  email: emailController.text,
+                                  password: passwordController.text,
+                                );
+                                _authBloc.add(LoginEvent(newUser));
+                              },
+                            ),
                             const SizedBox(height: 10),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -149,8 +158,9 @@ class _LoginState extends State<Login> with InputValidationMixin {
                                 const Text(
                                   "Don't have an account? ",
                                   style: TextStyle(
-                                      fontSize: 14,
-                                      color: AppColors.formTextColor),
+                                    fontSize: 14,
+                                    color: AppColors.formTextColor,
+                                  ),
                                 ),
                                 InkWell(
                                   onTap: () {
@@ -168,6 +178,7 @@ class _LoginState extends State<Login> with InputValidationMixin {
                                 ),
                               ],
                             ),
+                            const SizedBox(height: 40), 
                           ],
                         ),
                       ),
