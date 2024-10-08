@@ -3,10 +3,13 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 abstract class TokenController {
   Future<void> updateRefreshToken(String token);
   Future<void> updateAccessToken(String token);
+  Future<void> updateUserID(String user_id);
   Future<void> removeRefreshToken();
   Future<void> removeAccessToken();
+  Future<void> removeUserID();
   Future<String> getRefreshToken();
   Future<String> getAccessToken();
+  Future<String> getUserID();
   String? extractRefreshToken(String refresh_token);
 }
 
@@ -31,6 +34,11 @@ class TokenControllerImpl extends TokenController {
   }
 
   @override
+  Future<void> updateUserID(String user_id) async {
+    await _storage.write(key: "User ID", value: user_id);
+  }
+
+  @override
   Future<void> removeRefreshToken() async {
     await _storage.delete(key: "Refresh Token");
   }
@@ -38,6 +46,11 @@ class TokenControllerImpl extends TokenController {
   @override
   Future<void> removeAccessToken() async {
     await _storage.delete(key: "Access Token");
+  }
+
+  @override
+  Future<void> removeUserID() async {
+    await _storage.delete(key: "User ID");
   }
 
   @override
@@ -51,10 +64,15 @@ class TokenControllerImpl extends TokenController {
   }
 
   @override
-  String? extractRefreshToken(String cookie_header) {
-    if (cookie_header.contains('refresh_token=')) {
+  Future<String> getUserID() async {
+    return await _storage.read(key: "User ID") ?? "";
+  }
+
+  @override
+  String? extractRefreshToken(String refresh_token) {
+    if (refresh_token.contains('refresh_token=')) {
       final refreshTokenMatch =
-          RegExp(r'refresh_token=([^;]+)').firstMatch(cookie_header);
+          RegExp(r'refresh_token=([^;]+)').firstMatch(refresh_token);
       return refreshTokenMatch?.group(1);
     }
 
