@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:unilodge/bloc/authentication/auth_state.dart';
 import 'onboarding_items.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:unilodge/bloc/authentication/auth_bloc.dart';
 
 class OnboardingView extends StatefulWidget {
   const OnboardingView({super.key});
