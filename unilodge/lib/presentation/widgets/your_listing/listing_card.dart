@@ -17,7 +17,6 @@ class ListingCard extends StatelessWidget {
       padding: const EdgeInsets.only(top: 10, right: 10, left: 10),
       child: GestureDetector(
         onTap: () async {
-          // _displayBottomSheet(context);
           context.push('/your-listing-detail/${listing.id}');
         },
         child: Container(
@@ -42,7 +41,7 @@ class ListingCard extends StatelessWidget {
                   child: Opacity(
                     opacity: 0.9,
                     child: Image.network(
-                      listing.imageUrl,
+                      listing.imageUrl ?? '',
                       width: 150,
                       height: 90,
                       fit: BoxFit.cover,
@@ -55,8 +54,8 @@ class ListingCard extends StatelessWidget {
                     top: 8.0, right: 15, bottom: 8, left: 15),
                 child: Align(
                   alignment: Alignment.topLeft,
-                  child: Text(listing.property_name,
-                      style: const TextStyle(
+                  child: Text(listing.property_name ?? '',
+                      style: TextStyle(
                         color: AppColors.textColor,
                         fontWeight: FontWeight.w500,
                         fontSize: 16,

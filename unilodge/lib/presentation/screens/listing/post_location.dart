@@ -1,9 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
+import 'package:unilodge/data/models/listing.dart';
 
-class PostLocation extends StatelessWidget {
-  const PostLocation({super.key});
+class PostLocation extends StatefulWidget {
+  final Listing listing;
+  const PostLocation({super.key, required this.listing});
+
+  @override
+  _PostLocationState createState() => _PostLocationState();
+}
+
+class _PostLocationState extends State<PostLocation> {
+  final TextEditingController _propertyNameController = TextEditingController();
+  final TextEditingController _cityController = TextEditingController();
+  final TextEditingController _streetController = TextEditingController();
+  final TextEditingController _barangayController = TextEditingController();
+  final TextEditingController _houseNumberController = TextEditingController();
+  final TextEditingController _zipcodeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -53,27 +67,35 @@ class PostLocation extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _buildTextField2(
+                          controller: _propertyNameController,
                           label: 'Property Name', hint: "Enter property name"),
-                      _buildTextField2(label: 'City', hint: "Enter city"),
-                      _buildTextField2(label: 'Street', hint: "Enter street"),
                       _buildTextField2(
+                          controller: _cityController,
+                          label: 'City', hint: "Enter city"),
+                      _buildTextField2(
+                          controller: _streetController,
+                          label: 'Street', hint: "Enter street"),
+                      _buildTextField2(
+                          controller: _barangayController,
                           label: 'Barangay', hint: "Enter barangay"),
                       _buildTextField2(
+                          controller: _houseNumberController,
                           label: 'House Number', hint: "Enter house number"),
-                      _buildTextField2(label: 'Zipcode', hint: "Enter zipcode"),
+                      _buildTextField2(
+                          controller: _zipcodeController,
+                          label: 'Zipcode', hint: "Enter zipcode"),
                     ],
                   ),
                 ),
               ],
             ),
           ),
-
           // Bottom buttons
           Padding(
             padding: const EdgeInsets.all(1.0),
             child: Container(
               decoration: BoxDecoration(
-                color: Colors.white, //
+                color: Colors.white,
                 borderRadius: const BorderRadius.horizontal(),
                 boxShadow: [
                   BoxShadow(
@@ -108,7 +130,18 @@ class PostLocation extends StatelessWidget {
                   const SizedBox(width: 20),
                   ElevatedButton(
                     onPressed: () {
-                      context.push('/post-price');
+                     
+                      final combinedAddress =
+                          '${_houseNumberController.text} ${_streetController.text}, ${_barangayController.text}, ${_cityController.text}, ${_zipcodeController.text}';
+
+                      // Update the listing model with the new data
+                      final updatedListing = widget.listing.copyWith(
+                        property_name: _propertyNameController.text,
+                        address: combinedAddress,
+                      );
+
+                      // Navigate to the next page with the updated listing
+                      context.push('/post-price', extra: updatedListing);
                     },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
@@ -130,10 +163,15 @@ class PostLocation extends StatelessWidget {
     );
   }
 
-  Widget _buildTextField2({required String label, required String hint}) {
+  Widget _buildTextField2({
+    required TextEditingController controller,
+    required String label,
+    required String hint,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
       child: TextField(
+        controller: controller,
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
           labelText: label,

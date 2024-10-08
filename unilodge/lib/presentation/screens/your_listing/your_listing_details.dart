@@ -40,6 +40,7 @@ class YourListingDetails extends StatelessWidget {
                 const SizedBox(
                   width: 10,
                 ),
+                const SizedBox(width: 10),
               ],
             ),
             const SizedBox(
@@ -49,37 +50,64 @@ class YourListingDetails extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: Image.network(listing.imageUrl,
-                    width: double.infinity, height: 200, fit: BoxFit.cover),
+                child: listing.imageUrl != null
+                    ? Image.network(
+                        listing.imageUrl!,
+                        width: double.infinity,
+                        height: 200,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.asset(
+                        'assets/images/placeholder.png', // Fallback placeholder
+                        width: double.infinity,
+                        height: 200,
+                        fit: BoxFit.cover,
+                      ),
               ),
             ),
             const SizedBox(height: 16),
             Padding(
               padding:
                   const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
-              child: Text(listing.property_name,
-                  style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xff434343))),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: TextRow(text1: "Address:", text2: listing.address),
+              child: Text(
+                listing.property_name ??
+                    "Unnamed Property", // Fallback if property_name is null
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xff434343),
+                ),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: TextRow(
-                  text1: "Owner Information:", text2: listing.ownerInfo),
+                text1: "Address:",
+                text2: listing.address ??
+                    "No address provided", // Fallback if address is null
+              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: TextRow(text1: "Amenities:", text2: listing.amenities[0]),
+              child: TextRow(
+                text1: "Owner Information:",
+                text2: listing.ownerInfo ??
+                    "No owner information", // Fallback if ownerInfo is null
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: TextRow(
+                text1: "Amenities:",
+                text2:
+                    (listing.amenities != null && listing.amenities!.isNotEmpty)
+                        ? listing.amenities![0]
+                        : "No amenities available", // Fallback for amenities
+              ),
             ),
             const SizedBox(height: 20),
             const Padding(
-              padding:
-                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
               child: Text(
                 "Description",
                 style: TextStyle(color: Color(0xff434343), fontSize: 15),
@@ -89,8 +117,10 @@ class YourListingDetails extends StatelessWidget {
               padding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
               child: Text(
-                listing.description,
-                style: const TextStyle(color: AppColors.formTextColor, fontSize: 15),
+                listing.description ??
+                    "No description available", // Fallback if description is null
+                style: const TextStyle(
+                    color: AppColors.formTextColor, fontSize: 15),
               ),
             ),
             const SizedBox(height: 15),
@@ -113,34 +143,34 @@ class YourListingDetails extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: RatingBar.builder(
-                        initialRating: listing.rating.toDouble(),
-                        minRating: 1,
-                        direction: Axis.horizontal,
-                        itemCount: 5,
-                        itemSize: 18,
-                        itemPadding: const EdgeInsets.symmetric(horizontal: 1),
-                        itemBuilder: (context, _) => const Icon(
-                              Icons.star,
-                              color: AppColors.ratingYellow,
-                            ),
-                        onRatingUpdate: (rating) {
-                          print(rating);
-                        }),
+                      initialRating: listing.rating?.toDouble() ??
+                          0.0, // Fallback if rating is null
+                      minRating: 1,
+                      direction: Axis.horizontal,
+                      itemCount: 5,
+                      itemSize: 18,
+                      itemPadding: const EdgeInsets.symmetric(horizontal: 1),
+                      itemBuilder: (context, _) => const Icon(
+                        Icons.star,
+                        color: AppColors.ratingYellow,
+                      ),
+                      onRatingUpdate: (rating) {
+                        print(rating);
+                      },
+                    ),
                   ),
                 ),
               ],
             ),
             const Padding(
-              padding:
-                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
               child: Text(
-                "Reviews (14)",
+                "Reviews (14)", // Can be dynamically updated if needed
                 style: TextStyle(color: Color(0xff434343), fontSize: 15),
               ),
             ),
             const Padding(
-              padding:
-                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
               child: Text(
                 "dropdown reviews or direct to another screen",
                 style: TextStyle(color: AppColors.formTextColor, fontSize: 15),

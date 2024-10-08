@@ -1,11 +1,50 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:unilodge/data/models/listing.dart';
 import 'listing_event.dart';
 import 'listing_state.dart';
+import 'package:unilodge/data/sources/listing/listing_repo.dart';
+import 'dart:io';
 
 class ListingBloc extends Bloc<ListingEvent, ListingState> {
-  ListingBloc() : super(ListingInitial()) {
+  final ListingRepo _listingRepo;  // Inject the repository
+
+  ListingBloc(this._listingRepo) : super(ListingInitial()) {
+
+    // Handle card selection event
     on<SelectCardEvent>((event, emit) {
-      emit(CardSelectedState(event.cardName));
+      if (state is ListingInitial) {
+        final listing = Listing(selectedPropertyType: event.cardName);
+        emit(CardSelectedState(listing, event.cardName));
+      } else if (state is CardSelectedState) {
+        final listing = (state as CardSelectedState).listing;
+        final updatedListing = listing.copyWith(selectedPropertyType: event.cardName);
+        emit(CardSelectedState(updatedListing, event.cardName));
+      }
+    });
+
+    // Handle image upload event
+    on<UploadImagesEvent>((event, emit) async {
+      emit(ImageUploadInProgress());  // Emit loading state
+
+      try {
+    
+        await _listingRepo.uploadimageurlWithData(event.images, event.listing);
+
+        if (state is CardSelectedState) {
+          final currentListing = (state as CardSelectedState).listing;
+
+          final updatedListing = currentListing.copyWith(
+            imageUrl: event.images.map((e) => e.path).join(','),  // Assuming you store image URLs as a comma-separated string
+          );
+
+          emit(CardSelectedState(updatedListing, updatedListing.selectedPropertyType ?? ''));
+        }
+
+        emit(ImagesUploadedState(event.images.map((e) => e.path).toList()));  // Successfully uploaded images and returning file paths
+
+      } catch (e) {
+        emit(ImageUploadFailure(e.toString()));  // Emit failure state if something goes wrong
+      }
     });
   }
 }

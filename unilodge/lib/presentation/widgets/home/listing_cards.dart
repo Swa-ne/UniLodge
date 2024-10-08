@@ -4,7 +4,7 @@ import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
 
 class ListingCards extends StatefulWidget {
-  final Listing listing; 
+  final Listing listing;
 
   const ListingCards({
     super.key,
@@ -33,7 +33,7 @@ class _ListingCardsState extends State<ListingCards> {
                   child: Opacity(
                     opacity: 0.9,
                     child: Image.network(
-                      widget.listing.imageUrl,
+                      widget.listing.imageUrl ?? '',
                       width: 360,
                       height: 200,
                       fit: BoxFit.cover,
@@ -49,8 +49,8 @@ class _ListingCardsState extends State<ListingCards> {
                     Row(
                       children: [
                         Text(
-                          widget.listing.property_name,
-                          style: const TextStyle(
+                          widget.listing.property_name ?? '',
+                          style: TextStyle(
                             color: AppColors.textColor,
                             fontWeight: FontWeight.w500,
                             fontSize: 16,
@@ -69,14 +69,16 @@ class _ListingCardsState extends State<ListingCards> {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      widget.listing.address,
-                      style: const TextStyle(color: AppColors.textColor),
+                      widget.listing.address ?? '',
+                      style: TextStyle(color: AppColors.textColor),
                     ),
                     Row(
                       children: [
                         Text(
-                          widget.listing.price,
-                          style: const TextStyle(color: AppColors.textColor),
+                          widget.listing.price != null
+                              ? widget.listing.price!
+                              : 'N/A', // Ensure price is String
+                          style: TextStyle(color: AppColors.textColor),
                         ),
                         const Spacer(),
                         const Icon(

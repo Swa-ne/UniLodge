@@ -63,7 +63,7 @@ class ListingDetailScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: Image.network(listing.imageUrl,
+                  child: Image.network(listing.imageUrl ?? '',
                       width: double.infinity, height: 200, fit: BoxFit.cover),
                 ),
               ),
@@ -71,7 +71,7 @@ class ListingDetailScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(
                     vertical: 20.0, horizontal: 16.0),
-                child: Text(listing.property_name,
+                child: Text(listing.property_name ?? '',
                     style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
@@ -79,17 +79,23 @@ class ListingDetailScreen extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: TextRow(text1: "Address:", text2: listing.address),
+                child: TextRow(text1: "Address:", text2: listing.address ?? ''),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: TextRow(
-                    text1: "Owner Information:", text2: listing.ownerInfo),
+                    text1: "Owner Information:",
+                    text2: listing.ownerInfo ?? ''),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child:
-                    TextRow(text1: "Amenities:", text2: listing.amenities[0]),
+                child: TextRow(
+                  text1: "Amenities:",
+                  text2: (listing.amenities != null &&
+                          listing.amenities!.isNotEmpty)
+                      ? listing.amenities![0]
+                      : "No amenities available", // Fallback if amenities is null or empty
+                ),
               ),
               const SizedBox(height: 20),
               const Padding(
@@ -103,7 +109,7 @@ class ListingDetailScreen extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
                 child: Text(
-                  listing.description,
+                  listing.description ?? '',
                   style: const TextStyle(
                       color: AppColors.formTextColor, fontSize: 15),
                 ),
@@ -129,7 +135,7 @@ class ListingDetailScreen extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: RatingBar.builder(
-                          initialRating: listing.rating.toDouble(),
+                          initialRating: listing.rating?.toDouble() ?? 0.0,
                           minRating: 1,
                           direction: Axis.horizontal,
                           itemCount: 5,

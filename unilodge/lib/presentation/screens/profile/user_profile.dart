@@ -69,7 +69,7 @@ class _UserProfileState extends State<UserProfile> {
           const SizedBox(height: 20),
           Container(
             width: 350,
-            height: 295,
+            height: 180,
             decoration: BoxDecoration(
               color: const Color(0xFFFFFFFF),
               borderRadius: BorderRadius.circular(10),
@@ -95,28 +95,28 @@ class _UserProfileState extends State<UserProfile> {
                     context.go("/help-center");
                   },
                 ),
-                ListTile(
-                  leading: const Icon(
-                    Icons.privacy_tip,
-                    color: AppColors.textColor,
-                  ),
-                  title: const Text('Privacy Policy'),
-                  trailing: const Icon(Icons.arrow_forward_ios, color: AppColors.textColor, size: 20,),
-                  onTap: () {
-                    context.go("/settings");
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(
-                    Icons.lock,
-                    color: AppColors.textColor,
-                  ),
-                  title: const Text('Terms of Use'),
-                  trailing: const Icon(Icons.arrow_forward_ios, color: AppColors.textColor, size: 20,),
-                  onTap: () {
-                    context.go("/settings");
-                  },
-                ),
+                // ListTile(
+                //   leading: const Icon(
+                //     Icons.privacy_tip,
+                //     color: AppColors.textColor,
+                //   ),
+                //   title: const Text('Privacy Policy'),
+                //   trailing: const Icon(Icons.arrow_forward_ios, color: AppColors.textColor, size: 20,),
+                //   onTap: () {
+                //     context.go("/settings");
+                //   },
+                // ),
+                // ListTile(
+                //   leading: const Icon(
+                //     Icons.lock,
+                //     color: AppColors.textColor,
+                //   ),
+                //   title: const Text('Terms of Use'),
+                //   trailing: const Icon(Icons.arrow_forward_ios, color: AppColors.textColor, size: 20,),
+                //   onTap: () {
+                //     context.go("/settings");
+                //   },
+                // ),
                 ListTile(
                   leading: const Icon(
                     Icons.star,

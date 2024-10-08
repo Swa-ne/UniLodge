@@ -2,8 +2,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unilodge/data/sources/auth/auth_repo.dart';
 import 'package:unilodge/bloc/authentication/auth_event.dart';
 import 'package:unilodge/bloc/authentication/auth_state.dart';
+import 'package:unilodge/data/sources/auth/token_controller.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
+  final TokenControllerImpl _tokenController = TokenControllerImpl();
   final AuthRepo _authRepo;
 
   AuthBloc(this._authRepo) : super(AuthLoading()) {
@@ -94,17 +96,38 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthFailure());
       }
     });
-    on<LogOutEvent>((event, emit) async {
-      try {
-        emit(AuthLoading());
-        final isLogout = await _authRepo.logout();
-        if (isLogout) {
-          emit(LogOutSuccess());
-        } else {
-          emit(const LogOutError("Internet Connection Error"));
+    on<LogoutEvent>(
+      (event, emit) async {
+        try {
+          emit(AuthLoading());
+          await _authRepo.logout();
+          emit(LogoutSuccess());
+        } catch (e) {
+          if (e.toString().contains('Unauthorized')) {
+            emit(LogoutSuccess());
+          } else {
+            emit(LogoutError(e.toString()));
+          }
         }
-      } catch (e) {
-        emit(LogOutError("Error: $e"));
+      },
+    );
+    on<CheckAuthenticationEvent>((event, emit) async {
+      emit(AuthLoading());
+      final accessToken = await _tokenController.getAccessToken();
+
+      if (accessToken.isNotEmpty) {
+        try {
+          final isAuthenticated = await _authRepo.authenticateToken();
+          if (isAuthenticated) {
+            emit(AuthSuccess());
+          } else {
+            emit(AuthFailure());
+          }
+        } catch (e) {
+          emit(AuthFailure());
+        }
+      } else {
+        emit(AuthFailure());
       }
     });
   }

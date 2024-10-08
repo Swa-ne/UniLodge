@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:unilodge/core/configs/theme/app_colors.dart';
+import 'package:unilodge/common/widgets/custom_text.dart';
 import 'package:unilodge/data/dummy_data/dummy_data.dart';
 import 'package:unilodge/presentation/widgets/home/listing_cards.dart';
 
@@ -12,10 +12,12 @@ class TypeListingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(appbarTitle, style: const TextStyle(
-              color: AppColors.textColor,
-              fontSize: 18,
-            ),),
+          centerTitle: true,
+          title: CustomText(
+            text: appbarTitle,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         body: SingleChildScrollView(
           child: Column(children: [

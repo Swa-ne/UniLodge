@@ -15,9 +15,9 @@ class Settings extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-        if (state is LogOutSuccess) {
+        if (state is LogoutSuccess) {
           context.go("/account-selection-login");
-        } else if (state is LogOutError) {
+        } else if (state is LogoutError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.error)),
           );
@@ -94,7 +94,7 @@ class Settings extends StatelessWidget {
       builder: (BuildContext context) {
         return LogoutConfirmBottomSheet(
           onLogout: () {
-            _authBloc.add(LogOutEvent());
+            _authBloc.add(LogoutEvent());
           },
         );
       },
