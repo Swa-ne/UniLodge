@@ -20,7 +20,6 @@ io.on("connection", async (socket) => {
         const isActive = await CheckUserStatusIfActive(userId);
 
         if (!isActive) {
-            console.log(socket.id, userId, "67038d34ee7170f297b45055" === userId ? "Phone" : "Tab")
             await ChangeUsersStatusToActive(userId, socket.id);
         }
     } catch (error) {
@@ -33,7 +32,6 @@ io.on("connection", async (socket) => {
         if (await CheckUserStatusIfActive(data.receiverId)) {
 
             const socketId = await GetSocketId(data.receiverId);
-            console.log(data, socketId)
             if (socketId) socket.to(socketId).emit("msg-receive", { message: data.msg, chatId: data.chatId, senderId: data.senderId });
         }
     });

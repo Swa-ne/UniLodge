@@ -2,6 +2,7 @@ import * as bcrypt from "bcrypt";
 import { User, UserSchemaInterface } from "../../models/authentication/user.model";
 import { CustomResponse } from "../../utils/input.validators";
 import { generateAccessAndRefereshTokens, sendEmailCode } from "../index.services";
+import { ActiveUsers } from "../../models/chat/chat.model";
 
 export const signupUsertoDatabase = async (
     first_name: string,
@@ -32,6 +33,11 @@ export const signupUsertoDatabase = async (
             birthday,
             password_hash,
             valid_email
+        }).save();
+        await new ActiveUsers({
+            userId: userCredentialResult._id,
+            active: "0",
+            fullName: userCredentialResult.full_name
         }).save();
 
         await sendEmailCode(`${userCredentialResult._id}`, personal_email, first_name)
