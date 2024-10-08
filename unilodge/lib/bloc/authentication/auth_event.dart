@@ -68,3 +68,7 @@ class PostResetPasswordEvent extends AuthEvent {
 }
 
 class AuthenticateTokenEvent extends AuthEvent {}
+
+class LogoutEvent extends AuthEvent {}
+
+class CheckAuthenticationEvent extends AuthEvent {}

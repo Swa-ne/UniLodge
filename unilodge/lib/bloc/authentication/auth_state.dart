@@ -120,3 +120,16 @@ class ChangePasswordError extends AuthState {
   @override
   List<Object> get props => [error];
 }
+
+class LogoutSuccess extends AuthState {}
+
+class LogoutError extends AuthState {
+  final String error;
+
+  const LogoutError(this.error);
+
+  @override
+  List<Object> get props => [error];
+}
+
+class AuthLoggedOut extends AuthState {}
