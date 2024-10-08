@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:unilodge/bloc/authentication/auth_state.dart';
 import 'onboarding_items.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:unilodge/bloc/authentication/auth_bloc.dart';
 
 class OnboardingView extends StatefulWidget {
   const OnboardingView({super.key});
@@ -24,7 +27,7 @@ class _OnboardingViewState extends State<OnboardingView> {
         color: AppColors.lightBackground,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: isLastPage
-            ? getStarted()
+            ? getStarted(context) 
             : Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -89,7 +92,7 @@ class _OnboardingViewState extends State<OnboardingView> {
   }
 
   // Get started button
-  Widget getStarted() {
+  Widget getStarted(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8), 
@@ -97,8 +100,16 @@ class _OnboardingViewState extends State<OnboardingView> {
       width: MediaQuery.of(context).size.width * .9,
       height: 55,
       child: TextButton(
-          onPressed: () {
-            context.go('/home'); // Assuming '/home' is your route for the home screen
+          onPressed: () async {
+            // check user auth
+            final authBloc = BlocProvider.of<AuthBloc>(context);
+            if (authBloc.state is AuthSuccess) {
+              // user auth
+              context.go('/home');
+            } else {
+              // user not auth
+              context.go('/account-selection-login');
+            }
           },
           child: const Text(
             "Get started",

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:unilodge/bloc/authentication/auth_bloc.dart';
+import 'package:unilodge/bloc/authentication/auth_event.dart';
+import 'package:unilodge/bloc/authentication/auth_state.dart';
 import 'package:unilodge/common/widgets/custom_text.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/presentation/widgets/settings_widg/logout_confirm_bottom_sheet.dart';
@@ -78,7 +82,20 @@ class Settings extends StatelessWidget {
       builder: (BuildContext context) {
         return LogoutConfirmBottomSheet(
           onLogout: () {
-            //
+            context.read<AuthBloc>().add(LogoutEvent());
+
+            context.read<AuthBloc>().stream.listen((state) {
+              if (state is LogoutSuccess) {
+                context.go('/account-selection-login');
+              } else if (state is LogoutError) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Logout failed: ${state.error}'),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+              }
+            });
           },
         );
       },

@@ -94,5 +94,39 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthFailure());
       }
     });
+    on<LogoutEvent>(
+      (event, emit) async {
+        try {
+          emit(AuthLoading());
+          await _authRepo.logout();
+          emit(LogoutSuccess());
+        } catch (e) {
+          if (e.toString().contains('Unauthorized')) {
+            emit(LogoutSuccess());
+          } else {
+            emit(LogoutError(e.toString()));
+          }
+        }
+      },
+    );
+    on<CheckAuthenticationEvent>((event, emit) async {
+      emit(AuthLoading());
+      final accessToken = await _authRepo.getAccessToken();
+
+      if (accessToken != null && accessToken.isNotEmpty) {
+        try {
+          final isAuthenticated = await _authRepo.authenticateToken();
+          if (isAuthenticated) {
+            emit(AuthSuccess());
+          } else {
+            emit(AuthFailure());
+          }
+        } catch (e) {
+          emit(AuthFailure());
+        }
+      } else {
+        emit(AuthFailure());
+      }
+    });
   }
 }
