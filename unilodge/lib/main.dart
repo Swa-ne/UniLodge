@@ -1,10 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:unilodge/bloc/chat/chat_bloc.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/core/configs/theme/app_theme.dart';
 import 'package:unilodge/data/sources/auth/auth_repo.dart';
 import 'package:unilodge/bloc/authentication/auth_bloc.dart';
+import 'package:unilodge/data/sources/chat/chat_repo.dart';
 import 'app_routes.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -27,14 +28,22 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: BlocProvider(
-          create: (context) => AuthBloc(AuthRepoImpl()),
-          child: MaterialApp.router(
-            debugShowCheckedModeBanner: false,
-            theme: AppTheme.lightTheme,
-            title: 'UniLodge',
-            routerConfig: appRouter,
-          )),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => AuthBloc(AuthRepoImpl()),
+          ),
+          BlocProvider(
+            create: (context) => ChatBloc(ChatRepoImpl()),
+          ),
+        ],
+        child: MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.lightTheme,
+          title: 'UniLodge',
+          routerConfig: appRouter,
+        ),
+      ),
     );
   }
 }
