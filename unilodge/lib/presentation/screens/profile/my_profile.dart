@@ -22,6 +22,7 @@ class MyProfile extends StatelessWidget {
             text: "My Profile",
             fontSize: 20,
             fontWeight: FontWeight.bold,
+            color: AppColors.primary,
           ),
           centerTitle: true,
           leading: IconButton(

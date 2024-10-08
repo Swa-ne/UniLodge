@@ -92,7 +92,7 @@ class _UserProfileState extends State<UserProfile> {
                   title: const Text('Help Center'),
                   trailing: const Icon(Icons.arrow_forward_ios, color: AppColors.textColor, size: 20,),
                   onTap: () {
-                    context.go("/help-center");
+                    context.push("/help-center");
                   },
                 ),
                 // ListTile(
@@ -103,7 +103,7 @@ class _UserProfileState extends State<UserProfile> {
                 //   title: const Text('Privacy Policy'),
                 //   trailing: const Icon(Icons.arrow_forward_ios, color: AppColors.textColor, size: 20,),
                 //   onTap: () {
-                //     context.go("/settings");
+                //     context.push("/settings");
                 //   },
                 // ),
                 // ListTile(
@@ -114,7 +114,7 @@ class _UserProfileState extends State<UserProfile> {
                 //   title: const Text('Terms of Use'),
                 //   trailing: const Icon(Icons.arrow_forward_ios, color: AppColors.textColor, size: 20,),
                 //   onTap: () {
-                //     context.go("/settings");
+                //     context.push("/settings");
                 //   },
                 // ),
                 ListTile(
@@ -136,7 +136,7 @@ class _UserProfileState extends State<UserProfile> {
                   title: const Text('Settings'),
                   trailing: const Icon(Icons.arrow_forward_ios, color: AppColors.textColor, size: 20,),
                   onTap: () {
-                    context.go("/settings");
+                    context.push("/settings");
                   },
                 ),
               ],
@@ -197,6 +197,7 @@ class _UserProfileState extends State<UserProfile> {
                             "Find your accommodation and book now!",
                             style: TextStyle(
                               color: Color(0xff454545),
+                              fontSize: 13
                             ),
                           ),
                         ),
@@ -205,7 +206,7 @@ class _UserProfileState extends State<UserProfile> {
                           padding: const EdgeInsets.only(left: 8.0),
                           child: TextButton(
                             onPressed: () async {
-                              context.go("/listings");
+                              context.go("/home");
                             },
                             style: TextButton.styleFrom(
                               foregroundColor: const Color(0xfffdfdfd),

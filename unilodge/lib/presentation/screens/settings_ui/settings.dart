@@ -29,12 +29,12 @@ class Settings extends StatelessWidget {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios, color: AppColors.textColor),
             onPressed: () {
-              context.go('/user-profile');
+              context.push('/user-profile');
             },
           ),
           title: const CustomText(
             text: 'Settings',
-            color: Colors.black,
+            color: AppColors.primary,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
@@ -53,7 +53,7 @@ class Settings extends StatelessWidget {
                   color: AppColors.textColor,
                 ),
                 onTap: () {
-                  context.go('/my-profile');
+                  context.push('/my-profile');
                 },
               ),
               const Divider(),
@@ -65,7 +65,7 @@ class Settings extends StatelessWidget {
                   color: AppColors.textColor,
                 ),
                 onTap: () {
-                  context.go('/my-profile');
+                  context.push('/my-profile');
                 },
               ),
               const Divider(),
