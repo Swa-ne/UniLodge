@@ -92,13 +92,12 @@ class _OnboardingViewState extends State<OnboardingView> {
   Widget getStarted() {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8), 
-        color: AppColors.linearGreen),
+          borderRadius: BorderRadius.circular(8), color: AppColors.linearGreen),
       width: MediaQuery.of(context).size.width * .9,
       height: 55,
       child: TextButton(
           onPressed: () {
-            context.go('/home'); // Assuming '/home' is your route for the home screen
+            context.go('/account-selection-login');
           },
           child: const Text(
             "Get started",
