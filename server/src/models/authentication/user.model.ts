@@ -18,7 +18,7 @@ export interface UserSchemaInterface extends Document {
     refresh_token_version: number,
     createdAt?: Date,
     updatedAt?: Date,
-    inbox: ObjectId,
+    inbox: ObjectId[],
 }
 
 const UserSchema: Schema = new Schema({
