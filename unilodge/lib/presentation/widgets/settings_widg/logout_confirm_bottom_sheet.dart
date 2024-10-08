@@ -29,8 +29,7 @@ class LogoutConfirmBottomSheet extends StatelessWidget {
               fontSize: 18,
             )),
             onTap: () {
-              // onLogout();
-              Navigator.of(context).pop();
+              onLogout();
             },
           ),
           ListTile(
