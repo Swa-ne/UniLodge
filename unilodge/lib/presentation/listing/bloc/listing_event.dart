@@ -50,6 +50,7 @@ class UpdateUtilitiesEvent extends ListingEvent {
 }
 
 // Event to select image files for the listing
+// Keep this if image selection and upload are separate actions
 class SelectImagesEvent extends ListingEvent {
   final List<File> images; // Updated for generic image selection
 

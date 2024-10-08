@@ -8,6 +8,7 @@ abstract class ListingState extends Equatable {
   List<Object?> get props => [];
 }
 
+// Initial state
 class ListingInitial extends ListingState {}
 
 // State when a card is selected
@@ -44,3 +45,5 @@ class ImageUploadFailure extends ListingState {
   @override
   List<Object?> get props => [error];
 }
+
+

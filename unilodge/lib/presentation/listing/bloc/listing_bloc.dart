@@ -3,10 +3,9 @@ import 'package:unilodge/data/models/listing.dart';
 import 'listing_event.dart';
 import 'listing_state.dart';
 import 'package:unilodge/data/sources/listing/listing_repo.dart';
-import 'dart:io';
 
 class ListingBloc extends Bloc<ListingEvent, ListingState> {
-  final ListingRepo _listingRepo;  // Inject the repository
+  final ListingRepo _listingRepo;
 
   ListingBloc(this._listingRepo) : super(ListingInitial()) {
 
@@ -24,26 +23,28 @@ class ListingBloc extends Bloc<ListingEvent, ListingState> {
 
     // Handle image upload event
     on<UploadImagesEvent>((event, emit) async {
-      emit(ImageUploadInProgress());  // Emit loading state
+      emit(ImageUploadInProgress()); // Emit loading state
 
       try {
-    
+     
         await _listingRepo.uploadimageurlWithData(event.images, event.listing);
 
         if (state is CardSelectedState) {
           final currentListing = (state as CardSelectedState).listing;
 
+         
           final updatedListing = currentListing.copyWith(
-            imageUrl: event.images.map((e) => e.path).join(','),  // Assuming you store image URLs as a comma-separated string
+            imageUrl: event.images.map((e) => e.path).join(','), 
           );
 
+          
           emit(CardSelectedState(updatedListing, updatedListing.selectedPropertyType ?? ''));
         }
 
-        emit(ImagesUploadedState(event.images.map((e) => e.path).toList()));  // Successfully uploaded images and returning file paths
+        emit(ImagesUploadedState(event.images.map((e) => e.path).toList()));
 
       } catch (e) {
-        emit(ImageUploadFailure(e.toString()));  // Emit failure state if something goes wrong
+        emit(ImageUploadFailure(e.toString()));
       }
     });
   }

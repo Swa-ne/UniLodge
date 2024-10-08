@@ -48,7 +48,7 @@ class _PostPriceState extends State<PostPrice> {
                           color: AppColors.primary,
                         ),
                       ),
-                      const SizedBox(height: 50),
+                      const SizedBox(height: 25),
 
                       // // Display the selected property type here
                       // Text(
@@ -75,14 +75,14 @@ class _PostPriceState extends State<PostPrice> {
 
                       const SizedBox(height: 20), // Add spacing after text
 
-                      // Capture Price input
+                  
                       _buildTextField(
                         controller: _priceController,
                         label: 'Price',
                         hint: 'Enter price',
                         contentPadding: const EdgeInsets.all(16),
                       ),
-                      // Capture Description input
+                     
                       _buildTextField(
                         controller: _descriptionController,
                         label: 'Description',
@@ -91,7 +91,7 @@ class _PostPriceState extends State<PostPrice> {
                         minLines: 5,
                         contentPadding: const EdgeInsets.all(16),
                       ),
-                      // Capture Least Terms input
+                    
                       _buildTextField(
                         controller: _leaseTermsController,
                         label: 'Least Terms',
@@ -144,7 +144,7 @@ class _PostPriceState extends State<PostPrice> {
                         final updatedListing = widget.listing.copyWith(
                           price: _priceController.text,
                           description: _descriptionController.text,
-                          leaseTerms: _leaseTermsController.text,  
+                          leastTerms: _leaseTermsController.text,  
                         );
 
           

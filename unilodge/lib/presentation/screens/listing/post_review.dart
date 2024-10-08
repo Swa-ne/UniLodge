@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:unilodge/data/models/listing.dart';
+import 'package:unilodge/data/sources/listing/listing_repo.dart';
 import 'package:go_router/go_router.dart';
 
 class PostReview extends StatelessWidget {
@@ -10,14 +11,15 @@ class PostReview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Extract image paths and convert to a list of File objects
     List<String> imagePaths = listing.imageUrl?.isNotEmpty == true
         ? listing.imageUrl!.split(',').map((e) => e.trim()).toList()
         : [];
 
+    // Convert image paths to File objects
+    List<File> imageFiles = imagePaths.map((path) => File(path)).toList();
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Post Review"),
-      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
@@ -32,28 +34,29 @@ class PostReview extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-
-            // Swipeable images section
             const Text(
               'Uploaded Images:',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
-
             if (imagePaths.isNotEmpty)
               SizedBox(
-                height: 250,
+                height: 230,
+                width: 380,
                 child: PageView.builder(
                   itemCount: imagePaths.length,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Image.file(
-                        File(imagePaths[index]),
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Icon(Icons.broken_image, size: 100);
-                        },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.file(
+                          File(imagePaths[index]),
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Icon(Icons.broken_image, size: 100);
+                          },
+                        ),
                       ),
                     );
                   },
@@ -61,20 +64,14 @@ class PostReview extends StatelessWidget {
               )
             else
               const Text('No images uploaded'),
-
             const SizedBox(height: 20),
-
-            // Display property details
             _buildInfoRow('Property Name:', listing.property_name),
             _buildInfoRow('Property Type:', listing.selectedPropertyType),
             _buildInfoRow('Address:', listing.address),
             _buildInfoRow('Price:', listing.price),
             _buildInfoRow('Description:', listing.description),
-            _buildInfoRow('Lease Terms:', listing.leaseTerms),
-
+            _buildInfoRow('Lease Terms:', listing.leastTerms),
             const SizedBox(height: 20),
-
-            // Display amenities
             const Text(
               'Amenities:',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -85,10 +82,7 @@ class PostReview extends StatelessWidget {
                   .toList()
             else
               const Text('No amenities selected'),
-
             const SizedBox(height: 10),
-
-            // Display utilities
             const Text(
               'Utilities:',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -110,8 +104,7 @@ class PostReview extends StatelessWidget {
             borderRadius: const BorderRadius.horizontal(),
             boxShadow: [
               BoxShadow(
-                color:
-                    const Color.fromARGB(255, 119, 119, 119).withOpacity(0.2),
+                color: Colors.grey.withOpacity(0.2),
                 spreadRadius: 1,
                 blurRadius: 5,
                 offset: const Offset(0, -1),
@@ -139,8 +132,14 @@ class PostReview extends StatelessWidget {
               ),
               const SizedBox(width: 20),
               ElevatedButton(
-                onPressed: () {
-                  context.push('/home');
+                onPressed: () async {
+                  final repo = ListingRepoImpl();
+                  await repo.uploadimageurlWithData(imageFiles, listing);
+                  // Debug output for listing fields
+                  print("City: ${listing.city}");
+                  print("Combined Address: ${listing.barangay}");
+
+                  context.go('/home'); // Navigate to home page after submission
                 },
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,

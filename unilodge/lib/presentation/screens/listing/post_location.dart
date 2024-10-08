@@ -68,22 +68,28 @@ class _PostLocationState extends State<PostLocation> {
                     children: [
                       _buildTextField2(
                           controller: _propertyNameController,
-                          label: 'Property Name', hint: "Enter property name"),
+                          label: 'Property Name',
+                          hint: "Enter property name"),
                       _buildTextField2(
                           controller: _cityController,
-                          label: 'City', hint: "Enter city"),
+                          label: 'City',
+                          hint: "Enter city"),
                       _buildTextField2(
                           controller: _streetController,
-                          label: 'Street', hint: "Enter street"),
+                          label: 'Street',
+                          hint: "Enter street"),
                       _buildTextField2(
                           controller: _barangayController,
-                          label: 'Barangay', hint: "Enter barangay"),
+                          label: 'Barangay',
+                          hint: "Enter barangay"),
                       _buildTextField2(
                           controller: _houseNumberController,
-                          label: 'House Number', hint: "Enter house number"),
+                          label: 'House Number',
+                          hint: "Enter house number"),
                       _buildTextField2(
                           controller: _zipcodeController,
-                          label: 'Zipcode', hint: "Enter zipcode"),
+                          label: 'Zipcode',
+                          hint: "Enter zipcode"),
                     ],
                   ),
                 ),
@@ -130,17 +136,23 @@ class _PostLocationState extends State<PostLocation> {
                   const SizedBox(width: 20),
                   ElevatedButton(
                     onPressed: () {
-                     
+                      // Create the combined address
                       final combinedAddress =
                           '${_houseNumberController.text} ${_streetController.text}, ${_barangayController.text}, ${_cityController.text}, ${_zipcodeController.text}';
 
-                      // Update the listing model with the new data
+                      // Update the listing model with the new data, without the 'address' field
                       final updatedListing = widget.listing.copyWith(
                         property_name: _propertyNameController.text,
-                        address: combinedAddress,
+                        city: _cityController.text,
+                        street: _streetController.text,
+                        barangay: _barangayController.text,
+                        house_number: _houseNumberController.text,
+                        zip_code: _zipcodeController.text,
+                        address: combinedAddress, // for ui
                       );
 
                       // Navigate to the next page with the updated listing
+
                       context.push('/post-price', extra: updatedListing);
                     },
                     style: ElevatedButton.styleFrom(

@@ -1,3 +1,4 @@
+import 'dart:convert'; // Import for JSON decoding
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
@@ -18,6 +19,12 @@ class ListingRepoImpl extends ListingRepo {
   @override
   Future<void> uploadimageurlWithData(
       List<File> imageFiles, Listing dorm) async {
+    print("API URL: $_apiUrl");
+    print(
+        "Received listing data: ${dorm.toJson()}"); // Assuming toJson method exists
+    print(
+        "Received image files: ${imageFiles.map((file) => file.path).toList()}");
+
     final request =
         http.MultipartRequest('POST', Uri.parse("$_apiUrl/post-dorm"));
 
@@ -40,22 +47,28 @@ class ListingRepoImpl extends ListingRepo {
     request.fields['property_name'] = dorm.property_name ?? '';
     request.fields['address'] = dorm.address ?? '';
     request.fields['price'] = dorm.price ?? '';
+    request.fields['city'] = dorm.city ?? '';
+    request.fields['street'] = dorm.street ?? '';
+    request.fields['barangay'] = dorm.barangay ?? '';
+    request.fields['zipcode'] = dorm.zip_code ?? '';
     request.fields['description'] = dorm.description ?? '';
-    request.fields['leaseTerms'] = dorm.leaseTerms ?? '';
+    request.fields['leaseTerms'] = dorm.leastTerms ?? '';
     request.fields['ownerInfo'] = dorm.ownerInfo ?? '';
-    request.fields['imageurl'] = dorm.imageUrl ?? '';
     request.fields['rating'] = dorm.rating?.toString() ?? '';
     request.fields['selectedPropertyType'] = dorm.selectedPropertyType ?? '';
-
     request.fields['amenities'] = dorm.amenities?.join(',') ?? '';
     request.fields['utilities'] = dorm.utilities?.join(',') ?? '';
+    final streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
 
-    final response = await request.send();
+    print("Request headers: ${request.headers}");
+    print("Request fields: ${request.fields}");
 
     if (response.statusCode == 200) {
-      print('imageurl and data uploaded successfully');
+      print('Image URL and data uploaded successfully');
     } else {
-      print('Failed to upload imageurl. Status code: ${response.statusCode}');
+      print(
+          'Failed to upload. Status code: ${response.statusCode}, Body: ${json.decode(response.body)}');
     }
   }
 }
