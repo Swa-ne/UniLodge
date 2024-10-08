@@ -20,6 +20,7 @@ abstract class AuthRepo {
       String token, String password, String confirmation_password);
   Future<bool> logout();
   Future<bool> authenticateToken();
+  Future<String?> getAccessToken();
 }
 
 class AuthRepoImpl extends AuthRepo {
@@ -244,6 +245,8 @@ class AuthRepoImpl extends AuthRepo {
   @override
   Future<bool> logout() async {
     final token = await _tokenController.getAccessToken();
+    print('Logging out with token: $token');
+
     var response = await http.delete(
       Uri.parse("$_apiUrl/logout"),
       headers: {
@@ -288,5 +291,10 @@ class AuthRepoImpl extends AuthRepo {
     } else {
       throw Exception(response_body['error']);
     }
+  }
+
+  @override
+  Future<String?> getAccessToken() async {
+    return await _tokenController.getAccessToken();
   }
 }
