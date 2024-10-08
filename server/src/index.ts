@@ -10,6 +10,7 @@ dotenv.config()
 
 
 import entryRoutes from "./routes/authentication.routes";
+import chatRoutes from "./routes/chat.routes";
 
 
 const port = 3000;
@@ -40,6 +41,8 @@ app.use(
 app.use(cookieParser())
 
 app.use("/authentication", entryRoutes)
+app.use("/chat", chatRoutes)
+
 
 app.get('/', (req: Request, res: Response) => {
     res.send('Hello from your Node.js Express server!');
