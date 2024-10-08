@@ -22,7 +22,7 @@ class _MessagesState extends State<Messages> {
           fontSize: 18,
         ),
       ),
-      body: MessagesListView(),
+      body: const MessagesListView(),
     );
   }
 }

@@ -1,12 +1,15 @@
 class UserModel {
-  String? fullName;
+  String? id;
+  String? full_name;
   String? email;
-  String? imageURL;
+  String? profile;
 
-  UserModel({this.fullName, this.email, this.imageURL});
+  UserModel({this.id, this.full_name, this.email, this.profile});
 
   UserModel.fromJson(Map<String, dynamic> data) {
-    fullName = data['name'];
-    email = data['email'];
+    id = data['_id'];
+    full_name = data['full_name'];
+    email = data['personal_email'];
+    profile = data['profile'];
   }
 }

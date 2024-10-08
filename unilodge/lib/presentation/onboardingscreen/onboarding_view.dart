@@ -27,7 +27,7 @@ class _OnboardingViewState extends State<OnboardingView> {
         color: AppColors.lightBackground,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: isLastPage
-            ? getStarted(context) 
+            ? getStarted(context)
             : Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -95,21 +95,12 @@ class _OnboardingViewState extends State<OnboardingView> {
   Widget getStarted(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8), 
-        color: AppColors.linearGreen),
+          borderRadius: BorderRadius.circular(8), color: AppColors.linearGreen),
       width: MediaQuery.of(context).size.width * .9,
       height: 55,
       child: TextButton(
-          onPressed: () async {
-            // check user auth
-            final authBloc = BlocProvider.of<AuthBloc>(context);
-            if (authBloc.state is AuthSuccess) {
-              // user auth
-              context.go('/home');
-            } else {
-              // user not auth
-              context.go('/account-selection-login');
-            }
+          onPressed: () {
+            context.go('/account-selection-login');
           },
           child: const Text(
             "Get started",

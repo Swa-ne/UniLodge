@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:unilodge/data/models/login_user.dart';
 import 'package:unilodge/data/models/sign_up_user.dart';
 import 'package:unilodge/data/sources/auth/token_controller.dart';
+import 'package:unilodge/data/sources/chat/socket_controller.dart';
 
 final _apiUrl = "${dotenv.env['API_URL']}/authentication";
 
@@ -20,11 +21,11 @@ abstract class AuthRepo {
       String token, String password, String confirmation_password);
   Future<bool> logout();
   Future<bool> authenticateToken();
-  Future<String?> getAccessToken();
 }
 
 class AuthRepoImpl extends AuthRepo {
   final TokenControllerImpl _tokenController = TokenControllerImpl();
+  final SocketControllerImpl _SocketController = SocketControllerImpl();
 
   @override
   Future<String> login(LoginUserModel user) async {
@@ -40,7 +41,8 @@ class AuthRepoImpl extends AuthRepo {
 
     if (response.statusCode == 200) {
       _tokenController.updateAccessToken(response_body['access_token']);
-
+      _tokenController.updateUserID(response_body['user_id']);
+      _SocketController.connect(response_body['user_id']);
       String? cookies = response.headers['set-cookie'];
       if (cookies == null) {
         throw Exception("Server connection error");
@@ -177,6 +179,8 @@ class AuthRepoImpl extends AuthRepo {
     final response_body = json.decode(response.body);
     if (response.statusCode == 200) {
       _tokenController.updateAccessToken(response_body['access_token']);
+      _tokenController.updateUserID(response_body['user_id']);
+      _SocketController.connect(response_body['user_id']);
 
       String? cookies = response.headers['set-cookie'];
       if (cookies == null) {
@@ -244,21 +248,22 @@ class AuthRepoImpl extends AuthRepo {
 
   @override
   Future<bool> logout() async {
-    final token = await _tokenController.getAccessToken();
-    print('Logging out with token: $token');
-
+    final access_token = await _tokenController.getAccessToken();
+    final refresh_token = await _tokenController.getRefreshToken();
     var response = await http.delete(
       Uri.parse("$_apiUrl/logout"),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': token,
+        'Authorization': access_token,
+        'Cookie': 'refresh_token=$refresh_token',
       },
     );
     final response_body = json.decode(response.body);
     if (response.statusCode == 200) {
       _tokenController.removeAccessToken();
       _tokenController.removeRefreshToken();
+      _tokenController.removeUserID();
       return response_body['message'] == "User logged Out";
     } else {
       throw Exception(response_body['error']);
@@ -269,6 +274,7 @@ class AuthRepoImpl extends AuthRepo {
   Future<bool> authenticateToken() async {
     final access_token = await _tokenController.getAccessToken();
     final refresh_token = await _tokenController.getRefreshToken();
+    final user_id = await _tokenController.getUserID();
     var response = await http.get(
       Uri.parse("$_apiUrl/current-user"),
       headers: {
@@ -280,6 +286,7 @@ class AuthRepoImpl extends AuthRepo {
     );
     final response_body = json.decode(response.body);
     if (response.statusCode == 200) {
+      _SocketController.connect(user_id);
       var newAccessToken = response.headers['authorization'];
       if (newAccessToken != null) {
         var tokenValue = newAccessToken.split(' ')[1];
@@ -291,10 +298,5 @@ class AuthRepoImpl extends AuthRepo {
     } else {
       throw Exception(response_body['error']);
     }
-  }
-
-  @override
-  Future<String?> getAccessToken() async {
-    return await _tokenController.getAccessToken();
   }
 }

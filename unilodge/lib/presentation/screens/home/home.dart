@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:unilodge/bloc/chat/chat_bloc.dart';
 import 'package:unilodge/core/configs/assets/app_images.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
+import 'package:unilodge/data/sources/chat/socket_controller.dart';
 import 'package:unilodge/presentation/widgets/home/listing_cards.dart';
 import 'package:unilodge/presentation/widgets/home/type_cards.dart';
 import 'package:unilodge/presentation/widgets/home/search.dart';
@@ -15,6 +18,17 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  late ChatBloc _chatBloc;
+  late SocketControllerImpl _socketController;
+
+  @override
+  void initState() {
+    super.initState();
+    _chatBloc = BlocProvider.of<ChatBloc>(context);
+    _socketController = SocketControllerImpl();
+    _socketController.passBloc(_chatBloc);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

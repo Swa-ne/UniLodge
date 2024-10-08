@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/data/dummy_data/dummy_data.dart';
+import 'package:unilodge/data/models/inbox.dart';
 import 'package:unilodge/presentation/screens/help_center/help_center.dart';
 import 'package:unilodge/presentation/screens/auth/account_selection_login.dart';
 import 'package:unilodge/presentation/screens/auth/account_selection_sign_up.dart';
@@ -11,6 +12,7 @@ import 'package:unilodge/presentation/screens/edit_profile/edit_profile_info.dar
 import 'package:unilodge/presentation/screens/home/homepage.dart';
 import 'package:unilodge/presentation/screens/home/listing_details_screen.dart';
 import 'package:unilodge/presentation/screens/home/type_listing_screen.dart';
+import 'package:unilodge/presentation/screens/message/chat.dart';
 import 'package:unilodge/presentation/screens/profile/my_profile.dart';
 import 'package:unilodge/presentation/screens/settings_ui/settings.dart';
 import 'package:unilodge/presentation/screens/your_listing/edit_listing_post.dart';
@@ -24,6 +26,7 @@ import 'package:unilodge/presentation/screens/listing/post_image.dart';
 import 'package:unilodge/presentation/screens/listing/post_review.dart';
 import 'package:unilodge/presentation/onboardingscreen/onboarding_view.dart';
 import 'package:unilodge/presentation/splashscreen/pages/spash_screen.dart';
+
 import 'package:unilodge/data/models/listing.dart';
 
 final GoRouter appRouter = GoRouter(
@@ -74,6 +77,21 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => const HomePage(
         initialTabIndex: 3,
       ),
+    ),
+    GoRoute(
+      path: '/chat/:chat_id',
+      builder: (context, state) {
+        final chat_id = state.pathParameters['chat_id'];
+        final inbox = state.extra as InboxModel;
+
+        if (chat_id != null) {
+          return Chat(
+            chat_id: chat_id,
+            inbox: inbox,
+          );
+        }
+        return const HomePage();
+      },
     ),
     GoRoute(
       path: '/listing-detail/:id',

@@ -2,8 +2,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unilodge/data/sources/auth/auth_repo.dart';
 import 'package:unilodge/bloc/authentication/auth_event.dart';
 import 'package:unilodge/bloc/authentication/auth_state.dart';
+import 'package:unilodge/data/sources/auth/token_controller.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
+  final TokenControllerImpl _tokenController = TokenControllerImpl();
   final AuthRepo _authRepo;
 
   AuthBloc(this._authRepo) : super(AuthLoading()) {
@@ -111,9 +113,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
     on<CheckAuthenticationEvent>((event, emit) async {
       emit(AuthLoading());
-      final accessToken = await _authRepo.getAccessToken();
+      final accessToken = await _tokenController.getAccessToken();
 
-      if (accessToken != null && accessToken.isNotEmpty) {
+      if (accessToken.isNotEmpty) {
         try {
           final isAuthenticated = await _authRepo.authenticateToken();
           if (isAuthenticated) {
