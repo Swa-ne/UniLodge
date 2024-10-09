@@ -11,7 +11,9 @@ dotenv.config()
 
 import entryRoutes from "./routes/authentication.routes";
 import chatRoutes from "./routes/chat.routes";
+import dormRoutes from "./routes/dorm.routes";
 import listingRoutes from "./routes/listing.routes";
+import renterRoutes from "./routes/renter.routes";
 
 
 const port = 3000;
@@ -45,7 +47,9 @@ app.use(cookieParser())
 
 app.use("/authentication", entryRoutes)
 app.use("/chat", chatRoutes)
+app.use("/dorm", dormRoutes)
 app.use("/listing", listingRoutes)
+app.use("/render", renterRoutes)
 
 
 app.get('/', (req: Request, res: Response) => {
