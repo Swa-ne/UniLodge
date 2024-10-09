@@ -1,12 +1,16 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:unilodge/data/models/listing.dart';
 import 'package:unilodge/data/repository/listing_repository.dart';
+import 'package:unilodge/data/sources/auth/token_controller.dart';
 
-final _apiUrl = "${dotenv.env['API_URL']}";
+final _apiUrl = "${dotenv.env['API_URL']}/listing";
 
 class ListingRepositoryImpl implements ListingRepository {
+  final TokenControllerImpl _tokenController = TokenControllerImpl();
 
   @override
   Future<List<Listing>> fetchListings() async {
@@ -21,16 +25,42 @@ class ListingRepositoryImpl implements ListingRepository {
   }
 
   @override
-  Future<void> createListing(Listing listing) async {
-    final response = await http.post(
-      Uri.parse('$_apiUrl/post-dorm'),
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode(listing.toJson()),
-    );
+  Future<bool> createListing(List<File> imageFiles, Listing dorm) async {
+    final request =
+        http.MultipartRequest('POST', Uri.parse("$_apiUrl/post-dorm"));
 
-    if (response.statusCode != 201) {
-      throw Exception('Failed to create listing');
+    final token = await _tokenController.getAccessToken();
+    request.headers['Authorization'] = token;
+
+    for (int i = 0; i < imageFiles.length; i++) {
+      File imageFile = imageFiles[i];
+
+      request.files.add(
+        await http.MultipartFile.fromPath(
+          'file',
+          imageFile.path,
+          contentType: MediaType('image', 'jpeg'),
+        ),
+      );
     }
+
+    request.fields['property_name'] = dorm.property_name ?? '';
+    request.fields['type'] = dorm.selectedPropertyType ?? '';
+    request.fields['city'] = dorm.city ?? '';
+    request.fields['street'] = dorm.street ?? '';
+    request.fields['barangay'] = dorm.barangay ?? '';
+    request.fields['house_number'] = dorm.house_number ?? '';
+    request.fields['zip_code'] = dorm.zip_code ?? '';
+    request.fields['price'] = dorm.price ?? '';
+    request.fields['description'] = dorm.description ?? '';
+    request.fields['leaseTerms'] = dorm.leastTerms ?? '';
+    request.fields['rating'] = dorm.rating?.toString() ?? '';
+    request.fields['amenities'] = dorm.amenities?.join(',') ?? '';
+    request.fields['utilities'] = dorm.utilities?.join(',') ?? '';
+    final streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
+
+    return response.statusCode == 200;
   }
 
   @override
