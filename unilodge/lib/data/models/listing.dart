@@ -1,24 +1,30 @@
 class Listing {
   final String? id;
+  final String? owner_id;
   final String? property_name;
-  final String? address; // Combined address for display purposes
+  final String? selectedPropertyType;
   final String? city;
   final String? street;
   final String? barangay;
   final String? house_number;
   final String? zip_code;
+  final int? lat;
+  final int? lng;
+  final int? available_rooms;
   final String? price;
   final String? description;
   final String? leastTerms;
-  final String? ownerInfo;
   final List<String>? amenities;
   final List<String>? utilities;
-  final String? imageUrl;
+  final List<String>? imageUrl;
   final int? rating;
-  final String? selectedPropertyType;
+  final String? address;
+  final bool? isAvailable;
+  final String? createdAt;
 
   Listing({
     this.id,
+    this.owner_id,
     this.property_name,
     this.address,
     this.city,
@@ -26,15 +32,19 @@ class Listing {
     this.barangay,
     this.house_number,
     this.zip_code,
+    this.lat,
+    this.lng,
+    this.available_rooms,
     this.price,
     this.description,
     this.leastTerms,
-    this.ownerInfo,
     this.amenities,
     this.utilities,
     this.imageUrl,
     this.rating,
     this.selectedPropertyType,
+    this.isAvailable,
+    this.createdAt,
   });
 
   // Getter for the combined address
@@ -54,12 +64,14 @@ class Listing {
     String? price,
     String? description,
     String? leastTerms,
-    String? ownerInfo,
+    String? owner_id,
     List<String>? amenities,
     List<String>? utilities,
-    String? imageUrl,
+    List<String>? imageUrl,
     int? rating,
     String? selectedPropertyType,
+    bool? isAvailable,
+    String? createdAt,
   }) {
     return Listing(
       id: id ?? this.id,
@@ -73,12 +85,14 @@ class Listing {
       price: price ?? this.price,
       description: description ?? this.description,
       leastTerms: leastTerms ?? this.leastTerms,
-      ownerInfo: ownerInfo ?? this.ownerInfo,
+      owner_id: owner_id ?? this.owner_id,
       amenities: amenities ?? this.amenities,
       utilities: utilities ?? this.utilities,
       imageUrl: imageUrl ?? this.imageUrl,
       rating: rating ?? this.rating,
       selectedPropertyType: selectedPropertyType ?? this.selectedPropertyType,
+      isAvailable: isAvailable ?? this.isAvailable,
+      createdAt: createdAt ?? this.createdAt,
     );
   }
 
@@ -86,19 +100,26 @@ class Listing {
     return Listing(
       id: json['_id'],
       property_name: json['property_name'],
-      city: json['city'],
-      street: json['street'],
-      barangay: json['barangay'],
-      house_number: json['house_number'],
-      zip_code: json['zip_code'],
-      price: json['price'],
+      city: json["location"]['city'],
+      street: json["location"]['street'],
+      barangay: json["location"]['barangay'],
+      house_number: json["location"]['house_number'],
+      zip_code: "${json["location"]['zip_code']}",
+      // lat: json["location"]["coordinates"]['lat'],
+      // lng: json["location"]["coordinates"]['lng'],
+      available_rooms: json['available_rooms'],
+      price: "${json['price']}",
       description: json['description'],
-      ownerInfo: json['owner_info'],
+      owner_id: json['owner_id'],
       amenities: List<String>.from(json['amenities']),
-      utilities: List<String>.from(json['utilities'] ?? []),
-      imageUrl: json['image_url'],
-      rating: json['rating'],
-      selectedPropertyType: json['selectedPropertyType'],
+      utilities: List<String>.from(json['utilities']),
+      imageUrl: (json['imageUrl'] as List<dynamic>)
+          .map((image) => image['url'] as String)
+          .toList(),
+      // // rating: json['rating'],
+      // selectedPropertyType: json['type'],
+      // isAvailable: json['isAvailable'],
+      // createdAt: "${json['createdAt']}",
     );
   }
 
@@ -111,14 +132,15 @@ class Listing {
       'barangay': barangay,
       'house_number': house_number,
       'zip_code': zip_code,
+      'available_rooms': available_rooms,
       'price': price,
       'description': description,
-      'owner_info': ownerInfo,
+      'owner_info': owner_id,
       'amenities': amenities?.map((x) => x).toList(),
       'utilities': utilities?.map((x) => x).toList(),
-      'image_url': imageUrl,
+      'imageUrl': imageUrl?.map((x) => x).toList(),
       'rating': rating,
-      'selectedPropertyType': selectedPropertyType,
+      'type': selectedPropertyType,
     };
   }
 }

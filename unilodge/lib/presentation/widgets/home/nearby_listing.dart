@@ -31,8 +31,8 @@ class NearbyProperties extends StatelessWidget {
               context.push('/listing-detail/${property.id}');
             },
             child: NearbyCard(
-              imageUrl: property.imageUrl ??'',
-              propertyName: property.property_name ??'',
+              imageUrl: property.imageUrl?[0] ?? '',
+              propertyName: property.property_name ?? '',
               rating: property.rating ?? 0,
             ),
           );

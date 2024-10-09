@@ -52,7 +52,7 @@ class YourListingDetails extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 child: listing.imageUrl != null
                     ? Image.network(
-                        listing.imageUrl!,
+                        listing.imageUrl?[0] ?? '',
                         width: double.infinity,
                         height: 200,
                         fit: BoxFit.cover,

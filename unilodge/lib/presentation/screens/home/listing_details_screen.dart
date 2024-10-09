@@ -63,7 +63,7 @@ class ListingDetailScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: Image.network(listing.imageUrl ?? '',
+                  child: Image.network(listing.imageUrl?[0] ?? '',
                       width: double.infinity, height: 200, fit: BoxFit.cover),
                 ),
               ),

@@ -41,7 +41,7 @@ class ListingCard extends StatelessWidget {
                   child: Opacity(
                     opacity: 0.9,
                     child: Image.network(
-                      listing.imageUrl ?? '',
+                      listing.imageUrl?[0] ?? '',
                       width: 150,
                       height: 90,
                       fit: BoxFit.cover,
@@ -55,7 +55,7 @@ class ListingCard extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.topLeft,
                   child: Text(listing.property_name ?? '',
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: AppColors.textColor,
                         fontWeight: FontWeight.w500,
                         fontSize: 16,
