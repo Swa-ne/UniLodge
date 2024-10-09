@@ -14,12 +14,25 @@ class ListingRepositoryImpl implements ListingRepository {
 
   @override
   Future<List<Listing>> fetchListings() async {
-    final response = await http.get(Uri.parse('$_apiUrl/my-dorms'));
-
-    if (response.statusCode == 200) {
-      final List<dynamic> data = json.decode(response.body)['listings'];
-      return data.map((json) => Listing.fromJson(json)).toList();
-    } else {
+    final access_token = await _tokenController.getAccessToken();
+    final refresh_token = await _tokenController.getRefreshToken();
+    final response = await http.get(
+      Uri.parse('$_apiUrl/my-dorms'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': access_token,
+        'Cookie': 'refresh_token=$refresh_token',
+      },
+    );
+    try {
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body)['message'];
+        return data.map((json) => Listing.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to load listings');
+      }
+    } catch (e) {
       throw Exception('Failed to load listings');
     }
   }
@@ -29,8 +42,10 @@ class ListingRepositoryImpl implements ListingRepository {
     final request =
         http.MultipartRequest('POST', Uri.parse("$_apiUrl/post-dorm"));
 
-    final token = await _tokenController.getAccessToken();
-    request.headers['Authorization'] = token;
+    final access_token = await _tokenController.getAccessToken();
+    final refresh_token = await _tokenController.getRefreshToken();
+    request.headers['Authorization'] = access_token;
+    request.headers['Cookie'] = 'refresh_token=$refresh_token';
 
     for (int i = 0; i < imageFiles.length; i++) {
       File imageFile = imageFiles[i];
