@@ -33,7 +33,7 @@ class _ListingCardsState extends State<ListingCards> {
                   child: Opacity(
                     opacity: 0.9,
                     child: Image.network(
-                      widget.listing.imageUrl ?? '',
+                      widget.listing.imageUrl?[0] ?? '',
                       width: 360,
                       height: 200,
                       fit: BoxFit.cover,

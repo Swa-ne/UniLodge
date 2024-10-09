@@ -15,10 +15,7 @@ class PostReview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final listingBloc = BlocProvider.of<ListingBloc>(context);
-    List<String> imagePaths = listing.imageUrl?.isNotEmpty == true
-        ? listing.imageUrl!.split(',').map((e) => e.trim()).toList()
-        : [];
-
+    List<String> imagePaths = listing.imageUrl ?? [];
     List<File> imageFiles = imagePaths.map((path) => File(path)).toList();
 
     return BlocListener<ListingBloc, ListingState>(

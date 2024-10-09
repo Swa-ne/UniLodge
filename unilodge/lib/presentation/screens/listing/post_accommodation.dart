@@ -82,7 +82,6 @@ class _PropertySelection extends StatelessWidget {
           isSelected: isSelected,
           onTap: () {
             context.read<ListingBloc>().add(SelectCardEvent(cardName));
-            print('Selected: $cardName');
           },
         );
       },

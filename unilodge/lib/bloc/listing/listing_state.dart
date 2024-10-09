@@ -10,6 +10,8 @@ abstract class ListingState extends Equatable {
 
 class ListingLoading extends ListingState {}
 
+class FetchingLoading extends ListingState {}
+
 class ListingLoaded extends ListingState {
   final List<Listing> listing;
 

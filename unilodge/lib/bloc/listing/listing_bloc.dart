@@ -10,7 +10,7 @@ class ListingBloc extends Bloc<ListingEvent, ListingState> {
   ListingBloc(this._listingRepository) : super(ListingLoading()) {
     on<FetchListings>((event, emit) async {
       try {
-        emit(ListingLoading());
+        emit(FetchingLoading());
         final listings = await _listingRepository.fetchListings();
         emit(ListingLoaded(listings));
       } catch (e) {
@@ -34,7 +34,7 @@ class ListingBloc extends Bloc<ListingEvent, ListingState> {
     on<UpdateListing>((event, emit) async {
       try {
         await _listingRepository.updateListing(event.id, event.listing);
-        add(FetchListings());
+        // add(FetchListings());
       } catch (e) {
         emit(ListingError(e.toString()));
       }
@@ -43,7 +43,7 @@ class ListingBloc extends Bloc<ListingEvent, ListingState> {
     on<ToggleListing>((event, emit) async {
       try {
         await _listingRepository.toggleListing(event.id);
-        add(FetchListings());
+        // add(FetchListings());
       } catch (e) {
         emit(ListingError(e.toString()));
       }
@@ -52,20 +52,20 @@ class ListingBloc extends Bloc<ListingEvent, ListingState> {
     on<DeleteListing>((event, emit) async {
       try {
         await _listingRepository.deleteListing(event.id);
-        add(FetchListings());
+        // add(FetchListings());
       } catch (e) {
         emit(ListingError(e.toString()));
       }
     });
     on<SelectCardEvent>((event, emit) {
-      if (state is ListingLoading) {
-        final listing = Listing(selectedPropertyType: event.cardName);
-        emit(CardSelectedState(listing, event.cardName));
-      } else if (state is CardSelectedState) {
+      if (state is CardSelectedState) {
         final listing = (state as CardSelectedState).listing;
         final updatedListing =
             listing.copyWith(selectedPropertyType: event.cardName);
         emit(CardSelectedState(updatedListing, event.cardName));
+      } else {
+        final listing = Listing(selectedPropertyType: event.cardName);
+        emit(CardSelectedState(listing, event.cardName));
       }
     });
   }
