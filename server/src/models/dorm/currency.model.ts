@@ -9,11 +9,11 @@ export interface CurrencySchemaInterface extends Document {
 const CurrencySchema: Schema = new Schema({
     code: {
         type: String,
-        required: true,
+        default: "PHP"
     },
     symbol: {
         type: String,
-        required: true,
+        default: "₱"
     },
 });
 export const Currency = model<CurrencySchemaInterface>("Currency", CurrencySchema)

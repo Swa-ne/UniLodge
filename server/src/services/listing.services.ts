@@ -3,8 +3,9 @@ import { CustomResponse } from '../utils/input.validators';
 import { Dorm, DormSchemaInterface } from '../models/dorm/dorm.model';
 import { Location, LocationSchemaInterface } from '../models/dorm/location.model';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
-import { storage } from '../middlewares/save.config';
+import { deleteImage, storage } from '../middlewares/save.config';
 import { Image } from '../models/media/image.model';
+import { Currency } from '../models/dorm/currency.model';
 
 export const getMyDorms = async (user_id: string) => {
     try {
@@ -21,25 +22,25 @@ export const postDormListing = async (
     type: string,
     city: string,
     street: string,
-    barangay_or_district: string,
+    barangay: string,
     house_number: string,
     zip_code: string,
     lat: string,
     lng: string,
     currency_id: string,
     available_rooms: string,
-    price_per_month: string,
+    price: string,
     description: string,
     least_terms: string,
-    rental_amenities: string[],
-    utility_included: string[],
+    amenities: string[],
+    utilities: string[],
     image_files: Express.Multer.File[],
     tags: string[]
 ): Promise<CustomResponse> => {
     const session = await startSession();
     session.startTransaction();
     try {
-        let image_urls: ObjectId[] = []
+        let imageUrl: ObjectId[] = []
         if (image_files) {
             for (const file of image_files) {
                 const storage_ref = ref(storage, `files/${file.originalname}${new Date()}`);
@@ -56,11 +57,12 @@ export const postDormListing = async (
                     url: download_url,
                 }).save();
 
-                image_urls.push(new_image._id);
+                imageUrl.push(new_image._id);
             }
         }
-        const latitude = parseFloat(lat);
-        const longitude = parseFloat(lng);
+        // TODO: update this if map is already integrated
+        const latitude = parseFloat("0");
+        const longitude = parseFloat("0");
 
         if (isNaN(latitude) || isNaN(longitude)) {
             return { error: 'Invalid latitude or longitude', httpCode: 400 };
@@ -69,7 +71,7 @@ export const postDormListing = async (
         const newLoc: Document<unknown, {}, LocationSchemaInterface> & LocationSchemaInterface & Required<{ _id: ObjectId; }> | null = await new Location({
             city,
             street,
-            barangay_or_district,
+            barangay,
             house_number,
             zip_code,
             coordinates: {
@@ -78,19 +80,21 @@ export const postDormListing = async (
             },
         }).save({ session });
 
+        const currency = await Currency.findById("67055ace8fbd824752301b4b");
+
         await new Dorm({
             owner_id: user_id,
             property_name,
             type,
             location: newLoc._id,
-            currency: currency_id,
+            currency: currency!._id ?? "currency",
             available_rooms,
-            price_per_month,
+            price,
             description,
             least_terms,
-            rental_amenities,
-            utility_included,
-            image_urls,
+            amenities,
+            utilities,
+            imageUrl,
             tags,
         }).save({ session });
 
@@ -101,6 +105,7 @@ export const postDormListing = async (
     } catch (error) {
         await session.abortTransaction();
         session.endSession();
+        console.log(error)
         return { error: 'Internal Server Error', httpCode: 500 };
     }
 };
@@ -112,40 +117,82 @@ export const putDormListing = async (
     type: string,
     city: string,
     street: string,
-    barangay_or_district: string,
+    barangay: string,
     house_number: string,
     zip_code: string,
     lat: string,
     lng: string,
     currency_id: string,
     available_rooms: string,
-    price_per_month: string,
+    price: string,
     description: string,
     least_terms: string,
-    rental_amenities: string[],
-    utility_included: string[],
-    image_urls: string[],
+    amenities: string[],
+    utilities: string[],
+    image_files: Express.Multer.File[],
     tags: string[]
 ): Promise<CustomResponse> => {
     try {
-        const latitude = parseFloat(lat);
-        const longitude = parseFloat(lng);
+        const existingDorm = await Dorm.findById(dorm_id).populate("imageUrl");
+
+        if (!existingDorm) {
+            return { error: 'Dorm not found', httpCode: 404 };
+        }
+
+        if (existingDorm.imageUrl.length > 0) {
+            for (const image of existingDorm.imageUrl) {
+                try {
+                    if (typeof image === 'object' && 'url' in image) {
+                        await deleteImage(image.url);
+                        await Image.findByIdAndDelete(image._id);
+                    }
+                } catch (err) {
+                    console.error(`Error deleting image ${image}:`, err);
+                }
+            }
+        }
+
+        let imageUrl: ObjectId[] = []
+        if (image_files) {
+            for (const file of image_files) {
+                const storage_ref = ref(storage, `files/${file.originalname}${new Date()}`);
+
+                const metadata = {
+                    contentType: file.mimetype,
+                };
+
+                const snapshot = await uploadBytesResumable(storage_ref, file.buffer, metadata);
+                const download_url = await getDownloadURL(snapshot.ref);
+
+                const new_image = await new Image({
+                    name: file.originalname,
+                    url: download_url,
+                }).save();
+
+                imageUrl.push(new_image._id);
+            }
+        }
+
+        // TODO: update this if map is already integrated
+        const latitude = parseFloat("0");
+        const longitude = parseFloat("0");
 
         if (isNaN(latitude) || isNaN(longitude)) {
             return { error: 'Invalid latitude or longitude', httpCode: 400 };
         }
+
         const dorm = await Dorm.findByIdAndUpdate(dorm_id, {
             owner_id: user_id,
             property_name,
             type,
             currency: currency_id,
             available_rooms,
-            price_per_month,
+            price,
             description,
             least_terms,
-            rental_amenities,
-            utility_included,
-            image_urls,
+            amenities,
+            utilities,
+            imageUrl,
             tags,
         }, { new: true });
 
@@ -156,7 +203,7 @@ export const putDormListing = async (
         await Location.findByIdAndUpdate(dorm.location, {
             city,
             street,
-            barangay_or_district,
+            barangay,
             house_number,
             zip_code,
             coordinates: {

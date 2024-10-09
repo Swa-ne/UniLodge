@@ -4,7 +4,7 @@ export interface LocationSchemaInterface extends Document {
     _id: ObjectId,
     city: string,
     street: string,
-    barangay_or_district: string,
+    barangay: string,
     house_number?: number,
     zip_code: number,
     coordinates: {
@@ -23,7 +23,7 @@ const LocationSchema: Schema = new Schema({
         type: String,
         required: [true, 'Please enter street.'],
     },
-    barangay_or_district: {
+    barangay: {
         type: String,
         required: [true, 'Please enter barangay or district.'],
     },

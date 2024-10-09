@@ -1,4 +1,5 @@
 import { Schema, Document, ObjectId, model } from 'mongoose';
+import { Image, ImageSchemaInterface } from './image.model';
 
 export interface DormSchemaInterface extends Document {
     _id: ObjectId,
@@ -8,12 +9,12 @@ export interface DormSchemaInterface extends Document {
     location: ObjectId,
     currency: ObjectId,
     available_rooms: number,
-    price_per_month: number,
+    price: number,
     description: string,
     least_terms?: string,
-    rental_amenities?: ObjectId[],
-    utility_included?: ObjectId[],
-    image_urls: ObjectId[],
+    amenities?: string[],
+    utilities?: string[],
+    imageUrl: ObjectId[] | ImageSchemaInterface[],
     tags?: string[],
     isAvailable: boolean,
     createdAt?: Date,
@@ -49,7 +50,7 @@ const DormSchema: Schema = new Schema({
         default: 0,
         required: [true, 'Please enter available rooms.'],
     },
-    price_per_month: {
+    price: {
         type: Number,
         default: 0,
         required: [true, 'Please enter price.'],
@@ -61,15 +62,13 @@ const DormSchema: Schema = new Schema({
     least_terms: {
         type: String,
     },
-    rental_amenities: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Amenity',
+    amenities: [{
+        type: String,
     }],
-    utility_included: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Utility',
+    utilities: [{
+        type: String,
     }],
-    image_urls: [{
+    imageUrl: [{
         type: Schema.Types.ObjectId,
         ref: 'Image',
     }],
