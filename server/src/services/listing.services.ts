@@ -9,7 +9,10 @@ import { Currency } from '../models/dorm/currency.model';
 
 export const getMyDorms = async (user_id: string) => {
     try {
-        const dorms: DormSchemaInterface[] | null = await Dorm.find({ owner_id: user_id });
+        const dorms: DormSchemaInterface[] | null = await Dorm.find({ owner_id: user_id })
+            .populate('location')
+            .populate('currency')
+            .populate('imageUrl');
         return { message: dorms, httpCode: 200 };
     } catch (error) {
         return { error: 'Internal Server Error', httpCode: 500 };
