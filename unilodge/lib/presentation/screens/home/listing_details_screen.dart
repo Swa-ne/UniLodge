@@ -84,8 +84,7 @@ class ListingDetailScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: TextRow(
-                    text1: "Owner Information:",
-                    text2: listing.ownerInfo ?? ''),
+                    text1: "Owner Information:", text2: listing.owner_id ?? ''),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),

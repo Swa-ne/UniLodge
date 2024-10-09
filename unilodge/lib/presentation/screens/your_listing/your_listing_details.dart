@@ -91,8 +91,8 @@ class YourListingDetails extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: TextRow(
                 text1: "Owner Information:",
-                text2: listing.ownerInfo ??
-                    "No owner information", // Fallback if ownerInfo is null
+                text2: listing.owner_id ??
+                    "No owner information", // Fallback if owner_id is null
               ),
             ),
             Padding(

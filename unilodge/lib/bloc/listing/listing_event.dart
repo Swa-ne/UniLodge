@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 import 'package:unilodge/data/models/listing.dart';
 
@@ -11,12 +13,13 @@ abstract class ListingEvent extends Equatable {
 class FetchListings extends ListingEvent {}
 
 class CreateListing extends ListingEvent {
-  final Listing listing;
+  final List<File> imageFiles;
+  final Listing dorm;
 
-  const CreateListing(this.listing);
+  const CreateListing(this.imageFiles, this.dorm);
 
   @override
-  List<Object> get props => [listing];
+  List<Object> get props => [imageFiles, dorm];
 }
 
 class DeleteListing extends ListingEvent {
@@ -45,4 +48,13 @@ class ToggleListing extends ListingEvent {
 
   @override
   List<Object> get props => [id];
+}
+
+class SelectCardEvent extends ListingEvent {
+  final String cardName;
+
+  const SelectCardEvent(this.cardName);
+
+  @override
+  List<Object> get props => [cardName];
 }

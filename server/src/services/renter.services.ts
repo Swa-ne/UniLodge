@@ -5,7 +5,10 @@ import { Saved } from '../models/dorm/saved.model';
 
 export const getDorms = async () => {
     try {
-        const dorms: DormSchemaInterface[] | null = await Dorm.find();
+        const dorms: DormSchemaInterface[] | null = await Dorm.find()
+            .populate('location')
+            .populate('currency')
+            .populate('imageUrl');;
         return { message: dorms, httpCode: 200 };
     } catch (error) {
         return { error: 'Internal Server Error', httpCode: 500 };

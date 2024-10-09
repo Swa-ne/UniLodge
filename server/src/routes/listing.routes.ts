@@ -9,7 +9,7 @@ router.use(authenticateToken);
 
 router.get("/my-dorms", getMyDormsListingController);
 router.post("/post-dorm", uploadDorm.array('file'), postDormListingController);
-router.put("/edit-dorm/:dorm_id", putDormListingController);
+router.put("/edit-dorm/:dorm_id", uploadDorm.array('file'), putDormListingController);
 router.put("/toggle-visibility/:dorm_id", toggleVisibilityDormListingController);
 
 export default router;

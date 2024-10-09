@@ -1,50 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:unilodge/bloc/listing/listing_bloc.dart';
+import 'package:unilodge/bloc/listing/listing_event.dart';
+import 'package:unilodge/bloc/listing/listing_state.dart';
 import 'package:unilodge/presentation/widgets/listing/custom_card.dart';
-import 'package:unilodge/presentation/listing/bloc/listing_bloc.dart';
-import 'package:unilodge/presentation/listing/bloc/listing_event.dart';
-import 'package:unilodge/presentation/listing/bloc/listing_state.dart';
 import 'package:unilodge/data/models/listing.dart';
-import 'package:unilodge/data/sources/listing/listing_repo.dart';
 
 class PostAccommodation extends StatelessWidget {
   final Listing listing;
 
-  PostAccommodation({super.key, required this.listing});
+  const PostAccommodation({super.key, required this.listing});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => ListingBloc(ListingRepoImpl()), 
-      child: Scaffold(
-        body: Column(
-          children: [
-            const SizedBox(height: 70),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'What type of property do you want to list?',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                  ),
+    return Scaffold(
+      body: Column(
+        children: [
+          const SizedBox(height: 70),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'What type of property do you want to list?',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
-            const SizedBox(height: 60),
-            Expanded(
-              child: _PropertySelection(listing: listing),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(1.0),
-              child: _BottomNavigation(listing: listing),
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 60),
+          Expanded(
+            child: _PropertySelection(listing: listing),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(1.0),
+            child: _BottomNavigation(listing: listing),
+          ),
+        ],
       ),
     );
   }
@@ -71,12 +67,11 @@ class _PropertySelection extends StatelessWidget {
     );
   }
 
-
-
   Widget _buildCard(BuildContext context, String cardName, String description) {
     return BlocBuilder<ListingBloc, ListingState>(
       builder: (context, state) {
-        bool isSelected = state is CardSelectedState && state.selectedCard == cardName;
+        bool isSelected =
+            state is CardSelectedState && state.selectedCard == cardName;
 
         return CustomCard(
           leading: const Icon(Icons.bed, size: 90),
@@ -86,10 +81,6 @@ class _PropertySelection extends StatelessWidget {
           leadingHeight: 80,
           isSelected: isSelected,
           onTap: () {
-            // Use the copyWith to create a new Listing object with the selected card
-            // final updatedListing = listing.copyWith(selectedPropertyType: cardName);
-
-            // Dispatch the updated card to BLoC
             context.read<ListingBloc>().add(SelectCardEvent(cardName));
             print('Selected: $cardName');
           },
