@@ -11,6 +11,7 @@ dotenv.config()
 
 import entryRoutes from "./routes/authentication.routes";
 import chatRoutes from "./routes/chat.routes";
+import listingRoutes from "./routes/listing.routes";
 
 
 const port = 3000;
@@ -24,6 +25,8 @@ mongoose
     .catch((error) => {
         console.log('Internal Server Error');
     });
+
+app.set('trust proxy', 1);
 
 app.use(
     cors({
@@ -42,6 +45,7 @@ app.use(cookieParser())
 
 app.use("/authentication", entryRoutes)
 app.use("/chat", chatRoutes)
+app.use("/listing", listingRoutes)
 
 
 app.get('/', (req: Request, res: Response) => {
