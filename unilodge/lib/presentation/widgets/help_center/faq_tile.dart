@@ -18,7 +18,6 @@ class FAQTile extends StatelessWidget {
       title: CustomText(
         text: question,
         fontSize: 18,
-        fontWeight: FontWeight.w600,
         color: AppColors.textColor,
       ),
       children: [
@@ -27,8 +26,7 @@ class FAQTile extends StatelessWidget {
           child: CustomText(
             text: answer,
             fontSize: 16,
-            color: AppColors.textColor,
-            fontWeight: FontWeight.w500,
+            color: AppColors.formTextColor,
           ),
         ),
       ],

@@ -24,8 +24,8 @@ import 'package:unilodge/presentation/screens/listing/post_price.dart';
 import 'package:unilodge/presentation/screens/listing/post_facility.dart';
 import 'package:unilodge/presentation/screens/listing/post_image.dart';
 import 'package:unilodge/presentation/screens/listing/post_review.dart';
-import 'package:unilodge/presentation/onboardingscreen/onboarding_view.dart';
-import 'package:unilodge/presentation/splashscreen/pages/spash_screen.dart';
+import 'package:unilodge/presentation/screens/onboarding/onboarding_view.dart';
+import 'package:unilodge/presentation/screens/splashscreen/spash_screen.dart';
 
 import 'package:unilodge/data/models/listing.dart';
 
@@ -172,9 +172,13 @@ final GoRouter appRouter = GoRouter(
       },
     ),
     GoRoute(
-      path: '/edit-listing-post',
-      builder: (context, state) => const EditListingPost(),
-    ),
+        path: '/edit-listing-post/:id',
+        builder: (context, state) {
+          final yourListingId = state.pathParameters['id'];
+          final yourListing = dummyListings
+              .firstWhere((listing) => listing.id == yourListingId);
+          return EditListingPost(listing: yourListing);
+        }),
     GoRoute(
       path: '/type-listing/:type',
       builder: (context, state) {

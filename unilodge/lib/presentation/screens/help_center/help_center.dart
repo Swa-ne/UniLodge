@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/common/widgets/custom_text.dart';
+import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/presentation/widgets/help_center/faq_tile.dart';
 
 class HelpCenter extends StatelessWidget {
@@ -14,6 +15,7 @@ class HelpCenter extends StatelessWidget {
           text: "Help Center",
           fontSize: 20,
           fontWeight: FontWeight.bold,
+          color: AppColors.primary,
         ),
         centerTitle: true,
         leading: IconButton(

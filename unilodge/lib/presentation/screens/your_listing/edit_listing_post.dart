@@ -1,51 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
+import 'package:unilodge/data/models/listing.dart';
+import 'package:unilodge/presentation/screens/your_listing/edit_listing_form.dart';
 
 class EditListingPost extends StatelessWidget {
-  const EditListingPost({super.key});
+  const EditListingPost({super.key, required this.listing});
+
+  final Listing listing;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Edit Listing", style: TextStyle(
-          color: AppColors.textColor,
-          fontSize: 18,),),
+        centerTitle: true,
+        title: const Text(
+          "Edit Listing",
+          style: TextStyle(
+            fontSize: 20,
+            // fontWeight: FontWeight.bold,
+            color: AppColors.primary,
+          ),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: TextButton(
-              style: TextButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: AppColors.primary,
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              ),
-              onPressed: () {
-                print("Save button pressed");
-              },
-              child: const Text(
-                "Save",
-              ),
-            ),
-          ),
-        ],
       ),
-      body: const SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 30,
-            ),
-            
-          ],
-        ),
+      body: EditListingForm(
+        listing: listing,
       ),
     );
   }
