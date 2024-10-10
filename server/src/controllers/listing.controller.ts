@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { UserType } from '../middlewares/token.authentication';
-import { getMyDorms, postDormListing, putDormListing, toggleVisibilityDormListing } from '../services/listing.services';
+import { deleteDorm, getMyDorms, postDormListing, putDormListing, toggleVisibilityDormListing } from '../services/listing.services';
 import { validateDescriptionLength, validateRequiredFields } from '../utils/input.validators';
 
 const REQUIRED_FIELDS_LABELS = {
@@ -148,6 +148,22 @@ export const toggleVisibilityDormListingController = async (req: Request & { use
         if (!dorm_id) return res.status(404).json({ error: "Dorm not found" });
 
         const dorm = await toggleVisibilityDormListing(dorm_id);
+        if (dorm.httpCode === 200) return res.status(dorm.httpCode).json({ 'message': dorm.message });
+
+        return res.status(dorm.httpCode).json({ 'error': dorm.error });
+    } catch (error) {
+        return res.status(500).json({ 'error': 'Internal Server Error' });
+    }
+}
+export const deleteDormController = async (req: Request & { user?: UserType }, res: Response) => {
+    try {
+        const user = req.user;
+        if (!user) return res.status(404).json({ error: "User not found" });
+        const { dorm_id } = req.params;
+        if (!dorm_id) return res.status(404).json({ error: "Dorm not found" });
+
+        const dorm = await deleteDorm(dorm_id);
+        console.log(dorm)
         if (dorm.httpCode === 200) return res.status(dorm.httpCode).json({ 'message': dorm.message });
 
         return res.status(dorm.httpCode).json({ 'error': dorm.error });

@@ -236,3 +236,16 @@ export const toggleVisibilityDormListing = async (dorm_id: string): Promise<Cust
         return { error: 'Internal Server Error', httpCode: 500 };
     }
 }
+
+export const deleteDorm = async (dorm_id: string): Promise<CustomResponse> => {
+    try {
+        const dorm = await Dorm.findByIdAndDelete(dorm_id);
+        if (!dorm) {
+            return { error: 'Dorm not found', httpCode: 404 };
+        }
+
+        return { message: "Success", httpCode: 200 }
+    } catch (error) {
+        return { error: 'Internal Server Error', httpCode: 500 };
+    }
+}
