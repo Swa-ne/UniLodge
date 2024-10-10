@@ -1,5 +1,4 @@
 import 'package:go_router/go_router.dart';
-import 'package:unilodge/data/dummy_data/dummy_data.dart';
 import 'package:unilodge/data/models/inbox.dart';
 import 'package:unilodge/presentation/screens/help_center/help_center.dart';
 import 'package:unilodge/presentation/screens/auth/account_selection_login.dart';
@@ -172,7 +171,7 @@ final GoRouter appRouter = GoRouter(
       path: '/type-listing/:type',
       builder: (context, state) {
         final type = state.pathParameters['type'];
-        return TypeListingScreen(appbarTitle: type!);
+        return TypeListingScreen(listingType: type!);
       },
     ),
     GoRoute(

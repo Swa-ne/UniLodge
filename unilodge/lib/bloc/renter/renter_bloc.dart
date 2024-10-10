@@ -30,6 +30,28 @@ class RenterBloc extends Bloc<RenterEvent, RenterState> {
       }
     });
 
+    on<FetchAllDormsByType>((event, emit) async {
+      try {
+        emit(DormsLoading());
+        final listings = await renterRepository.fetchAllDorms();
+
+        print('Filtering listings by type: ${event.listingType}');
+        final filteredListings = listings.where((listing) {
+          final listingType =
+              listing.selectedPropertyType?.trim().toLowerCase();
+          print('Listing Type: $listingType');
+          return listingType == event.listingType.trim().toLowerCase();
+        }).toList();
+
+        print("this is from the bloc");
+        print(filteredListings);
+
+        emit(DormsLoaded(filteredListings));
+      } catch (e) {
+        emit(DormsError(e.toString()));
+      }
+    });
+
     on<PostReview>((event, emit) async {
       emit(ReviewPosting());
       try {

@@ -116,10 +116,10 @@ class Listing {
       imageUrl: (json['imageUrl'] as List<dynamic>)
           .map((image) => image['url'] as String)
           .toList(),
-      // // rating: json['rating'],
-      // selectedPropertyType: json['type'],
-      // isAvailable: json['isAvailable'],
-      // createdAt: "${json['createdAt']}",
+      rating: json['rating'],
+      selectedPropertyType: json['type'],
+      isAvailable: json['isAvailable'],
+      createdAt: "${json['createdAt']}",
     );
   }
 
