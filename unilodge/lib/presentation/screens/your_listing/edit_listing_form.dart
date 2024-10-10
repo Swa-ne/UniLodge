@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
+import 'package:unilodge/presentation/widgets/listing/multiple_images.dart';
 import 'package:unilodge/presentation/widgets/your_listing/edit_listing_text_form_field.dart';
 import 'package:unilodge/presentation/widgets/your_listing/property_card.dart';
 
@@ -13,18 +16,19 @@ class EditListingForm extends StatefulWidget {
 }
 
 class _EditListingFormState extends State<EditListingForm> {
-  final _propertyName = TextEditingController();
-  final _propertyCity = TextEditingController();
-  final _propertyStreet = TextEditingController();
-  final _propertyBarangay = TextEditingController();
-  final _propertyHouseNumber = TextEditingController();
-  final _propertyZipCode = TextEditingController();
-  final _propertyPrice = TextEditingController();
-  final _propertyDescription = TextEditingController();
-  final _propertyLeaseTerms = TextEditingController();
+  late TextEditingController _propertyName;
+  late TextEditingController _propertyCity;
+  late TextEditingController _propertyStreet;
+  late TextEditingController _propertyBarangay;
+  late TextEditingController _propertyHouseNumber;
+  late TextEditingController _propertyZipCode;
+  late TextEditingController _propertyPrice;
+  late TextEditingController _propertyDescription;
+  late TextEditingController _propertyLeaseTerms;
 
   int _currentStep = 0;
   String _selectedPropertyType = '';
+  List<String> selectedImages = [];
 
   Map<String, bool> rentalAmenities = {
     'Internet': false,
@@ -43,6 +47,24 @@ class _EditListingFormState extends State<EditListingForm> {
     'Gas': false,
     'Internet': false,
   };
+
+  @override
+  void initState() {
+    super.initState();
+    _propertyName = TextEditingController(text: widget.listing.property_name);
+    _propertyCity = TextEditingController(text: widget.listing.city);
+    _propertyStreet = TextEditingController(text: widget.listing.street);
+    _propertyBarangay = TextEditingController(text: widget.listing.barangay);
+    _propertyHouseNumber =
+        TextEditingController(text: widget.listing.house_number);
+    _propertyZipCode = TextEditingController(text: widget.listing.zip_code);
+    _propertyPrice = TextEditingController(text: widget.listing.price);
+    _propertyDescription =
+        TextEditingController(text: widget.listing.description);
+    _propertyLeaseTerms =
+        TextEditingController(text: widget.listing.leastTerms);
+    selectedImages = List<String>.from(widget.listing.imageUrl ?? []);
+  }
 
   List<String> _getSelectedAmenities() {
     return rentalAmenities.entries
@@ -343,6 +365,45 @@ class _EditListingFormState extends State<EditListingForm> {
         ),
         isActive: _currentStep >= 3,
         state: _currentStep == 3 ? StepState.indexed : StepState.indexed,
+      ),
+      Step(
+        title: const Text(
+          'Edit property images',
+          style:
+              TextStyle(color: AppColors.primary, fontWeight: FontWeight.w600),
+        ),
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const Text(
+              'Add property images',
+              style: TextStyle(
+                color: AppColors.primary,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 7),
+            const Text(
+              'Upload at least 6 images',
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.normal,
+                color: AppColors.primary,
+              ),
+            ),
+            const SizedBox(height: 20),
+            MultipleImages(
+              onImagesSelected: (images) {
+                setState(() {
+                  selectedImages = images.map((file) => file.path).toList();
+                });
+              },
+            ),
+          ],
+        ),
+        isActive: _currentStep >= 4,
+        state: _currentStep == 4 ? StepState.indexed : StepState.indexed,
       ),
 
       // todo: add step for images
