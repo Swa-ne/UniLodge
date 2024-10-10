@@ -1,10 +1,8 @@
-import 'package:dlibphonenumber/phone_number_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:unilodge/common/widgets/custom_button.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:intl/intl.dart';
@@ -29,8 +27,6 @@ class ThirdPartySignUp extends StatefulWidget {
 
 class _SignUpState extends State<ThirdPartySignUp> with InputValidationMixin {
   DateTime? _birthday;
-  PhoneNumber _phoneNumber = PhoneNumber(isoCode: 'PH');
-  PhoneNumberUtil phoneUtil = PhoneNumberUtil.instance;
   late TextEditingController fullnameController;
   late TextEditingController usernameController;
 
@@ -199,7 +195,6 @@ class _SignUpState extends State<ThirdPartySignUp> with InputValidationMixin {
                               ),
                             ),
                             const SizedBox(height: 20.0),
-                            _buildPhoneNumberField(),
                             SizedBox(height: screenHeight * 0.17),
                             const SizedBox(height: 20.0),
                             CustomButton(
@@ -245,7 +240,7 @@ class _SignUpState extends State<ThirdPartySignUp> with InputValidationMixin {
                                         "$_secretKey${_google_user.id}",
                                     confirmation_password:
                                         "$_secretKey${_google_user.id}",
-                                    personal_number: _phoneNumber,
+                                    personal_number: "",
                                     birthday: _birthday.toString(),
                                     valid_email: true);
                                 authBloc.add(SignUpEvent(newUser));
@@ -262,45 +257,6 @@ class _SignUpState extends State<ThirdPartySignUp> with InputValidationMixin {
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPhoneNumberField() {
-    return InternationalPhoneNumberInput(
-      onInputChanged: (PhoneNumber number) {
-        _phoneNumber = number;
-        isPhoneNumberValid = phoneUtil
-            .isValidNumber(phoneUtil.parse(number.phoneNumber, number.isoCode));
-      },
-      onInputValidated: (bool isPhoneNumberValid) {},
-      selectorConfig: const SelectorConfig(
-        selectorType: PhoneInputSelectorType.BOTTOM_SHEET,
-      ),
-      ignoreBlank: false,
-      autoValidateMode: AutovalidateMode.onUserInteraction,
-      initialValue: _phoneNumber,
-      formatInput: true,
-      keyboardType: TextInputType.phone,
-      inputDecoration: InputDecoration(
-        filled: true,
-        fillColor: AppColors.blueTextColor,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
-          borderSide: BorderSide.none,
-        ),
-        labelText: 'Phone Number',
-        hintText: 'eg. 9123000000',
-        errorText: phoneNumberError,
-        labelStyle: const TextStyle(
-          color: AppColors.formTextColor,
-          height: 1.3,
-        ),
-        hintStyle: const TextStyle(
-          fontSize: 14.0,
-          fontWeight: FontWeight.w400,
-          color: Colors.grey,
         ),
       ),
     );

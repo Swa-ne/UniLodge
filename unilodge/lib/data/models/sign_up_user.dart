@@ -1,5 +1,3 @@
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-
 class SignUpUserModel {
   final String first_name;
   final String? middle_name;
@@ -8,7 +6,7 @@ class SignUpUserModel {
   final String email;
   final String password_hash;
   final String confirmation_password;
-  final PhoneNumber personal_number;
+  final String personal_number;
   final String birthday;
   final bool? valid_email;
 
@@ -34,7 +32,7 @@ class SignUpUserModel {
       'personal_email': email,
       'password_hash': password_hash,
       'confirmation_password': confirmation_password,
-      'personal_number': personal_number.phoneNumber,
+      'personal_number': personal_number,
       'birthday': birthday,
       'valid_email': valid_email,
     };

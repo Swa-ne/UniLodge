@@ -17,7 +17,7 @@ class ListingCard extends StatelessWidget {
       padding: const EdgeInsets.only(top: 10, right: 10, left: 10),
       child: GestureDetector(
         onTap: () async {
-          context.push('/your-listing-detail/${listing.id}');
+          context.push('/your-listing-detail', extra: listing);
         },
         child: Container(
           height: 110,
