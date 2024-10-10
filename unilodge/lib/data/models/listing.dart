@@ -1,6 +1,8 @@
+import 'package:unilodge/data/models/user.dart';
+
 class Listing {
   final String? id;
-  final String? owner_id;
+  final UserModel? owner_id;
   final String? property_name;
   final String? selectedPropertyType;
   final String? city;
@@ -64,7 +66,7 @@ class Listing {
     String? price,
     String? description,
     String? leastTerms,
-    String? owner_id,
+    UserModel? owner_id,
     List<String>? amenities,
     List<String>? utilities,
     List<String>? imageUrl,
@@ -110,16 +112,16 @@ class Listing {
       available_rooms: json['available_rooms'],
       price: "${json['price']}",
       description: json['description'],
-      owner_id: json['owner_id'],
+      owner_id: UserModel.fromJson(json['owner_id']),
       amenities: List<String>.from(json['amenities']),
       utilities: List<String>.from(json['utilities']),
       imageUrl: (json['imageUrl'] as List<dynamic>)
           .map((image) => image['url'] as String)
           .toList(),
-      // // rating: json['rating'],
-      // selectedPropertyType: json['type'],
-      // isAvailable: json['isAvailable'],
-      // createdAt: "${json['createdAt']}",
+      rating: json['rating'],
+      selectedPropertyType: json['type'],
+      isAvailable: json['isAvailable'],
+      createdAt: "${json['createdAt']}",
     );
   }
 

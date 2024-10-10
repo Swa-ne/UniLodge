@@ -88,8 +88,9 @@ class ListingDetailScreen extends StatelessWidget {
                                                             .expectedTotalBytes ??
                                                         1)
                                                 : null,
-                                            valueColor: AlwaysStoppedAnimation(
-                                                AppColors.linearOrange),
+                                            valueColor:
+                                                const AlwaysStoppedAnimation(
+                                                    AppColors.linearOrange),
                                           ),
                                         );
                                       }
@@ -124,9 +125,10 @@ class ListingDetailScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: TextRow(
-                    text1: "Owner Information:", text2: listing.owner_id ?? ''),
+                    text1: "Owner Information:",
+                    text2: listing.owner_id?.full_name ?? ''),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 8,
               ),
               Padding(
@@ -134,28 +136,28 @@ class ListingDetailScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "Amenities:",
                       style: TextStyle(fontSize: 15, color: Color(0xff434343)),
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     if (listing.amenities != null &&
                         listing.amenities!.isNotEmpty)
                       ...listing.amenities![0]
-                          .split(',') 
+                          .split(',')
                           .map((amenity) => Padding(
                                 padding: const EdgeInsets.only(top: 4.0),
                                 child: Row(
                                   children: [
-                                    Icon(Icons.check_circle,
-                                        size: 18,
-                                        color: Color(0xff75CEA3)),
-                                    SizedBox(
-                                        width:
-                                            8), 
+                                    const Icon(
+                                      Icons.check_circle,
+                                      size: 18,
+                                      color: Color(0xff75CEA3),
+                                    ),
+                                    const SizedBox(width: 8),
                                     Text(
-                                      amenity.trim(), 
-                                      style: TextStyle(
+                                      amenity.trim(),
+                                      style: const TextStyle(
                                         fontSize: 15,
                                         color: AppColors.formTextColor,
                                       ),
@@ -165,7 +167,7 @@ class ListingDetailScreen extends StatelessWidget {
                               ))
                           .toList()
                     else
-                      Text("No amenities available"),
+                      const Text("No amenities available"),
                   ],
                 ),
               ),
@@ -279,9 +281,7 @@ class ListingDetailScreen extends StatelessWidget {
                     child: CustomButton(
                       text: "Chat with owner",
                       onPressed: () {
-                        // TODO: get owner user id (USER not ActiveUSER)
-                        final receiver_user_id = "670394a4ee7170f297b45065";
-                        _chatBloc.add(CreateInboxEvent(receiver_user_id));
+                        _chatBloc.add(CreateInboxEvent(listing.owner_id!.id));
                       },
                     ),
                   ),
