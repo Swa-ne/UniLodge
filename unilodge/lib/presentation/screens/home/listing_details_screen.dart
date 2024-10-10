@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:unilodge/bloc/chat/chat_bloc.dart';
 import 'package:unilodge/bloc/chat/chat_event.dart';
 import 'package:unilodge/bloc/chat/chat_state.dart';
@@ -12,14 +13,21 @@ import 'package:unilodge/presentation/widgets/home/nearby_listing.dart';
 import 'package:unilodge/presentation/widgets/home/text_row.dart';
 import 'package:go_router/go_router.dart';
 
-class ListingDetailScreen extends StatelessWidget {
+class ListingDetailScreen extends StatefulWidget {
   final Listing listing;
 
   const ListingDetailScreen({super.key, required this.listing});
 
   @override
+  State<ListingDetailScreen> createState() => _ListingDetailScreenState();
+}
+
+class _ListingDetailScreenState extends State<ListingDetailScreen> {
+  @override
   Widget build(BuildContext context) {
     final _chatBloc = BlocProvider.of<ChatBloc>(context);
+
+    
 
     return BlocListener<ChatBloc, ChatState>(
       listener: (context, state) {
@@ -59,51 +67,62 @@ class ListingDetailScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child:
-                      listing.imageUrl != null && listing.imageUrl!.isNotEmpty
-                          ? SizedBox(
-                              height: 200,
-                              child: PageView.builder(
-                                itemCount: listing.imageUrl!.length,
-                                itemBuilder: (context, index) {
-                                  return Image.network(
-                                    listing.imageUrl![index],
-                                    width: double.infinity,
-                                    height: 200,
-                                    fit: BoxFit.cover,
-                                    loadingBuilder: (BuildContext context,
-                                        Widget child,
-                                        ImageChunkEvent? loadingProgress) {
-                                      if (loadingProgress == null) {
-                                        return child;
-                                      } else {
-                                        return Center(
-                                          child: CircularProgressIndicator(
-                                            value: loadingProgress
-                                                        .expectedTotalBytes !=
-                                                    null
-                                                ? loadingProgress
-                                                        .cumulativeBytesLoaded /
-                                                    (loadingProgress
-                                                            .expectedTotalBytes ??
-                                                        1)
-                                                : null,
-                                            valueColor: AlwaysStoppedAnimation(
-                                                AppColors.linearOrange),
-                                          ),
-                                        );
-                                      }
-                                    },
-                                  );
-                                },
+                  child: widget.listing.imageUrl != null &&
+                          widget.listing.imageUrl!.isNotEmpty
+                      ? SizedBox(
+                          height: 200,
+                          child: InstaImageViewer(
+                            child: Center(
+                              child: Container(
+                                constraints: BoxConstraints(
+                                  maxHeight: 250, // Set a maximum height
+                                  maxWidth: 400, // Set a maximum width
+                                ),
+                                child: PageView.builder(
+                                  itemCount: widget.listing.imageUrl!.length,
+                                  itemBuilder: (context, index) {
+                                    return Image.network(
+                                      widget.listing.imageUrl![index],
+                                      width: double.infinity,
+                                      height: 200,
+                                      fit: BoxFit.cover,
+                                      loadingBuilder: (BuildContext context,
+                                          Widget child,
+                                          ImageChunkEvent? loadingProgress) {
+                                        if (loadingProgress == null) {
+                                          return child;
+                                        } else {
+                                          return Center(
+                                            child: CircularProgressIndicator(
+                                              value: loadingProgress
+                                                          .expectedTotalBytes !=
+                                                      null
+                                                  ? loadingProgress
+                                                          .cumulativeBytesLoaded /
+                                                      (loadingProgress
+                                                              .expectedTotalBytes ??
+                                                          1)
+                                                  : null,
+                                              valueColor:
+                                                  AlwaysStoppedAnimation(
+                                                      AppColors.linearOrange),
+                                            ),
+                                          );
+                                        }
+                                      },
+                                    );
+                                  },
+                                ),
                               ),
-                            )
-                          : Image.network(
-                              '',
-                              width: double.infinity,
-                              height: 200,
-                              fit: BoxFit.cover,
                             ),
+                          ),
+                        )
+                      : Image.network(
+                          '',
+                          width: double.infinity,
+                          height: 200,
+                          fit: BoxFit.cover,
+                        ),
                 ),
               ),
 
@@ -111,7 +130,7 @@ class ListingDetailScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(
                     vertical: 20.0, horizontal: 16.0),
-                child: Text(listing.property_name ?? '',
+                child: Text(widget.listing.property_name ?? '',
                     style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
@@ -119,12 +138,12 @@ class ListingDetailScreen extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: TextRow(text1: "Address:", text2: listing.adddress),
+                child: TextRow(text1: "Address:", text2: widget.listing.adddress),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: TextRow(
-                    text1: "Owner Information:", text2: listing.owner_id ?? ''),
+                    text1: "Owner Information:", text2: widget.listing.owner_id ?? ''),
               ),
               SizedBox(
                 height: 8,
@@ -139,22 +158,19 @@ class ListingDetailScreen extends StatelessWidget {
                       style: TextStyle(fontSize: 15, color: Color(0xff434343)),
                     ),
                     SizedBox(height: 8),
-                    if (listing.amenities != null &&
-                        listing.amenities!.isNotEmpty)
-                      ...listing.amenities![0]
-                          .split(',') 
+                    if (widget.listing.amenities != null &&
+                        widget.listing.amenities!.isNotEmpty)
+                      ...widget.listing.amenities![0]
+                          .split(',')
                           .map((amenity) => Padding(
                                 padding: const EdgeInsets.only(top: 4.0),
                                 child: Row(
                                   children: [
                                     Icon(Icons.check_circle,
-                                        size: 18,
-                                        color: Color(0xff75CEA3)),
-                                    SizedBox(
-                                        width:
-                                            8), 
+                                        size: 18, color: Color(0xff75CEA3)),
+                                    SizedBox(width: 8),
                                     Text(
-                                      amenity.trim(), 
+                                      amenity.trim(),
                                       style: TextStyle(
                                         fontSize: 15,
                                         color: AppColors.formTextColor,
@@ -182,7 +198,7 @@ class ListingDetailScreen extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
                 child: Text(
-                  listing.description ?? '',
+                  widget.listing.description ?? '',
                   style: const TextStyle(
                       color: AppColors.formTextColor, fontSize: 15),
                 ),
@@ -208,7 +224,7 @@ class ListingDetailScreen extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: RatingBar.builder(
-                          initialRating: listing.rating?.toDouble() ?? 0.0,
+                          initialRating: widget.listing.rating?.toDouble() ?? 0.0,
                           minRating: 1,
                           direction: Axis.horizontal,
                           itemCount: 5,
