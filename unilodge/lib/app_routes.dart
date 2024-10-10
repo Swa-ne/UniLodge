@@ -94,11 +94,9 @@ final GoRouter appRouter = GoRouter(
       },
     ),
     GoRoute(
-      path: '/listing-detail/:id',
+      path: '/listing-detail',
       builder: (context, state) {
-        final listingId = state.pathParameters['id'];
-        final listing =
-            dummyListings.firstWhere((listing) => listing.id == listingId);
+        final listing = state.extra as Listing;
         return ListingDetailScreen(listing: listing);
       },
     ),
