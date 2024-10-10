@@ -112,7 +112,6 @@ export const getUserDetailsController = async (req: Request & { user?: UserType 
         const result = await getUserDetails(chat_id as string, user_id)
         return res.status(200).json({ message: result.message });
     } catch (error) {
-        console.log(error)
         return res.status(500).json({ 'message': 'Internal Server Error' });
     }
 };

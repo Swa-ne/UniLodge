@@ -75,11 +75,9 @@ export const postDormListingController = async (req: Request & { user?: UserType
             image_files,
             tags
         );
-        console.log(dorm_post_update.httpCode, "httpcode")
         if (dorm_post_update.httpCode === 200) return res.status(dorm_post_update.httpCode).json({ 'message': dorm_post_update.message });
         return res.status(dorm_post_update.httpCode).json({ 'error': dorm_post_update.error });
     } catch (error) {
-        console.log(error)
         return res.status(500).json({ 'error': 'Internal Server Error' });
     }
 }
@@ -163,7 +161,6 @@ export const deleteDormController = async (req: Request & { user?: UserType }, r
         if (!dorm_id) return res.status(404).json({ error: "Dorm not found" });
 
         const dorm = await deleteDorm(dorm_id);
-        console.log(dorm)
         if (dorm.httpCode === 200) return res.status(dorm.httpCode).json({ 'message': dorm.message });
 
         return res.status(dorm.httpCode).json({ 'error': dorm.error });

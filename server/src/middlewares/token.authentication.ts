@@ -50,7 +50,6 @@ export async function authenticateToken(req: AuthenticatedRequest, res: Response
                     return res.status(401).json({ error: 'Unauthorized' });
                 }
             } catch (error) {
-                console.log(error)
                 return res.status(401).json({ error: 'Refresh token is invalid or expired' });
             }
         } else {
