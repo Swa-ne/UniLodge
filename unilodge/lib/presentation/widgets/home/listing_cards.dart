@@ -22,7 +22,7 @@ class _ListingCardsState extends State<ListingCards> {
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: GestureDetector(
         onTap: () {
-          context.push('/listing-detail/${widget.listing.id}');
+          context.push('/listing-detail', extra: widget.listing);
         },
         child: Container(
           child: Column(
@@ -69,15 +69,15 @@ class _ListingCardsState extends State<ListingCards> {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      widget.listing.address ?? '',
+                      widget.listing.adddress,
                       style: TextStyle(color: AppColors.textColor),
                     ),
                     Row(
                       children: [
                         Text(
                           widget.listing.price != null
-                              ? widget.listing.price!
-                              : 'N/A', // Ensure price is String
+                              ? '₱${widget.listing.price!}'
+                              : 'N/A',
                           style: TextStyle(color: AppColors.textColor),
                         ),
                         const Spacer(),
