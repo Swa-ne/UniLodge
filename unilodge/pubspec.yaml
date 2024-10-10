@@ -1,68 +1,69 @@
 name: unilodge
-description: 'A new Flutter project.'
-publish_to: 'none'
+description: "A new Flutter project."
+publish_to: "none"
 version: 0.1.0
 
 environment:
-    sdk: '>=3.4.3 <4.0.0'
+  sdk: ">=3.4.3 <4.0.0"
 
 dependencies:
-    # dlibphonenumber: ^1.1.22
-    flutter:
-        sdk: flutter
-    flutter_svg:
-    go_router: ^14.2.3
-    google_nav_bar: ^5.0.6
-    intl: ^0.19.0
-    # intl_phone_number_input: ^0.7.4
-    get: ^4.6.5
-    font_awesome_flutter: ^10.7.0
-    image_picker: ^1.1.2
-    permission_handler: ^11.3.1
-    dotted_border: ^2.1.0
-    flutter_rating_bar: ^4.0.1
-    google_sign_in: ^6.2.1
-    equatable: ^2.0.5
-    flutter_bloc: ^8.1.6
-    flutter_dotenv: ^5.1.0
-    http: ^1.2.2
-    flutter_secure_storage: ^9.2.2
-    socket_io_client: ^3.0.0
-    smooth_page_indicator: ^1.2.0+3
-    shared_preferences: ^2.3.2
+  # dlibphonenumber: ^1.1.22
+  flutter:
+    sdk: flutter
+  flutter_svg:
+  go_router: ^14.2.3
+  google_nav_bar: ^5.0.6
+  intl: ^0.19.0
+  # intl_phone_number_input: ^0.7.4
+  get: ^4.6.5
+  font_awesome_flutter: ^10.7.0
+  image_picker: ^1.1.2
+  permission_handler: ^11.3.1
+  dotted_border: ^2.1.0
+  flutter_rating_bar: ^4.0.1
+  google_sign_in: ^6.2.1
+  equatable: ^2.0.5
+  flutter_bloc: ^8.1.6
+  flutter_dotenv: ^5.1.0
+  http: ^1.2.2
+  flutter_secure_storage: ^9.2.2
+  socket_io_client: ^3.0.0
+  smooth_page_indicator: ^1.2.0+3
+  shared_preferences: ^2.3.2
 
 dev_dependencies:
-    flutter_test:
-        sdk: flutter
-    flutter_lints: ^3.0.0
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
 
 flutter:
-    uses-material-design: true
+  uses-material-design: true
 
-    # To add assets to your application, add an assets section, like this:
-    assets:
-        - assets/images/initLogo1.png
-        - assets/images/initLogo2.png
-        - assets/images/empty.png
-        - assets/images/apartment.png
-        - assets/images/dorm.png
-        - assets/images/solo-room.png
-        - assets/images/bedspacer.png
-        - assets/images/emptyImage.jpg
-        - assets/images/findDorm.png
-        - assets/images/google_logo.png
-        - assets/images/navIcons/favorites-icon.png
-        - assets/images/navIcons/home-icon.png
-        - assets/images/navIcons/listing-icon.png
-        - assets/images/navIcons/message-icon.png
-        - assets/images/heart.png
-        - assets/images/housesearching.png
-        - assets/images/logowithname.png
-        - assets/images/people.png
-        - .env
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/images/initLogo1.png
+    - assets/images/initLogo2.png
+    - assets/images/empty.png
+    - assets/images/apartment.png
+    - assets/images/dorm.png
+    - assets/images/solo-room.png
+    - assets/images/bedspacer.png
+    - assets/images/emptyImage.jpg
+    - assets/images/findDorm.png
+    - assets/images/google_logo.png
+    - assets/images/navIcons/favorites-icon.png
+    - assets/images/navIcons/home-icon.png
+    - assets/images/navIcons/listing-icon.png
+    - assets/images/navIcons/message-icon.png
+    - assets/images/heart.png
+    - assets/images/housesearching.png
+    - assets/images/logowithname.png
+    - assets/images/people.png
+    - assets/images/search.png
+    - .env
 
-    fonts:
-        - family: TrainOne
-          fonts:
-              - asset: assets/fonts/TrainOne-Regular.ttf
-                weight: 400
+  fonts:
+    - family: TrainOne
+      fonts:
+        - asset: assets/fonts/TrainOne-Regular.ttf
+          weight: 400

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unilodge/bloc/renter/renter_bloc.dart';
 import 'package:unilodge/common/widgets/custom_text.dart';
 import 'package:unilodge/common/widgets/shimmer_loading.dart';
+import 'package:unilodge/core/configs/assets/app_images.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/repository/renter_repository_impl.dart';
 import 'package:unilodge/presentation/widgets/home/listing_cards.dart';
@@ -16,8 +17,7 @@ class TypeListingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => RenterBloc(renterRepository: RenterRepositoryImpl())
-        ..add(FetchAllDormsByType(
-            listingType)), 
+        ..add(FetchAllDormsByType(listingType)),
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -31,27 +31,40 @@ class TypeListingScreen extends StatelessWidget {
         body: BlocBuilder<RenterBloc, RenterState>(
           builder: (context, state) {
             if (state is DormsLoading) {
-              return Center(
-                  child: ShimmerLoading()); 
+              return Center(child: ShimmerLoading());
             } else if (state is DormsError) {
               return Center(
                 child: CustomText(
                   text: state.message,
                   fontSize: 18,
                   color: Colors.red,
-                ), 
+                ),
               );
             } else if (state is DormsLoaded) {
-              final listings = state
-                  .allDorms; 
+              final listings = state.allDorms;
+
+              // if (listings.isEmpty) {
+              //   return Center(
+              //     child: CustomText(
+              //       text: 'No listings available',
+              //       fontSize: 18,
+              //       color: AppColors.primary,
+              //     ),
+              //   );
+              // }
 
               if (listings.isEmpty) {
                 return Center(
-                  child: CustomText(
-                    text: 'No listings available',
-                    fontSize: 18,
-                    color: AppColors.primary,
-                  ), 
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(AppImages.typeDorm, height: 100,),
+                      SizedBox(height: 30,),
+                      Text("No listings available", style: TextStyle(color: AppColors.textColor,)),
+                      SizedBox(height: 50)
+                    ],
+                  ),
                 );
               }
 
@@ -65,7 +78,7 @@ class TypeListingScreen extends StatelessWidget {
                         listing: listing,
                       ),
                       const Divider(
-                        height: 30, 
+                        height: 30,
                         color: Color.fromARGB(255, 223, 223, 223),
                       ),
                     ],
@@ -73,8 +86,7 @@ class TypeListingScreen extends StatelessWidget {
                 },
               );
             }
-            return SizedBox
-                .shrink(); 
+            return SizedBox.shrink();
           },
         ),
       ),
