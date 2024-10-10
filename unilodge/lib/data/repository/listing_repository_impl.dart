@@ -92,16 +92,28 @@ class ListingRepositoryImpl implements ListingRepository {
   }
 
   @override
-  Future<void> deleteListing(String id) async {
-    final response = await http.delete(Uri.parse('$_apiUrl/listing/$id'));
+  Future<bool> deleteListing(String id) async {
+    final access_token = await _tokenController.getAccessToken();
+    final refresh_token = await _tokenController.getRefreshToken();
+
+    final response = await http.delete(
+      Uri.parse('$_apiUrl/delete/$id'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': access_token,
+        'Cookie': 'refresh_token=$refresh_token',
+      },
+    );
 
     if (response.statusCode != 200) {
       throw Exception('Failed to delete listing');
     }
+    return response.statusCode == 200;
   }
 
   @override
-  Future<void> toggleListing(String id) async {
+  Future<bool> toggleListing(String id) async {
     final response = await http.put(
       Uri.parse('$_apiUrl/toggle-visibility/$id'),
     );
@@ -110,5 +122,6 @@ class ListingRepositoryImpl implements ListingRepository {
       final errorResponse = jsonDecode(response.body);
       throw Exception('Failed to update listing: ${errorResponse['error']}');
     }
+    return response.statusCode == 200;
   }
 }

@@ -32,10 +32,32 @@ class ListingError extends ListingState {
 
 class ListingCreated extends ListingState {}
 
+class SuccessDeleted extends ListingState {}
+
+class SuccessToggle extends ListingState {}
+
 class ListingCreationError extends ListingState {
   final String error;
 
   const ListingCreationError(this.error);
+
+  @override
+  List<Object> get props => [error];
+}
+
+class DeletionError extends ListingState {
+  final String error;
+
+  const DeletionError(this.error);
+
+  @override
+  List<Object> get props => [error];
+}
+
+class ToggleError extends ListingState {
+  final String error;
+
+  const ToggleError(this.error);
 
   @override
   List<Object> get props => [error];

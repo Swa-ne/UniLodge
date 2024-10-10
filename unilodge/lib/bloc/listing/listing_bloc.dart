@@ -42,19 +42,27 @@ class ListingBloc extends Bloc<ListingEvent, ListingState> {
 
     on<ToggleListing>((event, emit) async {
       try {
-        await _listingRepository.toggleListing(event.id);
-        // add(FetchListings());
+        final isSuccess = await _listingRepository.toggleListing(event.id);
+        if (isSuccess) {
+          emit(SuccessToggle());
+        } else {
+          emit(const ToggleError("Internet Connection Error"));
+        }
       } catch (e) {
-        emit(ListingError(e.toString()));
+        emit(ToggleError(e.toString()));
       }
     });
 
     on<DeleteListing>((event, emit) async {
       try {
-        await _listingRepository.deleteListing(event.id);
-        // add(FetchListings());
+        final isSuccess = await _listingRepository.deleteListing(event.id);
+        if (isSuccess) {
+          emit(SuccessDeleted());
+        } else {
+          emit(const DeletionError("Internet Connection Error"));
+        }
       } catch (e) {
-        emit(ListingError(e.toString()));
+        emit(DeletionError(e.toString()));
       }
     });
     on<SelectCardEvent>((event, emit) {
