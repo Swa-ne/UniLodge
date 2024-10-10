@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:unilodge/data/models/renter.dart';
+import 'package:unilodge/data/models/listing.dart';
 import 'package:unilodge/data/repository/renter_repository.dart';
 
 part 'renter_event.dart';
@@ -10,11 +10,21 @@ class RenterBloc extends Bloc<RenterEvent, RenterState> {
   final RenterRepository renterRepository;
 
   RenterBloc({required this.renterRepository}) : super(RenterInitial()) {
-    on<FetchSavedDorms>((event, emit) async {
-      emit(RenterInitial());
+    // on<FetchSavedDorms>((event, emit) async {
+    //   emit(RenterInitial());
+    //   try {
+    //     final savedDorms = await renterRepository.fetchSavedDorms(event.userId);
+    //     emit(DormsLoaded(savedDorms));
+    //   } catch (e) {
+    //     emit(DormsError(e.toString()));
+    //   }
+    // });
+
+    on<FetchAllDorms>((event, emit) async {
       try {
-        final savedDorms = await renterRepository.fetchSavedDorms(event.userId);
-        emit(DormsLoaded(savedDorms));
+        emit(DormsLoading());
+        final listings = await renterRepository.fetchAllDorms();
+        emit(DormsLoaded(listings));
       } catch (e) {
         emit(DormsError(e.toString()));
       }

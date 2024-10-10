@@ -9,13 +9,15 @@ abstract class RenterState extends Equatable {
 
 class RenterInitial extends RenterState {}
 
-class DormsLoaded extends RenterState {
-  final List<SavedDorm> savedDorms;
+class DormsLoading extends RenterState {}
 
-  const DormsLoaded(this.savedDorms);
+class DormsLoaded extends RenterState {
+  final List<Listing> allDorms;
+
+  const DormsLoaded(this.allDorms);
 
   @override
-  List<Object> get props => [savedDorms];
+  List<Object> get props => [allDorms];
 }
 
 class DormsError extends RenterState {

@@ -10,7 +10,7 @@ List<Listing> dummyYourListings = [
     owner_id: "John Doe - (123) 456-7890",
     amenities: ["WiFi", "Parking", "Gym"],
     imageUrl:
-        "https://media.istockphoto.com/id/492965743/photo/empty-university-college-dorm-room-with-bunkbed-desk-and-closet.jpg?s=170667a&w=0&k=20&c=iqe28qa_mLcpgWZtMOn-SHTHgxLHX8PacAgRH_KsYho=",
+        ["https://media.istockphoto.com/id/492965743/photo/empty-university-college-dorm-room-with-bunkbed-desk-and-closet.jpg?s=170667a&w=0&k=20&c=iqe28qa_mLcpgWZtMOn-SHTHgxLHX8PacAgRH_KsYho="],
     rating: 5,
   ),
   Listing(
@@ -22,7 +22,8 @@ List<Listing> dummyYourListings = [
     owner_id: "Jane Smith - (987) 654-3210",
     amenities: ["Pool", "Gym", "Spa"],
     imageUrl:
-        "https://www.shutterstock.com/image-photo/college-dorm-room-empty-freshman-600nw-2487430993.jpg",
+        ["https://www.shutterstock.com/image-photo/college-dorm-room-empty-freshman-600nw-2487430993.jpg"
+    ],
     rating: 4,
   ),
   Listing(
@@ -34,7 +35,7 @@ List<Listing> dummyYourListings = [
     owner_id: "John Doe - (123) 456-7890",
     amenities: ["WiFi", "Parking", "Gym"],
     imageUrl:
-        "https://www.une.edu/sites/default/files/styles/block_image_large/public/2020-12/Avila-6259.jpg?itok=5HTs3fnj",
+        ["https://www.une.edu/sites/default/files/styles/block_image_large/public/2020-12/Avila-6259.jpg?itok=5HTs3fnj"],
     rating: 5,
   ),
 ];

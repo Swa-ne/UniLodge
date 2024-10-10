@@ -37,6 +37,28 @@ class _ListingCardsState extends State<ListingCards> {
                       width: 360,
                       height: 200,
                       fit: BoxFit.cover,
+                      loadingBuilder: (BuildContext context, Widget child,
+                          ImageChunkEvent? loadingProgress) {
+                        if (loadingProgress == null) {
+                          return child; 
+                        } else {
+                          return Container(
+                            width: 360,
+                            height: 200,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                value: loadingProgress.expectedTotalBytes !=
+                                        null
+                                    ? loadingProgress.cumulativeBytesLoaded /
+                                        (loadingProgress.expectedTotalBytes ??
+                                            1)
+                                    : null,
+                                    valueColor: AlwaysStoppedAnimation(AppColors.linearOrange),
+                              ),
+                            ),
+                          );
+                        }
+                      },
                     ),
                   ),
                 ),

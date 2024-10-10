@@ -16,6 +16,8 @@ class FetchSavedDorms extends RenterEvent {
   List<Object> get props => [userId];
 }
 
+class FetchAllDorms extends RenterEvent {}
+
 class PostReview extends RenterEvent {
   final String userId;
   final String dormId;

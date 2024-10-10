@@ -32,10 +32,6 @@ class ListingDetailScreen extends StatelessWidget {
         }
       },
       child: Scaffold(
-        // floatingActionButton: FloatingActionButton(onPressed: (){
-        // },
-        // child: Icon(Icons.message, color: Color(0xfffdfdfd),),
-        // backgroundColor: Color(0xff2E3E4A),),
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,10 +59,54 @@ class ListingDetailScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: Image.network(listing.imageUrl?[0] ?? '',
-                      width: double.infinity, height: 200, fit: BoxFit.cover),
+                  child:
+                      listing.imageUrl != null && listing.imageUrl!.isNotEmpty
+                          ? SizedBox(
+                              height: 200,
+                              child: PageView.builder(
+                                itemCount: listing.imageUrl!.length,
+                                itemBuilder: (context, index) {
+                                  return Image.network(
+                                    listing.imageUrl![index],
+                                    width: double.infinity,
+                                    height: 200,
+                                    fit: BoxFit.cover,
+                                    loadingBuilder: (BuildContext context,
+                                        Widget child,
+                                        ImageChunkEvent? loadingProgress) {
+                                      if (loadingProgress == null) {
+                                        return child;
+                                      } else {
+                                        return Center(
+                                          child: CircularProgressIndicator(
+                                            value: loadingProgress
+                                                        .expectedTotalBytes !=
+                                                    null
+                                                ? loadingProgress
+                                                        .cumulativeBytesLoaded /
+                                                    (loadingProgress
+                                                            .expectedTotalBytes ??
+                                                        1)
+                                                : null,
+                                            valueColor: AlwaysStoppedAnimation(
+                                                AppColors.linearOrange),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                  );
+                                },
+                              ),
+                            )
+                          : Image.network(
+                              '',
+                              width: double.infinity,
+                              height: 200,
+                              fit: BoxFit.cover,
+                            ),
                 ),
               ),
+
               const SizedBox(height: 16),
               Padding(
                 padding: const EdgeInsets.symmetric(
@@ -79,24 +119,58 @@ class ListingDetailScreen extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: TextRow(text1: "Address:", text2: listing.address ?? ''),
+                child: TextRow(text1: "Address:", text2: listing.adddress),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: TextRow(
                     text1: "Owner Information:", text2: listing.owner_id ?? ''),
               ),
+              SizedBox(
+                height: 8,
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: TextRow(
-                  text1: "Amenities:",
-                  text2: (listing.amenities != null &&
-                          listing.amenities!.isNotEmpty)
-                      ? listing.amenities![0]
-                      : "No amenities available", // Fallback if amenities is null or empty
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Amenities:",
+                      style: TextStyle(fontSize: 15, color: Color(0xff434343)),
+                    ),
+                    SizedBox(height: 8),
+                    if (listing.amenities != null &&
+                        listing.amenities!.isNotEmpty)
+                      ...listing.amenities![0]
+                          .split(',') 
+                          .map((amenity) => Padding(
+                                padding: const EdgeInsets.only(top: 4.0),
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.check_circle,
+                                        size: 18,
+                                        color: Color(0xff75CEA3)),
+                                    SizedBox(
+                                        width:
+                                            8), 
+                                    Text(
+                                      amenity.trim(), 
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        color: AppColors.formTextColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ))
+                          .toList()
+                    else
+                      Text("No amenities available"),
+                  ],
                 ),
               ),
-              const SizedBox(height: 20),
+
+              const SizedBox(height: 15),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
                 child: Text(
