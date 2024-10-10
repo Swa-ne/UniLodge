@@ -163,22 +163,13 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => const ForgetPassword(),
     ),
     GoRoute(
-      path: '/your-listing-detail/:id',
-      builder: (context, state) {
-        final yourListingId = state.pathParameters['id'];
-        final yourListing =
-            dummyListings.firstWhere((listing) => listing.id == yourListingId);
-        return YourListingDetails(listing: yourListing);
-      },
-    ),
+        path: '/your-listing-detail',
+        builder: (context, state) =>
+            YourListingDetails(listing: state.extra as Listing)),
     GoRoute(
-        path: '/edit-listing-post/:id',
-        builder: (context, state) {
-          final yourListingId = state.pathParameters['id'];
-          final yourListing = dummyListings
-              .firstWhere((listing) => listing.id == yourListingId);
-          return EditListingPost(listing: yourListing);
-        }),
+        path: '/edit-listing-post',
+        builder: (context, state) =>
+            EditListingPost(listing: state.extra as Listing)),
     GoRoute(
       path: '/type-listing/:type',
       builder: (context, state) {
