@@ -55,6 +55,7 @@ export const signupUsertoDatabase = async (
         if (userCredentialResult) {
             await userCredentialResult.deleteOne();
         }
+        console.log(error)
         return { error: "Internal Server Error", httpCode: 500 };
     }
 };
