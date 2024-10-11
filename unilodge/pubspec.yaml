@@ -59,6 +59,7 @@ flutter:
         - assets/images/housesearching.png
         - assets/images/logowithname.png
         - assets/images/people.png
+        - assets/constant/address.json
         - .env
 
     fonts:
