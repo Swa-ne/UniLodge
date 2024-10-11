@@ -19,6 +19,13 @@ class YourListingDetails extends StatefulWidget {
 }
 
 class _YourListingDetailsState extends State<YourListingDetails> {
+  bool _isAvailableBool = true;
+  @override
+  void initState() {
+    super.initState();
+    _isAvailableBool = widget.listing.isAvailable!;
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<ListingBloc, ListingState>(
@@ -35,7 +42,7 @@ class _YourListingDetailsState extends State<YourListingDetails> {
           );
         } else if (state is SuccessToggle) {
           setState(() {
-            // widget.listing.isAvailable = !(widget.listing.isAvailable!);
+            _isAvailableBool = !_isAvailableBool;
           });
         }
       },
@@ -93,32 +100,40 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                 ),
               ),
               const SizedBox(height: 16),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 20.0, horizontal: 16.0),
-                child: Text(
-                  widget.listing.property_name ??
-                      "Unnamed Property", // Fallback if property_name is null
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xff434343),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20.0, horizontal: 16.0),
+                    child: Text(
+                      widget.listing.property_name ??
+                          "Unnamed Property", // Fallback if property_name is null
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff434343),
+                      ),
+                    ),
                   ),
-                ),
+                  Text(
+                    _isAvailableBool ? "Active" : "Inactive",
+                    style: const TextStyle(color: AppColors.textColor),
+                  ),
+                ],
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: TextRow(
-                  text1: "Address:",
-                  text2: widget.listing.address ??
-                      "No address provided", // Fallback if address is null
-                ),
+                    text1: "Address:",
+                    text2:
+                        widget.listing.adddress // Fallback if address is null
+                    ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: TextRow(
                   text1: "Owner Information:",
-                  text2: widget.listing.owner_id ??
+                  text2: widget.listing.owner_id?.full_name ??
                       "No owner information", // Fallback if owner_id is null
                 ),
               ),
@@ -185,6 +200,8 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                         onRatingUpdate: (rating) {
                           print(rating);
                         },
+                        updateOnDrag: false,
+                        ignoreGestures: true,
                       ),
                     ),
                   ),
@@ -214,14 +231,14 @@ class _YourListingDetailsState extends State<YourListingDetails> {
   }
 
   Future _displayBottomSheet(BuildContext context) {
-    final _listingBloc = BlocProvider.of<ListingBloc>(context);
+    final listingBloc = BlocProvider.of<ListingBloc>(context);
     return showModalBottomSheet(
         context: context,
         backgroundColor: AppColors.lightBackground,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(top: Radius.circular(30))),
         builder: (context) => SizedBox(
-              height: 150,
+              height: 250,
               child: Column(
                 children: [
                   const SizedBox(
@@ -254,7 +271,7 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                     padding: const EdgeInsets.only(left: 30.0),
                     child: GestureDetector(
                       onTap: () {
-                        _listingBloc.add(DeleteListing(widget.listing.id!));
+                        listingBloc.add(DeleteListing(widget.listing.id!));
                       },
                       child: const Row(
                         children: [
@@ -278,21 +295,17 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                     padding: const EdgeInsets.only(left: 30.0),
                     child: GestureDetector(
                       onTap: () {
-                        _listingBloc.add(DeleteListing(widget.listing.id!));
+                        listingBloc.add(ToggleListing(widget.listing.id!));
                       },
-                      child: Row(
+                      child: const Row(
                         children: [
                           Icon(
-                            widget.listing.isAvailable!
-                                ? Icons.visibility_off
-                                : Icons.visibility,
+                            Icons.visibility,
                             color: AppColors.primary,
                           ),
                           const SizedBox(width: 12),
                           Text(
-                            widget.listing.isAvailable!
-                                ? "Hide post"
-                                : "Show post",
+                            "Toggle post's visibility",
                             style: const TextStyle(color: AppColors.textColor),
                           ),
                         ],
