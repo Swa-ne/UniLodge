@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:unilodge/bloc/my_profile/my_profile_bloc.dart';
+import 'package:unilodge/bloc/my_profile/my_profile_event.dart';
+import 'package:unilodge/bloc/my_profile/my_profile_state.dart';
+import 'package:unilodge/common/widgets/custom_text.dart';
+import 'package:unilodge/common/widgets/shimmer_loading.dart';
 import 'package:unilodge/core/configs/assets/app_images.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 
@@ -13,6 +19,8 @@ class UserProfile extends StatefulWidget {
 class _UserProfileState extends State<UserProfile> {
   @override
   Widget build(BuildContext context) {
+    context.read<ProfileBloc>().add(LoadProfile());
+
     return Scaffold(
       body: Column(
         children: [
@@ -50,17 +58,31 @@ class _UserProfileState extends State<UserProfile> {
                       ),
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.all(20.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Username",
-                          style: TextStyle(color: AppColors.textColor),
-                        ),
-                      ],
-                    ),
+                  BlocBuilder<ProfileBloc, ProfileState>(
+                    builder: (context, state) {
+                      if (state is ProfileLoading) {
+                        return const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: ShimmerLoading(),
+                        );
+                      } else if (state is ProfileLoaded) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0),
+                          child: CustomText(
+                            text: state.username,
+                            fontSize: 18,
+                          ),
+                        );
+                      }
+                      return const Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal:
+                                16.0),
+                        child: CustomText(text: "Error loading profile"),
+                      );
+                    },
                   ),
                 ],
               ),
@@ -90,7 +112,11 @@ class _UserProfileState extends State<UserProfile> {
                     color: AppColors.textColor,
                   ),
                   title: const Text('Help Center'),
-                  trailing: const Icon(Icons.arrow_forward_ios, color: AppColors.textColor, size: 20,),
+                  trailing: const Icon(
+                    Icons.arrow_forward_ios,
+                    color: AppColors.textColor,
+                    size: 20,
+                  ),
                   onTap: () {
                     context.push("/help-center");
                   },
@@ -117,24 +143,32 @@ class _UserProfileState extends State<UserProfile> {
                 //     context.push("/settings");
                 //   },
                 // ),
+                // ListTile for Reviews navigation
                 ListTile(
                   leading: const Icon(
                     Icons.star,
                     color: AppColors.textColor,
                   ),
                   title: const Text('Reviews'),
-                  trailing: const Icon(Icons.arrow_forward_ios, color: AppColors.textColor, size: 20,),
-                  onTap: () {
-                  
-                  },
+                  trailing: const Icon(
+                    Icons.arrow_forward_ios,
+                    color: AppColors.textColor,
+                    size: 20,
+                  ),
+                  onTap: () {},
                 ),
+                // ListTile for Settings navigation
                 ListTile(
                   leading: const Icon(
                     Icons.settings,
                     color: AppColors.textColor,
                   ),
                   title: const Text('Settings'),
-                  trailing: const Icon(Icons.arrow_forward_ios, color: AppColors.textColor, size: 20,),
+                  trailing: const Icon(
+                    Icons.arrow_forward_ios,
+                    color: AppColors.textColor,
+                    size: 20,
+                  ),
                   onTap: () {
                     context.push("/settings");
                   },
@@ -197,7 +231,7 @@ class _UserProfileState extends State<UserProfile> {
                             "Find your accommodation and book now!",
                             style: TextStyle(
                               color: Color(0xff454545),
-                              fontSize: 13
+                              fontSize: 13,
                             ),
                           ),
                         ),
