@@ -164,7 +164,7 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                     child: Padding(
                       padding: const EdgeInsets.all(6.0),
                       child: Text(
-                        _isAvailableBool ? "Active" : "Inactive",
+                        _isAvailableBool ? "Available" : "Unavailable",
                         style:
                             const TextStyle(color: AppColors.lightBackground),
                       ),
@@ -265,8 +265,7 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16.0, vertical: 10),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment
-                            .start, 
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Expanded(
                             child: Text(
@@ -284,7 +283,6 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                   ],
                 ),
               ),
-
               const SizedBox(height: 15),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15.0),

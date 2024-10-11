@@ -20,10 +20,10 @@ class ListingCard extends StatelessWidget {
           context.push('/your-listing-detail', extra: listing);
         },
         child: Container(
-          height: 110,
+          height: 150,
           decoration: const BoxDecoration(
-            color: AppColors.lightBackground,
-            borderRadius: BorderRadius.all(Radius.circular(10)),
+            color: Color.fromARGB(255, 255, 255, 255),
+            borderRadius: BorderRadius.all(Radius.circular(5)),
             boxShadow: [
               BoxShadow(
                 color: Color.fromARGB(43, 99, 100, 100),
@@ -49,42 +49,64 @@ class ListingCard extends StatelessWidget {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    top: 8.0, right: 15, bottom: 8, left: 15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          listing.property_name ?? '',
-                          style: const TextStyle(
-                            color: AppColors.textColor,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16,
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 20.0, right: 15, bottom: 8, left: 15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        listing.property_name ?? '',
+                        style: const TextStyle(
+                          color: AppColors.textColor,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        listing.adddress,
+                        style: TextStyle(color: AppColors.textColor),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                     const SizedBox(height: 5),  
+                      Row(
+                        children: [
+                          Text(
+                            listing.price != null
+                                ? '₱${listing.price!}'
+                                : 'N/A',
+                            style: TextStyle(color: AppColors.textColor),
+                          ),
+                        ],
+                      ),
+                      const Spacer(), 
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: listing.isAvailable!
+                                ? AppColors.greenActive
+                                : AppColors.redInactive,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Text(
+                              listing.isAvailable! ? "Available" : "Unavailable",
+                              style: const TextStyle(
+                                color: AppColors.lightBackground,
+                              ),
+                            ),
                           ),
                         ),
-                        Text(
-                          listing.isAvailable! ? "Active" : "Inactive",
-                          style: const TextStyle(color: AppColors.textColor),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      listing.adddress,
-                      style: TextStyle(color: AppColors.textColor),
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          listing.price != null ? '₱${listing.price!}' : 'N/A',
-                          style: TextStyle(color: AppColors.textColor),
-                        ),
-                      ],
-                    ),
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -94,3 +116,5 @@ class ListingCard extends StatelessWidget {
     );
   }
 }
+
+

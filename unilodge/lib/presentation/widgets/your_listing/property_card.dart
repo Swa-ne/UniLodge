@@ -24,7 +24,7 @@ class PropertyCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 7),
         child: Container(
-          height: 100,
+          height: 120,
           decoration: BoxDecoration(
             color: isSelected
             ? const Color.fromARGB(255, 245, 245, 245)
