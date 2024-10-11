@@ -89,6 +89,7 @@ class _ChatState extends State<Chat> {
                   chat_id: widget.chat_id,
                   is_read: false,
                   created_at: DateTime.now().toString(),
+                  updated_at: DateTime.now().toString(),
                 ),
               );
               messageController.clear();
