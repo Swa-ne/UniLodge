@@ -22,7 +22,9 @@ class _MessagesListViewState extends State<MessagesListView>
   final List<InboxModel> inbox = [];
   late ChatBloc _chatBloc;
   late TokenControllerImpl _tokenController;
-  late String currentUserId;
+  String? currentUserId;
+  bool _isLoading = true;
+
   @override
   void initState() {
     super.initState();
@@ -35,10 +37,17 @@ class _MessagesListViewState extends State<MessagesListView>
 
   Future<void> _initializeUserID() async {
     currentUserId = await _tokenController.getUserID();
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
     return Scaffold(
       body: BlocBuilder<ChatBloc, ChatState>(
         builder: (context, state) {
@@ -103,9 +112,7 @@ class _MessagesListViewState extends State<MessagesListView>
                                 color: AppColors.lightBackground,
                               ),
                             ),
-                            const SizedBox(
-                                width:
-                                    10), // Add some spacing between the icon and text
+                            const SizedBox(width: 10),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -141,51 +141,56 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                     text1: "Owner:",
                     text2: widget.listing.owner_id?.full_name ?? ''),
               ),
-              const SizedBox(
-                height: 8,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              Theme(
+                data: Theme.of(context)
+                    .copyWith(dividerColor: const Color.fromARGB(6, 0, 0, 0)),
+                child: ExpansionTile(
+                  backgroundColor: const Color.fromARGB(5, 0, 0, 0),
+                  title: Text(
+                    "Amenities",
+                    style: TextStyle(color: Color(0xff434343), fontSize: 15),
+                  ),
                   children: [
-                    const Text(
-                      "Amenities:",
-                      style: TextStyle(fontSize: 15, color: Color(0xff434343)),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 10),
+                      child: widget.listing.amenities != null &&
+                              widget.listing.amenities!.isNotEmpty
+                          ? Column(
+                              children: widget.listing.amenities![0]
+                                  .split(',')
+                                  .map((amenity) => Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 4.0),
+                                        child: Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.check_circle,
+                                              size: 18,
+                                              color: AppColors.greenActive,
+                                            ),
+                                            const SizedBox(width: 8),
+                                            Text(
+                                              amenity.trim(),
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                color: AppColors.formTextColor,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ))
+                                  .toList(),
+                            )
+                          : const Text(
+                              "No amenities available",
+                              style: TextStyle(
+                                  fontSize: 15, color: AppColors.formTextColor),
+                            ),
                     ),
-                    SizedBox(height: 8),
-                    if (widget.listing.amenities != null &&
-                        widget.listing.amenities!.isNotEmpty)
-                      ...widget.listing.amenities![0]
-                          .split(',')
-                          .map((amenity) => Padding(
-                                padding: const EdgeInsets.only(top: 4.0),
-                                child: Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.check_circle,
-                                      size: 18,
-                                      color: Color(0xff75CEA3),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Text(
-                                      amenity.trim(),
-                                      style: TextStyle(
-                                        fontSize: 15,
-                                        color: AppColors.formTextColor,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ))
-                          .toList()
-                    else
-                      const Text("No amenities available"),
                   ],
                 ),
               ),
-
-              const SizedBox(height: 15),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
                 child: Text(
@@ -197,11 +202,45 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
                 child: Text(
-                  widget.listing.description ?? '',
+                  widget.listing.description ?? "No description available",
                   style: const TextStyle(
                       color: AppColors.formTextColor, fontSize: 15),
                 ),
               ),
+              Theme(
+                data: Theme.of(context)
+                    .copyWith(dividerColor: const Color.fromARGB(6, 0, 0, 0)),
+                child: ExpansionTile(
+                  backgroundColor: const Color.fromARGB(5, 0, 0, 0),
+                  title: Text(
+                    "Lease Terms",
+                    style: TextStyle(color: Color(0xff434343), fontSize: 15),
+                  ),
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment
+                            .start, // Aligns the text to the left
+                        children: [
+                          Expanded(
+                            child: Text(
+                              widget.listing.leastTerms ??
+                                  "No lease terms available",
+                              style: TextStyle(
+                                color: AppColors.formTextColor,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
               const SizedBox(height: 15),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15.0),
@@ -245,26 +284,26 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
                 child: Text(
-                  "Reviews (14)",
+                  "Reviews (0)",
                   style: TextStyle(color: Color(0xff434343), fontSize: 15),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-                child: Text(
-                  "dropdown reviews or direct to another screen",
-                  style:
-                      TextStyle(color: AppColors.formTextColor, fontSize: 15),
-                ),
-              ),
+              // const Padding(
+              //   padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+              //   child: Text(
+              //     "dropdown reviews or direct to another screen",
+              //     style:
+              //         TextStyle(color: AppColors.formTextColor, fontSize: 15),
+              //   ),
+              // ),
               const SizedBox(height: 30),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-                child: Text(
-                  "Nearby Listings",
-                  style: TextStyle(color: Color(0xff434343), fontSize: 15),
-                ),
-              ),
+              // const Padding(
+              //   padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+              //   child: Text(
+              //     "Nearby Listings",
+              //     style: TextStyle(color: Color(0xff434343), fontSize: 15),
+              //   ),
+              // ),
               // i should pass the data here
               NearbyProperties(listings: dummyListings)
             ],
