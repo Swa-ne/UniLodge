@@ -32,34 +32,48 @@ class _ListingCardsState extends State<ListingCards> {
                   borderRadius: BorderRadius.circular(5),
                   child: Opacity(
                     opacity: 0.9,
-                    child: Image.network(
-                      widget.listing.imageUrl?[0] ?? '',
-                      width: 360,
-                      height: 200,
-                      fit: BoxFit.cover,
-                      loadingBuilder: (BuildContext context, Widget child,
-                          ImageChunkEvent? loadingProgress) {
-                        if (loadingProgress == null) {
-                          return child; 
-                        } else {
-                          return Container(
+                    child: widget.listing.imageUrl != null &&
+                            widget.listing.imageUrl!.isNotEmpty
+                        ? Image.network(
+                            widget.listing.imageUrl![
+                                0], 
+                            width: 360,
+                            height: 200,
+                            fit: BoxFit.cover,
+                            loadingBuilder: (BuildContext context, Widget child,
+                                ImageChunkEvent? loadingProgress) {
+                              if (loadingProgress == null) {
+                                return child;
+                              } else {
+                                return Container(
+                                  width: 360,
+                                  height: 200,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      value:
+                                          loadingProgress.expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  (loadingProgress
+                                                          .expectedTotalBytes ??
+                                                      1)
+                                              : null,
+                                      valueColor: AlwaysStoppedAnimation(
+                                          AppColors.linearOrange),
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                          )
+                        : const SizedBox(
                             width: 360,
                             height: 200,
                             child: Center(
-                              child: CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes !=
-                                        null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                        (loadingProgress.expectedTotalBytes ??
-                                            1)
-                                    : null,
-                                    valueColor: AlwaysStoppedAnimation(AppColors.linearOrange),
-                              ),
+                              child: Text('No Image Available'),
                             ),
-                          );
-                        }
-                      },
-                    ),
+                          ),
                   ),
                 ),
               ),
