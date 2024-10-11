@@ -256,12 +256,6 @@ class _SignUpState extends State<SignUp> with InputValidationMixin {
                 });
                 return;
               }
-              if (!isPhoneNumberValid) {
-                setState(() {
-                  phoneNumberError = "This field cannot be empty";
-                });
-                return;
-              }
               _nextPage();
             },
           ),
