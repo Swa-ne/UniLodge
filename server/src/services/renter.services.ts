@@ -3,12 +3,16 @@ import { Dorm, DormSchemaInterface } from '../models/dorm/dorm.model';
 import { Review } from '../models/dorm/review.model';
 import { Saved } from '../models/dorm/saved.model';
 
-export const getDorms = async () => {
+export const getDorms = async (user_id: string) => {
     try {
-        const dorms: DormSchemaInterface[] | null = await Dorm.find()
+        const dorms: DormSchemaInterface[] | null = await Dorm.find({
+            owner_id: { $ne: user_id },
+            isAvailable: true
+        })
+            .populate('owner_id')
             .populate('location')
             .populate('currency')
-            .populate('imageUrl');;
+            .populate('imageUrl');
         return { message: dorms, httpCode: 200 };
     } catch (error) {
         return { error: 'Internal Server Error', httpCode: 500 };

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
 
 class PostLocation extends StatefulWidget {
-  final Listing listing;
-  const PostLocation({super.key, required this.listing});
+  final String selectedPropertyType;
+  const PostLocation({Key? key, required this.selectedPropertyType})
+      : super(key: key);
 
   @override
   _PostLocationState createState() => _PostLocationState();
@@ -17,86 +20,261 @@ class _PostLocationState extends State<PostLocation> {
   final TextEditingController _streetController = TextEditingController();
   final TextEditingController _barangayController = TextEditingController();
   final TextEditingController _houseNumberController = TextEditingController();
-  final TextEditingController _zipcodeController = TextEditingController();
+  final TextEditingController _regionController = TextEditingController();
+  final TextEditingController _provinceController = TextEditingController();
 
+  List<dynamic> allData = [];
+  List<String> provinces = [];
+  List<String> cities = [];
+  List<String> barangays = [];
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: Stack(
-              children: <Widget>[
-                const Positioned(
-                  top: 60,
-                  left: 16,
-                  child: Text(
-                    'Property Information',
-                    style: TextStyle(
-                      color: AppColors.primary,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+  void initState() {
+    super.initState();
+    loadJsonData();
+    _regionController.addListener(_updateProvinces);
+    _provinceController.addListener(_updateCities);
+    _cityController.addListener(_updateBarangays);
+  }
+
+  void _updateProvinces() {
+    if (_regionController.text.isNotEmpty) {
+      var selectedRegion = allData.firstWhere(
+          (region) => region['region_name'] == _regionController.text,
+          orElse: () => null);
+      if (selectedRegion != null) {
+        provinces = selectedRegion['province_list'].keys.toList();
+        setState(() {
+          _provinceController.text = '';
+        });
+      }
+    }
+  }
+
+  void _updateCities() {
+    if (_provinceController.text.isNotEmpty) {
+      var selectedRegion = allData.firstWhere(
+          (region) => region['region_name'] == _regionController.text,
+          orElse: () => null);
+      if (selectedRegion != null) {
+        var selectedProvince =
+            selectedRegion['province_list'][_provinceController.text];
+        if (selectedProvince != null) {
+          cities = selectedProvince['municipality_list'].keys.toList();
+          setState(() {
+            _cityController.text = '';
+          });
+        }
+      }
+    }
+  }
+
+  void _updateBarangays() {
+    if (_cityController.text.isNotEmpty) {
+      var selectedRegion = allData.firstWhere(
+          (region) => region['region_name'] == _regionController.text,
+          orElse: () => null);
+      if (selectedRegion != null) {
+        var selectedProvince =
+            selectedRegion['province_list'][_provinceController.text];
+        if (selectedProvince != null) {
+          var selectedCity =
+              selectedProvince['municipality_list'][_cityController.text];
+          if (selectedCity != null) {
+            var barangaysDynamicList =
+                selectedCity['barangay_list'] as List<dynamic>;
+            barangays =
+                barangaysDynamicList.map<String>((e) => e.toString()).toList();
+            setState(() {
+              _barangayController.text = '';
+            });
+          }
+        }
+      }
+    }
+  }
+
+  void loadJsonData() async {
+    final String response =
+        await rootBundle.loadString('assets/constant/address.json');
+    final data = json.decode(response);
+    setState(() {
+      allData = data;
+    });
+  }
+
+  void _showSearchDialog({
+    required BuildContext context,
+    required List<String> options,
+    required TextEditingController controller,
+    required String title,
+  }) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Select $title'),
+          content: SizedBox(
+            width: double.maxFinite,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  onChanged: (value) => setState(() {}),
+                  decoration: InputDecoration(
+                    labelText: "Search $title",
+                    suffixIcon: Icon(Icons.search),
                   ),
                 ),
-                const Positioned(
-                  top: 90,
-                  left: 16,
-                  right: 16,
-                  child: Text(
-                    'Please fill in all fields below to continue',
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.normal,
-                        color: AppColors.primary),
-                  ),
-                ),
-                const Positioned(
-                    top: 20,
-                    right: 20,
-                    child: Icon(
-                      Icons.draw,
-                      size: 70,
-                      color: AppColors.primary,
-                    )),
-                Positioned(
-                  top: 160,
-                  left: 16,
-                  right: 16,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildTextField2(
-                          controller: _propertyNameController,
-                          label: 'Property Name',
-                          hint: "Enter property name"),
-                      _buildTextField2(
-                          controller: _cityController,
-                          label: 'City',
-                          hint: "Enter city"),
-                      _buildTextField2(
-                          controller: _streetController,
-                          label: 'Street',
-                          hint: "Enter street"),
-                      _buildTextField2(
-                          controller: _barangayController,
-                          label: 'Barangay',
-                          hint: "Enter barangay"),
-                      _buildTextField2(
-                          controller: _houseNumberController,
-                          label: 'House Number',
-                          hint: "Enter house number"),
-                      _buildTextField2(
-                          controller: _zipcodeController,
-                          label: 'Zipcode',
-                          hint: "Enter zipcode"),
-                    ],
+                Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: options.length,
+                    itemBuilder: (context, index) {
+                      final option = options[index];
+                      return ListTile(
+                        title: Text(option),
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          controller.text = option;
+                        },
+                      );
+                    },
                   ),
                 ),
               ],
             ),
           ),
-          // Bottom buttons
+        );
+      },
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String label,
+    required String hint,
+    List<String>? options,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16.0),
+      child: TextFormField(
+        controller: controller,
+        readOnly: options != null,
+        onTap: () {
+          if (options != null) {
+            _showSearchDialog(
+              context: context,
+              options: options,
+              controller: controller,
+              title: label,
+            );
+          }
+        },
+        decoration: InputDecoration(
+          labelText: label,
+          hintText: hint,
+          suffixIcon: options != null ? Icon(Icons.arrow_drop_down) : null,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Color(0xff2E3E4A)),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(color: Colors.grey),
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    List<String> regions = allData
+        .map<String>((region) => region['region_name'] as String)
+        .toList();
+
+    return Scaffold(
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Positioned(
+                    top: 60,
+                    left: 16,
+                    child: Text(
+                      'Property Information',
+                      style: TextStyle(
+                        color: AppColors.primary,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const Positioned(
+                    top: 90,
+                    left: 16,
+                    right: 16,
+                    child: Text(
+                      'Please fill in all fields below to continue',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.normal,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                  ),
+                  const Positioned(
+                      top: 20,
+                      right: 20,
+                      child: Icon(
+                        Icons.draw,
+                        size: 70,
+                        color: AppColors.primary,
+                      )),
+                  _buildTextField(
+                      controller: _propertyNameController,
+                      label: 'Property Name',
+                      hint: "Enter property name"),
+                  _buildTextField(
+                    controller: _regionController,
+                    label: 'Region',
+                    hint: "Select region",
+                    options: regions,
+                  ),
+                  _buildTextField(
+                      controller: _provinceController,
+                      label: 'Province',
+                      hint: "Select province",
+                      options: provinces),
+                  _buildTextField(
+                      controller: _cityController,
+                      label: 'City',
+                      hint: "Select city",
+                      options: cities),
+                  _buildTextField(
+                      controller: _barangayController,
+                      label: 'Barangay',
+                      hint: "Select barangay",
+                      options: barangays),
+                  _buildTextField(
+                      controller: _houseNumberController,
+                      label: 'House Number',
+                      hint: "Enter house number"),
+                  _buildTextField(
+                      controller: _streetController,
+                      label: 'Street',
+                      hint: "Enter street"),
+                ],
+              ),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(1.0),
             child: Container(
@@ -136,23 +314,19 @@ class _PostLocationState extends State<PostLocation> {
                   const SizedBox(width: 20),
                   ElevatedButton(
                     onPressed: () {
-                      // Create the combined address
                       final combinedAddress =
-                          '${_houseNumberController.text} ${_streetController.text}, ${_barangayController.text}, ${_cityController.text}, ${_zipcodeController.text}';
-
-                      // Update the listing model with the new data, without the 'address' field
-                      final updatedListing = widget.listing.copyWith(
+                          '${_houseNumberController.text} ${_streetController.text}, ${_barangayController.text}, ${_cityController.text}, ${_provinceController.text}, ${_regionController.text}';
+                      final updatedListing = Listing(
+                        selectedPropertyType: widget.selectedPropertyType,
                         property_name: _propertyNameController.text,
                         city: _cityController.text,
                         street: _streetController.text,
                         barangay: _barangayController.text,
                         house_number: _houseNumberController.text,
-                        zip_code: _zipcodeController.text,
-                        address: combinedAddress, // for ui
+                        province: _provinceController.text,
+                        region: _regionController.text,
+                        address: combinedAddress,
                       );
-
-                      // Navigate to the next page with the updated listing
-
                       context.push('/post-price', extra: updatedListing);
                     },
                     style: ElevatedButton.styleFrom(
@@ -164,41 +338,13 @@ class _PostLocationState extends State<PostLocation> {
                       ),
                       elevation: 0,
                     ),
-                    child: const Text('Next'),
+                    child: const Text("Next"),
                   ),
                 ],
               ),
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildTextField2({
-    required TextEditingController controller,
-    required String label,
-    required String hint,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
-      child: TextField(
-        controller: controller,
-        keyboardType: TextInputType.text,
-        decoration: InputDecoration(
-          labelText: label,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Color(0xff2E3E4A)),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Colors.grey),
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
       ),
     );
   }

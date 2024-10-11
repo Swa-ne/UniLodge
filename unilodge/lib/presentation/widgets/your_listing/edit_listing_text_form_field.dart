@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 
@@ -6,16 +5,26 @@ class EditListingTextFormField extends StatelessWidget {
   const EditListingTextFormField(
       {super.key,
       required this.label,
+      this.keyboardType,
+      this.minLines,
+      this.maxLines,
+      this.error,
       required this.controller});
 
   final String label;
+  final TextInputType? keyboardType;
+  final int? minLines;
+  final int? maxLines;
+  final String? error;
   final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: keyboardType,
+      maxLines: maxLines,
+      minLines: minLines,
       decoration: InputDecoration(
         filled: true,
         fillColor: AppColors.blueTextColor,
@@ -34,6 +43,12 @@ class EditListingTextFormField extends StatelessWidget {
           color: Colors.grey,
         ),
       ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return "$label is required";
+        }
+        return null;
+      },
     );
   }
 }

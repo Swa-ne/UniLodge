@@ -28,8 +28,6 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
   Widget build(BuildContext context) {
     final _chatBloc = BlocProvider.of<ChatBloc>(context);
 
-    
-
     return BlocListener<ChatBloc, ChatState>(
       listener: (context, state) {
         if (state is CreateInboxSuccess) {
@@ -134,14 +132,16 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: TextRow(text1: "Address:", text2: widget.listing.adddress),
+                child:
+                    TextRow(text1: "Address:", text2: widget.listing.adddress),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: TextRow(
-                    text1: "Owner Information:", text2: widget.listing.owner_id ?? ''),
+                    text1: "Owner Information:",
+                    text2: widget.listing.owner_id?.full_name ?? ''),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 8,
               ),
               Padding(
@@ -149,7 +149,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "Amenities:",
                       style: TextStyle(fontSize: 15, color: Color(0xff434343)),
                     ),
@@ -162,9 +162,12 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                                 padding: const EdgeInsets.only(top: 4.0),
                                 child: Row(
                                   children: [
-                                    Icon(Icons.check_circle,
-                                        size: 18, color: Color(0xff75CEA3)),
-                                    SizedBox(width: 8),
+                                    const Icon(
+                                      Icons.check_circle,
+                                      size: 18,
+                                      color: Color(0xff75CEA3),
+                                    ),
+                                    const SizedBox(width: 8),
                                     Text(
                                       amenity.trim(),
                                       style: TextStyle(
@@ -177,7 +180,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                               ))
                           .toList()
                     else
-                      Text("No amenities available"),
+                      const Text("No amenities available"),
                   ],
                 ),
               ),
@@ -220,7 +223,8 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: RatingBar.builder(
-                          initialRating: widget.listing.rating?.toDouble() ?? 0.0,
+                          initialRating:
+                              widget.listing.rating?.toDouble() ?? 0.0,
                           minRating: 1,
                           direction: Axis.horizontal,
                           itemCount: 5,
@@ -291,9 +295,8 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                     child: CustomButton(
                       text: "Chat with owner",
                       onPressed: () {
-                        // TODO: get owner user id (USER not ActiveUSER)
-                        final receiver_user_id = "670394a4ee7170f297b45065";
-                        _chatBloc.add(CreateInboxEvent(receiver_user_id));
+                        _chatBloc
+                            .add(CreateInboxEvent(widget.listing.owner_id!.id));
                       },
                     ),
                   ),

@@ -1,6 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:unilodge/bloc/listing/listing_bloc.dart';
+import 'package:unilodge/bloc/listing/listing_event.dart';
+import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
+import 'package:unilodge/presentation/widgets/listing/multiple_images.dart';
 import 'package:unilodge/presentation/widgets/your_listing/edit_listing_text_form_field.dart';
 import 'package:unilodge/presentation/widgets/your_listing/property_card.dart';
 
@@ -13,18 +20,24 @@ class EditListingForm extends StatefulWidget {
 }
 
 class _EditListingFormState extends State<EditListingForm> {
-  final _propertyName = TextEditingController();
-  final _propertyCity = TextEditingController();
-  final _propertyStreet = TextEditingController();
-  final _propertyBarangay = TextEditingController();
-  final _propertyHouseNumber = TextEditingController();
-  final _propertyZipCode = TextEditingController();
-  final _propertyPrice = TextEditingController();
-  final _propertyDescription = TextEditingController();
-  final _propertyLeaseTerms = TextEditingController();
+  late TextEditingController _propertyName;
+  late TextEditingController _propertyCity;
+  late TextEditingController _propertyStreet;
+  late TextEditingController _propertyBarangay;
+  late TextEditingController _propertyHouseNumber;
+  late TextEditingController _propertyProvince;
+  late TextEditingController _propertyRegion;
+  late TextEditingController _propertyPrice;
+  late TextEditingController _propertyDescription;
+  late TextEditingController _propertyLeaseTerms;
+  late ListingBloc _listingBloc;
+  final _formKey2 = GlobalKey<FormState>();
+  final _formKey3 = GlobalKey<FormState>();
 
   int _currentStep = 0;
   String _selectedPropertyType = '';
+  List<File> selectedImages = [];
+  List<String> oldImages = [];
 
   Map<String, bool> rentalAmenities = {
     'Internet': false,
@@ -43,6 +56,27 @@ class _EditListingFormState extends State<EditListingForm> {
     'Gas': false,
     'Internet': false,
   };
+
+  @override
+  void initState() {
+    super.initState();
+
+    _listingBloc = BlocProvider.of<ListingBloc>(context);
+    _propertyName = TextEditingController(text: widget.listing.property_name);
+    _propertyCity = TextEditingController(text: widget.listing.city);
+    _propertyStreet = TextEditingController(text: widget.listing.street);
+    _propertyBarangay = TextEditingController(text: widget.listing.barangay);
+    _propertyHouseNumber =
+        TextEditingController(text: widget.listing.house_number);
+    _propertyProvince = TextEditingController(text: widget.listing.province);
+    _propertyRegion = TextEditingController(text: widget.listing.region);
+    _propertyPrice = TextEditingController(text: widget.listing.price);
+    _propertyDescription =
+        TextEditingController(text: widget.listing.description);
+    _propertyLeaseTerms =
+        TextEditingController(text: widget.listing.leastTerms);
+    oldImages = List<String>.from(widget.listing.imageUrl ?? [""]);
+  }
 
   List<String> _getSelectedAmenities() {
     return rentalAmenities.entries
@@ -145,7 +179,7 @@ class _EditListingFormState extends State<EditListingForm> {
   Widget build(BuildContext context) {
     return Theme(
       data: Theme.of(context).copyWith(
-        colorScheme: ColorScheme.light(
+        colorScheme: const ColorScheme.light(
           primary: AppColors.primary,
           onPrimary: Colors.white,
           secondary: AppColors.primary,
@@ -162,8 +196,22 @@ class _EditListingFormState extends State<EditListingForm> {
           }
         },
         onStepContinue: () {
+          if (_currentStep == 0) {
+            if (_selectedPropertyType.isEmpty) {
+              return;
+            }
+          }
+          if (_currentStep == 1 && !_formKey2.currentState!.validate()) {
+            return;
+          }
+          if (_currentStep == 2 && !_formKey3.currentState!.validate()) {
+            return;
+          }
           final isLastStep = _currentStep == getSteps().length - 1;
           if (isLastStep) {
+            if (selectedImages.length < 6 && selectedImages.isNotEmpty) {
+              return;
+            }
             final updatedListing = widget.listing.copyWith(
               selectedPropertyType: _selectedPropertyType,
               property_name: _propertyName.text,
@@ -171,28 +219,14 @@ class _EditListingFormState extends State<EditListingForm> {
               street: _propertyStreet.text,
               barangay: _propertyBarangay.text,
               house_number: _propertyHouseNumber.text,
-              zip_code: _propertyZipCode.text,
+              province: _propertyProvince.text,
+              region: _propertyRegion.text,
               price: _propertyPrice.text,
               description: _propertyDescription.text,
               leastTerms: _propertyLeaseTerms.text,
               amenities: _getSelectedAmenities(),
               utilities: _getSelectedUtilities(),
             );
-
-            print(updatedListing.selectedPropertyType);
-            print(updatedListing.property_name);
-            print(updatedListing.city);
-            print(updatedListing.street);
-            print(updatedListing.barangay);
-            print(updatedListing.house_number);
-            print(updatedListing.zip_code);
-            print(updatedListing.price);
-            print(updatedListing.description);
-            print(updatedListing.leastTerms);
-            print(updatedListing.amenities);
-            print(updatedListing.utilities);
-
-            // todo: save
 
             showDialog(
               context: context,
@@ -203,8 +237,12 @@ class _EditListingFormState extends State<EditListingForm> {
                   actions: [
                     TextButton(
                       onPressed: () {
-                        Navigator.pop(context);
-                        // todo: saveee
+                        _listingBloc.add(UpdateListing(
+                          widget.listing.id!,
+                          selectedImages,
+                          updatedListing,
+                        ));
+                        context.go("/listings");
                       },
                       child: const Text("Save"),
                     ),
@@ -229,17 +267,16 @@ class _EditListingFormState extends State<EditListingForm> {
             children: <Widget>[
               TextButton(
                 onPressed: controls.onStepCancel,
-                child: const Text('Back'),
                 style: TextButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
+                child: const Text('Back'),
               ),
               const SizedBox(width: 8),
               ElevatedButton(
                 onPressed: controls.onStepContinue,
-                child: const Text('Continue'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   foregroundColor: AppColors.lightBackground,
@@ -247,6 +284,7 @@ class _EditListingFormState extends State<EditListingForm> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
+                child: const Text('Continue'),
               ),
             ],
           );
@@ -279,27 +317,48 @@ class _EditListingFormState extends State<EditListingForm> {
           style:
               TextStyle(color: AppColors.primary, fontWeight: FontWeight.w600),
         ),
-        content: Column(
-          children: [
-            const SizedBox(height: 10),
-            EditListingTextFormField(
-                label: "Property Name", controller: _propertyName),
-            const SizedBox(height: 20),
-            EditListingTextFormField(label: "City", controller: _propertyCity),
-            const SizedBox(height: 20),
-            EditListingTextFormField(
-                label: "Street", controller: _propertyStreet),
-            const SizedBox(height: 20),
-            EditListingTextFormField(
-                label: "Barangay", controller: _propertyBarangay),
-            const SizedBox(height: 20),
-            EditListingTextFormField(
-                label: "House Number", controller: _propertyHouseNumber),
-            const SizedBox(height: 20),
-            EditListingTextFormField(
-                label: "Zip Code", controller: _propertyZipCode),
-            const SizedBox(height: 10),
-          ],
+        content: Form(
+          key: _formKey2,
+          child: Column(
+            children: [
+              const SizedBox(height: 10),
+              EditListingTextFormField(
+                label: "Property Name",
+                controller: _propertyName,
+              ),
+              const SizedBox(height: 20),
+              EditListingTextFormField(
+                label: "Region",
+                controller: _propertyRegion,
+              ),
+              const SizedBox(height: 20),
+              EditListingTextFormField(
+                label: "Province",
+                controller: _propertyProvince,
+              ),
+              const SizedBox(height: 20),
+              EditListingTextFormField(
+                label: "City",
+                controller: _propertyCity,
+              ),
+              const SizedBox(height: 20),
+              EditListingTextFormField(
+                label: "Barangay",
+                controller: _propertyBarangay,
+              ),
+              const SizedBox(height: 20),
+              EditListingTextFormField(
+                label: "House Number",
+                controller: _propertyHouseNumber,
+              ),
+              const SizedBox(height: 20),
+              EditListingTextFormField(
+                label: "Street",
+                controller: _propertyStreet,
+              ),
+              const SizedBox(height: 10),
+            ],
+          ),
         ),
         isActive: _currentStep >= 1,
         state: _currentStep > 1 ? StepState.complete : StepState.indexed,
@@ -310,19 +369,32 @@ class _EditListingFormState extends State<EditListingForm> {
           style:
               TextStyle(color: AppColors.primary, fontWeight: FontWeight.w600),
         ),
-        content: Column(
-          children: [
-            const SizedBox(height: 20),
-            EditListingTextFormField(
-                label: "Price", controller: _propertyPrice),
-            const SizedBox(height: 20),
-            EditListingTextFormField(
-                label: "Description", controller: _propertyDescription),
-            const SizedBox(height: 20),
-            EditListingTextFormField(
-                label: "Lease Terms", controller: _propertyLeaseTerms),
-            const SizedBox(height: 10),
-          ],
+        content: Form(
+          key: _formKey3,
+          child: Column(
+            children: [
+              const SizedBox(height: 20),
+              EditListingTextFormField(
+                label: "Price",
+                controller: _propertyPrice,
+              ),
+              const SizedBox(height: 20),
+              EditListingTextFormField(
+                label: "Description",
+                controller: _propertyDescription,
+                minLines: 5,
+                maxLines: 10,
+              ),
+              const SizedBox(height: 20),
+              EditListingTextFormField(
+                label: "Lease Terms",
+                controller: _propertyLeaseTerms,
+                minLines: 5,
+                maxLines: 10,
+              ),
+              const SizedBox(height: 10),
+            ],
+          ),
         ),
         isActive: _currentStep >= 2,
         state: _currentStep > 2 ? StepState.complete : StepState.indexed,
@@ -344,8 +416,67 @@ class _EditListingFormState extends State<EditListingForm> {
         isActive: _currentStep >= 3,
         state: _currentStep == 3 ? StepState.indexed : StepState.indexed,
       ),
-
-      // todo: add step for images
+      Step(
+        title: const Text(
+          'Edit property images',
+          style:
+              TextStyle(color: AppColors.primary, fontWeight: FontWeight.w600),
+        ),
+        content: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const Text(
+              'Add property images',
+              style: TextStyle(
+                color: AppColors.primary,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 7),
+            const Text(
+              'Upload at least 6 images',
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.normal,
+                color: AppColors.primary,
+              ),
+            ),
+            const SizedBox(height: 20),
+            MultipleImages(
+              onImagesSelected: (images) {
+                setState(() {
+                  selectedImages = images;
+                });
+              },
+            ),
+            if (selectedImages.isEmpty)
+              GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  childAspectRatio: 1,
+                ),
+                itemCount: oldImages.length,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  String image = oldImages[index];
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.network(
+                      image,
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                },
+              ),
+          ],
+        ),
+        isActive: _currentStep >= 4,
+        state: _currentStep == 4 ? StepState.indexed : StepState.indexed,
+      ),
     ];
   }
 }

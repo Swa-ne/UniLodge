@@ -22,7 +22,7 @@ class ListingBloc extends Bloc<ListingEvent, ListingState> {
       try {
         if (await _listingRepository.createListing(
             event.imageFiles, event.dorm)) {
-          emit(ListingCreated());
+          emit(ListingCreated(DateTime.now()));
         } else {
           emit(const ListingCreationError("Internet Connection Error"));
         }
@@ -33,28 +33,41 @@ class ListingBloc extends Bloc<ListingEvent, ListingState> {
 
     on<UpdateListing>((event, emit) async {
       try {
-        await _listingRepository.updateListing(event.id, event.listing);
-        // add(FetchListings());
+        await _listingRepository.updateListing(
+          event.id,
+          event.imageFiles,
+          event.listing,
+        );
+
+        emit(SuccessUpdateDorm(DateTime.now()));
       } catch (e) {
-        emit(ListingError(e.toString()));
+        emit(UpdateDormError(e.toString()));
       }
     });
 
     on<ToggleListing>((event, emit) async {
       try {
-        await _listingRepository.toggleListing(event.id);
-        // add(FetchListings());
+        final isSuccess = await _listingRepository.toggleListing(event.id);
+        if (isSuccess) {
+          emit(SuccessToggle(DateTime.now()));
+        } else {
+          emit(const ToggleError("Internet Connection Error"));
+        }
       } catch (e) {
-        emit(ListingError(e.toString()));
+        emit(ToggleError(e.toString()));
       }
     });
 
     on<DeleteListing>((event, emit) async {
       try {
-        await _listingRepository.deleteListing(event.id);
-        // add(FetchListings());
+        final isSuccess = await _listingRepository.deleteListing(event.id);
+        if (isSuccess) {
+          emit(SuccessDeleted(DateTime.now()));
+        } else {
+          emit(const DeletionError("Internet Connection Error"));
+        }
       } catch (e) {
-        emit(ListingError(e.toString()));
+        emit(DeletionError(e.toString()));
       }
     });
     on<SelectCardEvent>((event, emit) {

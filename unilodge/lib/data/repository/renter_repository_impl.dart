@@ -31,13 +31,11 @@ class RenterRepositoryImpl implements RenterRepository {
 
       if (responseBody.containsKey('message')) {
         final List<dynamic> data = responseBody['message'];
-        print(data);
         return data.map((json) => Listing.fromJson(json)).toList();
       } else {
         throw Exception('Invalid response format');
       }
     } else {
-      print(response.statusCode.toString());
       throw Exception('Failed to load dorms');
     }
   }
@@ -48,10 +46,8 @@ class RenterRepositoryImpl implements RenterRepository {
 
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body)['savedDorms'];
-      print(data);
       return data.map((json) => SavedDorm.fromJson(json)).toList();
     } else {
-      print(response.statusCode);
       throw Exception('Failed to load saved dorms');
     }
   }

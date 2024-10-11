@@ -47,7 +47,6 @@ export const sendEmailForgetPassword = async (user_id: string, receiver: string,
                 expiresAt: new Date(Date.now() + 2 * 60 * 60 * 1000)
             }).save();
         }
-        console.log(code)
         await python_server.post(`/send-email-forget-password`, data);
 
         return { message: "Success", httpCode: 200 }

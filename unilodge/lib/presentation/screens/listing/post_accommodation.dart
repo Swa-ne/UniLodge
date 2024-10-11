@@ -8,12 +8,19 @@ import 'package:unilodge/core/configs/assets/app_images.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/presentation/widgets/listing/custom_card.dart';
 import 'package:unilodge/data/models/listing.dart';
+import 'package:unilodge/presentation/widgets/your_listing/property_card.dart';
 
-class PostAccommodation extends StatelessWidget {
+class PostAccommodation extends StatefulWidget {
   final Listing listing;
 
   const PostAccommodation({super.key, required this.listing});
 
+  @override
+  State<PostAccommodation> createState() => _PostAccommodationState();
+}
+
+class _PostAccommodationState extends State<PostAccommodation> {
+  String _selectedPropertyType = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,11 +43,59 @@ class PostAccommodation extends StatelessWidget {
           ),
           const SizedBox(height: 40),
           Expanded(
-            child: _PropertySelection(listing: listing),
+            child: Column(
+              children: [
+                PropertyCard(
+                  cardName: 'Dorm',
+                  description:
+                      'Shared room with multiple occupants; ideal for students and budget-friendly living.',
+                  isSelected: _selectedPropertyType == 'Dorm',
+                  onTap: () {
+                    setState(() {
+                      _selectedPropertyType = 'Dorm';
+                    });
+                  },
+                ),
+                PropertyCard(
+                  cardName: 'Bed Spacer',
+                  description:
+                      'Shared room with designated sleeping areas; a cost-effective living option.',
+                  isSelected: _selectedPropertyType == 'Bed Spacer',
+                  onTap: () {
+                    setState(() {
+                      _selectedPropertyType = 'Bed Spacer';
+                    });
+                  },
+                ),
+                PropertyCard(
+                  cardName: 'Solo Room',
+                  description:
+                      'Private room offering a quiet space for sleeping and studying.',
+                  isSelected: _selectedPropertyType == 'Solo Room',
+                  onTap: () {
+                    setState(() {
+                      _selectedPropertyType = 'Solo Room';
+                    });
+                  },
+                ),
+                PropertyCard(
+                  cardName: 'Apartment',
+                  description:
+                      'Self-contained unit with separate bedrooms, kitchen, and living area.',
+                  isSelected: _selectedPropertyType == 'Apartment',
+                  onTap: () {
+                    setState(() {
+                      _selectedPropertyType = 'Apartment';
+                    });
+                  },
+                ),
+              ],
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(1.0),
-            child: _BottomNavigation(listing: listing),
+            child:
+                _BottomNavigation(selectedPropertyType: _selectedPropertyType),
           ),
         ],
       ),
@@ -91,7 +146,10 @@ class _PropertySelection extends StatelessWidget {
             state is CardSelectedState && state.selectedCard == cardName;
 
         return CustomCard(
-          leading: Image.asset(iconImage, height: 300,),
+          leading: Image.asset(
+            iconImage,
+            height: 300,
+          ),
           cardName: cardName,
           description: description,
           leadingWidth: 50,
@@ -107,77 +165,64 @@ class _PropertySelection extends StatelessWidget {
 }
 
 class _BottomNavigation extends StatelessWidget {
-  final Listing listing;
+  final String selectedPropertyType;
 
-  const _BottomNavigation({required this.listing});
+  const _BottomNavigation({required this.selectedPropertyType});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ListingBloc, ListingState>(
-      builder: (context, state) {
-        String selectedType = '';
-        Listing updatedListing = listing;
-
-        if (state is CardSelectedState) {
-          selectedType = state.selectedCard;
-          updatedListing = listing.copyWith(selectedPropertyType: selectedType);
-        }
-
-        return Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: const BorderRadius.horizontal(),
-            boxShadow: [
-              BoxShadow(
-                color:
-                    const Color.fromARGB(255, 119, 119, 119).withOpacity(0.2),
-                spreadRadius: 1,
-                blurRadius: 5,
-                offset: const Offset(0, -1),
-              ),
-            ],
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: const BorderRadius.horizontal(),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 10,
+            offset: const Offset(0, -3),
           ),
-          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              OutlinedButton(
-                onPressed: () {
-                  context.go('/home');
-                },
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: Colors.black,
-                  backgroundColor: Colors.transparent,
-                  side: const BorderSide(color: Colors.black, width: 1),
-                  minimumSize: const Size(120, 50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                child: const Text("Back"),
+        ],
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          OutlinedButton(
+            onPressed: () {
+              context.go('/home');
+            },
+            style: OutlinedButton.styleFrom(
+              foregroundColor: Colors.black,
+              backgroundColor: Colors.transparent,
+              side: const BorderSide(color: Colors.black, width: 1),
+              minimumSize: const Size(120, 50),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
               ),
-              const SizedBox(width: 20),
-              ElevatedButton(
-                onPressed: selectedType.isNotEmpty
-                    ? () {
-                        context.push('/post-location', extra: updatedListing);
-                      }
-                    : null,
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: const Color(0xff2E3E4A),
-                  minimumSize: const Size(120, 50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  elevation: 0,
-                ),
-                child: const Text('Next'),
-              ),
-            ],
+            ),
+            child: const Text("Back"),
           ),
-        );
-      },
+          const SizedBox(width: 20),
+          ElevatedButton(
+            onPressed: selectedPropertyType.isNotEmpty
+                ? () {
+                    context.push('/post-location', extra: selectedPropertyType);
+                  }
+                : null,
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.white,
+              backgroundColor: const Color(0xff2E3E4A),
+              minimumSize: const Size(120, 50),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              elevation: 0,
+            ),
+            child: const Text('Next'),
+          ),
+        ],
+      ),
     );
   }
 }

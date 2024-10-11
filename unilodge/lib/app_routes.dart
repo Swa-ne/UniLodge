@@ -109,8 +109,8 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/post-location',
       builder: (context, state) {
-        final listing = state.extra as Listing? ?? Listing();
-        return PostLocation(listing: listing);
+        final selectedPropertyType = state.extra as String;
+        return PostLocation(selectedPropertyType: selectedPropertyType);
       },
     ),
     GoRoute(

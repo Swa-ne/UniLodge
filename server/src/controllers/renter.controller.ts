@@ -7,8 +7,11 @@ export const getDormsController = async (req: Request & { user?: UserType }, res
     try {
         const user = req.user;
         if (!user) return res.status(404).json({ error: "User not found" });
-
-        const dorms = await getDorms();
+        const { user_id } = user;
+        if (!user_id) {
+            return res.status(400).json({ message: 'User ID not provided' });
+        }
+        const dorms = await getDorms(user_id);
         if (dorms.httpCode === 200) return res.status(dorms.httpCode).json({ 'message': dorms.message });
         return res.status(dorms.httpCode).json({ 'error': dorms.error });
     } catch (error) {

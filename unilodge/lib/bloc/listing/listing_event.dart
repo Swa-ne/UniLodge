@@ -33,9 +33,10 @@ class DeleteListing extends ListingEvent {
 
 class UpdateListing extends ListingEvent {
   final String id;
+  final List<File>? imageFiles;
   final Listing listing;
 
-  const UpdateListing(this.id, this.listing);
+  const UpdateListing(this.id, this.imageFiles, this.listing);
 
   @override
   List<Object> get props => [id, listing];

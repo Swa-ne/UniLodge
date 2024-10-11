@@ -52,14 +52,39 @@ class ListingCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(
                     top: 8.0, right: 15, bottom: 8, left: 15),
-                child: Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(listing.property_name ?? '',
-                      style: const TextStyle(
-                        color: AppColors.textColor,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
-                      )),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          listing.property_name ?? '',
+                          style: const TextStyle(
+                            color: AppColors.textColor,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
+                        ),
+                        Text(
+                          listing.isAvailable! ? "Active" : "Inactive",
+                          style: const TextStyle(color: AppColors.textColor),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      listing.adddress,
+                      style: TextStyle(color: AppColors.textColor),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          listing.price != null ? '₱${listing.price!}' : 'N/A',
+                          style: TextStyle(color: AppColors.textColor),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ],

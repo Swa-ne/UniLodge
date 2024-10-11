@@ -10,6 +10,7 @@ import { Currency } from '../models/dorm/currency.model';
 export const getMyDorms = async (user_id: string) => {
     try {
         const dorms: DormSchemaInterface[] | null = await Dorm.find({ owner_id: user_id })
+            .populate('owner_id')
             .populate('location')
             .populate('currency')
             .populate('imageUrl');
@@ -27,7 +28,8 @@ export const postDormListing = async (
     street: string,
     barangay: string,
     house_number: string,
-    zip_code: string,
+    province: string,
+    region: string,
     lat: string,
     lng: string,
     currency_id: string,
@@ -44,6 +46,7 @@ export const postDormListing = async (
     session.startTransaction();
     try {
         let imageUrl: ObjectId[] = []
+
         if (image_files) {
             for (const file of image_files) {
                 const storage_ref = ref(storage, `files/${file.originalname}${new Date()}`);
@@ -63,6 +66,7 @@ export const postDormListing = async (
                 imageUrl.push(new_image._id);
             }
         }
+
         // TODO: update this if map is already integrated
         const latitude = parseFloat("0");
         const longitude = parseFloat("0");
@@ -76,7 +80,8 @@ export const postDormListing = async (
             street,
             barangay,
             house_number,
-            zip_code,
+            province,
+            region,
             coordinates: {
                 lat,
                 lng,
@@ -103,12 +108,10 @@ export const postDormListing = async (
 
         await session.commitTransaction();
         session.endSession();
-
         return { message: 'Success', httpCode: 200 };
     } catch (error) {
         await session.abortTransaction();
         session.endSession();
-        console.log(error)
         return { error: 'Internal Server Error', httpCode: 500 };
     }
 };
@@ -122,7 +125,8 @@ export const putDormListing = async (
     street: string,
     barangay: string,
     house_number: string,
-    zip_code: string,
+    province: string,
+    region: string,
     lat: string,
     lng: string,
     currency_id: string,
@@ -132,47 +136,49 @@ export const putDormListing = async (
     least_terms: string,
     amenities: string[],
     utilities: string[],
-    image_files: Express.Multer.File[],
+    image_files: Express.Multer.File[] | undefined,
     tags: string[]
 ): Promise<CustomResponse> => {
     try {
-        const existingDorm = await Dorm.findById(dorm_id).populate("imageUrl");
+        let imageUrl: ObjectId[] = [];
+        if (image_files && image_files?.length > 0) {
+            const existingDorm = await Dorm.findById(dorm_id).populate("imageUrl");
 
-        if (!existingDorm) {
-            return { error: 'Dorm not found', httpCode: 404 };
-        }
+            if (!existingDorm) {
+                return { error: 'Dorm not found', httpCode: 404 };
+            }
 
-        if (existingDorm.imageUrl.length > 0) {
-            for (const image of existingDorm.imageUrl) {
-                try {
-                    if (typeof image === 'object' && 'url' in image) {
-                        await deleteImage(image.url);
-                        await Image.findByIdAndDelete(image._id);
+            if (existingDorm.imageUrl.length > 0) {
+                for (const image of existingDorm.imageUrl) {
+                    try {
+                        if (typeof image === 'object' && 'url' in image) {
+                            await deleteImage(image.url);
+                            await Image.findByIdAndDelete(image._id);
+                        }
+                    } catch (err) {
+                        console.error(`Error deleting image ${image}:`, err);
                     }
-                } catch (err) {
-                    console.error(`Error deleting image ${image}:`, err);
                 }
             }
-        }
 
-        let imageUrl: ObjectId[] = []
-        if (image_files) {
-            for (const file of image_files) {
-                const storage_ref = ref(storage, `files/${file.originalname}${new Date()}`);
+            if (image_files) {
+                for (const file of image_files) {
+                    const storage_ref = ref(storage, `files/${file.originalname}${new Date()}`);
 
-                const metadata = {
-                    contentType: file.mimetype,
-                };
+                    const metadata = {
+                        contentType: file.mimetype,
+                    };
 
-                const snapshot = await uploadBytesResumable(storage_ref, file.buffer, metadata);
-                const download_url = await getDownloadURL(snapshot.ref);
+                    const snapshot = await uploadBytesResumable(storage_ref, file.buffer, metadata);
+                    const download_url = await getDownloadURL(snapshot.ref);
 
-                const new_image = await new Image({
-                    name: file.originalname,
-                    url: download_url,
-                }).save();
+                    const new_image = await new Image({
+                        name: file.originalname,
+                        url: download_url,
+                    }).save();
 
-                imageUrl.push(new_image._id);
+                    imageUrl.push(new_image._id);
+                }
             }
         }
 
@@ -188,19 +194,21 @@ export const putDormListing = async (
             owner_id: user_id,
             property_name,
             type,
-            currency: currency_id,
             available_rooms,
             price,
             description,
             least_terms,
             amenities,
             utilities,
-            imageUrl,
             tags,
         }, { new: true });
-
         if (!dorm) {
             return { error: 'Dorm not found', httpCode: 404 };
+        }
+
+        if (imageUrl.length > 0) {
+            dorm.imageUrl = imageUrl;
+            dorm.save();
         }
 
         await Location.findByIdAndUpdate(dorm.location, {
@@ -208,7 +216,8 @@ export const putDormListing = async (
             street,
             barangay,
             house_number,
-            zip_code,
+            province,
+            region,
             coordinates: {
                 lat,
                 lng,
@@ -230,6 +239,19 @@ export const toggleVisibilityDormListing = async (dorm_id: string): Promise<Cust
         }
         dorm.isAvailable = !dorm.isAvailable;
         await dorm.save()
+
+        return { message: "Success", httpCode: 200 }
+    } catch (error) {
+        return { error: 'Internal Server Error', httpCode: 500 };
+    }
+}
+
+export const deleteDorm = async (dorm_id: string): Promise<CustomResponse> => {
+    try {
+        const dorm = await Dorm.findByIdAndDelete(dorm_id);
+        if (!dorm) {
+            return { error: 'Dorm not found', httpCode: 404 };
+        }
 
         return { message: "Success", httpCode: 200 }
     } catch (error) {
