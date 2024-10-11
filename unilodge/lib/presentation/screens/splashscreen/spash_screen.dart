@@ -38,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
       },
       child: AnimatedSplashScreen(
         splash: Center(
-          child: Lottie.asset('assets/animation/animation.json'), // TODO: change to logo asset, remove animatedsplash
+          child: Lottie.asset('assets/animation/animation.json'), // TODO: change to logo asset, remove animatedsplash and use basic splash library
         ),
         splashIconSize: 250, 
         duration: 3500,

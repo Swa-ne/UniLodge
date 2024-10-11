@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:insta_image_viewer/insta_image_viewer.dart';
+import 'package:lottie/lottie.dart';
 import 'package:unilodge/bloc/chat/chat_bloc.dart';
 import 'package:unilodge/bloc/chat/chat_event.dart';
 import 'package:unilodge/bloc/chat/chat_state.dart';
@@ -92,20 +93,15 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                                         if (loadingProgress == null) {
                                           return child;
                                         } else {
-                                          return Center(
-                                            child: CircularProgressIndicator(
-                                              value: loadingProgress
-                                                          .expectedTotalBytes !=
-                                                      null
-                                                  ? loadingProgress
-                                                          .cumulativeBytesLoaded /
-                                                      (loadingProgress
-                                                              .expectedTotalBytes ??
-                                                          1)
-                                                  : null,
-                                              valueColor:
-                                                  AlwaysStoppedAnimation(
-                                                      AppColors.linearOrange),
+                                          return Container(
+                                            width: 360,
+                                            height: 200,
+                                            child: Center(
+                                              child: Lottie.asset(
+                                                'assets/animation/home_loading.json', // Replace with your Lottie animation
+                                                width: 200,
+                                                height: 200,
+                                              ),
                                             ),
                                           );
                                         }
