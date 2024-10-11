@@ -52,11 +52,13 @@ class _ListingsState extends State<Listings> {
           if (state is FetchingLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is ListingLoaded) {
-            final listings = state.listing;
+            final sortedListings = List.from(state.listing)
+              ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+
             return ListView.builder(
-              itemCount: listings.length,
+              itemCount: sortedListings.length,
               itemBuilder: (context, index) {
-                final listing = listings[index];
+                final listing = sortedListings[index];
                 return ListingCard(listing: listing);
               },
             );

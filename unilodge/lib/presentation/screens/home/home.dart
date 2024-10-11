@@ -170,6 +170,8 @@ class _HomeState extends State<Home> {
               ],
             );
           } else if (state is DormsLoaded) {
+            final sortedDorms = List.from(state.allDorms)
+              ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
             return CustomScrollView(
               slivers: [
                 SliverAppBar(
@@ -286,10 +288,9 @@ class _HomeState extends State<Home> {
                         child: ListView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount: state.allDorms.length,
+                          itemCount: sortedDorms.length,
                           itemBuilder: (context, index) {
-                            final listing = state.allDorms[index];
-                            print(listing);
+                            final listing = sortedDorms[index];
                             return Column(
                               children: [
                                 ListingCards(
