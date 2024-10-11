@@ -30,12 +30,14 @@ class _OnboardingViewState extends State<OnboardingView> {
                 children: [
                   // Skip Button
                   TextButton(
-                      onPressed: () => pageController.jumpToPage(
-                          controller.items.length - 1), // Go to last page
-                      style: TextButton.styleFrom(
-                          foregroundColor: AppColors.linearGreen),
-                      child: const Text("Skip")),
-                  // Indicator
+                    onPressed: () {
+                      context.go(
+                          '/account-selection-login');
+                    },
+                    style: TextButton.styleFrom(
+                        foregroundColor: AppColors.linearGreen),
+                    child: const Text("Skip"),
+                  ),
                   SmoothPageIndicator(
                     controller: pageController,
                     count: controller.items.length,
