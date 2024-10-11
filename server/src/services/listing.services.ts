@@ -10,6 +10,7 @@ import { Currency } from '../models/dorm/currency.model';
 export const getMyDorms = async (user_id: string) => {
     try {
         const dorms: DormSchemaInterface[] | null = await Dorm.find({ owner_id: user_id })
+            .populate('owner_id')
             .populate('location')
             .populate('currency')
             .populate('imageUrl');
@@ -27,7 +28,8 @@ export const postDormListing = async (
     street: string,
     barangay: string,
     house_number: string,
-    zip_code: string,
+    province: string,
+    region: string,
     lat: string,
     lng: string,
     currency_id: string,
@@ -44,6 +46,8 @@ export const postDormListing = async (
     session.startTransaction();
     try {
         let imageUrl: ObjectId[] = []
+
+        console.log("saving images to database")
         if (image_files) {
             for (const file of image_files) {
                 const storage_ref = ref(storage, `files/${file.originalname}${new Date()}`);
@@ -63,6 +67,8 @@ export const postDormListing = async (
                 imageUrl.push(new_image._id);
             }
         }
+
+        console.log("images are now saved into the database")
         // TODO: update this if map is already integrated
         const latitude = parseFloat("0");
         const longitude = parseFloat("0");
@@ -76,13 +82,15 @@ export const postDormListing = async (
             street,
             barangay,
             house_number,
-            zip_code,
+            province,
+            region,
             coordinates: {
                 lat,
                 lng,
             },
         }).save({ session });
 
+        console.log("location has been saved")
         const currency = await Currency.findById("67055ace8fbd824752301b4b");
 
         await new Dorm({
@@ -101,9 +109,10 @@ export const postDormListing = async (
             tags,
         }).save({ session });
 
+        console.log("dorm has been saved")
         await session.commitTransaction();
         session.endSession();
-
+        console.log("dorm posting complete")
         return { message: 'Success', httpCode: 200 };
     } catch (error) {
         await session.abortTransaction();
@@ -122,7 +131,8 @@ export const putDormListing = async (
     street: string,
     barangay: string,
     house_number: string,
-    zip_code: string,
+    province: string,
+    region: string,
     lat: string,
     lng: string,
     currency_id: string,
@@ -208,7 +218,8 @@ export const putDormListing = async (
             street,
             barangay,
             house_number,
-            zip_code,
+            province,
+            region,
             coordinates: {
                 lat,
                 lng,

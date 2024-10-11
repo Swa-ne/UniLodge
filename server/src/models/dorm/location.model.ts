@@ -6,7 +6,8 @@ export interface LocationSchemaInterface extends Document {
     street: string,
     barangay: string,
     house_number?: number,
-    zip_code: number,
+    province: string,
+    region: string,
     coordinates: {
         lat?: number,
         lng?: number,
@@ -15,6 +16,14 @@ export interface LocationSchemaInterface extends Document {
 
 
 const LocationSchema: Schema = new Schema({
+    region: {
+        type: String,
+        required: [true, 'Please enter region.'],
+    },
+    province: {
+        type: String,
+        required: [true, 'Please enter province.'],
+    },
     city: {
         type: String,
         required: [true, 'Please enter city.'],
@@ -29,10 +38,6 @@ const LocationSchema: Schema = new Schema({
     },
     house_number: {
         type: String,
-    },
-    zip_code: {
-        type: Number,
-        required: [true, 'Please enter zip code.'],
     },
     coordinates: {
         lat: {
