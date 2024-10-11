@@ -10,7 +10,6 @@ export interface UserSchemaInterface extends Document {
     bio?: string,
     profile_picture_url: string,
     personal_email: string,
-    personal_number?: string,
     birthday: Date,
     password_hash: string,
     valid_email: boolean,
@@ -51,10 +50,6 @@ const UserSchema: Schema = new Schema({
     personal_email: {
         type: String,
         required: [true, 'Please enter your personal Email.'],
-        unique: true,
-    },
-    personal_number: {
-        type: String,
         unique: true,
     },
     birthday: {

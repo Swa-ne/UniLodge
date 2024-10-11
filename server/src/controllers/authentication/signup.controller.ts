@@ -58,11 +58,10 @@ export const checkEmailAvailabilityController = async (req: Request, res: Respon
 
 export const signupUserController = async (req: Request, res: Response) => {
     try {
-        const { first_name, middle_name, last_name, username, bio, password_hash, confirmation_password, personal_number, birthday, valid_email }: CustomRequestBody = req.body;
+        const { first_name, middle_name, last_name, username, bio, password_hash, confirmation_password, birthday, valid_email }: CustomRequestBody = req.body;
         let personal_email: string = req.body.personal_email;
         if (!personal_email) return res.status(404).json({ error: "Email address not found" });
         personal_email = personal_email.toLowerCase()
-
         const requiredFields = {
             first_name,
             last_name,
@@ -70,7 +69,6 @@ export const signupUserController = async (req: Request, res: Response) => {
             personal_email,
             password_hash,
             confirmation_password,
-            personal_number,
             birthday,
         };
 
@@ -81,7 +79,6 @@ export const signupUserController = async (req: Request, res: Response) => {
             personal_email: "Email Address",
             password_hash: "Password",
             confirmation_password: "Confirmation Password",
-            personal_number: "Phone Number",
             birthday: "Birthday",
         }
         for (const [key, value] of Object.entries(requiredFields)) {
@@ -96,7 +93,7 @@ export const signupUserController = async (req: Request, res: Response) => {
 
         const checkerForInput = await checkEveryInputForSignup(username, personal_email, password_hash, confirmation_password);
         if (checkerForInput.message === 'Success') {
-            const data = await signupUsertoDatabase(first_name, middle_name, last_name, username, bio, personal_email, personal_number, birthday, password_hash, valid_email);
+            const data = await signupUsertoDatabase(first_name, middle_name, last_name, username, bio, personal_email, birthday, password_hash, valid_email);
             if (data.httpCode !== 200) {
                 return res.status(500).json({ error: data.error });
             }
@@ -116,7 +113,6 @@ export const signupUserController = async (req: Request, res: Response) => {
 
         return res.status(checkerForInput.httpCode).json({ error: checkerForInput.error });
     } catch (error) {
-        console.log(error)
         res.status(500).json({ error: "Internal Server Error" });
     }
 };

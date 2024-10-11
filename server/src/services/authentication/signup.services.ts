@@ -11,7 +11,6 @@ export const signupUsertoDatabase = async (
     username: string,
     bio: string | undefined,
     personal_email: string,
-    personal_number: string | undefined,
     birthday: Date,
     password: string,
     valid_email: boolean,
@@ -29,7 +28,6 @@ export const signupUsertoDatabase = async (
             bio,
             full_name: `${first_name} ${middle_name ? ` ${middle_name}` : ''} ${last_name}`.trim(),
             personal_email,
-            personal_number,
             birthday,
             password_hash,
             valid_email
