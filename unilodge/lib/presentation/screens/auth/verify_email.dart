@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:unilodge/bloc/authentication/auth_bloc.dart';
 import 'package:unilodge/bloc/authentication/auth_event.dart';
 import 'package:unilodge/bloc/authentication/auth_state.dart';
+import 'package:unilodge/common/widgets/custom_text.dart';
+import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/presentation/screens/auth/change_forgotten_password.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -76,8 +78,22 @@ class _VerifyEmailState extends State<VerifyEmail> {
         }
       },
       child: Scaffold(
-        appBar: !widget.isEmailVerification ? AppBar() : null,
-        backgroundColor: const Color(0xffF2F2F2),
+        appBar: AppBar(
+          title: const CustomText(
+            text: "Verify Your Email",
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: AppColors.primary,
+          ),
+          centerTitle: true,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
+        // backgroundColor: const Color(0xffF2F2F2),
         body: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(16),
@@ -85,33 +101,32 @@ class _VerifyEmailState extends State<VerifyEmail> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const FaIcon(
-                  FontAwesomeIcons.inbox,
-                  size: 200,
-                  color: Colors.black,
+                const SizedBox(height: 60),
+                Image.asset(
+                  'assets/images/icons/email.png',
+                  height: 240,
                 ),
-                const SizedBox(height: 16),
-                Text(
-                  widget.isEmailVerification
-                      ? 'Email Verification'
-                      : 'Forget Password',
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
+                const SizedBox(height: 30),
+                // Text(
+                //   widget.isEmailVerification
+                //       ? 'Email Verification'
+                //       : 'Forget Password',
+                //   style: const TextStyle(
+                //     fontSize: 24,
+                //     fontWeight: FontWeight.bold,
+                //     color: Colors.black,
+                //   ),
+                //   textAlign: TextAlign.center,
+                // ),
+                // const SizedBox(height: 8),
+                CustomText(
+                  text: 'Enter the code sent to ${widget.email_address}',
+                  fontSize: 16,
+                  color: AppColors.primary,
                   textAlign: TextAlign.center,
+                  fontWeight: FontWeight.w600,
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  'Enter the code sent to ${widget.email_address}',
-                  style: const TextStyle(
-                    fontSize: 10,
-                    color: Colors.black,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 32),
+                const SizedBox(height: 20),
                 Form(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

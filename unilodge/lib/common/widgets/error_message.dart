@@ -9,17 +9,21 @@ class ErrorMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Image.asset(
-            AppImages.errorIcon,
-            height: 100,
-          ),
-          const SizedBox(height: 20),
-          Text('Error: ${errorMessage} :000'),
-        ],
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(
+              AppImages.errorIcon,
+              height: 100,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(textAlign: TextAlign.center, 'Error: ${errorMessage} wew :000'),
+            ),
+          ],
+        ),
       ),
     );
   }

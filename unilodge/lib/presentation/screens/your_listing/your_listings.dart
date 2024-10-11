@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:unilodge/bloc/listing/listing_bloc.dart';
 import 'package:unilodge/bloc/listing/listing_event.dart';
 import 'package:unilodge/bloc/listing/listing_state.dart';
+import 'package:unilodge/common/widgets/error_message.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/presentation/widgets/favorite/custom_text.dart';
 import 'package:unilodge/presentation/widgets/your_listing/listing_card.dart';
@@ -63,7 +64,7 @@ class _ListingsState extends State<Listings> {
               },
             );
           } else if (state is ListingError) {
-            return Center(child: Text('Error: ${state.message}'));
+            return ErrorMessage(errorMessage: state.message);
           } else {
             return const Center(child: Text('No listings found.'));
           }
