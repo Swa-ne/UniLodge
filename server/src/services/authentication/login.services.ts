@@ -66,7 +66,6 @@ export const editProfile = async (
     last_name: string,
     username: string,
     bio: string | undefined,
-    personal_number: string | undefined,
     birthday: Date,
 ): Promise<CustomResponse> => {
     try {
@@ -79,7 +78,6 @@ export const editProfile = async (
                     last_name,
                     username,
                     bio,
-                    personal_number,
                     birthday,
                 }
             }
