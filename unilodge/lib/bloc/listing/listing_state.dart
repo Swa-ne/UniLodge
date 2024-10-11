@@ -30,9 +30,41 @@ class ListingError extends ListingState {
   List<Object> get props => [message];
 }
 
-class ListingCreated extends ListingState {}
+class UpdateDormError extends ListingState {
+  final String message;
 
-class SuccessDeleted extends ListingState {}
+  const UpdateDormError(this.message);
+
+  @override
+  List<Object> get props => [message];
+}
+
+class ListingCreated extends ListingState {
+  final DateTime date;
+
+  const ListingCreated(this.date);
+
+  @override
+  List<Object> get props => [date];
+}
+
+class SuccessDeleted extends ListingState {
+  final DateTime date;
+
+  const SuccessDeleted(this.date);
+
+  @override
+  List<Object> get props => [date];
+}
+
+class SuccessUpdateDorm extends ListingState {
+  final DateTime date;
+
+  const SuccessUpdateDorm(this.date);
+
+  @override
+  List<Object> get props => [date];
+}
 
 class SuccessToggle extends ListingState {
   final DateTime date;
