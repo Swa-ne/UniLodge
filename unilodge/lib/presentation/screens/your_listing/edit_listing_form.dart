@@ -1,4 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:unilodge/bloc/listing/listing_bloc.dart';
+import 'package:unilodge/bloc/listing/listing_event.dart';
+import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
 import 'package:unilodge/presentation/widgets/listing/multiple_images.dart';
@@ -24,10 +30,14 @@ class _EditListingFormState extends State<EditListingForm> {
   late TextEditingController _propertyPrice;
   late TextEditingController _propertyDescription;
   late TextEditingController _propertyLeaseTerms;
+  late ListingBloc _listingBloc;
+  final _formKey2 = GlobalKey<FormState>();
+  final _formKey3 = GlobalKey<FormState>();
 
   int _currentStep = 0;
   String _selectedPropertyType = '';
-  List<String> selectedImages = [];
+  List<File> selectedImages = [];
+  List<String> oldImages = [];
 
   Map<String, bool> rentalAmenities = {
     'Internet': false,
@@ -50,6 +60,8 @@ class _EditListingFormState extends State<EditListingForm> {
   @override
   void initState() {
     super.initState();
+
+    _listingBloc = BlocProvider.of<ListingBloc>(context);
     _propertyName = TextEditingController(text: widget.listing.property_name);
     _propertyCity = TextEditingController(text: widget.listing.city);
     _propertyStreet = TextEditingController(text: widget.listing.street);
@@ -63,7 +75,7 @@ class _EditListingFormState extends State<EditListingForm> {
         TextEditingController(text: widget.listing.description);
     _propertyLeaseTerms =
         TextEditingController(text: widget.listing.leastTerms);
-    selectedImages = List<String>.from(widget.listing.imageUrl ?? []);
+    oldImages = List<String>.from(widget.listing.imageUrl ?? [""]);
   }
 
   List<String> _getSelectedAmenities() {
@@ -167,7 +179,7 @@ class _EditListingFormState extends State<EditListingForm> {
   Widget build(BuildContext context) {
     return Theme(
       data: Theme.of(context).copyWith(
-        colorScheme: ColorScheme.light(
+        colorScheme: const ColorScheme.light(
           primary: AppColors.primary,
           onPrimary: Colors.white,
           secondary: AppColors.primary,
@@ -184,8 +196,22 @@ class _EditListingFormState extends State<EditListingForm> {
           }
         },
         onStepContinue: () {
+          if (_currentStep == 0) {
+            if (_selectedPropertyType.isEmpty) {
+              return;
+            }
+          }
+          if (_currentStep == 1 && !_formKey2.currentState!.validate()) {
+            return;
+          }
+          if (_currentStep == 2 && !_formKey3.currentState!.validate()) {
+            return;
+          }
           final isLastStep = _currentStep == getSteps().length - 1;
           if (isLastStep) {
+            if (selectedImages.length < 6 && selectedImages.isNotEmpty) {
+              return;
+            }
             final updatedListing = widget.listing.copyWith(
               selectedPropertyType: _selectedPropertyType,
               property_name: _propertyName.text,
@@ -202,22 +228,6 @@ class _EditListingFormState extends State<EditListingForm> {
               utilities: _getSelectedUtilities(),
             );
 
-            print(updatedListing.selectedPropertyType);
-            print(updatedListing.property_name);
-            print(updatedListing.city);
-            print(updatedListing.street);
-            print(updatedListing.barangay);
-            print(updatedListing.house_number);
-            print(updatedListing.province);
-            print(updatedListing.region);
-            print(updatedListing.price);
-            print(updatedListing.description);
-            print(updatedListing.leastTerms);
-            print(updatedListing.amenities);
-            print(updatedListing.utilities);
-
-            // todo: save
-
             showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -227,8 +237,12 @@ class _EditListingFormState extends State<EditListingForm> {
                   actions: [
                     TextButton(
                       onPressed: () {
-                        Navigator.pop(context);
-                        // todo: saveee
+                        _listingBloc.add(UpdateListing(
+                          widget.listing.id!,
+                          selectedImages,
+                          updatedListing,
+                        ));
+                        context.go("/listings");
                       },
                       child: const Text("Save"),
                     ),
@@ -253,17 +267,16 @@ class _EditListingFormState extends State<EditListingForm> {
             children: <Widget>[
               TextButton(
                 onPressed: controls.onStepCancel,
-                child: const Text('Back'),
                 style: TextButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
+                child: const Text('Back'),
               ),
               const SizedBox(width: 8),
               ElevatedButton(
                 onPressed: controls.onStepContinue,
-                child: const Text('Continue'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primary,
                   foregroundColor: AppColors.lightBackground,
@@ -271,6 +284,7 @@ class _EditListingFormState extends State<EditListingForm> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
+                child: const Text('Continue'),
               ),
             ],
           );
@@ -303,30 +317,48 @@ class _EditListingFormState extends State<EditListingForm> {
           style:
               TextStyle(color: AppColors.primary, fontWeight: FontWeight.w600),
         ),
-        content: Column(
-          children: [
-            const SizedBox(height: 10),
-            EditListingTextFormField(
-                label: "Property Name", controller: _propertyName),
-            const SizedBox(height: 20),
-            EditListingTextFormField(
-                label: "Region", controller: _propertyRegion),
-            const SizedBox(height: 20),
-            EditListingTextFormField(
-                label: "Province", controller: _propertyProvince),
-            const SizedBox(height: 20),
-            EditListingTextFormField(label: "City", controller: _propertyCity),
-            const SizedBox(height: 20),
-            EditListingTextFormField(
-                label: "Barangay", controller: _propertyBarangay),
-            const SizedBox(height: 20),
-            EditListingTextFormField(
-                label: "House Number", controller: _propertyHouseNumber),
-            const SizedBox(height: 20),
-            EditListingTextFormField(
-                label: "Street", controller: _propertyStreet),
-            const SizedBox(height: 10),
-          ],
+        content: Form(
+          key: _formKey2,
+          child: Column(
+            children: [
+              const SizedBox(height: 10),
+              EditListingTextFormField(
+                label: "Property Name",
+                controller: _propertyName,
+              ),
+              const SizedBox(height: 20),
+              EditListingTextFormField(
+                label: "Region",
+                controller: _propertyRegion,
+              ),
+              const SizedBox(height: 20),
+              EditListingTextFormField(
+                label: "Province",
+                controller: _propertyProvince,
+              ),
+              const SizedBox(height: 20),
+              EditListingTextFormField(
+                label: "City",
+                controller: _propertyCity,
+              ),
+              const SizedBox(height: 20),
+              EditListingTextFormField(
+                label: "Barangay",
+                controller: _propertyBarangay,
+              ),
+              const SizedBox(height: 20),
+              EditListingTextFormField(
+                label: "House Number",
+                controller: _propertyHouseNumber,
+              ),
+              const SizedBox(height: 20),
+              EditListingTextFormField(
+                label: "Street",
+                controller: _propertyStreet,
+              ),
+              const SizedBox(height: 10),
+            ],
+          ),
         ),
         isActive: _currentStep >= 1,
         state: _currentStep > 1 ? StepState.complete : StepState.indexed,
@@ -337,19 +369,32 @@ class _EditListingFormState extends State<EditListingForm> {
           style:
               TextStyle(color: AppColors.primary, fontWeight: FontWeight.w600),
         ),
-        content: Column(
-          children: [
-            const SizedBox(height: 20),
-            EditListingTextFormField(
-                label: "Price", controller: _propertyPrice),
-            const SizedBox(height: 20),
-            EditListingTextFormField(
-                label: "Description", controller: _propertyDescription),
-            const SizedBox(height: 20),
-            EditListingTextFormField(
-                label: "Lease Terms", controller: _propertyLeaseTerms),
-            const SizedBox(height: 10),
-          ],
+        content: Form(
+          key: _formKey3,
+          child: Column(
+            children: [
+              const SizedBox(height: 20),
+              EditListingTextFormField(
+                label: "Price",
+                controller: _propertyPrice,
+              ),
+              const SizedBox(height: 20),
+              EditListingTextFormField(
+                label: "Description",
+                controller: _propertyDescription,
+                minLines: 5,
+                maxLines: 10,
+              ),
+              const SizedBox(height: 20),
+              EditListingTextFormField(
+                label: "Lease Terms",
+                controller: _propertyLeaseTerms,
+                minLines: 5,
+                maxLines: 10,
+              ),
+              const SizedBox(height: 10),
+            ],
+          ),
         ),
         isActive: _currentStep >= 2,
         state: _currentStep > 2 ? StepState.complete : StepState.indexed,
@@ -401,17 +446,37 @@ class _EditListingFormState extends State<EditListingForm> {
             MultipleImages(
               onImagesSelected: (images) {
                 setState(() {
-                  selectedImages = images.map((file) => file.path).toList();
+                  selectedImages = images;
                 });
               },
             ),
+            if (selectedImages.isEmpty)
+              GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  childAspectRatio: 1,
+                ),
+                itemCount: oldImages.length,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  String image = oldImages[index];
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.network(
+                      image,
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                },
+              ),
           ],
         ),
         isActive: _currentStep >= 4,
         state: _currentStep == 4 ? StepState.indexed : StepState.indexed,
       ),
-
-      // todo: add step for images
     ];
   }
 }
