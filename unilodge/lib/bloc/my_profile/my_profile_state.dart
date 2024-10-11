@@ -10,24 +10,34 @@ abstract class ProfileState extends Equatable {
 class ProfileLoading extends ProfileState {}
 
 class ProfileLoaded extends ProfileState {
-  final String name;
+  // final String id; 
+  final String fullName;
   final String username;
-  final String bio;
-  final String email;
-  final String phoneNumber;
-  final String birthday;
+  final String profilePictureUrl;
+  final String personalEmail;
+  final String personalNumber;
+  final DateTime birthday;
 
   const ProfileLoaded({
-    required this.name,
+    // required this.id,
+    required this.fullName,
     required this.username,
-    required this.bio,
-    required this.email,
-    required this.phoneNumber,
+    required this.profilePictureUrl,
+    required this.personalEmail,
+    required this.personalNumber,
     required this.birthday,
   });
 
   @override
-  List<Object?> get props => [name, username, bio, email, phoneNumber, birthday];
+  List<Object?> get props => [
+    // id, 
+    fullName,
+    username,
+    profilePictureUrl,
+    personalEmail,
+    personalNumber,
+    birthday,
+  ];
 }
 
 class ProfileSaved extends ProfileState {
