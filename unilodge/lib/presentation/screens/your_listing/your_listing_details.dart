@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:go_router/go_router.dart';
+import 'package:insta_image_viewer/insta_image_viewer.dart';
+import 'package:lottie/lottie.dart';
 import 'package:unilodge/bloc/listing/listing_bloc.dart';
 import 'package:unilodge/bloc/listing/listing_event.dart';
 import 'package:unilodge/bloc/listing/listing_state.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
+import 'package:unilodge/presentation/widgets/help_center/faq_tile.dart';
 import 'package:unilodge/presentation/widgets/home/text_row.dart';
 
 class YourListingDetails extends StatefulWidget {
@@ -52,7 +55,7 @@ class _YourListingDetailsState extends State<YourListingDetails> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(
-                height: 30,
+                height: 20,
               ),
               Row(
                 children: [
@@ -78,21 +81,59 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                 ],
               ),
               const SizedBox(
-                height: 30,
+                height: 20,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: widget.listing.imageUrl != null
-                      ? Image.network(
-                          widget.listing.imageUrl?[0] ?? '',
-                          width: double.infinity,
+                  child: widget.listing.imageUrl != null &&
+                          widget.listing.imageUrl!.isNotEmpty
+                      ? SizedBox(
                           height: 200,
-                          fit: BoxFit.cover,
+                          child: InstaImageViewer(
+                            child: Center(
+                              child: Container(
+                                constraints: BoxConstraints(
+                                  maxHeight: 250,
+                                  maxWidth: 400,
+                                ),
+                                child: PageView.builder(
+                                  itemCount: widget.listing.imageUrl!.length,
+                                  itemBuilder: (context, index) {
+                                    return Image.network(
+                                      widget.listing.imageUrl![index],
+                                      width: double.infinity,
+                                      height: 200,
+                                      fit: BoxFit.cover,
+                                      loadingBuilder: (BuildContext context,
+                                          Widget child,
+                                          ImageChunkEvent? loadingProgress) {
+                                        if (loadingProgress == null) {
+                                          return child;
+                                        } else {
+                                          return Container(
+                                            width: 360,
+                                            height: 200,
+                                            child: Center(
+                                              child: Lottie.asset(
+                                                'assets/animation/home_loading.json',
+                                                width: 200,
+                                                height: 200,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                      },
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
                         )
-                      : Image.asset(
-                          'assets/images/placeholder.png', // Fallback placeholder
+                      : Image.network(
+                          '',
                           width: double.infinity,
                           height: 200,
                           fit: BoxFit.cover,
@@ -106,8 +147,7 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                     padding: const EdgeInsets.symmetric(
                         vertical: 20.0, horizontal: 16.0),
                     child: Text(
-                      widget.listing.property_name ??
-                          "Unnamed Property", // Fallback if property_name is null
+                      widget.listing.property_name ?? "Unnamed Property",
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
@@ -115,39 +155,86 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                       ),
                     ),
                   ),
-                  Text(
-                    _isAvailableBool ? "Active" : "Inactive",
-                    style: const TextStyle(color: AppColors.textColor),
-                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        color: _isAvailableBool
+                            ? AppColors.greenActive
+                            : AppColors.redInactive,
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(6.0),
+                      child: Text(
+                        _isAvailableBool ? "Active" : "Inactive",
+                        style:
+                            const TextStyle(color: AppColors.lightBackground),
+                      ),
+                    ),
+                  )
                 ],
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: TextRow(
-                    text1: "Address:",
-                    text2:
-                        widget.listing.adddress // Fallback if address is null
-                    ),
+                child:
+                    TextRow(text1: "Address:", text2: widget.listing.adddress),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: TextRow(
-                  text1: "Owner Information:",
+                  text1: "Owner:",
                   text2: widget.listing.owner_id?.full_name ??
-                      "No owner information", // Fallback if owner_id is null
+                      "No owner information",
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: TextRow(
-                  text1: "Amenities:",
-                  text2: (widget.listing.amenities != null &&
-                          widget.listing.amenities!.isNotEmpty)
-                      ? widget.listing.amenities![0]
-                      : "No amenities available", // Fallback for amenities
+              Theme(
+                data: Theme.of(context)
+                    .copyWith(dividerColor: const Color.fromARGB(6, 0, 0, 0)),
+                child: ExpansionTile(
+                  backgroundColor: const Color.fromARGB(5, 0, 0, 0),
+                  title: Text(
+                    "Amenities",
+                    style: TextStyle(color: Color(0xff434343), fontSize: 15),
+                  ),
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 10),
+                      child: widget.listing.amenities != null &&
+                              widget.listing.amenities!.isNotEmpty
+                          ? Column(
+                              children: widget.listing.amenities![0]
+                                  .split(',')
+                                  .map((amenity) => Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 4.0),
+                                        child: Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.check_circle,
+                                              size: 18,
+                                              color: AppColors.greenActive,
+                                            ),
+                                            const SizedBox(width: 8),
+                                            Text(
+                                              amenity.trim(),
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                color: AppColors.formTextColor,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ))
+                                  .toList(),
+                            )
+                          : const Text(
+                              "No amenities available",
+                              style: TextStyle(
+                                  fontSize: 15, color: AppColors.formTextColor),
+                            ),
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(height: 20),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
                 child: Text(
@@ -159,12 +246,45 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
                 child: Text(
-                  widget.listing.description ??
-                      "No description available", // Fallback if description is null
+                  widget.listing.description ?? "No description available",
                   style: const TextStyle(
                       color: AppColors.formTextColor, fontSize: 15),
                 ),
               ),
+              Theme(
+                data: Theme.of(context)
+                    .copyWith(dividerColor: const Color.fromARGB(6, 0, 0, 0)),
+                child: ExpansionTile(
+                  backgroundColor: const Color.fromARGB(5, 0, 0, 0),
+                  title: Text(
+                    "Lease Terms",
+                    style: TextStyle(color: Color(0xff434343), fontSize: 15),
+                  ),
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment
+                            .start, 
+                        children: [
+                          Expanded(
+                            child: Text(
+                              widget.listing.leastTerms ??
+                                  "No lease terms available",
+                              style: TextStyle(
+                                color: AppColors.formTextColor,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
               const SizedBox(height: 15),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15.0),
@@ -186,8 +306,7 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: RatingBar.builder(
-                        initialRating: widget.listing.rating?.toDouble() ??
-                            0.0, // Fallback if rating is null
+                        initialRating: widget.listing.rating?.toDouble() ?? 0.0,
                         minRating: 1,
                         direction: Axis.horizontal,
                         itemCount: 5,
@@ -210,7 +329,7 @@ class _YourListingDetailsState extends State<YourListingDetails> {
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
                 child: Text(
-                  "Reviews (14)", // Can be dynamically updated if needed
+                  "Reviews (14)",
                   style: TextStyle(color: Color(0xff434343), fontSize: 15),
                 ),
               ),

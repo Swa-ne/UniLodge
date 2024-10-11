@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:unilodge/bloc/listing/listing_bloc.dart';
-import 'package:unilodge/bloc/listing/listing_event.dart';
-import 'package:unilodge/bloc/listing/listing_state.dart';
 import 'package:unilodge/core/configs/assets/app_images.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
-import 'package:unilodge/presentation/widgets/listing/custom_card.dart';
 import 'package:unilodge/data/models/listing.dart';
 import 'package:unilodge/presentation/widgets/your_listing/property_card.dart';
 

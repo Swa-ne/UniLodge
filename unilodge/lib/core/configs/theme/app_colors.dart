@@ -14,4 +14,6 @@ class AppColors {
   static const linearOrange = Color(0xffFB7878);
   static const orange = Color(0xffF04F43);
   static const ratingYellow = Color(0xffFFB800);
+  static const greenActive = Color(0xff75CEA3);
+  static const redInactive = Color(0xffE07878);
 }
