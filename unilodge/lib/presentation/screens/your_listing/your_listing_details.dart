@@ -9,7 +9,6 @@ import 'package:unilodge/bloc/listing/listing_event.dart';
 import 'package:unilodge/bloc/listing/listing_state.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
-import 'package:unilodge/presentation/widgets/help_center/faq_tile.dart';
 import 'package:unilodge/presentation/widgets/home/text_row.dart';
 
 class YourListingDetails extends StatefulWidget {
@@ -265,8 +264,7 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16.0, vertical: 10),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment
-                            .start, 
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Expanded(
                             child: Text(
@@ -284,7 +282,6 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                   ],
                 ),
               ),
-
               const SizedBox(height: 15),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15.0),
@@ -415,6 +412,7 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                     child: GestureDetector(
                       onTap: () {
                         listingBloc.add(ToggleListing(widget.listing.id!));
+                        Navigator.pop(context);
                       },
                       child: const Row(
                         children: [
