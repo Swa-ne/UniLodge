@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lottie/lottie.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
 
@@ -35,8 +36,7 @@ class _ListingCardsState extends State<ListingCards> {
                     child: widget.listing.imageUrl != null &&
                             widget.listing.imageUrl!.isNotEmpty
                         ? Image.network(
-                            widget.listing.imageUrl![
-                                0], 
+                            widget.listing.imageUrl![0],
                             width: 360,
                             height: 200,
                             fit: BoxFit.cover,
@@ -45,22 +45,14 @@ class _ListingCardsState extends State<ListingCards> {
                               if (loadingProgress == null) {
                                 return child;
                               } else {
-                                return Container(
+                                return SizedBox(
                                   width: 360,
                                   height: 200,
                                   child: Center(
-                                    child: CircularProgressIndicator(
-                                      value:
-                                          loadingProgress.expectedTotalBytes !=
-                                                  null
-                                              ? loadingProgress
-                                                      .cumulativeBytesLoaded /
-                                                  (loadingProgress
-                                                          .expectedTotalBytes ??
-                                                      1)
-                                              : null,
-                                      valueColor: AlwaysStoppedAnimation(
-                                          AppColors.linearOrange),
+                                    child: Lottie.asset(
+                                      'assets/animation/home_loading.json',
+                                      width: 200,
+                                      height: 200,
                                     ),
                                   ),
                                 );
@@ -86,7 +78,7 @@ class _ListingCardsState extends State<ListingCards> {
                       children: [
                         Text(
                           widget.listing.property_name ?? '',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: AppColors.textColor,
                             fontWeight: FontWeight.w500,
                             fontSize: 16,
@@ -106,7 +98,7 @@ class _ListingCardsState extends State<ListingCards> {
                     const SizedBox(height: 10),
                     Text(
                       widget.listing.adddress,
-                      style: TextStyle(color: AppColors.textColor),
+                      style: const TextStyle(color: AppColors.textColor),
                     ),
                     Row(
                       children: [
@@ -114,7 +106,7 @@ class _ListingCardsState extends State<ListingCards> {
                           widget.listing.price != null
                               ? '₱${widget.listing.price!}'
                               : 'N/A',
-                          style: TextStyle(color: AppColors.textColor),
+                          style: const TextStyle(color: AppColors.textColor),
                         ),
                         const Spacer(),
                         const Icon(
