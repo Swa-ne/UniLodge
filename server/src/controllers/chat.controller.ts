@@ -42,7 +42,7 @@ export const getInboxDetailsController = async (req: Request & { user?: UserType
         if (!user) return res.status(404).json({ error: "User not found" })
 
         const { user_id } = user;
-        const { chat_id } = req.query;
+        const { chat_id } = req.params;
         if (!user_id) {
             return res.status(400).json({ message: 'User ID not provided' });
         }
@@ -83,7 +83,7 @@ export const getMessagesController = async (req: Request & { user?: UserType }, 
         if (!user) return res.status(404).json({ error: "User not found" });
 
         const { user_id } = user;
-        const { chat_id, page = 1 } = req.query;
+        const { chat_id, page = 1 } = req.params;
         if (!user_id) {
             return res.status(400).json({ message: 'User ID not provided' });
         }
@@ -102,7 +102,7 @@ export const getUserDetailsController = async (req: Request & { user?: UserType 
         const user = req.user;
         if (!user) return res.status(404).json({ error: "User not found" });
         const { user_id } = user;
-        const { chat_id } = req.query;
+        const { chat_id } = req.params;
         if (!user_id) {
             return res.status(400).json({ message: 'User ID not provided' });
         }
