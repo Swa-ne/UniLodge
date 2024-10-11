@@ -7,5 +7,9 @@ abstract class ListingRepository {
   Future<bool> createListing(List<File> imageFiles, Listing dorm);
   Future<bool> deleteListing(String id);
   Future<bool> toggleListing(String id);
-  Future<void> updateListing(String id, Listing listing);
+  Future<bool> updateListing(
+    String id,
+    List<File>? imageFiles,
+    Listing listing,
+  );
 }
