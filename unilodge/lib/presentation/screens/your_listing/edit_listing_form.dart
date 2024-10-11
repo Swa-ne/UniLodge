@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
@@ -21,7 +19,8 @@ class _EditListingFormState extends State<EditListingForm> {
   late TextEditingController _propertyStreet;
   late TextEditingController _propertyBarangay;
   late TextEditingController _propertyHouseNumber;
-  late TextEditingController _propertyZipCode;
+  late TextEditingController _propertyProvince;
+  late TextEditingController _propertyRegion;
   late TextEditingController _propertyPrice;
   late TextEditingController _propertyDescription;
   late TextEditingController _propertyLeaseTerms;
@@ -57,7 +56,8 @@ class _EditListingFormState extends State<EditListingForm> {
     _propertyBarangay = TextEditingController(text: widget.listing.barangay);
     _propertyHouseNumber =
         TextEditingController(text: widget.listing.house_number);
-    _propertyZipCode = TextEditingController(text: widget.listing.zip_code);
+    _propertyProvince = TextEditingController(text: widget.listing.province);
+    _propertyRegion = TextEditingController(text: widget.listing.region);
     _propertyPrice = TextEditingController(text: widget.listing.price);
     _propertyDescription =
         TextEditingController(text: widget.listing.description);
@@ -193,7 +193,8 @@ class _EditListingFormState extends State<EditListingForm> {
               street: _propertyStreet.text,
               barangay: _propertyBarangay.text,
               house_number: _propertyHouseNumber.text,
-              zip_code: _propertyZipCode.text,
+              province: _propertyProvince.text,
+              region: _propertyRegion.text,
               price: _propertyPrice.text,
               description: _propertyDescription.text,
               leastTerms: _propertyLeaseTerms.text,
@@ -207,7 +208,8 @@ class _EditListingFormState extends State<EditListingForm> {
             print(updatedListing.street);
             print(updatedListing.barangay);
             print(updatedListing.house_number);
-            print(updatedListing.zip_code);
+            print(updatedListing.province);
+            print(updatedListing.region);
             print(updatedListing.price);
             print(updatedListing.description);
             print(updatedListing.leastTerms);
@@ -307,10 +309,13 @@ class _EditListingFormState extends State<EditListingForm> {
             EditListingTextFormField(
                 label: "Property Name", controller: _propertyName),
             const SizedBox(height: 20),
-            EditListingTextFormField(label: "City", controller: _propertyCity),
+            EditListingTextFormField(
+                label: "Region", controller: _propertyRegion),
             const SizedBox(height: 20),
             EditListingTextFormField(
-                label: "Street", controller: _propertyStreet),
+                label: "Province", controller: _propertyProvince),
+            const SizedBox(height: 20),
+            EditListingTextFormField(label: "City", controller: _propertyCity),
             const SizedBox(height: 20),
             EditListingTextFormField(
                 label: "Barangay", controller: _propertyBarangay),
@@ -319,7 +324,7 @@ class _EditListingFormState extends State<EditListingForm> {
                 label: "House Number", controller: _propertyHouseNumber),
             const SizedBox(height: 20),
             EditListingTextFormField(
-                label: "Zip Code", controller: _propertyZipCode),
+                label: "Street", controller: _propertyStreet),
             const SizedBox(height: 10),
           ],
         ),
