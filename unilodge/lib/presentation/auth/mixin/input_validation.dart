@@ -60,7 +60,7 @@ mixin InputValidationMixin {
     if (username.isEmpty) {
       return 'Username can\'t be empty';
     } else if (!usernameRegExp.hasMatch(username)) {
-      return 'Enter a valid email address';
+      return 'Enter a valid username';
     }
     return null;
   }
