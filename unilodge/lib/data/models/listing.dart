@@ -8,8 +8,9 @@ class Listing {
   final String? city;
   final String? street;
   final String? barangay;
+  final String? province;
+  final String? region;
   final String? house_number;
-  final String? zip_code;
   final int? lat;
   final int? lng;
   final int? available_rooms;
@@ -33,10 +34,11 @@ class Listing {
     this.street,
     this.barangay,
     this.house_number,
-    this.zip_code,
     this.lat,
     this.lng,
     this.available_rooms,
+    this.province,
+    this.region,
     this.price,
     this.description,
     this.leastTerms,
@@ -51,7 +53,7 @@ class Listing {
 
   // Getter for the combined address
   String get adddress {
-    return '$house_number $street, $barangay, $city, $zip_code';
+    return '$house_number $street, $barangay, $city, $province, $region';
   }
 
   Listing copyWith({
@@ -61,8 +63,9 @@ class Listing {
     String? city,
     String? street,
     String? barangay,
+    String? province,
+    String? region,
     String? house_number,
-    String? zip_code,
     String? price,
     String? description,
     String? leastTerms,
@@ -83,7 +86,6 @@ class Listing {
       street: street ?? this.street,
       barangay: barangay ?? this.barangay,
       house_number: house_number ?? this.house_number,
-      zip_code: zip_code ?? this.zip_code,
       price: price ?? this.price,
       description: description ?? this.description,
       leastTerms: leastTerms ?? this.leastTerms,
@@ -92,6 +94,8 @@ class Listing {
       utilities: utilities ?? this.utilities,
       imageUrl: imageUrl ?? this.imageUrl,
       rating: rating ?? this.rating,
+      province: province ?? this.province,
+      region: region ?? this.region,
       selectedPropertyType: selectedPropertyType ?? this.selectedPropertyType,
       isAvailable: isAvailable ?? this.isAvailable,
       createdAt: createdAt ?? this.createdAt,
@@ -106,7 +110,6 @@ class Listing {
       street: json["location"]['street'],
       barangay: json["location"]['barangay'],
       house_number: json["location"]['house_number'],
-      zip_code: "${json["location"]['zip_code']}",
       // lat: json["location"]["coordinates"]['lat'],
       // lng: json["location"]["coordinates"]['lng'],
       available_rooms: json['available_rooms'],
@@ -119,6 +122,8 @@ class Listing {
           .map((image) => image['url'] as String)
           .toList(),
       rating: json['rating'],
+      province: json['province'],
+      region: json['region'],
       selectedPropertyType: json['type'],
       isAvailable: json['isAvailable'],
       createdAt: "${json['createdAt']}",
@@ -133,10 +138,11 @@ class Listing {
       'street': street,
       'barangay': barangay,
       'house_number': house_number,
-      'zip_code': zip_code,
       'available_rooms': available_rooms,
       'price': price,
       'description': description,
+      'province': province,
+      'region': region,
       'owner_info': owner_id,
       'amenities': amenities?.map((x) => x).toList(),
       'utilities': utilities?.map((x) => x).toList(),
