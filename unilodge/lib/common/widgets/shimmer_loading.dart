@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ShimmerBox extends StatelessWidget {
   const ShimmerBox({
@@ -13,17 +14,23 @@ class ShimmerBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-        flex: flex,
-        child: FractionallySizedBox(
-          widthFactor: widthFactor,
+      flex: flex,
+      child: FractionallySizedBox(
+        widthFactor: widthFactor,
+        child: Shimmer.fromColors(
+          baseColor: Colors.black.withOpacity(0.25),
+          highlightColor:
+              Colors.white.withOpacity(0.4), 
           child: Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withOpacity(0.15),
               borderRadius: BorderRadius.circular(15.0),
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
 
@@ -41,19 +48,16 @@ class ShimmerLoading extends StatelessWidget {
           SizedBox(height: 10.0),
           ShimmerBox(flex: 1, widthFactor: 1),
           SizedBox(height: 10),
-          ShimmerBox(flex: 1, widthFactor: 1),
+          ShimmerBox(flex: 1, widthFactor: .75),
           SizedBox(height: 20),
           ShimmerBox(flex: 6, widthFactor: 1),
           SizedBox(height: 10.0),
           ShimmerBox(flex: 1, widthFactor: 1),
           SizedBox(height: 10),
-          ShimmerBox(flex: 1, widthFactor: 1),
+          ShimmerBox(flex: 1, widthFactor: .75),
           SizedBox(height: 20),
-          ShimmerBox(flex: 6, widthFactor: 1),
+          ShimmerBox(flex: 3, widthFactor: 1),
           SizedBox(height: 10.0),
-          ShimmerBox(flex: 1, widthFactor: 1),
-          SizedBox(height: 10),
-          ShimmerBox(flex: 1, widthFactor: 1),
           SizedBox(height: 20),
         ],
       ),

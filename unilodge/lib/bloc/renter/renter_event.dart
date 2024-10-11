@@ -18,6 +18,14 @@ class FetchSavedDorms extends RenterEvent {
 
 class FetchAllDorms extends RenterEvent {}
 
+class FetchAllDormsByType extends RenterEvent {
+  final String listingType;
+
+  FetchAllDormsByType(this.listingType);
+  @override
+  List<Object> get props => [listingType];
+}
+
 class PostReview extends RenterEvent {
   final String userId;
   final String dormId;

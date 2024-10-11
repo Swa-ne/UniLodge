@@ -30,6 +30,10 @@ dependencies:
     socket_io_client: ^3.0.0
     smooth_page_indicator: ^1.2.0+3
     shared_preferences: ^2.3.2
+    insta_image_viewer: ^1.0.4
+    animated_splash_screen: ^1.3.0
+    lottie: ^3.1.2
+    shimmer: ^3.0.0
 
 dev_dependencies:
     flutter_test:
@@ -59,7 +63,15 @@ flutter:
         - assets/images/housesearching.png
         - assets/images/logowithname.png
         - assets/images/people.png
-        - assets/constant/address.json
+        - assets/images/search.png
+        - assets/images/error.png
+        - assets/images/listingIcons/apartment.png
+        - assets/images/listingIcons/dorm.png
+        - assets/images/listingIcons/bedspacer.png
+        - assets/images/listingIcons/soloroom.png
+        - assets/animation/animation.json
+        - assets/animation/home_loading.json
+          - assets/constant/address.json
         - .env
 
     fonts:

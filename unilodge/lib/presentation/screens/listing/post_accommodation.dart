@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:unilodge/bloc/listing/listing_bloc.dart';
+import 'package:unilodge/bloc/listing/listing_event.dart';
+import 'package:unilodge/bloc/listing/listing_state.dart';
+import 'package:unilodge/core/configs/assets/app_images.dart';
+import 'package:unilodge/core/configs/theme/app_colors.dart';
+import 'package:unilodge/presentation/widgets/listing/custom_card.dart';
 import 'package:unilodge/data/models/listing.dart';
 import 'package:unilodge/presentation/widgets/your_listing/property_card.dart';
 
@@ -19,7 +26,7 @@ class _PostAccommodationState extends State<PostAccommodation> {
     return Scaffold(
       body: Column(
         children: [
-          const SizedBox(height: 70),
+          const SizedBox(height: 50),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: Align(
@@ -27,14 +34,14 @@ class _PostAccommodationState extends State<PostAccommodation> {
               child: Text(
                 'What type of property do you want to list?',
                 style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 15,
+                  color: AppColors.primary,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
           ),
-          const SizedBox(height: 60),
+          const SizedBox(height: 40),
           Expanded(
             child: Column(
               children: [
@@ -92,6 +99,67 @@ class _PostAccommodationState extends State<PostAccommodation> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _PropertySelection extends StatelessWidget {
+  final Listing listing;
+
+  const _PropertySelection({required this.listing});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _buildCard(
+            context,
+            'Dorm',
+            'Shared room with multiple occupants; ideal for students and budget-friendly living.',
+            AppImages.dormListing),
+        _buildCard(
+            context,
+            'Solo Room',
+            'Private room offering a quiet space for sleeping and studying.',
+            AppImages.soloroomListing),
+        _buildCard(
+            context,
+            'Bed Spacer',
+            'Shared room with designated sleeping areas; a cost-effective living option.',
+            AppImages.bedspacerListing),
+        _buildCard(
+            context,
+            'Apartment',
+            'Self-contained unit with separate bedrooms, kitchen, and living area.',
+            AppImages.apartmentListing),
+        const SizedBox(height: 6),
+      ],
+    );
+  }
+
+  Widget _buildCard(BuildContext context, String cardName, String description,
+      String iconImage) {
+    return BlocBuilder<ListingBloc, ListingState>(
+      builder: (context, state) {
+        bool isSelected =
+            state is CardSelectedState && state.selectedCard == cardName;
+
+        return CustomCard(
+          leading: Image.asset(
+            iconImage,
+            height: 300,
+          ),
+          cardName: cardName,
+          description: description,
+          leadingWidth: 50,
+          leadingHeight: 80,
+          isSelected: isSelected,
+          onTap: () {
+            context.read<ListingBloc>().add(SelectCardEvent(cardName));
+          },
+        );
+      },
     );
   }
 }

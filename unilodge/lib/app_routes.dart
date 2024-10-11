@@ -171,7 +171,7 @@ final GoRouter appRouter = GoRouter(
       path: '/type-listing/:type',
       builder: (context, state) {
         final type = state.pathParameters['type'];
-        return TypeListingScreen(appbarTitle: type!);
+        return TypeListingScreen(listingType: type!);
       },
     ),
     GoRoute(
