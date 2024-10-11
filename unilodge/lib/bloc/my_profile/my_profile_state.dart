@@ -10,12 +10,11 @@ abstract class ProfileState extends Equatable {
 class ProfileLoading extends ProfileState {}
 
 class ProfileLoaded extends ProfileState {
-  // final String id; 
+  // final String id;
   final String fullName;
   final String username;
   final String profilePictureUrl;
   final String personalEmail;
-  final String personalNumber;
   final DateTime birthday;
 
   const ProfileLoaded({
@@ -24,20 +23,18 @@ class ProfileLoaded extends ProfileState {
     required this.username,
     required this.profilePictureUrl,
     required this.personalEmail,
-    required this.personalNumber,
     required this.birthday,
   });
 
   @override
   List<Object?> get props => [
-    // id, 
-    fullName,
-    username,
-    profilePictureUrl,
-    personalEmail,
-    personalNumber,
-    birthday,
-  ];
+        // id,
+        fullName,
+        username,
+        profilePictureUrl,
+        personalEmail,
+        birthday,
+      ];
 }
 
 class ProfileSaved extends ProfileState {

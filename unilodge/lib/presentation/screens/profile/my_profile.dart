@@ -20,19 +20,19 @@ class MyProfile extends StatefulWidget {
 }
 
 class _MyProfileState extends State<MyProfile> {
-  File? _image; 
+  File? _image;
   final ImagePicker _picker = ImagePicker();
-  late TextEditingController _usernameController; 
+  late TextEditingController _usernameController;
 
   @override
   void initState() {
     super.initState();
-    _usernameController = TextEditingController(); 
+    _usernameController = TextEditingController();
   }
 
   @override
   void dispose() {
-    _usernameController.dispose(); 
+    _usernameController.dispose();
     super.dispose();
   }
 
@@ -76,7 +76,6 @@ class _MyProfileState extends State<MyProfile> {
               print('Full Name: ${state.fullName}');
               print('Username: ${state.username}');
               print('Email: ${state.personalEmail}');
-              print('Phone Number: ${state.personalNumber}');
               print('Birthday: ${state.birthday}');
             } else if (state is ProfileError) {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -107,21 +106,22 @@ class _MyProfileState extends State<MyProfile> {
                                     : state.profilePictureUrl.isNotEmpty
                                         ? NetworkImage(state.profilePictureUrl)
                                         : null,
-                                child: _image == null && state.profilePictureUrl.isEmpty
+                                child: _image == null &&
+                                        state.profilePictureUrl.isEmpty
                                     ? const Icon(Icons.person, size: 50)
                                     : null,
                               ),
                             ),
                             Positioned(
-                              right: 0, 
-                              bottom: 0, 
+                              right: 0,
+                              bottom: 0,
                               child: IconButton(
                                 icon: const Icon(
                                   Icons.edit,
                                   color: Colors.white,
                                   size: 20,
                                 ),
-                                onPressed: _pickImage, 
+                                onPressed: _pickImage,
                               ),
                             ),
                           ],
@@ -130,7 +130,8 @@ class _MyProfileState extends State<MyProfile> {
                       const SizedBox(height: 30),
                       EditableTextField(
                         label: 'Name',
-                        controller: _usernameController, value: state.username, 
+                        controller: _usernameController,
+                        value: state.username,
                       ),
                       const SizedBox(height: 30),
                       ReadOnlyField(label: 'Name', value: state.fullName),
@@ -138,15 +139,12 @@ class _MyProfileState extends State<MyProfile> {
                       ReadOnlyField(label: 'Email', value: state.personalEmail),
                       const Divider(),
                       const SizedBox(height: 20),
-                      ReadOnlyField(
-                        label: 'Phone Number',
-                        value: state.personalNumber,
-                      ),
                       const Divider(),
                       const SizedBox(height: 20),
                       ReadOnlyField(
                         label: 'Birthday',
-                        value: state.birthday.toLocal().toString().split(' ')[0],
+                        value:
+                            state.birthday.toLocal().toString().split(' ')[0],
                       ),
                       const Divider(),
                       const SizedBox(height: 24),
@@ -164,16 +162,15 @@ class _MyProfileState extends State<MyProfile> {
                           ),
                           onPressed: () {
                             final updatedProfilePictureUrl = _image != null
-                                ? _image!.path 
+                                ? _image!.path
                                 : state.profilePictureUrl;
 
                             context.read<ProfileBloc>().add(SaveProfile(
                                   // id: state.id,
                                   username: _usernameController.text,
-                                  fullName: state.fullName, 
+                                  fullName: state.fullName,
                                   profilePictureUrl: updatedProfilePictureUrl,
                                   personalEmail: state.personalEmail,
-                                  personalNumber: state.personalNumber,
                                   birthday: state.birthday,
                                 ));
                           },

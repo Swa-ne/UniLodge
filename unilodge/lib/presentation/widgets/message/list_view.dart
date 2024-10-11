@@ -107,7 +107,7 @@ class _MessagesListViewState extends State<MessagesListView> {
                                   ),
                                   const SizedBox(height: 5),
                                   CustomText(
-                                    text: ibx.last_message.message,
+                                    text: ibx.last_message?.message ?? "",
                                     color: AppColors.formTextColor,
                                     fontSize: 14,
                                   ),
