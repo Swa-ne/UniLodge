@@ -12,13 +12,27 @@ class TextRow extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
+        crossAxisAlignment:
+            CrossAxisAlignment.start,
         children: [
-          Text(
-            text1,
-            style: const TextStyle(fontSize: 15, color: Color(0xff434343)),
+          Expanded(
+            flex: 2,
+            child: Text(
+              text1,
+              style: const TextStyle(fontSize: 15, color: Color(0xff434343)),
+            ),
           ),
-          const Spacer(),
-          Text(text2, style: const TextStyle(fontSize: 15, color: AppColors.formTextColor))
+          Spacer(),
+          Expanded(
+            flex: 9,
+            child: Text(
+              textAlign: TextAlign.end,
+              text2,
+              style:
+                  const TextStyle(fontSize: 15, color: AppColors.formTextColor),
+              softWrap: true, // Allows text wrapping
+            ),
+          ),
         ],
       ),
     );

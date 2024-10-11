@@ -9,15 +9,15 @@ import 'package:unilodge/bloc/authentication/auth_state.dart';
 import 'package:unilodge/presentation/auth/mixin/input_validation.dart';
 import 'package:unilodge/presentation/widgets/auth/auth_text_field.dart';
 
-class ChangePassword extends StatefulWidget {
+class ChangeForgottenPassword extends StatefulWidget {
   final String token;
-  const ChangePassword({super.key, required this.token});
+  const ChangeForgottenPassword({super.key, required this.token});
 
   @override
-  State<ChangePassword> createState() => _ChangePasswordState();
+  State<ChangeForgottenPassword> createState() => _ChangeForgottenPasswordState();
 }
 
-class _ChangePasswordState extends State<ChangePassword>
+class _ChangeForgottenPasswordState extends State<ChangeForgottenPassword>
     with InputValidationMixin {
   late TextEditingController passwordController;
   late TextEditingController confirmPasswordController;
@@ -39,10 +39,10 @@ class _ChangePasswordState extends State<ChangePassword>
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is ChangePasswordSuccess) {
-          context.go("/settings");
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Password changed successfully!')),
-          );
+            context.push("/account-selection-login");
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Password changed successfully!')),
+            );
         } else if (state is ChangePasswordError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.error)),
@@ -60,7 +60,7 @@ class _ChangePasswordState extends State<ChangePassword>
               const Align(
                 alignment: Alignment.center,
                 child: Text(
-                  'Change Password',
+                  'Change Forgotten Password',
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,

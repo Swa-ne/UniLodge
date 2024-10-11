@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:unilodge/bloc/authentication/auth_bloc.dart';
 import 'package:unilodge/bloc/authentication/auth_event.dart';
 import 'package:unilodge/bloc/authentication/auth_state.dart';
-import 'package:unilodge/presentation/screens/auth/change_password.dart';
+import 'package:unilodge/presentation/screens/auth/change_forgotten_password.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class VerifyEmail extends StatefulWidget {
@@ -61,7 +61,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ChangePassword(
+              builder: (context) => ChangeForgottenPassword(
                 token: state.token,
               ),
             ),

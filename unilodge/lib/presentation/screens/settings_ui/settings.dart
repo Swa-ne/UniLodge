@@ -6,6 +6,7 @@ import 'package:unilodge/bloc/authentication/auth_event.dart';
 import 'package:unilodge/bloc/authentication/auth_state.dart';
 import 'package:unilodge/common/widgets/custom_text.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
+import 'package:unilodge/data/sources/auth/token_controller.dart';
 import 'package:unilodge/presentation/widgets/settings_widg/logout_confirm_bottom_sheet.dart';
 
 class Settings extends StatelessWidget {
@@ -13,77 +14,92 @@ class Settings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthBloc, AuthState>(
-      listener: (context, state) {
-        if (state is LogoutSuccess) {
-          context.go("/account-selection-login");
-        } else if (state is LogoutError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.error)),
-          );
-        }
+    final TokenControllerImpl _tokenController = TokenControllerImpl();
+
+    return FutureBuilder<String?>(
+      future: _tokenController.getAccessToken(),
+      builder: (context, snapshot) {
+        final accessToken = snapshot.data;
+
+        return BlocListener<AuthBloc, AuthState>(
+          listener: (context, state) {
+            if (state is LogoutSuccess) {
+              context.go("/account-selection-login");
+            } else if (state is LogoutError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.error)),
+              );
+            }
+          },
+          child: Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back_ios, color: AppColors.textColor),
+                onPressed: () {
+                  context.push('/user-profile');
+                },
+              ),
+              title: const CustomText(
+                text: 'Settings',
+                color: AppColors.primary,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+              centerTitle: true,
+            ),
+            body: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ListTile(
+                    leading: const Icon(Icons.person, color: AppColors.textColor),
+                    title: const CustomText(
+                      text: 'My Profile',
+                      fontSize: 16,
+                      color: AppColors.textColor,
+                    ),
+                    onTap: () {
+                      context.push('/my-profile');
+                    },
+                  ),
+                  const Divider(),
+                  ListTile(
+                    leading: const Icon(Icons.lock, color: AppColors.textColor),
+                    title: const CustomText(
+                      text: 'Change Password',
+                      fontSize: 16,
+                      color: AppColors.textColor,
+                    ),
+                    onTap: () {
+                      if (accessToken != null) {
+                        context.push('/change-password/$accessToken');
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Token is unavailable')),
+                        );
+                      }
+                    },
+                  ),
+                  const Divider(),
+                  ListTile(
+                    leading: const Icon(Icons.logout, color: AppColors.textColor),
+                    title: const CustomText(
+                      text: 'Logout',
+                      fontSize: 16,
+                      color: AppColors.textColor,
+                    ),
+                    onTap: () {
+                      _showLogoutConfirmation(context);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
       },
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios, color: AppColors.textColor),
-            onPressed: () {
-              context.push('/user-profile');
-            },
-          ),
-          title: const CustomText(
-            text: 'Settings',
-            color: AppColors.primary,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-          centerTitle: true,
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ListTile(
-                leading: const Icon(Icons.person, color: AppColors.textColor),
-                title: const CustomText(
-                  text: 'My Profile',
-                  fontSize: 16,
-                  color: AppColors.textColor,
-                ),
-                onTap: () {
-                  context.push('/my-profile');
-                },
-              ),
-              const Divider(),
-              ListTile(
-                leading: const Icon(Icons.lock, color: AppColors.textColor),
-                title: const CustomText(
-                  text: 'Change Password',
-                  fontSize: 16,
-                  color: AppColors.textColor,
-                ),
-                onTap: () {
-                  context.push('/my-profile');
-                },
-              ),
-              const Divider(),
-              ListTile(
-                leading: const Icon(Icons.logout, color: AppColors.textColor),
-                title: const CustomText(
-                  text: 'Logout',
-                  fontSize: 16,
-                  color: AppColors.textColor,
-                ),
-                onTap: () {
-                  _showLogoutConfirmation(context);
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 
