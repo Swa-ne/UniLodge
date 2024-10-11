@@ -5,13 +5,17 @@ class EditableTextField extends StatelessWidget {
   final String label;
   final TextEditingController controller;
   final int maxLines;
+  final String value; 
 
-  const EditableTextField({
+  EditableTextField({
     super.key,
     required this.label,
     required this.controller,
     this.maxLines = 1,
-  });
+    required this.value,
+  }) {
+    controller.text = value;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +36,7 @@ class EditableTextField extends StatelessWidget {
           style: const TextStyle(
             fontSize: 20,
           ),
-
         ),
-        
       ],
     );
   }
