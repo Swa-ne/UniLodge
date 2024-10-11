@@ -163,7 +163,7 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                     child: Padding(
                       padding: const EdgeInsets.all(6.0),
                       child: Text(
-                        _isAvailableBool ? "Active" : "Inactive",
+                        _isAvailableBool ? "Available" : "Unavailable",
                         style:
                             const TextStyle(color: AppColors.lightBackground),
                       ),

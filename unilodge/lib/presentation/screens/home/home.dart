@@ -87,7 +87,7 @@ class _HomeState extends State<Home> {
             SliverList(
               delegate: SliverChildListDelegate(
                 [
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.all(6.0),
                     child: SizedBox(
@@ -139,7 +139,7 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(
@@ -149,7 +149,7 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
                   if (state is DormsLoading) ...[
                     const SizedBox(
                       height: 800,

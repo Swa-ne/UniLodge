@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unilodge/core/configs/assets/app_images.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/sources/auth/token_controller.dart';
 import 'package:unilodge/data/sources/chat/socket_controller.dart';
@@ -47,6 +48,33 @@ class _HomePageState extends State<HomePage> {
     const Messages(),
   ];
 
+  Widget _buildIcon(String assetPath) {
+    return ColorFiltered(
+      colorFilter: ColorFilter.mode(
+        _selectedIndex == _getIndex(assetPath)
+            ? AppColors.primary
+            : const Color.fromARGB(255, 119, 142, 160),
+        BlendMode.srcIn,
+      ),
+      child: Image.asset(assetPath, width: 24),
+    );
+  }
+
+  int _getIndex(String assetPath) {
+    switch (assetPath) {
+      case AppImages.homeeIcon:
+        return 0;
+      case AppImages.listingIcon:
+        return 1;
+      case AppImages.favoriteIcon:
+        return 2;
+      case AppImages.messageIcon:
+        return 3;
+      default:
+        return -1;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,32 +98,24 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
           child: BottomNavigationBar(
-            selectedItemColor: AppColors.primary,
-            unselectedItemColor: AppColors.primary.withOpacity(0.8),
+            selectedItemColor:
+                AppColors.primary, 
+            unselectedItemColor: AppColors.primary
+                .withOpacity(0.8),
             backgroundColor: AppColors.lightBackground,
             currentIndex: _selectedIndex,
             onTap: _navigateBottomBar,
             type: BottomNavigationBarType.fixed,
-            items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            items: [
               BottomNavigationBarItem(
-                  icon: Icon(Icons.domain), label: 'Listings'),
+                  icon: _buildIcon(AppImages.homeeIcon), label: 'Home'),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.favorite), label: 'Favorites'),
+                  icon: _buildIcon(AppImages.listingIcon), label: 'Listings'),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.forum), label: 'Messages'),
+                  icon: _buildIcon(AppImages.favoriteIcon), label: 'Favorites'),
+              BottomNavigationBarItem(
+                  icon: _buildIcon(AppImages.messageIcon), label: 'Messages'),
             ],
-            // items: [
-            //   BottomNavigationBarItem(
-            //       icon: Image.asset(AppImages.homeIcon), label: 'Home'),
-            //   BottomNavigationBarItem(
-            //       icon: Image.asset(AppImages.listingIcon), label: 'Listings'),
-            //   BottomNavigationBarItem(
-            //       icon: Image.asset(AppImages.favoriteIcon),
-            //       label: 'Favorites'),
-            //   BottomNavigationBarItem(
-            //       icon: Image.asset(AppImages.messageIcon), label: 'Messages'),
-            // ],
           ),
         ),
       ),

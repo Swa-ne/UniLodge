@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:unilodge/common/widgets/custom_button.dart';
+import 'package:unilodge/common/widgets/custom_text.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/bloc/authentication/auth_bloc.dart';
 import 'package:unilodge/bloc/authentication/auth_event.dart';
@@ -43,23 +45,47 @@ class _ForgetPasswordState extends State<ForgetPassword>
         }
       },
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: AppColors.lightBackground,
-        appBar: AppBar(),
-        body: Padding(
+        appBar: AppBar(
+        title: const CustomText(
+          text: "Forgot Password",
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+          color: AppColors.primary,
+        ),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            context.push("/login");
+          },
+        ),
+      ),
+        body: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Align(
-                alignment: Alignment.center,
-                child: Text(
-                  'Forget Password',
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.primary),
-                  textAlign: TextAlign.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [              
+              const SizedBox(height: 60),
+              Image.asset(
+                'assets/images/icons/mobile-password-forgot.png',
+                height: 240,
+              ),
+              const SizedBox(height: 30),
+              const Center(
+                child: SizedBox(
+                  width: 220,
+                  child: CustomText(
+                    text:
+                        "Please enter your email address to receive a verification code.",
+                    fontWeight: FontWeight.w600,
+                    maxLines: 2,
+                    textAlign: TextAlign.center,
+                    fontSize: 16,
+                    color: AppColors.primary
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
