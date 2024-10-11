@@ -73,6 +73,9 @@ flutter:
     - assets/animation/animation.json
     - assets/animation/home_loading.json
     - assets/constant/address.json
+    - assets/images/icons/email.png
+    - assets/images/icons/security.png
+    - assets/images/icons/mobile-password-forgot.png
     - .env
 
   fonts:
