@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unilodge/core/configs/theme/app_colors.dart';
 
 
 
@@ -97,7 +98,7 @@ class _CustomCardState extends State<CustomCard>
                   ),
                 ],
                 border: widget.isSelected
-                    ? Border.all(color: Colors.black, width: 1.0)
+                    ? Border.all(color: AppColors.primary, width: 1.0)
                     : null,
               ),
               child: Padding(
@@ -127,15 +128,15 @@ class _CustomCardState extends State<CustomCard>
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black,
+                              color: AppColors.primary,
                             ),
                           ),
                           const SizedBox(height: 1),
                           Text(
                             widget.description,
                             style: const TextStyle(
-                              fontSize: 10,
-                              color: Colors.black54,
+                              fontSize: 14,
+                              color: AppColors.formTextColor,
                             ),
                           ),
                         ],

@@ -65,6 +65,10 @@ flutter:
     - assets/images/people.png
     - assets/images/search.png
     - assets/images/error.png
+    - assets/images/listingIcons/apartment.png
+    - assets/images/listingIcons/dorm.png
+    - assets/images/listingIcons/bedspacer.png
+    - assets/images/listingIcons/soloroom.png
     - assets/animation/animation.json
     - assets/animation/home_loading.json
     - .env
