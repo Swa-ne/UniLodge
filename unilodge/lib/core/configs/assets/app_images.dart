@@ -26,10 +26,12 @@ class AppImages {
 
   // nav icons
   static const String favoriteIcon =
-      '${basePath}navIcons/favorites-icon$pngformat';
-  static const String homeIcon = '${basePath}navIcons/home-icon$pngformat';
+      '${basePath}navIcons/favorite$pngformat';
+  static const String homeIcon = '${basePath}navIcons/home$pngformat';
+
+  static const String homeeIcon = '${basePath}navIcons/homee$pngformat';
   static const String listingIcon =
-      '${basePath}navIcons/listing-icon$pngformat';
+      '${basePath}navIcons/listings$pngformat';
   static const String messageIcon =
-      '${basePath}navIcons/message-icon$pngformat';
+      '${basePath}navIcons/message$pngformat';
 }
