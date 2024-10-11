@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
+import 'package:unilodge/provider/favorite_provider.dart';
 
 class ListingCards extends StatefulWidget {
   final Listing listing;
@@ -18,28 +19,41 @@ class ListingCards extends StatefulWidget {
 class _ListingCardsState extends State<ListingCards> {
   @override
   Widget build(BuildContext context) {
+    final provider = FavoriteProvider.of(context);
+
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
       child: GestureDetector(
         onTap: () {
           context.push('/listing-detail', extra: widget.listing);
         },
         child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white, // Optional: Add a background color
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.3),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: const Offset(0, 3), // changes position of shadow
+              ),
+            ],
+          ),
           child: Column(
             children: [
-              Center(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(5),
-                  child: Opacity(
-                    opacity: 0.9,
-                    child: widget.listing.imageUrl != null &&
+              ClipRRect(
+                borderRadius:  BorderRadius.circular(5),
+                child: Opacity(
+                  opacity: 0.9,
+                  child: widget.listing.imageUrl != null &&
                             widget.listing.imageUrl!.isNotEmpty
                         ? Image.network(
-                            widget.listing.imageUrl![
+                          widget.listing.imageUrl![
                                 0], 
-                            width: 360,
-                            height: 200,
-                            fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: 200,
+                          fit: BoxFit.cover,
                             loadingBuilder: (BuildContext context, Widget child,
                                 ImageChunkEvent? loadingProgress) {
                               if (loadingProgress == null) {
@@ -73,7 +87,18 @@ class _ListingCardsState extends State<ListingCards> {
                             child: Center(
                               child: Text('No Image Available'),
                             ),
-                          ),
+                          errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        width: double.infinity,
+                        height: 200,
+                        color: Colors.grey[300],
+                        child: const Icon(
+                          Icons.broken_image,
+                          size: 50,
+                          color: Colors.grey,
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),
@@ -84,21 +109,23 @@ class _ListingCardsState extends State<ListingCards> {
                   children: [
                     Row(
                       children: [
-                        Text(
-                          widget.listing.property_name ?? '',
-                          style: TextStyle(
-                            color: AppColors.textColor,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16,
+                        Expanded(
+                          child: Text(
+                            widget.listing.property_name ?? '',
+                            style: const TextStyle(
+                              color: AppColors.textColor,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16,
+                            ),
                           ),
                         ),
-                        const Spacer(),
                         const Icon(
                           Icons.star,
                           color: Color(0xffFFB800),
                         ),
+                        const SizedBox(width: 4),
                         Text(
-                          "${widget.listing.rating}(14)",
+                          "${widget.listing.rating ?? 0}(14)",
                           style: const TextStyle(color: AppColors.textColor),
                         ),
                       ],
@@ -106,7 +133,7 @@ class _ListingCardsState extends State<ListingCards> {
                     const SizedBox(height: 10),
                     Text(
                       widget.listing.adddress,
-                      style: TextStyle(color: AppColors.textColor),
+                      style: const TextStyle(color: AppColors.textColor),
                     ),
                     Row(
                       children: [
@@ -114,12 +141,19 @@ class _ListingCardsState extends State<ListingCards> {
                           widget.listing.price != null
                               ? '₱${widget.listing.price!}'
                               : 'N/A',
-                          style: TextStyle(color: AppColors.textColor),
+                          style: const TextStyle(color: AppColors.textColor),
                         ),
                         const Spacer(),
-                        const Icon(
-                          Icons.favorite,
-                          color: Color(0xffF04F43),
+                        GestureDetector(
+                          onTap: () {
+                            provider.toggleFavorite(widget.listing);
+                          },
+                          child: Icon(
+                            provider.isExist(widget.listing)
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            color: const Color(0xffF04F43),
+                          ),
                         ),
                       ],
                     ),

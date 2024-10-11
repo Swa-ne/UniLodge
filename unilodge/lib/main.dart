@@ -1,5 +1,7 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:unilodge/bloc/chat/chat_bloc.dart';
 import 'package:unilodge/bloc/listing/listing_bloc.dart';
 import 'package:unilodge/bloc/my_profile/my_profile_bloc.dart';
@@ -12,6 +14,7 @@ import 'package:unilodge/data/repository/user_repository_impl.dart';
 import 'package:unilodge/data/sources/auth/auth_repo.dart';
 import 'package:unilodge/bloc/authentication/auth_bloc.dart';
 import 'package:unilodge/data/sources/chat/chat_repo.dart';
+import 'package:unilodge/provider/favorite_provider.dart';
 import 'app_routes.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -53,11 +56,14 @@ class MainApp extends StatelessWidget {
               create: (context) =>
                   ProfileBloc(userRepository: UserRepositoryImpl()))
         ],
-        child: MaterialApp.router(
-          debugShowCheckedModeBanner: false,
-          theme: AppTheme.lightTheme,
-          title: 'UniLodge',
-          routerConfig: appRouter,
+      child: ChangeNotifierProvider(
+          create: (_) => FavoriteProvider(),
+          child: MaterialApp.router(
+            debugShowCheckedModeBanner: false,
+            theme: AppTheme.lightTheme,
+            title: 'UniLodge',
+            routerConfig: appRouter,
+          ),
         ),
       ),
     );

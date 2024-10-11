@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -13,6 +14,7 @@ import 'package:unilodge/data/models/listing.dart';
 import 'package:unilodge/presentation/widgets/home/nearby_listing.dart';
 import 'package:unilodge/presentation/widgets/home/text_row.dart';
 import 'package:go_router/go_router.dart';
+import 'package:unilodge/provider/favorite_provider.dart';
 
 class ListingDetailScreen extends StatefulWidget {
   final Listing listing;
@@ -27,6 +29,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final _chatBloc = BlocProvider.of<ChatBloc>(context);
+    final provider = FavoriteProvider.of(context);
 
     return BlocListener<ChatBloc, ChatState>(
       listener: (context, state) {
@@ -43,25 +46,22 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 20),
               Row(
                 children: [
-                  const SizedBox(
-                    width: 15,
-                  ),
+                  const SizedBox(width: 15),
                   GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Icon(Icons.cancel,
-                          color: Color.fromARGB(169, 60, 60, 67))),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Icon(
+                      Icons.cancel,
+                      color: Color.fromARGB(169, 60, 60, 67),
+                    ),
+                  ),
                 ],
               ),
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: ClipRRect(
@@ -122,24 +122,31 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
 
               const SizedBox(height: 16),
               Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 20.0, horizontal: 16.0),
-                child: Text(widget.listing.property_name ?? '',
-                    style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xff434343))),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
+                child: Text(widget.
+                  listing.property_name ?? '',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xff434343),
+                  ),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child:
-                    TextRow(text1: "Address:", text2: widget.listing.adddress),
+                    TextRow(
+                  text1: "Address:",
+                  text2: widget.listing.adddress,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: TextRow(
-                    text1: "Owner:",
-                    text2: widget.listing.owner_id?.full_name ?? ''),
+                  text1: "Owner:",
+                  text2: widget.listing.owner_id?.full_name ?? '',
+                ),
               ),
               Theme(
                 data: Theme.of(context)
@@ -192,10 +199,14 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                 ),
               ),
               const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+                padding:
+                    EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
                 child: Text(
                   "Description",
-                  style: TextStyle(color: Color(0xff434343), fontSize: 15),
+                  style: TextStyle(
+                    color: Color(0xff434343),
+                    fontSize: 15,
+                  ),
                 ),
               ),
               Padding(
@@ -204,7 +215,9 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                 child: Text(
                   widget.listing.description ?? "No description available",
                   style: const TextStyle(
-                      color: AppColors.formTextColor, fontSize: 15),
+                    color: AppColors.formTextColor,
+                    fontSize: 15,
+                  ),
                 ),
               ),
               Theme(
@@ -245,16 +258,22 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15.0),
                 child: Divider(
-                    height: 20, color: Color.fromARGB(255, 223, 223, 223)),
+                  height: 20,
+                  color: Color.fromARGB(255, 223, 223, 223),
+                ),
               ),
               const SizedBox(height: 15),
               Row(
                 children: [
                   const Padding(
                     padding: EdgeInsets.only(left: 15.0),
-                    child: Text("Rating: ",
-                        style:
-                            TextStyle(color: Color(0xff434343), fontSize: 15)),
+                    child: Text(
+                      "Rating: ",
+                      style: TextStyle(
+                        color: Color(0xff434343),
+                        fontSize: 15,
+                      ),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
@@ -262,50 +281,63 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: RatingBar.builder(
-                          initialRating:
+                        initialRating:
+                           
                               widget.listing.rating?.toDouble() ?? 0.0,
-                          minRating: 1,
-                          direction: Axis.horizontal,
-                          itemCount: 5,
-                          itemSize: 18,
-                          itemPadding:
-                              const EdgeInsets.symmetric(horizontal: 1),
-                          itemBuilder: (context, _) => const Icon(
-                                Icons.star,
-                                color: AppColors.ratingYellow,
-                              ),
-                          onRatingUpdate: (rating) {
-                            print(rating);
-                          }),
+                        minRating: 1,
+                        direction: Axis.horizontal,
+                        itemCount: 5,
+                        itemSize: 18,
+                        itemPadding:
+                            const EdgeInsets.symmetric(horizontal: 1),
+                        itemBuilder: (context, _) => const Icon(
+                          Icons.star,
+                          color: AppColors.ratingYellow,
+                        ),
+                        onRatingUpdate: (rating) {
+                          print(rating);
+                        },
+                      ),
                     ),
                   ),
                 ],
               ),
               const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+                padding:
+                    EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
                 child: Text(
                   "Reviews (14)",
-                  style: TextStyle(color: Color(0xff434343), fontSize: 15),
+                  style: TextStyle(
+                    color: Color(0xff434343),
+                    fontSize: 15,
+                  ),
                 ),
               ),
               const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+                padding:
+                    EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
                 child: Text(
                   "dropdown reviews or direct to another screen",
-                  style:
-                      TextStyle(color: AppColors.formTextColor, fontSize: 15),
+                  style: TextStyle(
+                    color: AppColors.formTextColor,
+                    fontSize: 15,
+                  ),
                 ),
               ),
               const SizedBox(height: 30),
               const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+                padding:
+                    EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
                 child: Text(
                   "Nearby Listings",
-                  style: TextStyle(color: Color(0xff434343), fontSize: 15),
+                  style: TextStyle(
+                    color: Color(0xff434343),
+                    fontSize: 15,
+                  ),
                 ),
               ),
-              // i should pass the data here
-              NearbyProperties(listings: dummyListings)
+              // Pass the data here
+              NearbyProperties(listings: dummyListings),
             ],
           ),
         ),
@@ -315,10 +347,11 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
               color: AppColors.lightBackground,
               boxShadow: [
                 BoxShadow(
-                  color: const Color.fromARGB(255, 59, 59, 59).withOpacity(1),
+                  color:
+                      const Color.fromARGB(255, 59, 59, 59).withOpacity(1),
                   spreadRadius: 10,
                   blurRadius: 30,
-                  offset: const Offset(0, 2),
+                  offset: const Offset(0, 2), // changes position of shadow
                 ),
               ],
             ),
@@ -351,10 +384,14 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                   Expanded(
                     flex: 1,
                     child: GestureDetector(
-                      onTap: () {},
-                      child: const Icon(
-                        Icons.favorite_border,
-                        color: AppColors.primary,
+                      onTap: () {
+                        provider.toggleFavorite(listing);
+                      },
+                      child: Icon(
+                        provider.isExist(listing)
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                        color: const Color(0xffF04F43),
                         size: 28,
                       ),
                     ),
