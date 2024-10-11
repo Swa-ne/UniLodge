@@ -46,6 +46,7 @@ class _PostAccommodationState extends State<PostAccommodation> {
             child: Column(
               children: [
                 PropertyCard(
+                  imageIcon: AppImages.dormListing,
                   cardName: 'Dorm',
                   description:
                       'Shared room with multiple occupants; ideal for students and budget-friendly living.',
@@ -57,6 +58,7 @@ class _PostAccommodationState extends State<PostAccommodation> {
                   },
                 ),
                 PropertyCard(
+                  imageIcon: AppImages.bedspacerListing,
                   cardName: 'Bed Spacer',
                   description:
                       'Shared room with designated sleeping areas; a cost-effective living option.',
@@ -68,6 +70,7 @@ class _PostAccommodationState extends State<PostAccommodation> {
                   },
                 ),
                 PropertyCard(
+                  imageIcon: AppImages.soloroomListing,
                   cardName: 'Solo Room',
                   description:
                       'Private room offering a quiet space for sleeping and studying.',
@@ -79,6 +82,7 @@ class _PostAccommodationState extends State<PostAccommodation> {
                   },
                 ),
                 PropertyCard(
+                  imageIcon: AppImages.apartmentListing,
                   cardName: 'Apartment',
                   description:
                       'Self-contained unit with separate bedrooms, kitchen, and living area.',
@@ -99,67 +103,6 @@ class _PostAccommodationState extends State<PostAccommodation> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _PropertySelection extends StatelessWidget {
-  final Listing listing;
-
-  const _PropertySelection({required this.listing});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        _buildCard(
-            context,
-            'Dorm',
-            'Shared room with multiple occupants; ideal for students and budget-friendly living.',
-            AppImages.dormListing),
-        _buildCard(
-            context,
-            'Solo Room',
-            'Private room offering a quiet space for sleeping and studying.',
-            AppImages.soloroomListing),
-        _buildCard(
-            context,
-            'Bed Spacer',
-            'Shared room with designated sleeping areas; a cost-effective living option.',
-            AppImages.bedspacerListing),
-        _buildCard(
-            context,
-            'Apartment',
-            'Self-contained unit with separate bedrooms, kitchen, and living area.',
-            AppImages.apartmentListing),
-        const SizedBox(height: 6),
-      ],
-    );
-  }
-
-  Widget _buildCard(BuildContext context, String cardName, String description,
-      String iconImage) {
-    return BlocBuilder<ListingBloc, ListingState>(
-      builder: (context, state) {
-        bool isSelected =
-            state is CardSelectedState && state.selectedCard == cardName;
-
-        return CustomCard(
-          leading: Image.asset(
-            iconImage,
-            height: 300,
-          ),
-          cardName: cardName,
-          description: description,
-          leadingWidth: 50,
-          leadingHeight: 80,
-          isSelected: isSelected,
-          onTap: () {
-            context.read<ListingBloc>().add(SelectCardEvent(cardName));
-          },
-        );
-      },
     );
   }
 }

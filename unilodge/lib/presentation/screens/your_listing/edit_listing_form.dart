@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unilodge/bloc/listing/listing_bloc.dart';
 import 'package:unilodge/bloc/listing/listing_event.dart';
 import 'package:go_router/go_router.dart';
+import 'package:unilodge/core/configs/assets/app_images.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
 import 'package:unilodge/presentation/widgets/listing/multiple_images.dart';
@@ -128,6 +129,7 @@ class _EditListingFormState extends State<EditListingForm> {
     return Column(
       children: [
         PropertyCard(
+          imageIcon: AppImages.dormListing,
           cardName: 'Dorm',
           description:
               'Shared room with multiple occupants; ideal for students and budget-friendly living.',
@@ -139,6 +141,7 @@ class _EditListingFormState extends State<EditListingForm> {
           },
         ),
         PropertyCard(
+          imageIcon: AppImages.bedspacerListing,
           cardName: 'Bed Spacer',
           description:
               'Shared room with designated sleeping areas; a cost-effective living option.',
@@ -150,6 +153,7 @@ class _EditListingFormState extends State<EditListingForm> {
           },
         ),
         PropertyCard(
+          imageIcon: AppImages.soloroomListing,
           cardName: 'Solo Room',
           description:
               'Private room offering a quiet space for sleeping and studying.',
@@ -161,6 +165,7 @@ class _EditListingFormState extends State<EditListingForm> {
           },
         ),
         PropertyCard(
+          imageIcon: AppImages.apartmentListing,
           cardName: 'Apartment',
           description:
               'Self-contained unit with separate bedrooms, kitchen, and living area.',
