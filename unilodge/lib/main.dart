@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unilodge/bloc/chat/chat_bloc.dart';
 import 'package:unilodge/bloc/listing/listing_bloc.dart';
+import 'package:unilodge/bloc/my_profile/my_profile_bloc.dart';
 import 'package:unilodge/bloc/renter/renter_bloc.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/core/configs/theme/app_theme.dart';
 import 'package:unilodge/data/repository/listing_repository_impl.dart';
 import 'package:unilodge/data/repository/renter_repository_impl.dart';
+import 'package:unilodge/data/repository/user_repository_impl.dart';
 import 'package:unilodge/data/sources/auth/auth_repo.dart';
 import 'package:unilodge/bloc/authentication/auth_bloc.dart';
 import 'package:unilodge/data/sources/chat/chat_repo.dart';
@@ -44,8 +46,12 @@ class MainApp extends StatelessWidget {
             create: (context) => ListingBloc(ListingRepositoryImpl()),
           ),
           BlocProvider(
-            create: (context) => RenterBloc(renterRepository: RenterRepositoryImpl()),
-          )
+            create: (context) =>
+                RenterBloc(renterRepository: RenterRepositoryImpl()),
+          ),
+          BlocProvider(
+              create: (context) =>
+                  ProfileBloc(userRepository: UserRepositoryImpl()))
         ],
         child: MaterialApp.router(
           debugShowCheckedModeBanner: false,
