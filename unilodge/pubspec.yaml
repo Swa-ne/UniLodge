@@ -71,7 +71,7 @@ flutter:
         - assets/images/listingIcons/soloroom.png
         - assets/animation/animation.json
         - assets/animation/home_loading.json
-          - assets/constant/address.json
+        - assets/constant/address.json
         - .env
 
     fonts:

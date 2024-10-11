@@ -295,7 +295,8 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                     child: CustomButton(
                       text: "Chat with owner",
                       onPressed: () {
-                        _chatBloc.add(CreateInboxEvent(listing.owner_id!.id));
+                        _chatBloc
+                            .add(CreateInboxEvent(widget.listing.owner_id!.id));
                       },
                     ),
                   ),
