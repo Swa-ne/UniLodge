@@ -256,12 +256,6 @@ class _SignUpState extends State<SignUp> with InputValidationMixin {
                 });
                 return;
               }
-              if (!isPhoneNumberValid) {
-                setState(() {
-                  phoneNumberError = "This field cannot be empty";
-                });
-                return;
-              }
               _nextPage();
             },
           ),
@@ -406,7 +400,7 @@ class _SignUpState extends State<SignUp> with InputValidationMixin {
                 email: emailController.text,
                 password_hash: passwordController.text,
                 confirmation_password: confirmPasswordController.text,
-                personal_number: "",
+                personal_number: "0",
                 birthday: _birthday.toString(),
               );
               _authBloc.add(SignUpEvent(newUser));
