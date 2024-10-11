@@ -39,7 +39,10 @@ class _ChangePasswordState extends State<ChangePassword>
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is ChangePasswordSuccess) {
-          context.go("/login");
+          context.go("/settings");
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Password changed successfully!')),
+          );
         } else if (state is ChangePasswordError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.error)),
@@ -98,7 +101,6 @@ class _ChangePasswordState extends State<ChangePassword>
                       CustomButton(
                           text: "Send",
                           onPressed: () {
-                            // TODO: go to login page then change the password
                             String? isPasswordValid =
                                 validatePassword(passwordController.text);
                             if (isPasswordValid != null) {
@@ -122,7 +124,7 @@ class _ChangePasswordState extends State<ChangePassword>
                               passwordController.text,
                               confirmPasswordController.text,
                             ));
-                          })
+                          }),
                     ],
                   ),
                 ),

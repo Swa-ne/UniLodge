@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/data/models/inbox.dart';
+import 'package:unilodge/presentation/screens/auth/change_password.dart';
 import 'package:unilodge/presentation/screens/help_center/help_center.dart';
 import 'package:unilodge/presentation/screens/auth/account_selection_login.dart';
 import 'package:unilodge/presentation/screens/auth/account_selection_sign_up.dart';
@@ -189,6 +190,13 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/help-center',
       builder: (context, state) => const HelpCenter(),
+    ),
+    GoRoute(
+      path: '/change-password/:token',
+      builder: (context, state) {
+        final token = state.pathParameters['token'];
+        return ChangePassword(token: token!);
+      },
     ),
   ],
 );
