@@ -16,6 +16,7 @@ const io = new Server(server, {
 
 io.on("connection", async (socket) => {
     const userId = socket.handshake.query.userId;
+    console.log(userId)
     try {
         const isActive = await CheckUserStatusIfActive(userId);
 

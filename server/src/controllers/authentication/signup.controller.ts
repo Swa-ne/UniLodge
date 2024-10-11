@@ -116,6 +116,7 @@ export const signupUserController = async (req: Request, res: Response) => {
 
         return res.status(checkerForInput.httpCode).json({ error: checkerForInput.error });
     } catch (error) {
+        console.log(error)
         res.status(500).json({ error: "Internal Server Error" });
     }
 };
