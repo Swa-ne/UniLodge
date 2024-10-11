@@ -117,7 +117,7 @@ class _HomeState extends State<Home> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              context.push('/type-listing/Bedspacer');
+                              context.push('/type-listing/Bed Spacer');
                             },
                             child: const Cards(
                               text: "Bedspacer",
