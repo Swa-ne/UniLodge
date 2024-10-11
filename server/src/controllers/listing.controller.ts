@@ -35,29 +35,25 @@ export const postDormListingController = async (req: Request & { user?: UserType
     try {
         const user = req.user;
         if (!user) return res.status(404).json({ error: "User not found" });
-        console.log(user)
         const { property_name, type, city, street, barangay, house_number, province, region, lat, lng, currency_id = "PHP", available_rooms = 1, price, description, least_terms, amenities, utilities, tags } = req.body;
 
         if (!validateDescriptionLength(description)) {
             return res.status(413).json({ error: "Description contains too many words. Please shorten your description." });
         }
-        console.log("validated the description")
 
         const { valid, error } = validateRequiredFields(
             { property_name, type, city, street, barangay, province, region, currency_id, available_rooms, price, description },
             REQUIRED_FIELDS_LABELS
         );
-        console.log("validated the required fields")
 
         if (!valid) return res.status(400).json({ error });
 
         const image_files: Express.Multer.File[] | undefined = req.files as Express.Multer.File[] | undefined;
-        console.log("images files saved")
+
 
         if (!image_files) {
             return res.status(400).json({ error: "No files uploaded" });
         }
-        console.log("files are uploaded")
 
         const dorm_post_update = await postDormListing(
             user.user_id,
@@ -81,7 +77,6 @@ export const postDormListingController = async (req: Request & { user?: UserType
             image_files,
             tags
         );
-        console.log(dorm_post_update)
         if (dorm_post_update.httpCode === 200) return res.status(dorm_post_update.httpCode).json({ 'message': dorm_post_update.message });
         return res.status(dorm_post_update.httpCode).json({ 'error': dorm_post_update.error });
     } catch (error) {
@@ -105,9 +100,6 @@ export const putDormListingController = async (req: Request & { user?: UserType 
 
         const image_files: Express.Multer.File[] | undefined = req.files as Express.Multer.File[] | undefined;
 
-        if (!image_files) {
-            return res.status(400).json({ error: "No files uploaded" });
-        }
         const { valid, error } = validateRequiredFields(
             { property_name, type, city, street, barangay, province, region, currency_id, available_rooms, price, description, image_files },
             REQUIRED_FIELDS_LABELS
@@ -138,7 +130,6 @@ export const putDormListingController = async (req: Request & { user?: UserType 
             image_files,
             tags
         );
-
         if (dorm_put_update.httpCode === 200) return res.status(dorm_put_update.httpCode).json({ 'message': dorm_put_update.message });
         return res.status(dorm_put_update.httpCode).json({ 'error': dorm_put_update.error });
     } catch (error) {

@@ -47,7 +47,6 @@ export const postDormListing = async (
     try {
         let imageUrl: ObjectId[] = []
 
-        console.log("saving images to database")
         if (image_files) {
             for (const file of image_files) {
                 const storage_ref = ref(storage, `files/${file.originalname}${new Date()}`);
@@ -68,7 +67,6 @@ export const postDormListing = async (
             }
         }
 
-        console.log("images are now saved into the database")
         // TODO: update this if map is already integrated
         const latitude = parseFloat("0");
         const longitude = parseFloat("0");
@@ -90,7 +88,6 @@ export const postDormListing = async (
             },
         }).save({ session });
 
-        console.log("location has been saved")
         const currency = await Currency.findById("67055ace8fbd824752301b4b");
 
         await new Dorm({
@@ -109,15 +106,12 @@ export const postDormListing = async (
             tags,
         }).save({ session });
 
-        console.log("dorm has been saved")
         await session.commitTransaction();
         session.endSession();
-        console.log("dorm posting complete")
         return { message: 'Success', httpCode: 200 };
     } catch (error) {
         await session.abortTransaction();
         session.endSession();
-        console.log(error)
         return { error: 'Internal Server Error', httpCode: 500 };
     }
 };
@@ -142,47 +136,49 @@ export const putDormListing = async (
     least_terms: string,
     amenities: string[],
     utilities: string[],
-    image_files: Express.Multer.File[],
+    image_files: Express.Multer.File[] | undefined,
     tags: string[]
 ): Promise<CustomResponse> => {
     try {
-        const existingDorm = await Dorm.findById(dorm_id).populate("imageUrl");
+        let imageUrl: ObjectId[] = [];
+        if (image_files && image_files?.length > 0) {
+            const existingDorm = await Dorm.findById(dorm_id).populate("imageUrl");
 
-        if (!existingDorm) {
-            return { error: 'Dorm not found', httpCode: 404 };
-        }
+            if (!existingDorm) {
+                return { error: 'Dorm not found', httpCode: 404 };
+            }
 
-        if (existingDorm.imageUrl.length > 0) {
-            for (const image of existingDorm.imageUrl) {
-                try {
-                    if (typeof image === 'object' && 'url' in image) {
-                        await deleteImage(image.url);
-                        await Image.findByIdAndDelete(image._id);
+            if (existingDorm.imageUrl.length > 0) {
+                for (const image of existingDorm.imageUrl) {
+                    try {
+                        if (typeof image === 'object' && 'url' in image) {
+                            await deleteImage(image.url);
+                            await Image.findByIdAndDelete(image._id);
+                        }
+                    } catch (err) {
+                        console.error(`Error deleting image ${image}:`, err);
                     }
-                } catch (err) {
-                    console.error(`Error deleting image ${image}:`, err);
                 }
             }
-        }
 
-        let imageUrl: ObjectId[] = []
-        if (image_files) {
-            for (const file of image_files) {
-                const storage_ref = ref(storage, `files/${file.originalname}${new Date()}`);
+            if (image_files) {
+                for (const file of image_files) {
+                    const storage_ref = ref(storage, `files/${file.originalname}${new Date()}`);
 
-                const metadata = {
-                    contentType: file.mimetype,
-                };
+                    const metadata = {
+                        contentType: file.mimetype,
+                    };
 
-                const snapshot = await uploadBytesResumable(storage_ref, file.buffer, metadata);
-                const download_url = await getDownloadURL(snapshot.ref);
+                    const snapshot = await uploadBytesResumable(storage_ref, file.buffer, metadata);
+                    const download_url = await getDownloadURL(snapshot.ref);
 
-                const new_image = await new Image({
-                    name: file.originalname,
-                    url: download_url,
-                }).save();
+                    const new_image = await new Image({
+                        name: file.originalname,
+                        url: download_url,
+                    }).save();
 
-                imageUrl.push(new_image._id);
+                    imageUrl.push(new_image._id);
+                }
             }
         }
 
@@ -198,19 +194,21 @@ export const putDormListing = async (
             owner_id: user_id,
             property_name,
             type,
-            currency: currency_id,
             available_rooms,
             price,
             description,
             least_terms,
             amenities,
             utilities,
-            imageUrl,
             tags,
         }, { new: true });
-
         if (!dorm) {
             return { error: 'Dorm not found', httpCode: 404 };
+        }
+
+        if (imageUrl.length > 0) {
+            dorm.imageUrl = imageUrl;
+            dorm.save();
         }
 
         await Location.findByIdAndUpdate(dorm.location, {
