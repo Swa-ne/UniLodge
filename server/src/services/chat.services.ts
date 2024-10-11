@@ -73,11 +73,20 @@ export async function getInbox(userId: string) {
             path: 'inbox',
             match: { wasActive: true },
             options: { sort: { 'lastMessage': -1 } },
-            populate:
-            {
-                path: 'lastMessage',
-                model: 'Message'
-            },
+            populate: [
+                {
+                    path: 'lastMessage',
+                    model: 'Message'
+                },
+                {
+                    path: 'userIds',
+                    model: 'ActiveUsers',
+                    populate: {
+                        path: "userId",
+                        model: "User",
+                    },
+                },
+            ]
         });
         if (!user) {
             return 'User not found';
