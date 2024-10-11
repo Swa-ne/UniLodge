@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/bloc/chat/chat_bloc.dart';
 import 'package:unilodge/bloc/renter/renter_bloc.dart';
+import 'package:unilodge/common/widgets/error_message.dart';
 import 'package:unilodge/common/widgets/shimmer_loading.dart';
 import 'package:unilodge/core/configs/assets/app_images.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
@@ -182,9 +183,7 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                   ] else if (state is DormsError) ...[
-                    Center(
-                      child: Text('Error: ${state.message}'),
-                    ),
+                    ErrorMessage(errorMessage: state.message),
                   ],
                 ],
               ),

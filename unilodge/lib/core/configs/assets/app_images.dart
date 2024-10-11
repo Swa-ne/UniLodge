@@ -14,6 +14,7 @@ class AppImages {
   static const String emptyImage = '${basePath}emptyImage$jpgformat';
   static const String findDorm = '${basePath}findDorm$pngformat';
   static const String typeDorm = '${basePath}search$pngformat';
+  static const String errorIcon = '${basePath}error$pngformat';
 
   // nav icons
   static const String favoriteIcon =

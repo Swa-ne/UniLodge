@@ -1,9 +1,11 @@
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unilodge/bloc/authentication/auth_bloc.dart';
 import 'package:unilodge/bloc/authentication/auth_event.dart';
 import 'package:unilodge/bloc/authentication/auth_state.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lottie/lottie.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -29,15 +31,22 @@ class _SplashScreenState extends State<SplashScreen> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccess) {
-          context.go('/home');
+          context.go('/home'); 
         } else if (state is AuthFailure) {
-          context.go('/onboarding');
+          context.go('/onboarding'); 
         }
       },
-      child: const Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
+      child: AnimatedSplashScreen(
+        splash: Center(
+          child: Lottie.asset('assets/animation/animation.json'), // TODO: change to logo asset, remove animatedsplash
         ),
+        splashIconSize: 250, 
+        duration: 3500,
+        splashTransition:
+            SplashTransition.fadeTransition,
+        backgroundColor: Colors.white, 
+        nextScreen:
+            Container(),
       ),
     );
   }
