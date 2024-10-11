@@ -44,7 +44,7 @@ class ListingBloc extends Bloc<ListingEvent, ListingState> {
       try {
         final isSuccess = await _listingRepository.toggleListing(event.id);
         if (isSuccess) {
-          emit(SuccessToggle());
+          emit(SuccessToggle(DateTime.now()));
         } else {
           emit(const ToggleError("Internet Connection Error"));
         }

@@ -65,7 +65,8 @@ class ListingRepositoryImpl implements ListingRepository {
     request.fields['street'] = dorm.street ?? '';
     request.fields['barangay'] = dorm.barangay ?? '';
     request.fields['house_number'] = dorm.house_number ?? '';
-    request.fields['zip_code'] = dorm.zip_code ?? '';
+    request.fields['province'] = dorm.province ?? '';
+    request.fields['region'] = dorm.region ?? '';
     request.fields['price'] = dorm.price ?? '';
     request.fields['description'] = dorm.description ?? '';
     request.fields['leaseTerms'] = dorm.leastTerms ?? '';
@@ -114,8 +115,16 @@ class ListingRepositoryImpl implements ListingRepository {
 
   @override
   Future<bool> toggleListing(String id) async {
+    final access_token = await _tokenController.getAccessToken();
+    final refresh_token = await _tokenController.getRefreshToken();
     final response = await http.put(
       Uri.parse('$_apiUrl/toggle-visibility/$id'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': access_token,
+        'Cookie': 'refresh_token=$refresh_token',
+      },
     );
 
     if (response.statusCode != 200) {

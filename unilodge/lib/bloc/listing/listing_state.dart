@@ -34,7 +34,14 @@ class ListingCreated extends ListingState {}
 
 class SuccessDeleted extends ListingState {}
 
-class SuccessToggle extends ListingState {}
+class SuccessToggle extends ListingState {
+  final DateTime date;
+
+  const SuccessToggle(this.date);
+
+  @override
+  List<Object> get props => [date];
+}
 
 class ListingCreationError extends ListingState {
   final String error;
