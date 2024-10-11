@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unilodge/bloc/chat/chat_bloc.dart';
 import 'package:unilodge/bloc/chat/chat_event.dart';
 import 'package:unilodge/bloc/chat/chat_state.dart';
+import 'package:unilodge/common/mixins/time_convertion.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/inbox.dart';
+import 'package:unilodge/data/sources/auth/token_controller.dart';
 import 'package:unilodge/presentation/screens/message/chat.dart';
 import 'package:unilodge/presentation/widgets/message/custom_text.dart';
 
@@ -15,16 +17,24 @@ class MessagesListView extends StatefulWidget {
   State<MessagesListView> createState() => _MessagesListViewState();
 }
 
-class _MessagesListViewState extends State<MessagesListView> {
+class _MessagesListViewState extends State<MessagesListView>
+    with TimeConvertion {
   final List<InboxModel> inbox = [];
   late ChatBloc _chatBloc;
-
+  late TokenControllerImpl _tokenController;
+  late String currentUserId;
   @override
   void initState() {
     super.initState();
 
     _chatBloc = BlocProvider.of<ChatBloc>(context);
     _chatBloc.add(GetInboxEvent());
+    _tokenController = TokenControllerImpl();
+    _initializeUserID();
+  }
+
+  Future<void> _initializeUserID() async {
+    currentUserId = await _tokenController.getUserID();
   }
 
   @override
@@ -101,7 +111,12 @@ class _MessagesListViewState extends State<MessagesListView> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   CustomText(
-                                    text: ibx.chat_name,
+                                    text: ibx.user_ids
+                                        .firstWhere(
+                                          (user) =>
+                                              user.userId.id != currentUserId,
+                                        )
+                                        .fullName,
                                     color: AppColors.textColor,
                                     fontSize: 16,
                                   ),
@@ -114,13 +129,15 @@ class _MessagesListViewState extends State<MessagesListView> {
                                 ],
                               ),
                             ),
-                            const Column(
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Text(
-                                  '15/08/24',
-                                  style: TextStyle(color: Color(0xFFC3C1C9)),
+                                  formatChatTimestamp(
+                                      ibx.last_message?.created_at ?? ""),
+                                  style:
+                                      const TextStyle(color: Color(0xFFC3C1C9)),
                                 ),
                               ],
                             ),
