@@ -1,5 +1,4 @@
 import 'package:go_router/go_router.dart';
-import 'package:unilodge/data/dummy_data/dummy_data.dart';
 import 'package:unilodge/data/models/inbox.dart';
 import 'package:unilodge/presentation/screens/help_center/help_center.dart';
 import 'package:unilodge/presentation/screens/auth/account_selection_login.dart';
@@ -110,8 +109,8 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/post-location',
       builder: (context, state) {
-        final listing = state.extra as Listing? ?? Listing();
-        return PostLocation(listing: listing);
+        final selectedPropertyType = state.extra as String;
+        return PostLocation(selectedPropertyType: selectedPropertyType);
       },
     ),
     GoRoute(
