@@ -179,5 +179,9 @@ def display_logo():
     image_path = 'logo.png'
     return send_file(image_path, mimetype='image/png')
 
+@app.route('/')
+def index(): 
+    return "Hello guys"
+
 if __name__ == "__main__":
     app.run(debug=True)
