@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
-import 'package:unilodge/data/models/listing.dart'; 
-import 'package:unilodge/presentation/listing/mixin/listing_validation.dart'; 
+import 'package:unilodge/data/models/listing.dart';
+import 'package:unilodge/presentation/listing/mixin/listing_validation.dart';
 
 class PostPrice extends StatefulWidget {
   final Listing listing;
@@ -29,37 +29,66 @@ class _PostPriceState extends State<PostPrice> with InputValidationMixin {
               Expanded(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Form( // Wrap everything inside a Form
-                    key: _formKey, // Assign form key
+                  child: Form(
+                    key: _formKey, 
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        const SizedBox(height: 60),
-                        const Text(
-                          'Property Information',
-                          style: TextStyle(
-                            color: AppColors.primary,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
+                        const SizedBox(height: 17),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20.0),
+                          child: Row(
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Property Information',
+                                    style: TextStyle(
+                                      color: AppColors.primary,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    'Please fill in all fields below to continue',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.normal,
+                                      color: AppColors.primary,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 17.0),
+                                    child: Icon(
+                                      Icons.draw,
+                                      size: 70,
+                                      color: AppColors.primary,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
                           ),
                         ),
-                        const SizedBox(height: 7),
-                        const Text(
-                          'Please fill in all fields below to continue',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.normal,
-                            color: AppColors.primary,
-                          ),
+                        SizedBox(
+                          height: 20,
                         ),
-                        const SizedBox(height: 25),
-                      
                         _buildTextField(
                           controller: _priceController,
                           label: 'Price',
                           hint: 'Enter price',
                           contentPadding: const EdgeInsets.all(16),
-                          validator: (value) => validateNumber(value ?? ''), 
+                          validator: (value) => validateNumber(value ?? ''),
                         ),
                         _buildTextField(
                           controller: _descriptionController,
@@ -68,7 +97,8 @@ class _PostPriceState extends State<PostPrice> with InputValidationMixin {
                           maxLines: 5,
                           minLines: 5,
                           contentPadding: const EdgeInsets.all(16),
-                           validator: (value) => validateDescription(value ?? ''),
+                          validator: (value) =>
+                              validateDescription(value ?? ''),
                         ),
                         _buildTextField(
                           controller: _leaseTermsController,
@@ -145,16 +175,6 @@ class _PostPriceState extends State<PostPrice> with InputValidationMixin {
               ),
             ],
           ),
-          // Positioned icon at the top-right
-          const Positioned(
-            top: 20,
-            right: 20,
-            child: Icon(
-              Icons.draw,
-              size: 70,
-              color: AppColors.primary,
-            ),
-          ),
         ],
       ),
     );
@@ -198,7 +218,8 @@ class _PostPriceState extends State<PostPrice> with InputValidationMixin {
           contentPadding: contentPadding,
         ),
         validator: validator, // Apply validation here
-        keyboardType: label == 'Price' ? TextInputType.number : TextInputType.text,
+        keyboardType:
+            label == 'Price' ? TextInputType.number : TextInputType.text,
       ),
     );
   }
