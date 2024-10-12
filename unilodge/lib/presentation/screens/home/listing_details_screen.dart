@@ -221,8 +221,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16.0, vertical: 10),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment
-                            .start, // Aligns the text to the left
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Expanded(
                             child: Text(
@@ -239,13 +238,6 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                     ),
                   ],
                 ),
-              ),
-
-              const SizedBox(height: 15),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15.0),
-                child: Divider(
-                    height: 20, color: Color.fromARGB(255, 223, 223, 223)),
               ),
               const SizedBox(height: 15),
               Row(
@@ -334,6 +326,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                     child: CustomButton(
                       text: "Chat with owner",
                       onPressed: () {
+                        print(widget.listing.owner_id);
                         _chatBloc
                             .add(CreateInboxEvent(widget.listing.owner_id!.id));
                       },

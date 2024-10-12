@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createInbox, getChatMessages, getInbox, getInboxDetails, getUserDetails, saveMessage } from "../services/chat.services";
+import { createInbox, getAllInbox, getChatMessages, getInbox, getInboxDetails, getUserDetails, saveMessage } from "../services/chat.services";
 import { UserType } from "../middlewares/token.authentication";
 import { getAllActiveUsers } from "../services/chat.services";
 
@@ -141,6 +141,21 @@ export const getInboxController = async (req: Request & { user?: UserType }, res
             return res.status(400).json({ message: 'User ID not provided' });
         }
         const result = await getInbox(user_id)
+        return res.status(200).json({ message: result });
+    } catch (error) {
+        return res.status(500).json({ 'message': 'Internal Server Error' });
+    }
+};
+export const getAllInboxController = async (req: Request & { user?: UserType }, res: Response): Promise<any> => {
+    try {
+        const user = req.user;
+        if (!user) return res.status(404).json({ error: "User not found" });
+
+        const { user_id } = user;
+        if (!user_id) {
+            return res.status(400).json({ message: 'User ID not provided' });
+        }
+        const result = await getAllInbox(user_id)
         return res.status(200).json({ message: result });
     } catch (error) {
         return res.status(500).json({ 'message': 'Internal Server Error' });

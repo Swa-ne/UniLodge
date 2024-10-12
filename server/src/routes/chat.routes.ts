@@ -1,5 +1,5 @@
 import express, { Express, Request, Response, Router } from "express"
-import { createPrivateInboxController, getAllActiveUsersController, getChatMessagesController, getInboxController, getInboxDetailsController, getMessagesController, getUserDetailsController, saveMessageController } from "../controllers/chat.controller"
+import { createPrivateInboxController, getAllActiveUsersController, getAllInboxController, getChatMessagesController, getInboxController, getInboxDetailsController, getMessagesController, getUserDetailsController, saveMessageController } from "../controllers/chat.controller"
 import { authenticateToken } from "../middlewares/token.authentication"
 
 
@@ -13,5 +13,6 @@ router.get("/get_messages/:chat_id/:page", authenticateToken, getMessagesControl
 router.get("/get_user_details/:chat_id", authenticateToken, getUserDetailsController)
 router.get("/get_activesers", authenticateToken, getAllActiveUsersController)
 router.get("/get_inbox", authenticateToken, getInboxController)
+router.get("/get_all_inbox", authenticateToken, getAllInboxController)
 
 export default router

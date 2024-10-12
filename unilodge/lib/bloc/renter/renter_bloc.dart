@@ -26,6 +26,7 @@ class RenterBloc extends Bloc<RenterEvent, RenterState> {
         final listings = await renterRepository.fetchAllDorms();
         emit(DormsLoaded(listings));
       } catch (e) {
+        print(e);
         emit(DormsError(e.toString()));
       }
     });

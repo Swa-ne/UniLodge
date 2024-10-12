@@ -16,7 +16,7 @@ class PostLocation extends StatefulWidget {
 }
 
 class _PostLocationState extends State<PostLocation> with InputValidationMixin {
-  final _formKey = GlobalKey<FormState>(); 
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _propertyNameController = TextEditingController();
   final TextEditingController _cityController = TextEditingController();
   final TextEditingController _streetController = TextEditingController();
@@ -25,7 +25,8 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
   final TextEditingController _regionController = TextEditingController();
   final TextEditingController _provinceController = TextEditingController();
 
-  AutovalidateMode _autovalidateMode = AutovalidateMode.disabled; // Initially disabled
+  AutovalidateMode _autovalidateMode =
+      AutovalidateMode.disabled; // Initially disabled
   List<dynamic> allData = [];
   List<String> provinces = [];
   List<String> cities = [];
@@ -179,10 +180,8 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
           labelText: label,
           hintText: hint,
           hintStyle: const TextStyle(
-          fontWeight: FontWeight.normal,
-         
-         
-        ),
+            fontWeight: FontWeight.normal,
+          ),
           suffixIcon: options != null ? Icon(Icons.arrow_drop_down) : null,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
@@ -226,37 +225,59 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Positioned(
-                      top: 60,
-                      left: 16,
-                      child: Text(
-                        'Property Information',
-                        style: TextStyle(
-                          color: AppColors.primary,
-                          fontSize: 18,
-                        ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20.0),
+                      child: Row(
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Property Information',
+                                style: TextStyle(
+                                  color: AppColors.primary,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                'Please fill in all fields below to continue',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.normal,
+                                  color: AppColors.primary,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 17.0),
+                                child: Icon(
+                                  Icons.draw,
+                                  size: 70,
+                                  color: AppColors.primary,
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
                       ),
                     ),
-                    const Positioned(
-                      top: 90,
-                      left: 16,
-                      right: 16,
-                      child: Text(
-                        'Please fill in all fields below to continue',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.normal,
-                          color: AppColors.primary,
-                        ),
-                      ),
+                    SizedBox(
+                      height: 20,
                     ),
-                    SizedBox(height: 30),
                     _buildTextField(
                       controller: _propertyNameController,
                       label: 'Property Name',
                       hint: "Enter property name",
                       validator: (value) => validatepropertyName(value ?? ''),
-                      
                     ),
                     _buildTextField(
                       controller: _regionController,
@@ -282,7 +303,6 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
                       hint: "Select barangay",
                       options: barangays,
                     ),
-              
                     _buildTextField(
                       controller: _houseNumberController,
                       label: 'House Number',
@@ -339,8 +359,8 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
-                  
-                          _autovalidateMode = AutovalidateMode.onUserInteraction;
+                          _autovalidateMode =
+                              AutovalidateMode.onUserInteraction;
                         });
                         if (_formKey.currentState!.validate()) {
                           final combinedAddress =

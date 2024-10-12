@@ -91,6 +91,38 @@ export async function getInbox(userId: string) {
         if (!user) {
             return 'User not found';
         }
+        console.log(user.inbox)
+        return user.inbox;
+    } catch (error) {
+        console.error('Error fetching inbox:', error);
+        throw error;
+    }
+}
+
+export async function getAllInbox(userId: string) {
+    try {
+        const user = await User.findById(userId).populate({
+            path: 'inbox',
+            options: { sort: { 'lastMessage': -1 } },
+            populate: [
+                {
+                    path: 'lastMessage',
+                    model: 'Message'
+                },
+                {
+                    path: 'userIds',
+                    model: 'ActiveUsers',
+                    populate: {
+                        path: "userId",
+                        model: "User",
+                    },
+                },
+            ]
+        });
+        if (!user) {
+            return 'User not found';
+        }
+        console.log(user.inbox)
         return user.inbox;
     } catch (error) {
         console.error('Error fetching inbox:', error);
@@ -171,7 +203,7 @@ export async function inboxAvailable(userIds: string[], isGroup: boolean) {
         const inbox = await Inbox.findOne({
             userIds: { $all: objectIds, $size: objectIds.length },
             isGroup
-        });
+        }).populate({ path: "userIds", populate: "userId" });
         return inbox
     } catch (error) {
         return { message: error, httpCode: 500 };
@@ -180,13 +212,13 @@ export async function inboxAvailable(userIds: string[], isGroup: boolean) {
 export async function getInboxDetails(chatId: string, currentUserId: string) {
     try {
         const messages = await getChatMessages(chatId, "1")
-        const details = await Inbox.findById(chatId)
+        const details = await Inbox.findById(chatId).populate("userIds");
         if (!details) {
             return { message: 'Chat ID not found', httpCode: 404 }
         }
         const stringUserIds = details.userIds.filter(id => id.toString() !== currentUserId.toString())
         const activeDetails = await ActiveUsers.find({ _id: { $in: stringUserIds } })
-        return { message: { messages, details, activeDetails }, httpCode: 200 }
+        return { message: { ...details._doc }, httpCode: 200 }
     } catch (error) {
         return { message: error, httpCode: 500 };
     }
