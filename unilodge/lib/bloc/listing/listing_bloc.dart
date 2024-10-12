@@ -14,7 +14,7 @@ class ListingBloc extends Bloc<ListingEvent, ListingState> {
         final listings = await _listingRepository.fetchListings();
         emit(ListingLoaded(listings));
       } catch (e) {
-        emit(ListingError(e.toString()));
+        emit(const ListingError("Internet Connection Error"));
       }
     });
 
@@ -27,7 +27,7 @@ class ListingBloc extends Bloc<ListingEvent, ListingState> {
           emit(const ListingCreationError("Internet Connection Error"));
         }
       } catch (e) {
-        emit(ListingCreationError(e.toString()));
+        emit(const ListingCreationError("Internet Connection Error"));
       }
     });
 
@@ -41,7 +41,7 @@ class ListingBloc extends Bloc<ListingEvent, ListingState> {
 
         emit(SuccessUpdateDorm(DateTime.now()));
       } catch (e) {
-        emit(UpdateDormError(e.toString()));
+        emit(const UpdateDormError("Internet Connection Error"));
       }
     });
 
@@ -54,7 +54,7 @@ class ListingBloc extends Bloc<ListingEvent, ListingState> {
           emit(const ToggleError("Internet Connection Error"));
         }
       } catch (e) {
-        emit(ToggleError(e.toString()));
+        emit(const ToggleError("Internet Connection Error"));
       }
     });
 
@@ -67,7 +67,7 @@ class ListingBloc extends Bloc<ListingEvent, ListingState> {
           emit(const DeletionError("Internet Connection Error"));
         }
       } catch (e) {
-        emit(DeletionError(e.toString()));
+        emit(const DeletionError("Internet Connection Error"));
       }
     });
     on<SelectCardEvent>((event, emit) {

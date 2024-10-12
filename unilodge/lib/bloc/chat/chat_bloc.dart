@@ -18,7 +18,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           final inbox = await _chatRepo.getInboxDetails(inbox_id);
           emit(CreateInboxSuccess(inbox));
         } catch (e) {
-          emit(CreateInboxError(e.toString()));
+          emit(const CreateInboxError("Internet Connection Error"));
         }
       },
     );
@@ -29,7 +29,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           final inbox = await _chatRepo.getInbox();
           emit(GetInboxSuccess(inbox));
         } catch (e) {
-          emit(GetInboxError(e.toString()));
+          emit(const GetInboxError("Internet Connection Error"));
         }
       },
     );
@@ -40,7 +40,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           final user = await _chatRepo.getReceiverDetails(event.chat_id);
           emit(GetReceiverDetailsSuccess(user));
         } catch (e) {
-          emit(GetReceiverDetailsError(e.toString()));
+          emit(const GetReceiverDetailsError("Internet Connection Error"));
         }
       },
     );
@@ -56,7 +56,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             emit(const SaveMessageError("Internet Connection Error"));
           }
         } catch (e) {
-          emit(SaveMessageError(e.toString()));
+          emit(const SaveMessageError("Internet Connection Error"));
         }
       },
     );
@@ -68,7 +68,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
               await _chatRepo.getMessage(event.chat_id, event.page);
           emit(GetMessageSuccess(messages));
         } catch (e) {
-          emit(GetMessageError(e.toString()));
+          emit(const GetMessageError("Internet Connection Error"));
         }
       },
     );
@@ -86,7 +86,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           );
           emit(OnReceiveMessageSuccess(message));
         } catch (e) {
-          emit(OnReceiveMessageError(e.toString()));
+          emit(const OnReceiveMessageError("Internet Connection Error"));
         }
       },
     );
