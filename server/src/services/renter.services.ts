@@ -1,4 +1,4 @@
-import { startSession, Document } from 'mongoose';
+import { startSession, Document, ObjectId } from 'mongoose';
 import { Dorm, DormSchemaInterface } from '../models/dorm/dorm.model';
 import { Review } from '../models/dorm/review.model';
 import { Saved, SavedSchemaInterface } from '../models/dorm/saved.model';
@@ -48,13 +48,13 @@ export const getSavedDorms = async (user_id: string) => {
       user_id,
     }).populate("dorm_ids");
 
-    const savedDormIds: string[] = savedData
-      ? savedData.dorm_ids.map((dormId) => dormId.toString())
+    const savedDormIds: ObjectId[] = savedData
+      ? savedData.dorm_ids.map((dormId) => dormId)
       : [];
 
     const dorms: (DormSchemaInterface & Document)[] | null = await Dorm.find({
       _id: { $in: savedDormIds }, 
-      owner_id: { $ne: user_id }, 
+      owner_id: { $ne: user_id },
       isAvailable: true,
     })
       .populate("owner_id")
@@ -62,11 +62,13 @@ export const getSavedDorms = async (user_id: string) => {
       .populate("currency")
       .populate("imageUrl");
 
-    return { message: dorms, httpCode: 200 }; // Return only the saved dorms
+    return { message: dorms, httpCode: 200 }; 
   } catch (error) {
+    console.error("Error in getSavedDorms:", error); 
     return { error: "Internal Server Error", httpCode: 500 };
   }
 };
+
 
 
 
