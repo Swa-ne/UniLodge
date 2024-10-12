@@ -10,15 +10,6 @@ class RenterBloc extends Bloc<RenterEvent, RenterState> {
   final RenterRepository renterRepository;
 
   RenterBloc({required this.renterRepository}) : super(RenterInitial()) {
-    // on<FetchSavedDorms>((event, emit) async {
-    //   emit(RenterInitial());
-    //   try {
-    //     final savedDorms = await renterRepository.fetchSavedDorms(event.userId);
-    //     emit(DormsLoaded(savedDorms));
-    //   } catch (e) {
-    //     emit(DormsError(e.toString()));
-    //   }
-    // });
 
     on<FetchAllDorms>((event, emit) async {
       try {
@@ -60,6 +51,16 @@ class RenterBloc extends Bloc<RenterEvent, RenterState> {
         emit(const ReviewPosted("Review posted successfully!"));
       } catch (e) {
         emit(ReviewError(e.toString()));
+      }
+    });
+
+    on<FetchSavedDorms>((event, emit) async {
+      try {
+        emit(DormsLoading());
+        final listings = await renterRepository.fetchSavedDorms();
+        emit(DormsLoaded(listings));
+      } catch (e) {
+        emit(DormsError(e.toString()));
       }
     });
 

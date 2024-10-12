@@ -190,7 +190,7 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                 child: ExpansionTile(
                   backgroundColor: const Color.fromARGB(5, 0, 0, 0),
                   title: Text(
-                    "Amenities",
+                    "Amenities and Utilities",
                     style: TextStyle(color: Color(0xff434343), fontSize: 15),
                   ),
                   children: [

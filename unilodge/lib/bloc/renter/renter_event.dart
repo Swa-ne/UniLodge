@@ -8,12 +8,6 @@ abstract class RenterEvent extends Equatable {
 }
 
 class FetchSavedDorms extends RenterEvent {
-  final String userId;
-
-  const FetchSavedDorms(this.userId);
-
-  @override
-  List<Object> get props => [userId];
 }
 
 class FetchAllDorms extends RenterEvent {}

@@ -42,17 +42,6 @@ class TypeListingScreen extends StatelessWidget {
               );
             } else if (state is DormsLoaded) {
               final listings = state.allDorms;
-
-              // if (listings.isEmpty) {
-              //   return Center(
-              //     child: CustomText(
-              //       text: 'No listings available',
-              //       fontSize: 18,
-              //       color: AppColors.primary,
-              //     ),
-              //   );
-              // }
-
               if (listings.isEmpty) {
                 return Center(
                   child: Column(

@@ -1,24 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:unilodge/bloc/renter/renter_bloc.dart';
+import 'package:unilodge/common/widgets/error_message.dart';
+import 'package:unilodge/common/widgets/shimmer_loading.dart';
 import 'favorites_card.dart';
-import 'sample_favs.dart';
 
-class FavoritesListView extends StatelessWidget {
+class FavoritesListView extends StatefulWidget {
   const FavoritesListView({super.key});
+
+  @override
+  State<FavoritesListView> createState() => _FavoritesListViewState();
+}
+
+class _FavoritesListViewState extends State<FavoritesListView> {
+  late RenterBloc _renterBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _renterBloc = BlocProvider.of<RenterBloc>(context);
+    _renterBloc.add(FetchSavedDorms());
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        itemCount: favorites.length,
-        itemBuilder: (context, index) {
-          final item = favorites[index];
-          return FavoriteCard(
-            image: item['image']!,
-            dormName: item['dormName']!,
-            address: item['address']!,
-            price: item['price']!,
-            rating: item['rating']!,
-          );
+      body: BlocBuilder<RenterBloc, RenterState>(
+        builder: (context, state) {
+          if (state is DormsLoading) {
+            return const SizedBox(
+              height: 800,
+              child: ShimmerLoading(),
+            );
+          } else if (state is DormsLoaded) {
+            return ListView.builder(
+              itemCount: state.allDorms.length, 
+              itemBuilder: (context, index) {
+                final listing = state.allDorms[index];
+                return FavoriteCard(
+                  listing: listing,
+                );
+              },
+            );
+          } else if (state is DormsError) {
+            return ErrorMessage(errorMessage: state.message);
+          }
+          return Container();
         },
       ),
     );

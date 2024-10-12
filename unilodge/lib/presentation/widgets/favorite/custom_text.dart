@@ -21,6 +21,7 @@ class CustomText extends StatelessWidget {
       style: TextStyle(
         fontSize: fontSize,
         color: color,
+        overflow: TextOverflow.ellipsis,
         fontWeight: fontWeight,
       ),
     );
