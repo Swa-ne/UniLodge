@@ -13,10 +13,11 @@ final _apiUrlRoot =
 
 abstract class ChatRepo {
   Future<bool> saveMessage(String message, String chat_id, String receiver_id);
-  Future<InboxModel> createPrivateInbox(String receiver_user_id);
-  Future<String> getInboxDetails(String chat_id);
+  Future<String> createPrivateInbox(String receiver_user_id);
+  Future<InboxModel> getInboxDetails(String chat_id);
   Future<List<MessageModel>> getMessage(String chat_id, int page);
   Future<List<InboxModel>> getInbox();
+  Future<List<InboxModel>> getAllInbox();
   Future<UserModel> getReceiverDetails(String chat_id);
 }
 
@@ -56,7 +57,7 @@ class ChatRepoImpl extends ChatRepo {
   }
 
   @override
-  Future<InboxModel> createPrivateInbox(String receiver_user_id) async {
+  Future<String> createPrivateInbox(String receiver_user_id) async {
     final access_token = await _tokenController.getAccessToken();
     final refresh_token = await _tokenController.getRefreshToken();
     var response = await http.post(
@@ -76,14 +77,14 @@ class ChatRepoImpl extends ChatRepo {
     final response_body = json.decode(response.body);
 
     if (response.statusCode == 200) {
-      return InboxModel.fromJson(response_body['message']);
+      return response_body['message']['_id'];
     } else {
       throw Exception(response_body['error']);
     }
   }
 
   @override
-  Future<String> getInboxDetails(String chat_id) async {
+  Future<InboxModel> getInboxDetails(String chat_id) async {
     final access_token = await _tokenController.getAccessToken();
     final refresh_token = await _tokenController.getRefreshToken();
     var response = await http
@@ -96,7 +97,7 @@ class ChatRepoImpl extends ChatRepo {
     final response_body = json.decode(response.body);
 
     if (response.statusCode == 200) {
-      return response_body["message"];
+      return InboxModel.fromJson(response_body["message"]);
     } else {
       throw Exception(response_body['message']);
     }
@@ -149,6 +150,32 @@ class ChatRepoImpl extends ChatRepo {
           .map((json) => InboxModel.fromJson(json))
           .toList();
 
+      return inboxList;
+    } else {
+      throw Exception(response_body['message']);
+    }
+  }
+
+  @override
+  Future<List<InboxModel>> getAllInbox() async {
+    final access_token = await _tokenController.getAccessToken();
+    final refresh_token = await _tokenController.getRefreshToken();
+    var response = await http.get(
+      Uri.parse("$_apiUrl/get_all_inbox"),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': access_token,
+        'Cookie': 'refresh_token=$refresh_token',
+      },
+    );
+    final response_body = json.decode(response.body);
+
+    if (response.statusCode == 200) {
+      List<InboxModel> inboxList = (response_body['message'] as List)
+          .map((json) => InboxModel.fromJson(json))
+          .toList();
+      print("dsfsfas $inboxList");
       return inboxList;
     } else {
       throw Exception(response_body['message']);

@@ -12,10 +12,17 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       (event, emit) async {
         try {
           emit(ChatLoading());
-          final inbox =
+          final inbox_id =
               await _chatRepo.createPrivateInbox(event.receiver_user_id);
+
+          final inboxes = await _chatRepo.getAllInbox();
+          final inbox = inboxes.firstWhere(
+            (ibx) => ibx.id == inbox_id,
+          );
+          print("3fsdfhksdhfk $inbox");
           emit(CreateInboxSuccess(inbox));
         } catch (e) {
+          print("irror $e");
           emit(CreateInboxError(e.toString()));
         }
       },

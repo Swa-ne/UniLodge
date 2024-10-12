@@ -25,7 +25,7 @@ class RenterRepositoryImpl implements RenterRepository {
         'Cookie': 'refresh_token=$refresh_token',
       },
     );
-
+    print(response.body);
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseBody = json.decode(response.body);
 
