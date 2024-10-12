@@ -3,6 +3,7 @@ import { authenticateToken } from "../middlewares/token.authentication";
 import {
   deleteSavedDormController,
   getDormsController,
+  getSavedDormsController,
   postReviewController,
   putSavedDormController,
 } from "../controllers/renter.controller";
@@ -13,6 +14,7 @@ const router = Router();
 router.use(authenticateToken);
 
 router.get("/my-dorms", getDormsController);
+router.get("/saved-dorms", getSavedDormsController);
 router.post("/give-review/:dorm_id", postReviewController);
 router.put("/add/saved/:dorm_id", saveDormLimiter, putSavedDormController);
 router.delete(
