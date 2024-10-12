@@ -30,7 +30,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (event, emit) async {
         try {
           emit(AuthLoading());
-          final access_token = await _authRepo.signUp(event.user);
+          final access_token =
+              await _authRepo.signUp(event.user, event.isThirdParty);
           emit(SignUpSuccess(access_token));
         } catch (e) {
           emit(const SignUpError("Internet Connection Error"));

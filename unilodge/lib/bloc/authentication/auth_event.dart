@@ -11,11 +11,12 @@ abstract class AuthEvent extends Equatable {
 
 class SignUpEvent extends AuthEvent {
   final SignUpUserModel user;
+  final bool isThirdParty;
 
-  const SignUpEvent(this.user);
+  const SignUpEvent(this.user, this.isThirdParty);
 
   @override
-  List<Object> get props => [user];
+  List<Object> get props => [user, isThirdParty];
 }
 
 class LoginEvent extends AuthEvent {
