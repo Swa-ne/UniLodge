@@ -12,8 +12,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       (event, emit) async {
         try {
           emit(ChatLoading());
-          final inbox =
+          final inbox_id =
               await _chatRepo.createPrivateInbox(event.receiver_user_id);
+
+          final inbox = await _chatRepo.getInboxDetails(inbox_id);
           emit(CreateInboxSuccess(inbox));
         } catch (e) {
           emit(CreateInboxError(e.toString()));
