@@ -60,10 +60,11 @@ export const putSavedDorm = async (user_id: string, dorm_id: string) => {
             saved.dorm_ids.push(dorm._id);
             await saved.save({ session });
         } else {
-            new Saved({
+            const newSaved = new Saved({
                 user_id,
                 dorm_ids: [dorm_id],
-            }).save({ session });
+            })
+            await newSaved.save({ session });
         }
 
         await session.commitTransaction();
