@@ -75,11 +75,13 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         try {
           emit(ChatLoading());
           final message = MessageModel(
-              message: event.msg,
-              sender: event.sender_id,
-              chat_id: event.chat_id,
-              is_read: false,
-              created_at: DateTime.now().toString());
+            message: event.msg,
+            sender: event.sender_id,
+            chat_id: event.chat_id,
+            is_read: false,
+            created_at: DateTime.now().toString(),
+            updated_at: DateTime.now().toString(),
+          );
           emit(OnReceiveMessageSuccess(message));
         } catch (e) {
           emit(OnReceiveMessageError(e.toString()));

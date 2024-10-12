@@ -252,8 +252,8 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16.0, vertical: 10),
                       child: Row(
-                        mainAxisAlignment:
-                            MainAxisAlignment.start, // Aligns the text to the left
+                        mainAxisAlignment: MainAxisAlignment
+                            .start, // Aligns the text to the left
                         children: [
                           Expanded(
                             child: Text(
@@ -276,9 +276,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15.0),
                 child: Divider(
-                  height: 20,
-                  color: Color.fromARGB(255, 223, 223, 223),
-                ),
+                    height: 20, color: Color.fromARGB(255, 223, 223, 223)),
               ),
               const SizedBox(height: 15),
               Row(

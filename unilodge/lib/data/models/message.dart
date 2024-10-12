@@ -7,6 +7,7 @@ class MessageModel extends Equatable {
   final String chat_id;
   final bool is_read;
   final String created_at;
+  final String updated_at;
 
   const MessageModel({
     this.id,
@@ -15,6 +16,7 @@ class MessageModel extends Equatable {
     required this.chat_id,
     required this.is_read,
     required this.created_at,
+    required this.updated_at,
   });
 
   factory MessageModel.fromJson(Map<String, dynamic> json) {
@@ -25,6 +27,7 @@ class MessageModel extends Equatable {
       chat_id: json['chatId'] ?? '',
       is_read: json['wasActive'] ?? false,
       created_at: json['createdAt'] ?? "",
+      updated_at: json['updatedAt'] ?? "",
     );
   }
   Map<String, dynamic> toJson() {
@@ -35,6 +38,7 @@ class MessageModel extends Equatable {
       'chatId': chat_id,
       'isRead': is_read,
       'createdAt': created_at,
+      'updatedAt': updated_at,
     };
   }
 

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
-import 'package:unilodge/data/models/listing.dart'; // Import your Listing model
+import 'package:unilodge/data/models/listing.dart';
+import 'package:unilodge/presentation/listing/mixin/listing_validation.dart';
 
 class PostPrice extends StatefulWidget {
   final Listing listing;
@@ -12,7 +13,8 @@ class PostPrice extends StatefulWidget {
   _PostPriceState createState() => _PostPriceState();
 }
 
-class _PostPriceState extends State<PostPrice> {
+class _PostPriceState extends State<PostPrice> with InputValidationMixin {
+  final _formKey = GlobalKey<FormState>(); // GlobalKey to track form state
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _leaseTermsController = TextEditingController();
@@ -27,80 +29,88 @@ class _PostPriceState extends State<PostPrice> {
               Expanded(
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const SizedBox(height: 60),
-                      const Text(
-                        'Property Information',
-                        style: TextStyle(
-                          color: AppColors.primary,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                  child: Form(
+                    key: _formKey, 
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        const SizedBox(height: 17),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20.0),
+                          child: Row(
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Property Information',
+                                    style: TextStyle(
+                                      color: AppColors.primary,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    'Please fill in all fields below to continue',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.normal,
+                                      color: AppColors.primary,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 17.0),
+                                    child: Icon(
+                                      Icons.draw,
+                                      size: 70,
+                                      color: AppColors.primary,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 7),
-                      const Text(
-                        'Please fill in all fields below to continue',
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.normal,
-                          color: AppColors.primary,
+                        SizedBox(
+                          height: 20,
                         ),
-                      ),
-                      const SizedBox(height: 25),
-
-                      // // Display the selected property type here
-                      // Text(
-                      //   'Selected Property Type: ${widget.listing.selectedPropertyType ?? 'N/A'}',
-                      //   style: const TextStyle(
-                      //     fontSize: 16,
-                      //     fontWeight: FontWeight.bold,
-                      //   ),
-                      // ),
-                      // Text(
-                      //   'Address: ${widget.listing.address ?? 'N/A'}',
-                      //   style: const TextStyle(
-                      //     fontSize: 16,
-                      //     fontWeight: FontWeight.bold,
-                      //   ),
-                      // ),
-                      // Text(
-                      //   'Property Name: ${widget.listing.property_name ?? "N/A"}',
-                      //   style: const TextStyle(
-                      //     fontSize: 16,
-                      //     fontWeight: FontWeight.bold,
-                      //   ),
-                      // ),
-
-                      const SizedBox(height: 20), // Add spacing after text
-
-                  
-                      _buildTextField(
-                        controller: _priceController,
-                        label: 'Price',
-                        hint: 'Enter price',
-                        contentPadding: const EdgeInsets.all(16),
-                      ),
-                     
-                      _buildTextField(
-                        controller: _descriptionController,
-                        label: 'Description',
-                        hint: 'Enter description',
-                        maxLines: 5,
-                        minLines: 5,
-                        contentPadding: const EdgeInsets.all(16),
-                      ),
-                    
-                      _buildTextField(
-                        controller: _leaseTermsController,
-                        label: 'Least Terms',
-                        hint: 'Enter least terms',
-                        maxLines: 5,
-                        minLines: 5,
-                        contentPadding: const EdgeInsets.all(16),
-                      ),
-                    ],
+                        _buildTextField(
+                          controller: _priceController,
+                          label: 'Price',
+                          hint: 'Enter price',
+                          contentPadding: const EdgeInsets.all(16),
+                          validator: (value) => validateNumber(value ?? ''),
+                        ),
+                        _buildTextField(
+                          controller: _descriptionController,
+                          label: 'Description',
+                          hint: 'Enter description',
+                          maxLines: 5,
+                          minLines: 5,
+                          contentPadding: const EdgeInsets.all(16),
+                          validator: (value) =>
+                              validateDescription(value ?? ''),
+                        ),
+                        _buildTextField(
+                          controller: _leaseTermsController,
+                          label: 'Lease Terms',
+                          hint: 'Enter lease terms',
+                          maxLines: 5,
+                          minLines: 5,
+                          contentPadding: const EdgeInsets.all(16),
+                          validator: (value) => validateLeaseTerms(value ?? ''),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -140,15 +150,14 @@ class _PostPriceState extends State<PostPrice> {
                     const SizedBox(width: 20),
                     ElevatedButton(
                       onPressed: () {
-                        // Update the listing with the new data from this page
-                        final updatedListing = widget.listing.copyWith(
-                          price: _priceController.text,
-                          description: _descriptionController.text,
-                          leastTerms: _leaseTermsController.text,  
-                        );
-
-          
-                        context.push('/post-Facility', extra: updatedListing);
+                        if (_formKey.currentState!.validate()) {
+                          final updatedListing = widget.listing.copyWith(
+                            price: _priceController.text,
+                            description: _descriptionController.text,
+                            leastTerms: _leaseTermsController.text,
+                          );
+                          context.push('/post-Facility', extra: updatedListing);
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
@@ -166,22 +175,12 @@ class _PostPriceState extends State<PostPrice> {
               ),
             ],
           ),
-          // Positioned icon at the top-right
-          const Positioned(
-            top: 20,
-            right: 20,
-            child: Icon(
-              Icons.draw,
-              size: 70,
-              color: AppColors.primary,
-            ),
-          ),
         ],
       ),
     );
   }
 
-  // Helper function to build text fields
+  // Helper function to build text fields with validation
   Widget _buildTextField({
     required TextEditingController controller,
     required String label,
@@ -190,6 +189,7 @@ class _PostPriceState extends State<PostPrice> {
     int minLines = 1,
     EdgeInsetsGeometry contentPadding =
         const EdgeInsets.symmetric(vertical: 16.0),
+    String? Function(String?)? validator, // Add validator parameter
   }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
@@ -217,6 +217,9 @@ class _PostPriceState extends State<PostPrice> {
           ),
           contentPadding: contentPadding,
         ),
+        validator: validator, // Apply validation here
+        keyboardType:
+            label == 'Price' ? TextInputType.number : TextInputType.text,
       ),
     );
   }

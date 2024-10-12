@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
+import 'package:unilodge/presentation/listing/mixin/listing_validation.dart';
 
 class PostLocation extends StatefulWidget {
   final String selectedPropertyType;
@@ -14,7 +15,8 @@ class PostLocation extends StatefulWidget {
   _PostLocationState createState() => _PostLocationState();
 }
 
-class _PostLocationState extends State<PostLocation> {
+class _PostLocationState extends State<PostLocation> with InputValidationMixin {
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _propertyNameController = TextEditingController();
   final TextEditingController _cityController = TextEditingController();
   final TextEditingController _streetController = TextEditingController();
@@ -23,10 +25,13 @@ class _PostLocationState extends State<PostLocation> {
   final TextEditingController _regionController = TextEditingController();
   final TextEditingController _provinceController = TextEditingController();
 
+  AutovalidateMode _autovalidateMode =
+      AutovalidateMode.disabled; // Initially disabled
   List<dynamic> allData = [];
   List<String> provinces = [];
   List<String> cities = [];
   List<String> barangays = [];
+
   @override
   void initState() {
     super.initState();
@@ -153,6 +158,7 @@ class _PostLocationState extends State<PostLocation> {
     required TextEditingController controller,
     required String label,
     required String hint,
+    String? Function(String?)? validator,
     List<String>? options,
   }) {
     return Padding(
@@ -173,6 +179,9 @@ class _PostLocationState extends State<PostLocation> {
         decoration: InputDecoration(
           labelText: label,
           hintText: hint,
+          hintStyle: const TextStyle(
+            fontWeight: FontWeight.normal,
+          ),
           suffixIcon: options != null ? Icon(Icons.arrow_drop_down) : null,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
@@ -186,6 +195,14 @@ class _PostLocationState extends State<PostLocation> {
             borderRadius: BorderRadius.circular(10),
           ),
         ),
+        validator: validator ??
+            (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please select $label';
+              }
+              return null;
+            },
+        keyboardType: options == null ? TextInputType.text : TextInputType.none,
       ),
     );
   }
@@ -197,154 +214,188 @@ class _PostLocationState extends State<PostLocation> {
         .toList();
 
     return Scaffold(
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Positioned(
-                    top: 60,
-                    left: 16,
-                    child: Text(
-                      'Property Information',
-                      style: TextStyle(
-                        color: AppColors.primary,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+      body: Form(
+        key: _formKey,
+        autovalidateMode: _autovalidateMode,
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20.0),
+                      child: Row(
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Property Information',
+                                style: TextStyle(
+                                  color: AppColors.primary,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                'Please fill in all fields below to continue',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.normal,
+                                  color: AppColors.primary,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 17.0),
+                                child: Icon(
+                                  Icons.draw,
+                                  size: 70,
+                                  color: AppColors.primary,
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
                       ),
                     ),
-                  ),
-                  const Positioned(
-                    top: 90,
-                    left: 16,
-                    right: 16,
-                    child: Text(
-                      'Please fill in all fields below to continue',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.normal,
-                        color: AppColors.primary,
-                      ),
+                    SizedBox(
+                      height: 20,
                     ),
-                  ),
-                  const Positioned(
-                      top: 20,
-                      right: 20,
-                      child: Icon(
-                        Icons.draw,
-                        size: 70,
-                        color: AppColors.primary,
-                      )),
-                  _buildTextField(
+                    _buildTextField(
                       controller: _propertyNameController,
                       label: 'Property Name',
-                      hint: "Enter property name"),
-                  _buildTextField(
-                    controller: _regionController,
-                    label: 'Region',
-                    hint: "Select region",
-                    options: regions,
-                  ),
-                  _buildTextField(
+                      hint: "Enter property name",
+                      validator: (value) => validatepropertyName(value ?? ''),
+                    ),
+                    _buildTextField(
+                      controller: _regionController,
+                      label: 'Region',
+                      hint: "Select region",
+                      options: regions,
+                    ),
+                    _buildTextField(
                       controller: _provinceController,
                       label: 'Province',
                       hint: "Select province",
-                      options: provinces),
-                  _buildTextField(
+                      options: provinces,
+                    ),
+                    _buildTextField(
                       controller: _cityController,
                       label: 'City',
                       hint: "Select city",
-                      options: cities),
-                  _buildTextField(
+                      options: cities,
+                    ),
+                    _buildTextField(
                       controller: _barangayController,
                       label: 'Barangay',
                       hint: "Select barangay",
-                      options: barangays),
-                  _buildTextField(
+                      options: barangays,
+                    ),
+                    _buildTextField(
                       controller: _houseNumberController,
                       label: 'House Number',
-                      hint: "Enter house number"),
-                  _buildTextField(
+                      hint: "Enter house number",
+                      validator: (value) => validateNumber(value ?? ''),
+                    ),
+                    _buildTextField(
                       controller: _streetController,
                       label: 'Street',
-                      hint: "Enter street"),
-                ],
+                      hint: "Enter street",
+                      validator: (value) => validateStreet(value ?? ''),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(1.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: const BorderRadius.horizontal(),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color.fromARGB(255, 119, 119, 119)
-                        .withOpacity(0.2),
-                    spreadRadius: 1,
-                    blurRadius: 5,
-                    offset: const Offset(0, -1),
-                  ),
-                ],
-              ),
-              padding:
-                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  OutlinedButton(
-                    onPressed: () {
-                      context.pop();
-                    },
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.black,
-                      backgroundColor: Colors.transparent,
-                      side: const BorderSide(color: Colors.black, width: 1),
-                      minimumSize: const Size(120, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
+            Padding(
+              padding: const EdgeInsets.all(1.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.horizontal(),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color.fromARGB(255, 119, 119, 119)
+                          .withOpacity(0.2),
+                      spreadRadius: 1,
+                      blurRadius: 5,
+                      offset: const Offset(0, -1),
                     ),
-                    child: const Text("Back"),
-                  ),
-                  const SizedBox(width: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      final combinedAddress =
-                          '${_houseNumberController.text} ${_streetController.text}, ${_barangayController.text}, ${_cityController.text}, ${_provinceController.text}, ${_regionController.text}';
-                      final updatedListing = Listing(
-                        selectedPropertyType: widget.selectedPropertyType,
-                        property_name: _propertyNameController.text,
-                        city: _cityController.text,
-                        street: _streetController.text,
-                        barangay: _barangayController.text,
-                        house_number: _houseNumberController.text,
-                        province: _provinceController.text,
-                        region: _regionController.text,
-                        address: combinedAddress,
-                      );
-                      context.push('/post-price', extra: updatedListing);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: const Color(0xff2E3E4A),
-                      minimumSize: const Size(120, 50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+                  ],
+                ),
+                padding: const EdgeInsets.symmetric(
+                    vertical: 10.0, horizontal: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    OutlinedButton(
+                      onPressed: () {
+                        context.pop();
+                      },
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: Colors.black,
+                        backgroundColor: Colors.transparent,
+                        side: const BorderSide(color: Colors.black, width: 1),
+                        minimumSize: const Size(120, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
-                      elevation: 0,
+                      child: const Text("Back"),
                     ),
-                    child: const Text("Next"),
-                  ),
-                ],
+                    const SizedBox(width: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          _autovalidateMode =
+                              AutovalidateMode.onUserInteraction;
+                        });
+                        if (_formKey.currentState!.validate()) {
+                          final combinedAddress =
+                              '${_houseNumberController.text} ${_streetController.text}, ${_barangayController.text}, ${_cityController.text}, ${_provinceController.text}, ${_regionController.text}';
+                          final updatedListing = Listing(
+                            selectedPropertyType: widget.selectedPropertyType,
+                            property_name: _propertyNameController.text,
+                            city: _cityController.text,
+                            street: _streetController.text,
+                            barangay: _barangayController.text,
+                            province: _provinceController.text,
+                            region: _regionController.text,
+                            house_number: _houseNumberController.text,
+                            address: combinedAddress,
+                          );
+                          context.push('/post-price', extra: updatedListing);
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: const Color(0xff2E3E4A),
+                        minimumSize: const Size(120, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        elevation: 0,
+                      ),
+                      child: const Text("Next"),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lottie/lottie.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
 import 'package:unilodge/provider/favorite_provider.dart';
@@ -42,60 +43,52 @@ class _ListingCardsState extends State<ListingCards> {
           ),
           child: Column(
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(5),
-                child: Opacity(
-                  opacity: 0.9,
-                  child: widget.listing.imageUrl != null &&
-                          widget.listing.imageUrl!.isNotEmpty
-                      ? Image.network(
-                          widget.listing.imageUrl![0],
-                          width: double.infinity,
-                          height: 200,
-                          fit: BoxFit.cover,
-                          loadingBuilder: (BuildContext context, Widget child,
-                              ImageChunkEvent? loadingProgress) {
-                            if (loadingProgress == null) {
-                              return child;
-                            } else {
-                              return Container(
-                                width: 360,
-                                height: 200,
-                                child: Center(
-                                  child: CircularProgressIndicator(
-                                    value: loadingProgress
-                                                .expectedTotalBytes !=
-                                            null
-                                        ? loadingProgress.cumulativeBytesLoaded /
-                                            (loadingProgress
-                                                .expectedTotalBytes ?? 1)
-                                        : null,
-                                    valueColor: AlwaysStoppedAnimation(
-                                      AppColors.linearOrange,
+              Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: Opacity(
+                    opacity: 0.9,
+                    child: widget.listing.imageUrl != null &&
+                            widget.listing.imageUrl!.isNotEmpty
+                        ? Image.network(
+                            widget.listing.imageUrl![
+                                0], 
+                            width: 360,
+                            height: 200,
+                            fit: BoxFit.cover,
+                            loadingBuilder: (BuildContext context, Widget child,
+                                ImageChunkEvent? loadingProgress) {
+                              if (loadingProgress == null) {
+                                return child;
+                              } else {
+                                return Container(
+                                  width: 360,
+                                  height: 200,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      value:
+                                          loadingProgress.expectedTotalBytes !=
+                                                  null
+                                              ? loadingProgress
+                                                      .cumulativeBytesLoaded /
+                                                  (loadingProgress
+                                                          .expectedTotalBytes ??
+                                                      1)
+                                              : null,
+                                      valueColor: AlwaysStoppedAnimation(
+                                          AppColors.linearOrange),
                                     ),
                                   ),
-                                ),
-                              );
-                            }
-                          },
-                          errorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              width: double.infinity,
-                              height: 200,
-                              color: Colors.grey[300],
-                              child: const Icon(
-                                Icons.broken_image,
-                                size: 50,
-                                color: Colors.grey,
-                              ),
-                            );
-                          },
-                        )
-                      : const SizedBox(
-                          width: 360,
-                          height: 200,
-                          child: Center(
-                            child: Text('No Image Available'),
+                                );
+                              }
+                            },
+                          )
+                        : const SizedBox(
+                            width: 360,
+                            height: 200,
+                            child: Center(
+                              child: Text('No Image Available'),
+                            ),
                           ),
                         ),
                 ),
@@ -107,14 +100,12 @@ class _ListingCardsState extends State<ListingCards> {
                   children: [
                     Row(
                       children: [
-                        Expanded(
-                          child: Text(
-                            widget.listing.property_name ?? '',
-                            style: const TextStyle(
-                              color: AppColors.textColor,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
-                            ),
+                        Text(
+                          widget.listing.property_name ?? '',
+                          style: TextStyle(
+                            color: AppColors.textColor,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
                           ),
                         ),
                         const Icon(
@@ -130,8 +121,8 @@ class _ListingCardsState extends State<ListingCards> {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      widget.listing.address ?? '', // Fixed typo
-                      style: const TextStyle(color: AppColors.textColor),
+                      widget.listing.adddress,
+                      style: TextStyle(color: AppColors.textColor),
                     ),
                     Row(
                       children: [

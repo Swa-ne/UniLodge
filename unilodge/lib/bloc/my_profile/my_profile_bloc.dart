@@ -15,10 +15,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           // id: userData.id,
           fullName: userData.fullName,
           username: userData.username,
-          profilePictureUrl: userData.profilePictureUrl, 
-          personalEmail: userData.personalEmail,         
-          personalNumber: userData.personalNumber,       
-          birthday: userData.birthday,                  
+          profilePictureUrl: userData.profilePictureUrl,
+          personalEmail: userData.personalEmail,
+          birthday: userData.birthday,
         ));
       } catch (e) {
         emit(const ProfileError('Failed to load profile'));
@@ -28,13 +27,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<SaveProfile>((event, emit) async {
       try {
         final updatedUser = UserProfileModel(
-          // id: event.id, 
+          // id: event.id,
           fullName: event.fullName,
           username: event.username,
-          profilePictureUrl: event.profilePictureUrl, 
-          personalEmail: event.personalEmail,        
-          personalNumber: event.personalNumber,       
-          birthday: event.birthday,                  
+          profilePictureUrl: event.profilePictureUrl,
+          personalEmail: event.personalEmail,
+          birthday: event.birthday,
         );
 
         await userRepository.updateUserProfile(updatedUser);
@@ -42,10 +40,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           // id: updatedUser.id,
           fullName: updatedUser.fullName,
           username: updatedUser.username,
-          profilePictureUrl: updatedUser.profilePictureUrl, 
-          personalEmail: updatedUser.personalEmail,        
-          personalNumber: updatedUser.personalNumber,       
-          birthday: updatedUser.birthday,                 
+          profilePictureUrl: updatedUser.profilePictureUrl,
+          personalEmail: updatedUser.personalEmail,
+          birthday: updatedUser.birthday,
         ));
       } catch (e) {
         emit(const ProfileError('Failed to save profile'));

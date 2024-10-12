@@ -5,6 +5,7 @@ import 'package:unilodge/bloc/listing/listing_bloc.dart';
 import 'package:unilodge/bloc/listing/listing_event.dart';
 import 'package:unilodge/bloc/listing/listing_state.dart';
 import 'package:unilodge/common/widgets/error_message.dart';
+import 'package:unilodge/common/widgets/shimmer_loading.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/presentation/widgets/favorite/custom_text.dart';
 import 'package:unilodge/presentation/widgets/your_listing/listing_card.dart';
@@ -51,7 +52,10 @@ class _ListingsState extends State<Listings> {
       body: BlocBuilder<ListingBloc, ListingState>(
         builder: (context, state) {
           if (state is FetchingLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return const SizedBox(
+              height: 600,
+              child: ShimmerLoading(),
+            );
           } else if (state is ListingLoaded) {
             final sortedListings = List.from(state.listing)
               ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
