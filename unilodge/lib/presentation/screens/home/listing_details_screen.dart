@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -73,7 +72,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                           child: InstaImageViewer(
                             child: Center(
                               child: Container(
-                                constraints: BoxConstraints(
+                                constraints: const BoxConstraints(
                                   maxHeight: 250, // Set a maximum height
                                   maxWidth: 400, // Set a maximum width
                                 ),
@@ -104,6 +103,19 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                                           );
                                         }
                                       },
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return Container(
+                                          width: double.infinity,
+                                          height: 200,
+                                          color: Colors.grey[300],
+                                          child: const Icon(
+                                            Icons.broken_image,
+                                            size: 50,
+                                            color: Colors.grey,
+                                          ),
+                                        );
+                                      },
                                     );
                                   },
                                 ),
@@ -111,21 +123,25 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                             ),
                           ),
                         )
-                      : Image.network(
-                          '',
+                      : Container(
                           width: double.infinity,
                           height: 200,
-                          fit: BoxFit.cover,
+                          color: Colors.grey[300],
+                          child: const Icon(
+                            Icons.broken_image,
+                            size: 50,
+                            color: Colors.grey,
+                          ),
                         ),
                 ),
               ),
 
               const SizedBox(height: 16),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
-                child: Text(widget.
-                  listing.property_name ?? '',
+                padding: const EdgeInsets.symmetric(
+                    vertical: 20.0, horizontal: 16.0),
+                child: Text(
+                  widget.listing.property_name ?? '',
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
@@ -135,10 +151,9 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child:
-                    TextRow(
+                child: TextRow(
                   text1: "Address:",
-                  text2: widget.listing.adddress,
+                  text2: widget.listing.address ?? '', // Fixed typo
                 ),
               ),
               Padding(
@@ -149,13 +164,14 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                 ),
               ),
               Theme(
-                data: Theme.of(context)
-                    .copyWith(dividerColor: const Color.fromARGB(6, 0, 0, 0)),
+                data: Theme.of(context).copyWith(
+                    dividerColor: const Color.fromARGB(6, 0, 0, 0)),
                 child: ExpansionTile(
                   backgroundColor: const Color.fromARGB(5, 0, 0, 0),
-                  title: Text(
+                  title: const Text(
                     "Amenities",
-                    style: TextStyle(color: Color(0xff434343), fontSize: 15),
+                    style: TextStyle(
+                        color: Color(0xff434343), fontSize: 15),
                   ),
                   children: [
                     Padding(
@@ -167,8 +183,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                               children: widget.listing.amenities![0]
                                   .split(',')
                                   .map((amenity) => Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 4.0),
+                                        padding: const EdgeInsets.only(top: 4.0),
                                         child: Row(
                                           children: [
                                             const Icon(
@@ -181,7 +196,8 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                                               amenity.trim(),
                                               style: TextStyle(
                                                 fontSize: 15,
-                                                color: AppColors.formTextColor,
+                                                color:
+                                                    AppColors.formTextColor,
                                               ),
                                             ),
                                           ],
@@ -192,7 +208,8 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                           : const Text(
                               "No amenities available",
                               style: TextStyle(
-                                  fontSize: 15, color: AppColors.formTextColor),
+                                  fontSize: 15,
+                                  color: AppColors.formTextColor),
                             ),
                     ),
                   ],
@@ -221,21 +238,22 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                 ),
               ),
               Theme(
-                data: Theme.of(context)
-                    .copyWith(dividerColor: const Color.fromARGB(6, 0, 0, 0)),
+                data: Theme.of(context).copyWith(
+                    dividerColor: const Color.fromARGB(6, 0, 0, 0)),
                 child: ExpansionTile(
                   backgroundColor: const Color.fromARGB(5, 0, 0, 0),
-                  title: Text(
+                  title: const Text(
                     "Lease Terms",
-                    style: TextStyle(color: Color(0xff434343), fontSize: 15),
+                    style: TextStyle(
+                        color: Color(0xff434343), fontSize: 15),
                   ),
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16.0, vertical: 10),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment
-                            .start, // Aligns the text to the left
+                        mainAxisAlignment:
+                            MainAxisAlignment.start, // Aligns the text to the left
                         children: [
                           Expanded(
                             child: Text(
@@ -282,8 +300,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                       alignment: Alignment.centerLeft,
                       child: RatingBar.builder(
                         initialRating:
-                           
-                              widget.listing.rating?.toDouble() ?? 0.0,
+                            widget.listing.rating?.toDouble() ?? 0.0,
                         minRating: 1,
                         direction: Axis.horizontal,
                         itemCount: 5,
@@ -359,7 +376,8 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment:
+                    MainAxisAlignment.spaceBetween,
                 children: [
                   const SizedBox(width: 10),
                   Expanded(
@@ -367,8 +385,16 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                     child: CustomButton(
                       text: "Chat with owner",
                       onPressed: () {
-                        _chatBloc
-                            .add(CreateInboxEvent(widget.listing.owner_id!.id));
+                        if (widget.listing.owner_id != null) {
+                          _chatBloc.add(
+                              CreateInboxEvent(widget.listing.owner_id!.id));
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Owner information is missing."),
+                            ),
+                          );
+                        }
                       },
                     ),
                   ),
@@ -385,10 +411,10 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                     flex: 1,
                     child: GestureDetector(
                       onTap: () {
-                        provider.toggleFavorite(listing);
+                        provider.toggleFavorite(widget.listing); // Fixed here
                       },
                       child: Icon(
-                        provider.isExist(listing)
+                        provider.isExist(widget.listing)
                             ? Icons.favorite
                             : Icons.favorite_border,
                         color: const Color(0xffF04F43),

@@ -37,7 +37,7 @@ class Favorites extends StatelessWidget {
                 return ListTile(
                   leading: dorm.imageUrl != null
                       ? Image.network(
-                          dorm.imageUrl!,
+                          dorm.imageUrl![0],
                           width: 50,
                           height: 50,
                           fit: BoxFit.cover,
@@ -72,7 +72,7 @@ class Favorites extends StatelessWidget {
                   ),
                   trailing: IconButton(
                     icon: const Icon(
-                      Icons.remove_circle,
+                      Icons.favorite,
                       color: Colors.red,
                     ),
                     onPressed: () {
