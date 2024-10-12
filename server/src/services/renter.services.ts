@@ -53,7 +53,8 @@ export const getSavedDorms = async (user_id: string) => {
       : [];
 
     const dorms: (DormSchemaInterface & Document)[] | null = await Dorm.find({
-      owner_id: { $ne: user_id },
+      _id: { $in: savedDormIds }, 
+      owner_id: { $ne: user_id }, 
       isAvailable: true,
     })
       .populate("owner_id")
@@ -61,18 +62,12 @@ export const getSavedDorms = async (user_id: string) => {
       .populate("currency")
       .populate("imageUrl");
 
-    const dormsWithSavedStatus = dorms.map(
-      (dorm: DormSchemaInterface & Document) => ({
-        ...dorm.toObject(), 
-        isSaved: savedDormIds.includes(dorm._id.toString()), 
-      })
-    );
-
-    return { message: dormsWithSavedStatus, httpCode: 200 };
+    return { message: dorms, httpCode: 200 }; // Return only the saved dorms
   } catch (error) {
     return { error: "Internal Server Error", httpCode: 500 };
   }
 };
+
 
 
 export const putSavedDorm = async (user_id: string, dorm_id: string) => {
