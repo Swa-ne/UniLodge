@@ -86,14 +86,13 @@ class ChatRepoImpl extends ChatRepo {
   Future<String> getInboxDetails(String chat_id) async {
     final access_token = await _tokenController.getAccessToken();
     final refresh_token = await _tokenController.getRefreshToken();
-    var response = await http.get(
-        Uri.http(_apiUrl, "/get_inbox_details", {"chat_id": chat_id}),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': access_token,
-          'Cookie': 'refresh_token=$refresh_token',
-        });
+    var response = await http
+        .get(Uri.parse("$_apiUrl/get_inbox_details/$chat_id"), headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': access_token,
+      'Cookie': 'refresh_token=$refresh_token',
+    });
     final response_body = json.decode(response.body);
 
     if (response.statusCode == 200) {
@@ -108,15 +107,13 @@ class ChatRepoImpl extends ChatRepo {
     try {
       final access_token = await _tokenController.getAccessToken();
       final refresh_token = await _tokenController.getRefreshToken();
-      var response = await http.get(
-          Uri.http(_apiUrlRoot, "/chat/get_messages",
-              {"chat_id": chat_id, "page": page.toString()}),
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': access_token,
-            'Cookie': 'refresh_token=$refresh_token',
-          });
+      var response = await http
+          .get(Uri.parse("$_apiUrl/get_messages/$chat_id/$page"), headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': access_token,
+        'Cookie': 'refresh_token=$refresh_token',
+      });
       final response_body = json.decode(response.body);
       if (response.statusCode == 200) {
         List<MessageModel> messageList = (response_body['message'] as List)
@@ -163,7 +160,7 @@ class ChatRepoImpl extends ChatRepo {
     final access_token = await _tokenController.getAccessToken();
     final refresh_token = await _tokenController.getRefreshToken();
     var response = await http.get(
-      Uri.http(_apiUrlRoot, "/chat/get_user_details", {"chat_id": chat_id}),
+      Uri.parse("$_apiUrl/get_user_details/$chat_id"),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
