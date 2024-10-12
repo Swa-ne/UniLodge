@@ -39,21 +39,19 @@ class PostReview extends RenterEvent {
 }
 
 class SaveDorm extends RenterEvent {
-  final String userId;
   final String dormId;
 
-  const SaveDorm(this.userId, this.dormId);
+  const SaveDorm(this.dormId);
 
   @override
-  List<Object> get props => [userId, dormId];
+  List<Object> get props => [dormId];
 }
 
 class DeleteSavedDorm extends RenterEvent {
-  final String userId;
   final String dormId;
 
-  const DeleteSavedDorm(this.userId, this.dormId);
+  const DeleteSavedDorm(this.dormId);
 
   @override
-  List<Object> get props => [userId, dormId];
+  List<Object> get props => [dormId];
 }

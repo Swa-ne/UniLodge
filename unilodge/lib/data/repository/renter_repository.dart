@@ -6,6 +6,6 @@ abstract class RenterRepository {
   Future<List<Listing>> fetchAllDorms();
   Future<void> postReview(
       String userId, String dormId, int stars, String comment);
-  Future<void> saveDorm(String userId, String dormId);
-  Future<void> deleteSavedDorm(String userId, String dormId);
+  Future<bool> saveDorm(String dormId);
+  Future<bool> deleteSavedDorm(String dormId);
 }

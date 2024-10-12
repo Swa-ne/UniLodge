@@ -66,7 +66,7 @@ class RenterBloc extends Bloc<RenterEvent, RenterState> {
     on<SaveDorm>((event, emit) async {
       emit(DormSaving());
       try {
-        await renterRepository.saveDorm(event.userId, event.dormId);
+        await renterRepository.saveDorm(event.dormId);
         emit(const DormSaved("Dorm saved successfully!"));
       } catch (e) {
         emit(DormSaveError(e.toString()));
@@ -76,7 +76,7 @@ class RenterBloc extends Bloc<RenterEvent, RenterState> {
     on<DeleteSavedDorm>((event, emit) async {
       emit(DormSaving());
       try {
-        await renterRepository.deleteSavedDorm(event.userId, event.dormId);
+        await renterRepository.deleteSavedDorm(event.dormId);
         emit(const DormSaved("Dorm removed from saved list!"));
       } catch (e) {
         emit(DormSaveError(e.toString()));
