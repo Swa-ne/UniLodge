@@ -8,13 +8,16 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final UserRepository userRepository;
 
   ProfileBloc({required this.userRepository}) : super(ProfileLoading()) {
+    // Load profile
     on<LoadProfile>((event, emit) async {
       try {
         final userData = await userRepository.fetchCurrentUser();
         emit(ProfileLoaded(
-          // id: userData.id,
-          fullName: userData.fullName,
+          firstName: userData.firstName,
+          middleName: userData.middleName,
+          lastName: userData.lastName,
           username: userData.username,
+          fullName: userData.fullName,
           profilePictureUrl: userData.profilePictureUrl,
           personalEmail: userData.personalEmail,
           birthday: userData.birthday,
@@ -25,11 +28,15 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     });
 
     on<SaveProfile>((event, emit) async {
+      emit(ProfileSaving());
+
       try {
         final updatedUser = UserProfileModel(
-          // id: event.id,
-          fullName: event.fullName,
+          firstName: event.firstName,
+          middleName: '',
+          lastName: event.lastName,
           username: event.username,
+          fullName: event.fullName,
           profilePictureUrl: event.profilePictureUrl,
           personalEmail: event.personalEmail,
           birthday: event.birthday,
@@ -37,9 +44,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
         await userRepository.updateUserProfile(updatedUser);
         emit(ProfileLoaded(
-          // id: updatedUser.id,
-          fullName: updatedUser.fullName,
+          firstName: updatedUser.firstName,
+          middleName: updatedUser.middleName,
+          lastName: updatedUser.lastName,
           username: updatedUser.username,
+          fullName: updatedUser.fullName,
           profilePictureUrl: updatedUser.profilePictureUrl,
           personalEmail: updatedUser.personalEmail,
           birthday: updatedUser.birthday,

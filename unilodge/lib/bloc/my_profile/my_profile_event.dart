@@ -10,17 +10,21 @@ abstract class ProfileEvent extends Equatable {
 class LoadProfile extends ProfileEvent {}
 
 class SaveProfile extends ProfileEvent {
-  // final String id;
-  final String fullName;
+  final String firstName;
+  final String middleName;
+  final String lastName;
   final String username;
+  final String fullName;
   final String profilePictureUrl;
   final String personalEmail;
   final DateTime birthday;
 
   const SaveProfile({
-    // required this.id,
-    required this.fullName,
+    required this.firstName,
+    required this.middleName,
+    required this.lastName,
     required this.username,
+    required this.fullName,
     required this.profilePictureUrl,
     required this.personalEmail,
     required this.birthday,
@@ -28,9 +32,11 @@ class SaveProfile extends ProfileEvent {
 
   @override
   List<Object?> get props => [
-        // id,
-        fullName,
+        firstName,
+        middleName,
+        lastName,
         username,
+        fullName,
         profilePictureUrl,
         personalEmail,
         birthday,
