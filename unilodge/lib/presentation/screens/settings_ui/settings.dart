@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lottie/lottie.dart';
 import 'package:unilodge/bloc/authentication/auth_bloc.dart';
 import 'package:unilodge/bloc/authentication/auth_event.dart';
 import 'package:unilodge/bloc/authentication/auth_state.dart';
@@ -111,7 +112,24 @@ class Settings extends StatelessWidget {
         return LogoutConfirmBottomSheet(
           onLogout: () {
             _authBloc.add(LogoutEvent());
+            _showLoading(context); 
           },
+        );
+      },
+    );
+  }
+
+  void _showLoading(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return Center(
+          child: SizedBox(
+            width: 200,
+            height: 200,
+            child: Lottie.asset('assets/animation/home_loading.json'),
+          ),
         );
       },
     );
