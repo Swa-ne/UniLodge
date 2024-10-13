@@ -36,17 +36,14 @@ class _SplashScreenState extends State<SplashScreen> {
           context.go('/onboarding'); 
         }
       },
-      child: AnimatedSplashScreen(
-        splash: Center(
-          child: Lottie.asset('assets/animation/animation.json'), // TODO: change to logo asset, remove animatedsplash and use basic splash library
+      child: Scaffold(
+        body: Center(
+          child: SizedBox(
+            width: 250,
+            child: Lottie.asset(
+                'assets/animation/animation.json'),
+          ), 
         ),
-        splashIconSize: 250, 
-        duration: 3500,
-        splashTransition:
-            SplashTransition.fadeTransition,
-        backgroundColor: Colors.white, 
-        nextScreen:
-            Container(),
       ),
     );
   }
