@@ -68,6 +68,7 @@ export const editProfile = async (
     bio: string | undefined,
     // personal_number: string | undefined,
     birthday: Date,
+    profile_picture_url: string | undefined
 ): Promise<CustomResponse> => {
     try {
         await User.findOneAndUpdate(
@@ -81,6 +82,7 @@ export const editProfile = async (
                     bio,
                     // personal_number,
                     birthday,
+                    profile_picture_url
                 }
             }
         );
