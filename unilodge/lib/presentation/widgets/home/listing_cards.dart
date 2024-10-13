@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unilodge/bloc/renter/renter_bloc.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
+import 'package:unilodge/presentation/widgets/home/price_text.dart';
 
 class ListingCards extends StatelessWidget {
   final Listing listing;
@@ -98,13 +99,9 @@ class ListingCards extends StatelessWidget {
                         ),
                         Row(
                           children: [
-                            Text(
-                              listing.price != null
+                            PriceText(text: listing.price != null
                                   ? '₱${listing.price!}'
-                                  : 'N/A',
-                              style:
-                                  const TextStyle(color: AppColors.textColor),
-                            ),
+                                  : 'N/A'),
                             const Spacer(),
                             Icon(
                               Icons.favorite,

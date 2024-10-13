@@ -13,6 +13,7 @@ import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/dummy_data/dummy_data.dart';
 import 'package:unilodge/data/models/listing.dart';
 import 'package:unilodge/presentation/widgets/home/nearby_listing.dart';
+import 'package:unilodge/presentation/widgets/home/price_text.dart';
 import 'package:unilodge/presentation/widgets/home/text_row.dart';
 import 'package:go_router/go_router.dart';
 
@@ -163,15 +164,28 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
               ),
 
               const SizedBox(height: 16),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 20.0, horizontal: 16.0),
-                child: Text(widget.listing.property_name ?? '',
-                    style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xff434343))),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20.0, horizontal: 16.0),
+                    child: Text(widget.listing.property_name ?? '',
+                        style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xff434343))),
+                            
+                  ),
+                  Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: PriceText(
+                        text:
+                            widget.listing.price != null ? '₱${widget.listing.price!}' : 'N/A'),
+                  ),
+                ],
               ),
+              
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child:
