@@ -141,6 +141,12 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                     text1: "Owner:",
                     text2: widget.listing.owner_id?.full_name ?? ''),
               ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: TextRow(
+                    text1: "Type:",
+                    text2: widget.listing.selectedPropertyType ?? ''),
+              ),
               Theme(
                 data: Theme.of(context)
                     .copyWith(dividerColor: const Color.fromARGB(6, 0, 0, 0)),

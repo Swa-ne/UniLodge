@@ -80,33 +80,29 @@ class _ListingCardsState extends State<ListingCards> {
                           widget.listing.property_name ?? '',
                           style: const TextStyle(
                             color: AppColors.textColor,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
                           ),
-                        ),
-                        const Spacer(),
-                        const Icon(
-                          Icons.star,
-                          color: Color(0xffFFB800),
-                        ),
-                        Text(
-                          "${widget.listing.rating}(14)",
-                          style: const TextStyle(color: AppColors.textColor),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 7),
+                    Text(
+                      widget.listing.selectedPropertyType ?? '',
+                      style: const TextStyle(color: AppColors.textColor),
+                    ),
                     Text(
                       widget.listing.adddress,
                       style: const TextStyle(color: AppColors.textColor),
                     ),
+                    const SizedBox(height: 5),
                     Row(
                       children: [
                         Text(
                           widget.listing.price != null
                               ? '₱${widget.listing.price!}'
                               : 'N/A',
-                          style: const TextStyle(color: AppColors.textColor),
+                          style: const TextStyle(color: Color.fromARGB(255, 69, 69, 69), fontWeight: FontWeight.w500, fontSize: 16),
                         ),
                         const Spacer(),
                         const Icon(
