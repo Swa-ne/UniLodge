@@ -4,6 +4,8 @@ import 'package:unilodge/bloc/chat/chat_bloc.dart';
 import 'package:unilodge/bloc/chat/chat_event.dart';
 import 'package:unilodge/bloc/chat/chat_state.dart';
 import 'package:unilodge/common/widgets/custom_text.dart';
+import 'package:unilodge/core/configs/assets/app_images.dart';
+import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/inbox.dart';
 import 'package:unilodge/data/models/message.dart';
 import 'package:unilodge/data/sources/auth/token_controller.dart';
@@ -64,69 +66,79 @@ class _ChatState extends State<Chat> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 3.5,
         title: CustomText(
           text: receiver_name.isEmpty ? "Loading..." : receiver_name,
           fontSize: 20,
-          color: Colors.white,
+          color: AppColors.primary,
         ),
-        backgroundColor: const Color.fromARGB(255, 53, 124, 218),
+        backgroundColor: AppColors.lightBackground,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
-          color: Colors.white,
+          color: AppColors.primary,
           onPressed: () {
             Navigator.pop(context);
           },
         ),
       ),
-      body: BlocListener<ChatBloc, ChatState>(
-        listener: (context, state) {
-          if (state is GetReceiverDetailsSuccess) {
-            setState(() {
-              receiver_name = state.user.full_name!;
-              receiver_id = state.user.id!;
-            });
-          } else if (state is SaveMessageSuccess) {
-            setState(() {
-              messages.insert(
-                0,
-                MessageModel(
-                  message: messageController.text,
-                  sender: user_id,
-                  chat_id: widget.chat_id,
-                  is_read: false,
-                  created_at: DateTime.now().toString(),
-                  updated_at: DateTime.now().toString(),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(
+                AppImages.chatbg), // Update with your image path
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: BlocListener<ChatBloc, ChatState>(
+          listener: (context, state) {
+            if (state is GetReceiverDetailsSuccess) {
+              setState(() {
+                receiver_name = state.user.full_name!;
+                receiver_id = state.user.id!;
+              });
+            } else if (state is SaveMessageSuccess) {
+              setState(() {
+                messages.insert(
+                  0,
+                  MessageModel(
+                    message: messageController.text,
+                    sender: user_id,
+                    chat_id: widget.chat_id,
+                    is_read: false,
+                    created_at: DateTime.now().toString(),
+                    updated_at: DateTime.now().toString(),
+                  ),
+                );
+                messageController.clear();
+              });
+            } else if (state is GetMessageSuccess) {
+              setState(() {
+                messages.addAll(state.messages);
+              });
+            } else if (state is OnReceiveMessageSuccess) {
+              // if (widget.chat_id == state.message.chat_id) {
+              setState(() {
+                messages.insert(0, state.message);
+              });
+              // }
+            }
+          },
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  itemCount: messages.length,
+                  reverse: true,
+                  controller: _scrollController,
+                  itemBuilder: (context, index) {
+                    bool isMe = user_id == messages[index].sender;
+                    return chatBubble(messages[index].message, isMe);
+                  },
                 ),
-              );
-              messageController.clear();
-            });
-          } else if (state is GetMessageSuccess) {
-            setState(() {
-              messages.addAll(state.messages);
-            });
-          } else if (state is OnReceiveMessageSuccess) {
-            // if (widget.chat_id == state.message.chat_id) {
-            setState(() {
-              messages.insert(0, state.message);
-            });
-            // }
-          }
-        },
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                itemCount: messages.length,
-                reverse: true,
-                controller: _scrollController,
-                itemBuilder: (context, index) {
-                  bool isMe = user_id == messages[index].sender;
-                  return chatBubble(messages[index].message, isMe);
-                },
               ),
-            ),
-            messageInput(),
-          ],
+              messageInput(),
+            ],
+          ),
         ),
       ),
     );
@@ -139,48 +151,65 @@ class _ChatState extends State<Chat> {
         padding: const EdgeInsets.all(12),
         margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         decoration: BoxDecoration(
-          color:
-              isMe ? Colors.grey[300] : const Color.fromARGB(255, 53, 124, 218),
-          borderRadius: BorderRadius.circular(50),
+          color: isMe
+              ? const Color.fromARGB(255, 238, 238, 238)
+              : AppColors.primary,
+          borderRadius: BorderRadius.circular(15),
         ),
         child: Text(
           message,
           style: TextStyle(
-            color: isMe ? Colors.black : Colors.white, fontSize: 16
-          ),
+              color: isMe ? AppColors.textColor : Colors.white, fontSize: 16),
         ),
       ),
     );
   }
 
   Widget messageInput() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: messageController,
-              decoration: InputDecoration(
-                hintText: "Message...",
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide.none,
-                ),
-                filled: true,
-                fillColor: Colors.grey[200],
-              ),
-            ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.send),
-            color: const Color.fromARGB(255, 53, 124, 218),
-            onPressed: () {
-              _chatBloc.add(SaveMessageEvent(
-                  messageController.text, widget.chat_id, receiver_id));
-            },
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: const Color.fromARGB(66, 56, 56, 56),
+            offset: Offset(0, 2),
+            blurRadius: 2,
+            spreadRadius: 1,
           ),
         ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: messageController,
+                decoration: InputDecoration(
+                  hintText: "Message...",
+                  hintStyle: TextStyle(
+                    fontWeight: FontWeight.normal,
+                  ),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.circular(15)
+                  ),
+                  filled: true,
+                  fillColor: Colors.grey[200],
+                  contentPadding: EdgeInsets.only(left: 16.0),
+                ),
+              ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.send),
+              color: AppColors.linearOrange,
+              onPressed: () {
+                _chatBloc.add(SaveMessageEvent(
+                    messageController.text, widget.chat_id, receiver_id));
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

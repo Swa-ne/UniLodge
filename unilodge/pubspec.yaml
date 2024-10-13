@@ -66,6 +66,7 @@ flutter:
     - assets/images/people.png
     - assets/images/search.png
     - assets/images/error.png
+    - assets/images/chat.png
     - assets/images/listingIcons/apartment.png
     - assets/images/listingIcons/dorm.png
     - assets/images/listingIcons/bedspacer.png
