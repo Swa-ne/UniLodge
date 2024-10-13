@@ -70,13 +70,13 @@ export const editProfileController = async (req: Request & { user?: UserType }, 
 
         if (!user) return res.status(404).json({ error: "User not found" });
 
-        const { first_name, middle_name, last_name, username, bio, personal_number, birthday } = req.body;
+        const { first_name, middle_name, last_name, username, bio, birthday } = req.body;
 
         const requiredFields = {
             first_name,
             last_name,
             username,
-            personal_number,
+            // personal_number,
             birthday,
         };
 
@@ -87,7 +87,7 @@ export const editProfileController = async (req: Request & { user?: UserType }, 
             personal_email: "Email Address",
             password_hash: "Password",
             confirmation_password: "Confirmation Password",
-            personal_number: "Phone Number",
+            // personal_number: "Phone Number",
             birthday: "Birthday",
         }
         for (const [key, value] of Object.entries(requiredFields)) {
@@ -103,7 +103,7 @@ export const editProfileController = async (req: Request & { user?: UserType }, 
             return res.status(409).json({ error: 'This usernmae is being used.' });
         }
 
-        const data = await editProfile(user.user_id, first_name, middle_name, last_name, username, bio, personal_number, birthday);
+        const data = await editProfile(user.user_id, first_name, middle_name, last_name, username, bio, birthday);
         if (data.httpCode !== 200) {
             return res.status(500).json({ error: data.error });
         }
