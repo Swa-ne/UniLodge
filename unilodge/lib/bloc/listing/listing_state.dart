@@ -112,3 +112,5 @@ class CardSelectedState extends ListingState {
   @override
   List<Object> get props => [listing, cardName];
 }
+class SubmittingState extends ListingState {}
+

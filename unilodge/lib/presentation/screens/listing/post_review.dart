@@ -24,7 +24,7 @@ class PostReview extends StatelessWidget {
       listener: (context, state) {
         if (state is ListingCreated) {
           listingBloc.add(FetchListings());
-          context.go("/home"); 
+          context.go("/home");
         } else if (state is ListingCreationError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.error)),
@@ -310,20 +310,34 @@ class PostReview extends StatelessWidget {
                   child: const Text("Back"),
                 ),
                 const SizedBox(width: 20),
-                ElevatedButton(
-                  onPressed: () async {
-                    listingBloc.add(CreateListing(imageFiles, listing));
+                BlocBuilder<ListingBloc, ListingState>(
+                  builder: (context, state) {
+                    bool isSubmitting = state is SubmittingState;
+                    return ElevatedButton (
+                      onPressed: isSubmitting
+                          ? null
+                          : () {
+                              listingBloc
+                                  .add(CreateListing(imageFiles, listing));
+                            },
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor:
+                            isSubmitting ? Colors.grey : AppColors.primary,
+                        minimumSize: const Size(120, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        elevation: 0,
+                      ),
+                      child: isSubmitting
+                          ? const CircularProgressIndicator(
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(Color.fromARGB(256, 46, 62, 74)),
+                            )
+                          : const Text('Submit'),
+                    );
                   },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: const Color(0xff2E3E4A),
-                    minimumSize: const Size(120, 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    elevation: 0,
-                  ),
-                  child: const Text('Submit'),
                 ),
               ],
             ),
