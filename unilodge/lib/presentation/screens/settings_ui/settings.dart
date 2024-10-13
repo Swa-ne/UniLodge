@@ -36,7 +36,8 @@ class Settings extends StatelessWidget {
             appBar: AppBar(
               backgroundColor: Colors.white,
               leading: IconButton(
-                icon: const Icon(Icons.arrow_back_ios, color: AppColors.textColor),
+                icon: const Icon(Icons.arrow_back_ios,
+                    color: AppColors.textColor),
                 onPressed: () {
                   context.push('/user-profile');
                 },
@@ -55,7 +56,8 @@ class Settings extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ListTile(
-                    leading: const Icon(Icons.person, color: AppColors.textColor),
+                    leading:
+                        const Icon(Icons.person, color: AppColors.textColor),
                     title: const CustomText(
                       text: 'My Profile',
                       fontSize: 16,
@@ -85,7 +87,8 @@ class Settings extends StatelessWidget {
                   ),
                   const Divider(),
                   ListTile(
-                    leading: const Icon(Icons.logout, color: AppColors.textColor),
+                    leading:
+                        const Icon(Icons.logout, color: AppColors.textColor),
                     title: const CustomText(
                       text: 'Logout',
                       fontSize: 16,
@@ -93,6 +96,18 @@ class Settings extends StatelessWidget {
                     ),
                     onTap: () {
                       _showLogoutConfirmation(context);
+                    },
+                  ),
+                  // TODO: to remove
+                  ListTile(
+                    leading: const Icon(Icons.lock, color: AppColors.textColor),
+                    title: const CustomText(
+                      text: 'Go to Admin page',
+                      fontSize: 16,
+                      color: AppColors.textColor,
+                    ),
+                    onTap: () {
+                      context.go('/admin-dashboard');
                     },
                   ),
                 ],
@@ -112,7 +127,7 @@ class Settings extends StatelessWidget {
         return LogoutConfirmBottomSheet(
           onLogout: () {
             _authBloc.add(LogoutEvent());
-            _showLoading(context); 
+            _showLoading(context);
           },
         );
       },
