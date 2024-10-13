@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unilodge/bloc/chat/chat_bloc.dart';
 import 'package:unilodge/bloc/chat/chat_event.dart';
 import 'package:unilodge/bloc/chat/chat_state.dart';
+import 'package:unilodge/common/widgets/custom_text.dart';
 import 'package:unilodge/data/models/inbox.dart';
 import 'package:unilodge/data/models/message.dart';
 import 'package:unilodge/data/sources/auth/token_controller.dart';
@@ -63,10 +64,15 @@ class _ChatState extends State<Chat> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(receiver_name.isEmpty ? "Loading..." : receiver_name),
-        backgroundColor: Colors.teal,
+        title: CustomText(
+          text: receiver_name.isEmpty ? "Loading..." : receiver_name,
+          fontSize: 20,
+          color: Colors.white,
+        ),
+        backgroundColor: const Color.fromARGB(255, 53, 124, 218),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back_ios),
+          color: Colors.white,
           onPressed: () {
             Navigator.pop(context);
           },
@@ -133,13 +139,14 @@ class _ChatState extends State<Chat> {
         padding: const EdgeInsets.all(12),
         margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
         decoration: BoxDecoration(
-          color: isMe ? Colors.grey[300] : Colors.teal,
-          borderRadius: BorderRadius.circular(10),
+          color:
+              isMe ? Colors.grey[300] : const Color.fromARGB(255, 53, 124, 218),
+          borderRadius: BorderRadius.circular(50),
         ),
         child: Text(
           message,
           style: TextStyle(
-            color: isMe ? Colors.black : Colors.white,
+            color: isMe ? Colors.black : Colors.white, fontSize: 16
           ),
         ),
       ),
@@ -167,6 +174,7 @@ class _ChatState extends State<Chat> {
           ),
           IconButton(
             icon: const Icon(Icons.send),
+            color: const Color.fromARGB(255, 53, 124, 218),
             onPressed: () {
               _chatBloc.add(SaveMessageEvent(
                   messageController.text, widget.chat_id, receiver_id));
