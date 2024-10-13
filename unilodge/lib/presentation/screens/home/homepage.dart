@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:unilodge/core/configs/assets/app_images.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
-import 'package:unilodge/data/sources/auth/token_controller.dart';
-import 'package:unilodge/data/sources/chat/socket_controller.dart';
 import 'package:unilodge/presentation/screens/favorite/favorites.dart';
 import 'package:unilodge/presentation/screens/home/home.dart';
 import 'package:unilodge/presentation/screens/your_listing/your_listings.dart';
@@ -24,15 +22,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _selectedIndex = widget.initialTabIndex;
-    initializeAsyncOperations();
-  }
-
-  void initializeAsyncOperations() async {
-    final SocketControllerImpl socketController = SocketControllerImpl();
-    final TokenControllerImpl tokenController = TokenControllerImpl();
-
-    final user_id = await tokenController.getUserID();
-    socketController.connect(user_id);
   }
 
   void _navigateBottomBar(int index) {
@@ -98,10 +87,8 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
           child: BottomNavigationBar(
-            selectedItemColor:
-                AppColors.primary, 
-            unselectedItemColor: AppColors.primary
-                .withOpacity(0.8),
+            selectedItemColor: AppColors.primary,
+            unselectedItemColor: AppColors.primary.withOpacity(0.8),
             backgroundColor: AppColors.lightBackground,
             currentIndex: _selectedIndex,
             onTap: _navigateBottomBar,

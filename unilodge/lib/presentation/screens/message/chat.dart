@@ -82,7 +82,7 @@ class _ChatState extends State<Chat> {
         ),
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage(AppImages.chatbg), // Update with your image path
             fit: BoxFit.cover,
@@ -92,8 +92,8 @@ class _ChatState extends State<Chat> {
           listener: (context, state) {
             if (state is GetReceiverDetailsSuccess) {
               setState(() {
-                receiver_name = state.user.full_name!;
-                receiver_id = state.user.id!;
+                receiver_name = state.user.full_name;
+                receiver_id = state.user.id;
               });
             } else if (state is SaveMessageSuccess) {
               setState(() {
@@ -115,11 +115,11 @@ class _ChatState extends State<Chat> {
                 messages.addAll(state.messages);
               });
             } else if (state is OnReceiveMessageSuccess) {
-              // if (widget.chat_id == state.message.chat_id) {
-              setState(() {
-                messages.insert(0, state.message);
-              });
-              // }
+              if (widget.chat_id == state.message.chat_id) {
+                setState(() {
+                  messages.insert(0, state.message);
+                });
+              }
             }
           },
           child: Column(
@@ -169,11 +169,11 @@ class _ChatState extends State<Chat> {
 
   Widget messageInput() {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: const Color.fromARGB(66, 56, 56, 56),
+            color: Color.fromARGB(66, 56, 56, 56),
             offset: Offset(0, 2),
             blurRadius: 2,
             spreadRadius: 1,
@@ -189,7 +189,7 @@ class _ChatState extends State<Chat> {
                 controller: messageController,
                 decoration: InputDecoration(
                   hintText: "Message...",
-                  hintStyle: TextStyle(
+                  hintStyle: const TextStyle(
                     fontWeight: FontWeight.normal,
                   ),
                   border: OutlineInputBorder(
@@ -197,7 +197,7 @@ class _ChatState extends State<Chat> {
                       borderRadius: BorderRadius.circular(15)),
                   filled: true,
                   fillColor: Colors.grey[200],
-                  contentPadding: EdgeInsets.only(left: 16.0),
+                  contentPadding: const EdgeInsets.only(left: 16.0),
                 ),
               ),
             ),

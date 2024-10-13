@@ -53,6 +53,8 @@ class SocketControllerImpl extends SocketController {
         message['message'],
         message['senderId'],
       ));
+
+      chatBloc.add(GetInboxEvent());
     });
 
     socket.onDisconnect((_) {
