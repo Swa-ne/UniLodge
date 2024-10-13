@@ -84,8 +84,7 @@ class _ChatState extends State<Chat> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(
-                AppImages.chatbg), // Update with your image path
+            image: AssetImage(AppImages.chatbg), // Update with your image path
             fit: BoxFit.cover,
           ),
         ),
@@ -147,19 +146,22 @@ class _ChatState extends State<Chat> {
   Widget chatBubble(String message, bool isMe) {
     return Align(
       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-        decoration: BoxDecoration(
-          color: isMe
-              ? const Color.fromARGB(255, 238, 238, 238)
-              : AppColors.primary,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Text(
-          message,
-          style: TextStyle(
-              color: isMe ? AppColors.textColor : Colors.white, fontSize: 16),
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 300), 
+        child: Container(
+          padding: const EdgeInsets.all(12),
+          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          decoration: BoxDecoration(
+            color: isMe
+                ? const Color.fromARGB(255, 238, 238, 238)
+                : AppColors.primary,
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Text(
+            message,
+            style: TextStyle(
+                color: isMe ? AppColors.textColor : Colors.white, fontSize: 16),
+          ),
         ),
       ),
     );
@@ -191,9 +193,8 @@ class _ChatState extends State<Chat> {
                     fontWeight: FontWeight.normal,
                   ),
                   border: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.circular(15)
-                  ),
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(15)),
                   filled: true,
                   fillColor: Colors.grey[200],
                   contentPadding: EdgeInsets.only(left: 16.0),
