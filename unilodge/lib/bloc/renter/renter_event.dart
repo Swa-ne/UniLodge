@@ -51,11 +51,3 @@ class DeleteSavedDorm extends RenterEvent {
   List<Object> get props => [dormId];
 }
 
-class CheckIfDormIsSaved extends RenterEvent {
-  final String dormId;
-
-  const CheckIfDormIsSaved(this.dormId);
-
-  @override
-  List<Object> get props => [dormId];
-}

@@ -96,12 +96,3 @@ class DormUnsaved extends RenterState {
   @override
   List<Object> get props => [successMessage];
 }
-
-class DormUnsaveError extends RenterState {
-  final String message;
-
-  const DormUnsaveError(this.message);
-
-  @override
-  List<Object> get props => [message];
-}
