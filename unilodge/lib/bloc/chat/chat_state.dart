@@ -11,9 +11,10 @@ abstract class ChatState extends Equatable {
 }
 
 class ChatLoading extends ChatState {}
-
+class ChatReady extends ChatState {} 
 class ChatSuccess extends ChatState {}
 
+class MessageSending extends ChatState{}
 class ChatFailure extends ChatState {}
 
 class CreateInboxSuccess extends ChatState {
@@ -70,7 +71,7 @@ class GetReceiverDetailsError extends ChatState {
   List<Object> get props => [error];
 }
 
-class SaveMessageSuccess extends ChatState {}
+class SaveMessageSuccess extends ChatState { const SaveMessageSuccess(); }
 
 class SaveMessageError extends ChatState {
   final String error;
