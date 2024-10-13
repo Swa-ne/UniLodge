@@ -88,7 +88,7 @@ export const postDormListing = async (
             },
         }).save({ session });
 
-        const currency = await Currency.findById("67055ace8fbd824752301b4b");
+        const currency = await Currency.findById("670b44533093ffb1a1969c3b");
 
         await new Dorm({
             owner_id: user_id,
