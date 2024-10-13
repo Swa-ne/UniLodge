@@ -205,8 +205,11 @@ class _ChatState extends State<Chat> {
               icon: const Icon(Icons.send),
               color: AppColors.linearOrange,
               onPressed: () {
-                _chatBloc.add(SaveMessageEvent(
-                    messageController.text, widget.chat_id, receiver_id));
+                final message = messageController.text;
+                if (message.trim().isNotEmpty) {
+                  _chatBloc.add(
+                      SaveMessageEvent(message, widget.chat_id, receiver_id));
+                }
               },
             ),
           ],
