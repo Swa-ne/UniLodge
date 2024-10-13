@@ -276,26 +276,26 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
                 child: Text(
-                  "Reviews (14)",
+                  "Reviews (0)",
                   style: TextStyle(color: Color(0xff434343), fontSize: 15),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-                child: Text(
-                  "dropdown reviews or direct to another screen",
-                  style:
-                      TextStyle(color: AppColors.formTextColor, fontSize: 15),
-                ),
-              ),
+              // const Padding(
+              //   padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+              //   child: Text(
+              //     "dropdown reviews or direct to another screen",
+              //     style:
+              //         TextStyle(color: AppColors.formTextColor, fontSize: 15),
+              //   ),
+              // ),
               const SizedBox(height: 30),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-                child: Text(
-                  "Nearby Listings",
-                  style: TextStyle(color: Color(0xff434343), fontSize: 15),
-                ),
-              ),
+              // const Padding(
+              //   padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+              //   child: Text(
+              //     "Nearby Listings",
+              //     style: TextStyle(color: Color(0xff434343), fontSize: 15),
+              //   ),
+              // ),
               // i should pass the data here
               NearbyProperties(listings: dummyListings)
             ],

@@ -25,8 +25,7 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
   final TextEditingController _regionController = TextEditingController();
   final TextEditingController _provinceController = TextEditingController();
 
-  AutovalidateMode _autovalidateMode =
-      AutovalidateMode.disabled; // Initially disabled
+  AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
   List<dynamic> allData = [];
   List<String> provinces = [];
   List<String> cities = [];
@@ -127,7 +126,7 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
                   onChanged: (value) => setState(() {}),
                   decoration: InputDecoration(
                     labelText: "Search $title",
-                    suffixIcon: Icon(Icons.search),
+                    suffixIcon: const Icon(Icons.search),
                   ),
                 ),
                 Expanded(
@@ -182,7 +181,8 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
           hintStyle: const TextStyle(
             fontWeight: FontWeight.normal,
           ),
-          suffixIcon: options != null ? Icon(Icons.arrow_drop_down) : null,
+          suffixIcon:
+              options != null ? const Icon(Icons.arrow_drop_down) : null,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -225,8 +225,8 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20.0),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 20.0),
                       child: Row(
                         children: [
                           Column(
@@ -257,8 +257,7 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
                           Column(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 17.0),
+                                padding: EdgeInsets.symmetric(horizontal: 17.0),
                                 child: Icon(
                                   Icons.draw,
                                   size: 70,
@@ -270,7 +269,7 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     _buildTextField(

@@ -22,7 +22,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             emit(EmailNotVerified(accessToken));
           }
         } catch (e) {
-          emit(LoginError(e.toString()));
+          emit(const LoginError("Internet Connection Error"));
         }
       },
     );
@@ -30,10 +30,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (event, emit) async {
         try {
           emit(AuthLoading());
-          final access_token = await _authRepo.signUp(event.user);
+          final access_token =
+              await _authRepo.signUp(event.user, event.isThirdParty);
           emit(SignUpSuccess(access_token));
         } catch (e) {
-          emit(SignUpError(e.toString()));
+          emit(const SignUpError("Internet Connection Error"));
         }
       },
     );
@@ -44,7 +45,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           final isSuccess = await _authRepo.resendEmailCode(event.token);
           emit(ResendEmailCodeSuccess(isSuccess));
         } catch (e) {
-          emit(VerificationError(e.toString()));
+          emit(const VerificationError("Internet Connection Error"));
         }
       },
     );
@@ -56,7 +57,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               await _authRepo.verifyEmail(event.token, event.code);
           emit(VerifyEmailSuccess(access_token));
         } catch (e) {
-          emit(VerificationError(e.toString()));
+          emit(const VerificationError("Internet Connection Error"));
         }
       },
     );
@@ -67,7 +68,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           final access_token = await _authRepo.forgotPassword(event.email);
           emit(ForgetPasswordSuccess(access_token));
         } catch (e) {
-          emit(ForgetPasswordError(e.toString()));
+          emit(const ForgetPasswordError("Internet Connection Error"));
         }
       },
     );
@@ -79,7 +80,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
               event.token, event.password, event.confirmation_password);
           emit(ChangePasswordSuccess(access_token));
         } catch (e) {
-          emit(ChangePasswordError(e.toString()));
+          emit(const ChangePasswordError("Internet Connection Error"));
         }
       },
     );
@@ -106,7 +107,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           if (e.toString().contains('Unauthorized')) {
             emit(LogoutSuccess());
           } else {
-            emit(LogoutError(e.toString()));
+            emit(const LogoutError("Internet Connection Error"));
           }
         }
       },

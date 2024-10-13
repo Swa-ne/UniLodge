@@ -8,6 +8,7 @@ export interface InboxSchemeInterface extends Document {
     isGroup: boolean,
     wasActive: boolean,
     lastMessage: ObjectId,
+    _doc: any,
 }
 
 const InboxScheme: Schema = new Schema({

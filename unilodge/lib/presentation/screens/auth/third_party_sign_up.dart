@@ -35,8 +35,6 @@ class _SignUpState extends State<ThirdPartySignUp> with InputValidationMixin {
   String? fullNameError;
   String? usernameError;
   String? birthdayError;
-  String? phoneNumberError;
-  bool isPhoneNumberValid = false;
 
   @override
   void initState() {
@@ -224,13 +222,6 @@ class _SignUpState extends State<ThirdPartySignUp> with InputValidationMixin {
                                   });
                                   return;
                                 }
-                                if (!isPhoneNumberValid) {
-                                  setState(() {
-                                    phoneNumberError =
-                                        "This field cannot be empty";
-                                  });
-                                  return;
-                                }
                                 final newUser = SignUpUserModel(
                                     first_name: fullnameController.text,
                                     last_name: " ",
@@ -243,7 +234,7 @@ class _SignUpState extends State<ThirdPartySignUp> with InputValidationMixin {
                                     personal_number: "",
                                     birthday: _birthday.toString(),
                                     valid_email: true);
-                                authBloc.add(SignUpEvent(newUser));
+                                authBloc.add(SignUpEvent(newUser, true));
                               },
                             ),
                             const SizedBox(height: 10),

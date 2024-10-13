@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unilodge/bloc/renter/renter_bloc.dart';
 import 'package:unilodge/common/widgets/custom_text.dart';
+import 'package:unilodge/common/widgets/no_listing_placeholder.dart';
 import 'package:unilodge/common/widgets/shimmer_loading.dart';
 import 'package:unilodge/core/configs/assets/app_images.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
@@ -43,18 +44,7 @@ class TypeListingScreen extends StatelessWidget {
             } else if (state is DormsLoaded) {
               final listings = state.allDorms;
               if (listings.isEmpty) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(AppImages.typeDorm, height: 100,),
-                      SizedBox(height: 30,),
-                      Text("No listings available", style: TextStyle(color: AppColors.textColor,)),
-                      SizedBox(height: 50)
-                    ],
-                  ),
-                );
+                return NoListingPlaceholder();
               }
 
               return ListView.builder(
