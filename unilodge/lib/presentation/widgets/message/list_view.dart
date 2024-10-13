@@ -5,7 +5,6 @@ import 'package:unilodge/bloc/chat/chat_bloc.dart';
 import 'package:unilodge/bloc/chat/chat_event.dart';
 import 'package:unilodge/bloc/chat/chat_state.dart';
 import 'package:unilodge/common/mixins/time_convertion.dart';
-import 'package:unilodge/common/widgets/shimmer_loading.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/inbox.dart';
 import 'package:unilodge/data/sources/auth/token_controller.dart';
@@ -37,6 +36,9 @@ class _MessagesListViewState extends State<MessagesListView>
 
   Future<void> _initializeUserID() async {
     currentUserId = await _tokenController.getUserID();
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
