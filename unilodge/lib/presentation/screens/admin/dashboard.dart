@@ -29,7 +29,7 @@ class _DashboardState extends State<Dashboard> {
           CustomContainer(
               icon: Icon(
                 Icons.people,
-                size: 100,
+                size: 80,
                 color: AppColors.primary,
               ),
               dataTitle: "Users",
@@ -41,7 +41,7 @@ class _DashboardState extends State<Dashboard> {
             child: CustomContainer(
                 icon: Icon(
                   Icons.home_work,
-                  size: 100,
+                  size: 80,
                   color: AppColors.primary,
                 ),
                 dataTitle: "Listings",

@@ -37,17 +37,6 @@ class _AdminListingDetailScreenState extends State<AdminListingDetailScreen> {
 
     return MultiBlocListener(
       listeners: [
-        BlocListener<ChatBloc, ChatState>(
-          listener: (context, state) {
-            if (state is CreateInboxSuccess) {
-              context.push('/chat/${state.inbox.id}', extra: state.inbox);
-            } else if (state is CreateInboxError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(state.error)),
-              );
-            }
-          },
-        ),
         BlocListener<RenterBloc, RenterState>(
           listener: (context, state) {
             if (state is DormsLoading) {
@@ -60,21 +49,7 @@ class _AdminListingDetailScreenState extends State<AdminListingDetailScreen> {
                 isSaved = state.savedDorms.any(
                     (savedListing) => savedListing.id == widget.listing.id);
               });
-            } else if (state is DormSaved) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(state.successMessage)),
-              );
-              _renterBloc.add(FetchAllDorms());
-            } else if (state is DormUnsaved) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(state.successMessage)),
-              );
-              _renterBloc.add(FetchAllDorms());
-            } else if (state is DormSaveError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(state.message)),
-              );
-            }
+            } 
           },
         ),
       ],

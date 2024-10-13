@@ -21,7 +21,7 @@ class _CustomContainerState extends State<CustomContainer> {
       child: Center(
         child: Container(
           width: screenWidth * 0.93,
-          height: screenHeight * 0.2,
+          height: screenHeight * 0.15,
           decoration: const BoxDecoration(
             color: Color.fromARGB(255, 255, 255, 255),
             borderRadius: BorderRadius.all(Radius.circular(5)),
