@@ -7,4 +7,5 @@ abstract class RenterRepository {
       String userId, String dormId, int stars, String comment);
   Future<bool> saveDorm(String dormId);
   Future<bool> deleteSavedDorm(String dormId);
+  Future<bool> isDormSaved(String dormId);
 }

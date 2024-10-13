@@ -111,10 +111,10 @@ class RenterRepositoryImpl implements RenterRepository {
 
   @override
   Future<bool> deleteSavedDorm(String dormId) async {
-   final access_token = await _tokenController.getAccessToken();
+    final access_token = await _tokenController.getAccessToken();
     final refresh_token = await _tokenController.getRefreshToken();
-    final response = await http.put(
-      Uri.parse('$_apiUrl/add/saved/$dormId'),
+    final response = await http.delete(
+      Uri.parse('$_apiUrl/remove/saved/$dormId'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -126,8 +126,13 @@ class RenterRepositoryImpl implements RenterRepository {
     if (response.statusCode != 200) {
       final errorResponse = jsonDecode(response.body);
       throw Exception(
-          'Failed to save dorm to favorites: ${errorResponse['error']}');
+          'Failed to delete dorm from favorites: ${errorResponse['error']}');
     }
     return response.statusCode == 200;
+  }
+
+  Future<bool> isDormSaved(String dormId) async {
+    final savedDorms = await fetchSavedDorms();
+    return savedDorms.any((savedListing) => savedListing.id == dormId);
   }
 }

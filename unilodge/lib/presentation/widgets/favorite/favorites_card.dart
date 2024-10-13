@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:unilodge/bloc/renter/renter_bloc.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
 import 'package:unilodge/presentation/widgets/favorite/custom_text.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FavoriteCard extends StatelessWidget {
   final Listing listing;
@@ -28,8 +30,7 @@ class FavoriteCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(5),
               child: Opacity(
                 opacity: 0.9,
-                child: listing.imageUrl != null &&
-                        listing.imageUrl!.isNotEmpty
+                child: listing.imageUrl != null && listing.imageUrl!.isNotEmpty
                     ? Image.network(
                         listing.imageUrl![0],
                         width: 150,
@@ -78,7 +79,6 @@ class FavoriteCard extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                   const SizedBox(height: 4),
-                  const SizedBox(height: 4),
                   Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -104,16 +104,37 @@ class FavoriteCard extends StatelessWidget {
               ),
             ),
           ),
-          // Favorite icon
-          const Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              SizedBox(height: 8),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5.0),
-                child: Icon(Icons.favorite, color: Color(0xffF04F43)),
-              ),
-            ],
+          IconButton(
+            icon: const Icon(Icons.favorite, color: Color(0xffF04F43)),
+            onPressed: () async {
+              final bool? confirmed = await showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text('Confirm Unsaved'),
+                    content: const Text(
+                        'Are you sure you want to unsave this dorm?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(false),
+                        child: const Text('No'),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(true),
+                        child: const Text('Yes'),
+                      ),
+                    ],
+                  );
+                },
+              );
+
+              if (confirmed == true) {
+                // Call the delete function
+                context.read<RenterBloc>().add(DeleteSavedDorm(listing.id!));
+                print("successfully removeddfkjasdklfja");
+                // Optionally, refresh or perform any additional action after deletion
+              }
+            },
           ),
         ],
       ),

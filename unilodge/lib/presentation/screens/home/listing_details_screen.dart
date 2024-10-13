@@ -6,7 +6,9 @@ import 'package:lottie/lottie.dart';
 import 'package:unilodge/bloc/chat/chat_bloc.dart';
 import 'package:unilodge/bloc/chat/chat_event.dart';
 import 'package:unilodge/bloc/chat/chat_state.dart';
+import 'package:unilodge/bloc/renter/renter_bloc.dart';
 import 'package:unilodge/common/widgets/custom_button.dart';
+import 'package:unilodge/common/widgets/shimmer_loading.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/dummy_data/dummy_data.dart';
 import 'package:unilodge/data/models/listing.dart';
@@ -24,20 +26,60 @@ class ListingDetailScreen extends StatefulWidget {
 }
 
 class _ListingDetailScreenState extends State<ListingDetailScreen> {
+  bool isSaved = false;
+
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<RenterBloc>(context).add(FetchAllDorms());
+  }
+
   @override
   Widget build(BuildContext context) {
     final _chatBloc = BlocProvider.of<ChatBloc>(context);
+    final _renterBloc = BlocProvider.of<RenterBloc>(context);
 
-    return BlocListener<ChatBloc, ChatState>(
-      listener: (context, state) {
-        if (state is CreateInboxSuccess) {
-          context.push('/chat/${state.inbox.id}', extra: state.inbox);
-        } else if (state is CreateInboxError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.error)),
-          );
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<ChatBloc, ChatState>(
+          listener: (context, state) {
+            if (state is CreateInboxSuccess) {
+              context.push('/chat/${state.inbox.id}', extra: state.inbox);
+            } else if (state is CreateInboxError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.error)),
+              );
+            }
+          },
+        ),
+        BlocListener<RenterBloc, RenterState>(
+          listener: (context, state) {
+            if (state is DormsLoading) {
+              const SizedBox(
+                height: 800,
+                child: ShimmerLoading(),
+              );
+            } else if (state is AllDormsLoaded) {
+              setState(() {
+                isSaved = state.savedDorms.any(
+                    (savedListing) => savedListing.id == widget.listing.id);
+              });
+            } else if (state is DormSaved) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.successMessage)),
+              );
+            } else if (state is DormUnsaved) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.successMessage)),
+              );
+            } else if (state is DormSaveError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.message)),
+              );
+            }
+          },
+        ),
+      ],
       child: Scaffold(
         body: SingleChildScrollView(
           child: Column(
@@ -74,8 +116,8 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                             child: Center(
                               child: Container(
                                 constraints: BoxConstraints(
-                                  maxHeight: 250, // Set a maximum height
-                                  maxWidth: 400, // Set a maximum width
+                                  maxHeight: 250,
+                                  maxWidth: 400,
                                 ),
                                 child: PageView.builder(
                                   itemCount: widget.listing.imageUrl!.length,
@@ -96,7 +138,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                                             height: 200,
                                             child: Center(
                                               child: Lottie.asset(
-                                                'assets/animation/home_loading.json', // Replace with your Lottie animation
+                                                'assets/animation/home_loading.json',
                                                 width: 200,
                                                 height: 200,
                                               ),
@@ -346,16 +388,31 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                       width: 20,
                     ),
                   ),
-                  Expanded(
-                    flex: 1,
-                    child: GestureDetector(
-                      onTap: () {},
-                      child: const Icon(
-                        Icons.favorite_border,
-                        color: AppColors.primary,
-                        size: 28,
-                      ),
-                    ),
+                  BlocBuilder<RenterBloc, RenterState>(
+                    builder: (context, state) {
+                      return IconButton(
+                        icon: Icon(
+                          isSaved ? Icons.favorite : Icons.favorite_border,
+                          color: isSaved ? Colors.red : Colors.grey,
+                        ),
+                        onPressed: () {
+                          if (isSaved) {
+                            _renterBloc
+                                .add(DeleteSavedDorm(widget.listing.id!));
+                            setState(() {
+                              isSaved = false;
+                            });
+                            print(isSaved);
+                          } else {
+                            _renterBloc.add(SaveDorm(widget.listing.id!));
+                            setState(() {
+                              isSaved = true;
+                            });
+                            print(isSaved);
+                          }
+                        },
+                      );
+                    },
                   ),
                 ],
               ),

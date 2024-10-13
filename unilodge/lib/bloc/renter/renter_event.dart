@@ -32,6 +32,7 @@ class PostReview extends RenterEvent {
   List<Object> get props => [userId, dormId, stars, comment];
 }
 
+
 class SaveDorm extends RenterEvent {
   final String dormId;
 
@@ -45,6 +46,15 @@ class DeleteSavedDorm extends RenterEvent {
   final String dormId;
 
   const DeleteSavedDorm(this.dormId);
+
+  @override
+  List<Object> get props => [dormId];
+}
+
+class CheckIfDormIsSaved extends RenterEvent {
+  final String dormId;
+
+  const CheckIfDormIsSaved(this.dormId);
 
   @override
   List<Object> get props => [dormId];

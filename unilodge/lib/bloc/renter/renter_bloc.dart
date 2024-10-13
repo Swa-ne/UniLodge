@@ -10,12 +10,27 @@ class RenterBloc extends Bloc<RenterEvent, RenterState> {
   final RenterRepository renterRepository;
 
   RenterBloc({required this.renterRepository}) : super(RenterInitial()) {
+    // on<FetchAllDorms>((event, emit) async {
+    //   try {
+    //     emit(DormsLoading());
+
+    //     final listings = await renterRepository.fetchAllDorms();
+
+    //     emit(DormsLoaded(
+    //         listings));
+    //   } catch (e) {
+    //     emit(const DormsError("Internet Connection Error"));
+    //   }
+    // });
 
     on<FetchAllDorms>((event, emit) async {
       try {
         emit(DormsLoading());
+
         final listings = await renterRepository.fetchAllDorms();
-        emit(DormsLoaded(listings));
+        final savedDorms = await renterRepository.fetchSavedDorms();
+
+        emit(AllDormsLoaded(listings, savedDorms));
       } catch (e) {
         emit(const DormsError("Internet Connection Error"));
       }
@@ -70,7 +85,7 @@ class RenterBloc extends Bloc<RenterEvent, RenterState> {
         await renterRepository.saveDorm(event.dormId);
         emit(const DormSaved("Dorm saved successfully!"));
       } catch (e) {
-        emit(const DormSaveError("Internet Connection Error"));
+        emit(DormSaveError(e.toString()));
       }
     });
 
@@ -80,7 +95,7 @@ class RenterBloc extends Bloc<RenterEvent, RenterState> {
         await renterRepository.deleteSavedDorm(event.dormId);
         emit(const DormSaved("Dorm removed from saved list!"));
       } catch (e) {
-        emit(const DormSaveError("Internet Connection Error"));
+        emit(DormSaveError(e.toString()));
       }
     });
   }

@@ -156,9 +156,9 @@ class _HomeState extends State<Home> {
                       height: 800,
                       child: ShimmerLoading(),
                     ),
-                  ] else if (state is DormsLoaded) ...[
+                  ] else if (state is AllDormsLoaded) ...[
                     if (state.allDorms.isEmpty) ...[
-                      const NoListingPlaceholder(), // Display this when no listings are available
+                      const NoListingPlaceholder(),
                     ] else ...[
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -172,6 +172,7 @@ class _HomeState extends State<Home> {
                                   (a, b) => b.createdAt.compareTo(a.createdAt));
 
                             final listing = sortedDorms[index];
+
                             return Column(
                               children: [
                                 ListingCards(
@@ -187,8 +188,7 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                     ]
-                  ]
- else if (state is DormsError) ...[
+                  ] else if (state is DormsError) ...[
                     ErrorMessage(errorMessage: state.message),
                   ],
                 ],
