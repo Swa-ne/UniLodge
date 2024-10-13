@@ -39,6 +39,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
   Widget build(BuildContext context) {
     final _chatBloc = BlocProvider.of<ChatBloc>(context);
     final _renterBloc = BlocProvider.of<RenterBloc>(context);
+    final listingBloc = BlocProvider.of<RenterBloc>(context);
 
     return MultiBlocListener(
       listeners: [
@@ -69,10 +70,12 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(state.successMessage)),
               );
+              _renterBloc.add(FetchAllDorms());
             } else if (state is DormUnsaved) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(state.successMessage)),
               );
+              _renterBloc.add(FetchAllDorms());
             } else if (state is DormSaveError) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(state.message)),
@@ -174,7 +177,6 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
                             color: Color(0xff434343))),
-                            
                   ),
                   const Spacer(),
                   Padding(
@@ -185,7 +187,6 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                   ),
                 ],
               ),
-              
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child:
