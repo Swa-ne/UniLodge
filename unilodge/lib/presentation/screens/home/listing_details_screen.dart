@@ -116,7 +116,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                           child: InstaImageViewer(
                             child: Center(
                               child: Container(
-                                constraints: BoxConstraints(
+                                constraints: const BoxConstraints(
                                   maxHeight: 250,
                                   maxWidth: 400,
                                 ),
@@ -176,7 +176,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                             color: Color(0xff434343))),
                             
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: PriceText(
@@ -208,7 +208,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                     .copyWith(dividerColor: const Color.fromARGB(6, 0, 0, 0)),
                 child: ExpansionTile(
                   backgroundColor: const Color.fromARGB(5, 0, 0, 0),
-                  title: Text(
+                  title: const Text(
                     "Amenities and Utilities",
                     style: TextStyle(color: Color(0xff434343), fontSize: 15),
                   ),
@@ -234,7 +234,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                                             const SizedBox(width: 8),
                                             Text(
                                               amenity.trim(),
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 15,
                                                 color: AppColors.formTextColor,
                                               ),
@@ -274,7 +274,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                     .copyWith(dividerColor: const Color.fromARGB(6, 0, 0, 0)),
                 child: ExpansionTile(
                   backgroundColor: const Color.fromARGB(5, 0, 0, 0),
-                  title: Text(
+                  title: const Text(
                     "Lease Terms",
                     style: TextStyle(color: Color(0xff434343), fontSize: 15),
                   ),
@@ -289,7 +289,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                             child: Text(
                               widget.listing.leastTerms ??
                                   "No lease terms available",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: AppColors.formTextColor,
                                 fontSize: 15,
                               ),
@@ -409,7 +409,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                           isSaved ? Icons.favorite : Icons.favorite_border,
                           color: isSaved ? Colors.red : Colors.grey,
                         ),
-                        onPressed: () {
+                        onPressed: () async {
                           if (isSaved) {
                             _renterBloc
                                 .add(DeleteSavedDorm(widget.listing.id!));

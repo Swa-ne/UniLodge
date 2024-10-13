@@ -31,7 +31,7 @@ class TypeListingScreen extends StatelessWidget {
         body: BlocBuilder<RenterBloc, RenterState>(
           builder: (context, state) {
             if (state is DormsLoading) {
-              return Center(child: ShimmerLoading());
+              return const Center(child: ShimmerLoading());
             } else if (state is DormsError) {
               return Center(
                 child: CustomText(
@@ -43,7 +43,7 @@ class TypeListingScreen extends StatelessWidget {
             } else if (state is DormsLoaded) {
               final listings = state.allDorms;
               if (listings.isEmpty) {
-                return NoListingPlaceholder();
+                return const NoListingPlaceholder();
               }
 
               return ListView.builder(
@@ -64,7 +64,7 @@ class TypeListingScreen extends StatelessWidget {
                 },
               );
             }
-            return SizedBox.shrink();
+            return const SizedBox.shrink();
           },
         ),
       ),
