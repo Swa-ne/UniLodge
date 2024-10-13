@@ -64,16 +64,6 @@ class RenterBloc extends Bloc<RenterEvent, RenterState> {
       }
     });
 
-    on<FetchSavedDorms>((event, emit) async {
-      try {
-        emit(DormsLoading());
-        final listings = await renterRepository.fetchSavedDorms();
-        emit(DormsLoaded(listings));
-      } catch (e) {
-        emit(DormsError(e.toString()));
-      }
-    });
-
     on<SaveDorm>((event, emit) async {
       emit(DormSaving());
       try {
