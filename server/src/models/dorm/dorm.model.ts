@@ -1,24 +1,25 @@
-import { Schema, Document, ObjectId, model } from 'mongoose';
-import { Image, ImageSchemaInterface } from './image.model';
+import { Schema, Document, ObjectId, model } from "mongoose";
+import { Image, ImageSchemaInterface } from "./image.model";
 
 export interface DormSchemaInterface extends Document {
-    _id: ObjectId,
-    owner_id: ObjectId,
-    property_name: string,
-    type: string,
-    location: ObjectId,
-    currency: ObjectId,
-    available_rooms: number,
-    price: number,
-    description: string,
-    least_terms?: string,
-    amenities?: string[],
-    utilities?: string[],
-    imageUrl: ObjectId[] | ImageSchemaInterface[],
-    tags?: string[],
-    isAvailable: boolean,
-    createdAt?: Date,
-    updatedAt?: Date,
+  _id: ObjectId;
+  owner_id: ObjectId;
+  property_name: string;
+  type: string;
+  location: ObjectId;
+  currency: ObjectId;
+  available_rooms: number;
+  price: number;
+  description: string;
+  least_terms?: string;
+  amenities?: string[];
+  utilities?: string[];
+  imageUrl: ObjectId[] | ImageSchemaInterface[];
+  tags?: string[];
+  isAvailable: boolean;
+  status: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 const DormSchema: Schema = new Schema(
@@ -98,4 +99,4 @@ const DormSchema: Schema = new Schema(
   }
 );
 
-export const Dorm = model<DormSchemaInterface>("Dorm", DormSchema)
+export const Dorm = model<DormSchemaInterface>("Dorm", DormSchema);
