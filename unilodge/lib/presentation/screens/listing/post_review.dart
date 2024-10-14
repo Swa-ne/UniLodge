@@ -23,6 +23,7 @@ class PostReview extends StatelessWidget {
     return BlocListener<ListingBloc, ListingState>(
       listener: (context, state) {
         if (state is ListingCreated) {
+          listingBloc.add(FetchListings());
           context.go("/home");
         } else if (state is ListingCreationError) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -37,8 +38,8 @@ class PostReview extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 40),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -138,7 +139,7 @@ class PostReview extends StatelessWidget {
                     .copyWith(dividerColor: const Color.fromARGB(6, 0, 0, 0)),
                 child: ExpansionTile(
                   backgroundColor: const Color.fromARGB(5, 0, 0, 0),
-                  title: Text(
+                  title: const Text(
                     "Amenities",
                     style: TextStyle(color: Color(0xff434343), fontSize: 15),
                   ),
@@ -165,7 +166,7 @@ class PostReview extends StatelessWidget {
                                           const SizedBox(width: 8),
                                           Text(
                                             amenity,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontSize: 15,
                                               color: AppColors.formTextColor,
                                             ),
@@ -201,7 +202,7 @@ class PostReview extends StatelessWidget {
                                           const SizedBox(width: 8),
                                           Text(
                                             utility,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontSize: 15,
                                               color: AppColors.formTextColor,
                                             ),
@@ -244,7 +245,7 @@ class PostReview extends StatelessWidget {
                     .copyWith(dividerColor: const Color.fromARGB(6, 0, 0, 0)),
                 child: ExpansionTile(
                   backgroundColor: const Color.fromARGB(5, 0, 0, 0),
-                  title: Text(
+                  title: const Text(
                     "Lease Terms",
                     style: TextStyle(color: Color(0xff434343), fontSize: 15),
                   ),
@@ -258,7 +259,7 @@ class PostReview extends StatelessWidget {
                           Expanded(
                             child: Text(
                               listing.leastTerms ?? "No lease terms available",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: AppColors.formTextColor,
                                 fontSize: 15,
                               ),
@@ -309,20 +310,34 @@ class PostReview extends StatelessWidget {
                   child: const Text("Back"),
                 ),
                 const SizedBox(width: 20),
-                ElevatedButton(
-                  onPressed: () async {
-                    listingBloc.add(CreateListing(imageFiles, listing));
+                BlocBuilder<ListingBloc, ListingState>(
+                  builder: (context, state) {
+                    bool isSubmitting = state is SubmittingState;
+                    return ElevatedButton (
+                      onPressed: isSubmitting
+                          ? null
+                          : () {
+                              listingBloc
+                                  .add(CreateListing(imageFiles, listing));
+                            },
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor:
+                            isSubmitting ? Colors.grey : AppColors.primary,
+                        minimumSize: const Size(120, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        elevation: 0,
+                      ),
+                      child: isSubmitting
+                          ? const CircularProgressIndicator(
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(Color.fromARGB(256, 46, 62, 74)),
+                            )
+                          : const Text('Submit'),
+                    );
                   },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: const Color(0xff2E3E4A),
-                    minimumSize: const Size(120, 50),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    elevation: 0,
-                  ),
-                  child: const Text('Submit'),
                 ),
               ],
             ),

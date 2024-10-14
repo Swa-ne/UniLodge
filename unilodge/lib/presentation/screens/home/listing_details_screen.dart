@@ -6,11 +6,14 @@ import 'package:lottie/lottie.dart';
 import 'package:unilodge/bloc/chat/chat_bloc.dart';
 import 'package:unilodge/bloc/chat/chat_event.dart';
 import 'package:unilodge/bloc/chat/chat_state.dart';
+import 'package:unilodge/bloc/renter/renter_bloc.dart';
 import 'package:unilodge/common/widgets/custom_button.dart';
+import 'package:unilodge/common/widgets/shimmer_loading.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/dummy_data/dummy_data.dart';
 import 'package:unilodge/data/models/listing.dart';
 import 'package:unilodge/presentation/widgets/home/nearby_listing.dart';
+import 'package:unilodge/presentation/widgets/home/price_text.dart';
 import 'package:unilodge/presentation/widgets/home/text_row.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/provider/favorite_provider.dart';
@@ -25,21 +28,63 @@ class ListingDetailScreen extends StatefulWidget {
 }
 
 class _ListingDetailScreenState extends State<ListingDetailScreen> {
+  bool isSaved = false;
+
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<RenterBloc>(context).add(FetchAllDorms());
+  }
+
   @override
   Widget build(BuildContext context) {
     final _chatBloc = BlocProvider.of<ChatBloc>(context);
-    final provider = FavoriteProvider.of(context);
+    final _renterBloc = BlocProvider.of<RenterBloc>(context);
+    final listingBloc = BlocProvider.of<RenterBloc>(context);
 
-    return BlocListener<ChatBloc, ChatState>(
-      listener: (context, state) {
-        if (state is CreateInboxSuccess) {
-          context.push('/chat/${state.inbox.id}', extra: state.inbox);
-        } else if (state is CreateInboxError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.error)),
-          );
-        }
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<ChatBloc, ChatState>(
+          listener: (context, state) {
+            if (state is CreateInboxSuccess) {
+              context.push('/chat/${state.inbox.id}', extra: state.inbox);
+            } else if (state is CreateInboxError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.error)),
+              );
+            }
+          },
+        ),
+        BlocListener<RenterBloc, RenterState>(
+          listener: (context, state) {
+            if (state is DormsLoading) {
+              const SizedBox(
+                height: 800,
+                child: ShimmerLoading(),
+              );
+            } else if (state is AllDormsLoaded) {
+              setState(() {
+                isSaved = state.savedDorms.any(
+                    (savedListing) => savedListing.id == widget.listing.id);
+              });
+            } else if (state is DormSaved) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.successMessage)),
+              );
+              _renterBloc.add(FetchAllDorms());
+            } else if (state is DormUnsaved) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.successMessage)),
+              );
+              _renterBloc.add(FetchAllDorms());
+            } else if (state is DormSaveError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.message)),
+              );
+            }
+          },
+        ),
+      ],
       child: Scaffold(
         body: SingleChildScrollView(
           child: Column(
@@ -73,8 +118,8 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                             child: Center(
                               child: Container(
                                 constraints: const BoxConstraints(
-                                  maxHeight: 250, // Set a maximum height
-                                  maxWidth: 400, // Set a maximum width
+                                  maxHeight: 250,
+                                  maxWidth: 400,
                                 ),
                                 child: PageView.builder(
                                   itemCount: widget.listing.imageUrl!.length,
@@ -95,7 +140,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                                             height: 200,
                                             child: Center(
                                               child: Lottie.asset(
-                                                'assets/animation/home_loading.json', // Replace with your Lottie animation
+                                                'assets/animation/home_loading.json',
                                                 width: 200,
                                                 height: 200,
                                               ),
@@ -137,17 +182,25 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
               ),
 
               const SizedBox(height: 16),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 20.0, horizontal: 16.0),
-                child: Text(
-                  widget.listing.property_name ?? '',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xff434343),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20.0, horizontal: 16.0),
+                    child: Text(widget.listing.property_name ?? '',
+                        style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xff434343))),
                   ),
-                ),
+                  const Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: PriceText(
+                        text:
+                            widget.listing.price != null ? '₱${widget.listing.price!}' : 'N/A'),
+                  ),
+                ],
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -163,15 +216,26 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                   text2: widget.listing.owner_id?.full_name ?? '',
                 ),
               ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: TextRow(
+                    text1: "Type:",
+                    text2: widget.listing.selectedPropertyType ?? ''),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: TextRow(
+                    text1: "Type:",
+                    text2: widget.listing.selectedPropertyType ?? ''),
+              ),
               Theme(
                 data: Theme.of(context).copyWith(
                     dividerColor: const Color.fromARGB(6, 0, 0, 0)),
                 child: ExpansionTile(
                   backgroundColor: const Color.fromARGB(5, 0, 0, 0),
                   title: const Text(
-                    "Amenities",
-                    style: TextStyle(
-                        color: Color(0xff434343), fontSize: 15),
+                    "Amenities and Utilities",
+                    style: TextStyle(color: Color(0xff434343), fontSize: 15),
                   ),
                   children: [
                     Padding(
@@ -194,7 +258,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                                             const SizedBox(width: 8),
                                             Text(
                                               amenity.trim(),
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 15,
                                                 color:
                                                     AppColors.formTextColor,
@@ -259,7 +323,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                             child: Text(
                               widget.listing.leastTerms ??
                                   "No lease terms available",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: AppColors.formTextColor,
                                 fontSize: 15,
                               ),
@@ -321,38 +385,28 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                 padding:
                     EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
                 child: Text(
-                  "Reviews (14)",
-                  style: TextStyle(
-                    color: Color(0xff434343),
-                    fontSize: 15,
-                  ),
+                  "Reviews (0)",
+                  style: TextStyle(color: Color(0xff434343), fontSize: 15),
                 ),
               ),
-              const Padding(
-                padding:
-                    EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-                child: Text(
-                  "dropdown reviews or direct to another screen",
-                  style: TextStyle(
-                    color: AppColors.formTextColor,
-                    fontSize: 15,
-                  ),
-                ),
-              ),
+              // const Padding(
+              //   padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+              //   child: Text(
+              //     "dropdown reviews or direct to another screen",
+              //     style:
+              //         TextStyle(color: AppColors.formTextColor, fontSize: 15),
+              //   ),
+              // ),
               const SizedBox(height: 30),
-              const Padding(
-                padding:
-                    EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-                child: Text(
-                  "Nearby Listings",
-                  style: TextStyle(
-                    color: Color(0xff434343),
-                    fontSize: 15,
-                  ),
-                ),
-              ),
-              // Pass the data here
-              NearbyProperties(listings: dummyListings),
+              // const Padding(
+              //   padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+              //   child: Text(
+              //     "Nearby Listings",
+              //     style: TextStyle(color: Color(0xff434343), fontSize: 15),
+              //   ),
+              // ),
+              // i should pass the data here
+              NearbyProperties(listings: dummyListings)
             ],
           ),
         ),
@@ -405,20 +459,31 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                       width: 20,
                     ),
                   ),
-                  Expanded(
-                    flex: 1,
-                    child: GestureDetector(
-                      onTap: () {
-                        provider.toggleFavorite(widget.listing); // Fixed here
-                      },
-                      child: Icon(
-                        provider.isExist(widget.listing)
-                            ? Icons.favorite
-                            : Icons.favorite_border,
-                        color: const Color(0xffF04F43),
-                        size: 28,
-                      ),
-                    ),
+                  BlocBuilder<RenterBloc, RenterState>(
+                    builder: (context, state) {
+                      return IconButton(
+                        icon: Icon(
+                          isSaved ? Icons.favorite : Icons.favorite_border,
+                          color: isSaved ? Colors.red : Colors.grey,
+                        ),
+                        onPressed: () async {
+                          if (isSaved) {
+                            _renterBloc
+                                .add(DeleteSavedDorm(widget.listing.id!));
+                            setState(() {
+                              isSaved = false;
+                            });
+                            print(isSaved);
+                          } else {
+                            _renterBloc.add(SaveDorm(widget.listing.id!));
+                            setState(() {
+                              isSaved = true;
+                            });
+                            print(isSaved);
+                          }
+                        },
+                      );
+                    },
                   ),
                 ],
               ),

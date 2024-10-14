@@ -182,6 +182,8 @@ class _EditListingFormState extends State<EditListingForm> {
 
   @override
   Widget build(BuildContext context) {
+    final listingBloc = BlocProvider.of<ListingBloc>(context);
+
     return Theme(
       data: Theme.of(context).copyWith(
         colorScheme: const ColorScheme.light(
@@ -247,6 +249,7 @@ class _EditListingFormState extends State<EditListingForm> {
                           selectedImages,
                           updatedListing,
                         ));
+                        listingBloc.add(FetchListings());
                         context.go("/listings");
                       },
                       child: const Text("Save"),

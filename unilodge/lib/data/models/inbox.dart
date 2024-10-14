@@ -27,7 +27,9 @@ class InboxModel extends Equatable {
       profile: json['profile'],
       chat_name: json['chatName'],
       was_active: json['wasActive'],
-      last_message: MessageModel.fromJson(json['lastMessage']),
+      last_message: (json['lastMessage'] != null)
+          ? MessageModel.fromJson(json['lastMessage'])
+          : null,
     );
   }
   Map<String, dynamic> toJson() {

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:unilodge/bloc/chat/chat_bloc.dart';
 import 'package:unilodge/bloc/renter/renter_bloc.dart';
 import 'package:unilodge/common/widgets/error_message.dart';
+import 'package:unilodge/common/widgets/no_listing_placeholder.dart';
 import 'package:unilodge/common/widgets/shimmer_loading.dart';
 import 'package:unilodge/core/configs/assets/app_images.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
@@ -155,33 +156,38 @@ class _HomeState extends State<Home> {
                       height: 800,
                       child: ShimmerLoading(),
                     ),
-                  ] else if (state is DormsLoaded) ...[
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: state.allDorms.length,
-                        itemBuilder: (context, index) {
-                          final sortedDorms = List.from(state.allDorms)
-                            ..sort(
-                                (a, b) => b.createdAt.compareTo(a.createdAt));
+                  ] else if (state is AllDormsLoaded) ...[
+                    if (state.allDorms.isEmpty) ...[
+                      const NoListingPlaceholder(),
+                    ] else ...[
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: state.allDorms.length,
+                          itemBuilder: (context, index) {
+                            final sortedDorms = List.from(state.allDorms)
+                              ..sort(
+                                  (a, b) => b.createdAt.compareTo(a.createdAt));
 
-                          final listing = sortedDorms[index];
-                          return Column(
-                            children: [
-                              ListingCards(
-                                listing: listing,
-                              ),
-                              const Divider(
-                                height: 20,
-                                color: Color.fromARGB(255, 223, 223, 223),
-                              ),
-                            ],
-                          );
-                        },
+                            final listing = sortedDorms[index];
+
+                            return Column(
+                              children: [
+                                ListingCards(
+                                  listing: listing,
+                                ),
+                                const Divider(
+                                  height: 20,
+                                  color: Color.fromARGB(255, 223, 223, 223),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
                       ),
-                    ),
+                    ]
                   ] else if (state is DormsError) ...[
                     ErrorMessage(errorMessage: state.message),
                   ],

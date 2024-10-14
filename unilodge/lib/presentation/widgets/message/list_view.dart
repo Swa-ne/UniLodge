@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:unilodge/bloc/chat/chat_bloc.dart';
 import 'package:unilodge/bloc/chat/chat_event.dart';
 import 'package:unilodge/bloc/chat/chat_state.dart';
@@ -35,6 +36,9 @@ class _MessagesListViewState extends State<MessagesListView>
 
   Future<void> _initializeUserID() async {
     currentUserId = await _tokenController.getUserID();
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
@@ -43,16 +47,26 @@ class _MessagesListViewState extends State<MessagesListView>
       body: BlocBuilder<ChatBloc, ChatState>(
         builder: (context, state) {
           if (state is ChatLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(
+              child: SizedBox(
+                width: 360,
+                height: 200,
+                child: Lottie.asset(
+                  'assets/animation/home_loading.json',
+                  width: 200,
+                  height: 200,
+                ),
+              ),
+            );
           } else if (state is GetInboxSuccess) {
             inbox.clear();
             inbox.addAll(state.inbox);
             return Container(
               margin: const EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-              ),
+              // decoration: BoxDecoration(
+              //   color: Colors.white,
+              //   borderRadius: BorderRadius.circular(10),
+              // ),
               child: Padding(
                 padding: const EdgeInsets.all(2),
                 child: ListView.builder(
@@ -78,17 +92,17 @@ class _MessagesListViewState extends State<MessagesListView>
                         margin: const EdgeInsets.symmetric(
                             vertical: 4, horizontal: 5),
                         padding: const EdgeInsets.all(14),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(0xFF636464).withOpacity(0.15),
-                              offset: const Offset(0, 2),
-                              blurRadius: 8,
-                            ),
-                          ],
-                        ),
+                        // decoration: BoxDecoration(
+                        //   color: Colors.white,
+                        //   borderRadius: BorderRadius.circular(10),
+                        //   boxShadow: [
+                        //     BoxShadow(
+                        //       color: const Color(0xFF636464).withOpacity(0.15),
+                        //       offset: const Offset(0, 2),
+                        //       blurRadius: 8,
+                        //     ),
+                        //   ],
+                        // ),
                         child: Row(
                           children: [
                             Container(
@@ -118,13 +132,13 @@ class _MessagesListViewState extends State<MessagesListView>
                                         )
                                         .fullName,
                                     color: AppColors.textColor,
-                                    fontSize: 16,
+                                    fontSize: 18,
                                   ),
                                   const SizedBox(height: 5),
                                   CustomText(
                                     text: ibx.last_message?.message ?? "",
                                     color: AppColors.formTextColor,
-                                    fontSize: 14,
+                                    fontSize: 15,
                                   ),
                                 ],
                               ),

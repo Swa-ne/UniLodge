@@ -1,7 +1,7 @@
-import { startSession } from 'mongoose';
+import { startSession, Document, ObjectId } from 'mongoose';
 import { Dorm, DormSchemaInterface } from '../models/dorm/dorm.model';
 import { Review } from '../models/dorm/review.model';
-import { Saved } from '../models/dorm/saved.model';
+import { Saved, SavedSchemaInterface } from '../models/dorm/saved.model';
 
 export const getDorms = async (user_id: string) => {
     try {
@@ -42,6 +42,36 @@ export const postReviewForDorm = async (user_id: string, dorm_id: string, stars:
     }
 }
 
+export const getSavedDorms = async (user_id: string) => {
+  try {
+    const savedData: SavedSchemaInterface | null = await Saved.findOne({
+      user_id,
+    }).populate("dorm_ids");
+
+    const savedDormIds: ObjectId[] = savedData
+      ? savedData.dorm_ids.map((dormId) => dormId)
+      : [];
+
+    const dorms: (DormSchemaInterface & Document)[] | null = await Dorm.find({
+      _id: { $in: savedDormIds }, 
+      owner_id: { $ne: user_id },
+      isAvailable: true,
+    })
+      .populate("owner_id")
+      .populate("location")
+      .populate("currency")
+      .populate("imageUrl");
+
+    return { message: dorms, httpCode: 200 }; 
+  } catch (error) {
+    console.error("Error in getSavedDorms:", error); 
+    return { error: "Internal Server Error", httpCode: 500 };
+  }
+};
+
+
+
+
 export const putSavedDorm = async (user_id: string, dorm_id: string) => {
     const session = await startSession();
     session.startTransaction();
@@ -60,10 +90,11 @@ export const putSavedDorm = async (user_id: string, dorm_id: string) => {
             saved.dorm_ids.push(dorm._id);
             await saved.save({ session });
         } else {
-            new Saved({
+            const newSaved = new Saved({
                 user_id,
                 dorm_ids: [dorm_id],
-            }).save({ session });
+            })
+            await newSaved.save({ session });
         }
 
         await session.commitTransaction();

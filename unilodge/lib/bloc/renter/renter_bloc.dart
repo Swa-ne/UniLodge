@@ -10,23 +10,29 @@ class RenterBloc extends Bloc<RenterEvent, RenterState> {
   final RenterRepository renterRepository;
 
   RenterBloc({required this.renterRepository}) : super(RenterInitial()) {
-    // on<FetchSavedDorms>((event, emit) async {
-    //   emit(RenterInitial());
+    // on<FetchAllDorms>((event, emit) async {
     //   try {
-    //     final savedDorms = await renterRepository.fetchSavedDorms(event.userId);
-    //     emit(DormsLoaded(savedDorms));
+    //     emit(DormsLoading());
+
+    //     final listings = await renterRepository.fetchAllDorms();
+
+    //     emit(DormsLoaded(
+    //         listings));
     //   } catch (e) {
-    //     emit(DormsError(e.toString()));
+    //     emit(const DormsError("Internet Connection Error"));
     //   }
     // });
 
     on<FetchAllDorms>((event, emit) async {
       try {
         emit(DormsLoading());
+
         final listings = await renterRepository.fetchAllDorms();
-        emit(DormsLoaded(listings));
+        final savedDorms = await renterRepository.fetchSavedDorms();
+
+        emit(AllDormsLoaded(listings, savedDorms));
       } catch (e) {
-        emit(DormsError(e.toString()));
+        emit(const DormsError("Internet Connection Error"));
       }
     });
 
@@ -48,7 +54,7 @@ class RenterBloc extends Bloc<RenterEvent, RenterState> {
 
         emit(DormsLoaded(filteredListings));
       } catch (e) {
-        emit(DormsError(e.toString()));
+        emit(const DormsError("Internet Connection Error"));
       }
     });
 
@@ -59,14 +65,24 @@ class RenterBloc extends Bloc<RenterEvent, RenterState> {
             event.userId, event.dormId, event.stars, event.comment);
         emit(const ReviewPosted("Review posted successfully!"));
       } catch (e) {
-        emit(ReviewError(e.toString()));
+        emit(const ReviewError("Internet Connection Error"));
+      }
+    });
+
+    on<FetchSavedDorms>((event, emit) async {
+      try {
+        emit(DormsLoading());
+        final listings = await renterRepository.fetchSavedDorms();
+        emit(DormsLoaded(listings));
+      } catch (e) {
+        emit(DormsError(e.toString()));
       }
     });
 
     on<SaveDorm>((event, emit) async {
       emit(DormSaving());
       try {
-        await renterRepository.saveDorm(event.userId, event.dormId);
+        await renterRepository.saveDorm(event.dormId);
         emit(const DormSaved("Dorm saved successfully!"));
       } catch (e) {
         emit(DormSaveError(e.toString()));
@@ -76,7 +92,7 @@ class RenterBloc extends Bloc<RenterEvent, RenterState> {
     on<DeleteSavedDorm>((event, emit) async {
       emit(DormSaving());
       try {
-        await renterRepository.deleteSavedDorm(event.userId, event.dormId);
+        await renterRepository.deleteSavedDorm(event.dormId);
         emit(const DormSaved("Dorm removed from saved list!"));
       } catch (e) {
         emit(DormSaveError(e.toString()));
