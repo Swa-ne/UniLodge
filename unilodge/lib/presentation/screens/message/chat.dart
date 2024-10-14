@@ -157,7 +157,7 @@ class _ChatState extends State<Chat> {
           child: Text(
             message,
             style: TextStyle(
-              color: isMe ? Colors.black : Colors.white,
+              color: isMe ? AppColors.textColor : AppColors.lightBackground,
               fontSize: 16,
             ),
           ),
@@ -188,13 +188,26 @@ class _ChatState extends State<Chat> {
                 controller: messageController,
                 decoration: InputDecoration(
                   hintText: "Message...",
+                  hintStyle: const TextStyle(fontWeight: FontWeight.normal),
                   filled: true,
                   fillColor: Colors.grey[200],
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
                     borderSide: BorderSide.none,
                   ),
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 10.0,
+                    horizontal: 16.0,
+                  ),
                 ),
+                minLines: 1, 
+                maxLines:
+                    2, 
+                keyboardType: TextInputType.multiline,
+                textInputAction: TextInputAction.newline,
+                scrollController:
+                    ScrollController(), 
+                scrollPhysics: const BouncingScrollPhysics(),
               ),
             ),
             BlocBuilder<ChatBloc, ChatState>(
@@ -224,4 +237,6 @@ class _ChatState extends State<Chat> {
       ),
     );
   }
+
+
 }
