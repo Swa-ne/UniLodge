@@ -2,7 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unilodge/admin_bloc/admin_listing/admin_listing_event.dart';
 import 'package:unilodge/admin_bloc/admin_listing/admin_listing_state.dart';
 import 'package:unilodge/data/admin_repository/admin_listing_repository.dart';
-import 'package:unilodge/data/models/admin_listing.dart';
+import 'package:unilodge/data/models/listing.dart';
 
 class AdminBloc extends Bloc<AdminListingEvent, AdminListingState> {
   final AdminListingRepository _listingRepository;
@@ -72,7 +72,7 @@ class AdminBloc extends Bloc<AdminListingEvent, AdminListingState> {
             listing.copyWith(selectedPropertyType: event.cardName);
         emit(CardSelectedState(updatedListing, event.cardName));
       } else {
-        final listing = AdminListing(selectedPropertyType: event.cardName);
+        final listing = Listing(selectedPropertyType: event.cardName);
         emit(CardSelectedState(listing, event.cardName));
       }
     });

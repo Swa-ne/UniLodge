@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:unilodge/data/models/admin_listing.dart';
 import 'package:unilodge/data/models/listing.dart';
 
 abstract class AdminListingState extends Equatable {
@@ -109,7 +108,7 @@ class ToggleError extends AdminListingState {
 }
 
 class CardSelectedState extends AdminListingState {
-  final AdminListing listing;
+  final Listing listing;
   final String selectedCard;
 
   const CardSelectedState(this.listing, this.selectedCard);

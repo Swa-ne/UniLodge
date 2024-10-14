@@ -107,7 +107,7 @@ class Settings extends StatelessWidget {
                       color: AppColors.textColor,
                     ),
                     onTap: () {
-                      context.go('/admin-dashboard');
+                      context.push('/admin-dashboard');
                     },
                   ),
                 ],

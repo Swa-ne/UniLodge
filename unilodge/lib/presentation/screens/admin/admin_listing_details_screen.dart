@@ -71,7 +71,7 @@ class _AdminListingDetailScreenState extends State<AdminListingDetailScreen> {
                   Spacer(),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: StatusText(),
+                    child: StatusText(statusText: widget.listing.status!,),
                   )
                 ],
               ),
