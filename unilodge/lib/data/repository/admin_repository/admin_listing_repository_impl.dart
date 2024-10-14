@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:unilodge/data/admin_repository/admin_listing_repository.dart';
+import 'package:unilodge/data/repository/admin_repository/admin_listing_repository.dart';
 import 'package:unilodge/data/models/listing.dart';
 import 'package:unilodge/data/sources/auth/token_controller.dart';
 

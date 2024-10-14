@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:unilodge/admin_bloc/admin_listing/admin_listing_event.dart';
-import 'package:unilodge/admin_bloc/admin_listing/admin_listing_state.dart';
-import 'package:unilodge/data/admin_repository/admin_listing_repository.dart';
+import 'package:unilodge/bloc/admin_bloc/admin_listing/admin_listing_event.dart';
+import 'package:unilodge/bloc/admin_bloc/admin_listing/admin_listing_state.dart';
+import 'package:unilodge/data/repository/admin_repository/admin_listing_repository.dart';
 import 'package:unilodge/data/models/listing.dart';
 
 class AdminBloc extends Bloc<AdminListingEvent, AdminListingState> {

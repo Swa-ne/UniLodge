@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:unilodge/admin_bloc/admin_listing/admin_listing_bloc.dart';
-import 'package:unilodge/admin_bloc/admin_listing/admin_listing_state.dart';
-import 'package:unilodge/admin_bloc/admin_listing/admin_listing_event.dart';
+import 'package:unilodge/bloc/admin_bloc/admin_listing/admin_listing_bloc.dart';
+import 'package:unilodge/bloc/admin_bloc/admin_listing/admin_listing_state.dart';
+import 'package:unilodge/bloc/admin_bloc/admin_listing/admin_listing_event.dart';
 import 'package:unilodge/common/widgets/custom_text.dart';
 import 'package:unilodge/common/widgets/error_message.dart';
 import 'package:unilodge/common/widgets/no_listing_placeholder.dart';
@@ -131,7 +131,7 @@ class _AdminListingsScreenState extends State<AdminListingsScreen> {
 
                           return Column(
                             children: [
-                              ListingCards(
+                              AdminListingCards(
                                 listing: listing,
                               ),
                               const Divider(

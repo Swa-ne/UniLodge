@@ -21,6 +21,8 @@ class StatusText extends StatelessWidget {
     }
 
     return Container(
+      width: 100,
+      height: 30,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
         color: statusColor,
@@ -29,6 +31,7 @@ class StatusText extends StatelessWidget {
       child: CustomText(
         text: statusText,
         color: AppColors.lightBackground,
+        textAlign: TextAlign.center,
         fontSize: 16,
         fontWeight: FontWeight.normal,
       ),

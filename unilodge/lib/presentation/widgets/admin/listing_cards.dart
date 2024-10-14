@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:unilodge/admin_bloc/admin_listing/admin_listing_bloc.dart';
-import 'package:unilodge/admin_bloc/admin_listing/admin_listing_state.dart';
+import 'package:unilodge/bloc/admin_bloc/admin_listing/admin_listing_bloc.dart';
+import 'package:unilodge/bloc/admin_bloc/admin_listing/admin_listing_state.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
 import 'package:unilodge/presentation/widgets/admin/status_text.dart';
 import 'package:unilodge/presentation/widgets/home/price_text.dart';
 
-class ListingCards extends StatelessWidget {
+class AdminListingCards extends StatelessWidget {
   final Listing listing;
 
-  const ListingCards({super.key, required this.listing});
+  const AdminListingCards({super.key, required this.listing});
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +71,12 @@ class ListingCards extends StatelessWidget {
                                     ),
                                   ),
                           ),
+                        ),
+                        Container(
+                          width: 360,
+                          height: 200,
+                          color: Colors.black.withOpacity(
+                              0.3), // Adjust opacity to make it darker
                         ),
                         Positioned(
                             top: 10,
