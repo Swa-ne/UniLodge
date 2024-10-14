@@ -77,7 +77,7 @@ class _AdminListingsScreenState extends State<AdminListingsScreen> {
                           Icons.hourglass_bottom,
                           color: AppColors.lightBackground,
                         ),
-                        color: const Color.fromARGB(255, 163, 179, 127),
+                        color: AppColors.pending,
                       ),
                     ),
                     SizedBox(

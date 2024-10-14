@@ -5,9 +5,11 @@ import 'package:lottie/lottie.dart';
 import 'package:unilodge/bloc/chat/chat_bloc.dart';
 import 'package:unilodge/bloc/chat/chat_state.dart';
 import 'package:unilodge/bloc/renter/renter_bloc.dart';
+import 'package:unilodge/common/widgets/custom_text.dart';
 import 'package:unilodge/common/widgets/shimmer_loading.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
+import 'package:unilodge/presentation/widgets/admin/status_text.dart';
 import 'package:unilodge/presentation/widgets/home/price_text.dart';
 import 'package:unilodge/presentation/widgets/home/text_row.dart';
 import 'package:go_router/go_router.dart';
@@ -33,8 +35,6 @@ class _AdminListingDetailScreenState extends State<AdminListingDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _renterBloc = BlocProvider.of<RenterBloc>(context);
-
     return MultiBlocListener(
       listeners: [
         BlocListener<RenterBloc, RenterState>(
@@ -49,7 +49,7 @@ class _AdminListingDetailScreenState extends State<AdminListingDetailScreen> {
                 isSaved = state.savedDorms.any(
                     (savedListing) => savedListing.id == widget.listing.id);
               });
-            } 
+            }
           },
         ),
       ],
@@ -72,6 +72,11 @@ class _AdminListingDetailScreenState extends State<AdminListingDetailScreen> {
                       },
                       child: const Icon(Icons.cancel,
                           color: Color.fromARGB(169, 60, 60, 67))),
+                  Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: StatusText(),
+                  )
                 ],
               ),
               const SizedBox(
