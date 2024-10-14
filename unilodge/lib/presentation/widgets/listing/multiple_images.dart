@@ -18,11 +18,18 @@ class _MultipleImagesState extends State<MultipleImages> {
   final double imageSize = 150.0;
   final double buttonSize = 100.0;
 
+  void removeImage(int index) {
+    setState(() {
+      _images.removeAt(index);
+    });
+    widget.onImagesSelected(_images);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0), // Added padding on all sides
-      child: SingleChildScrollView( // Ensure content is scrollable
+      padding: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
+      child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -31,13 +38,12 @@ class _MultipleImagesState extends State<MultipleImages> {
               children: [
                 GestureDetector(
                   onTap: () async {
-                    // Pick images and append to the existing list
                     final files = await ImageHelper().pickImage(multiple: true);
                     if (files.isNotEmpty) {
                       setState(() {
                         _images.addAll(files.map((e) => File(e!.path)).toList());
                       });
-                      widget.onImagesSelected(_images); // Notify parent of updated list
+                      widget.onImagesSelected(_images);
                     }
                   },
                   child: DottedBorder(
@@ -71,40 +77,55 @@ class _MultipleImagesState extends State<MultipleImages> {
                   ),
                 ),
                 const SizedBox(width: 10),
-
-                // Display the first image if available
                 if (_images.isNotEmpty)
-                  Image.file(
-                    _images[0],
-                    height: imageSize,
-                    width: imageSize,
-                    fit: BoxFit.cover,
-                  ),
+                  buildImageWithRemoveButton(0),
               ],
             ),
             const SizedBox(height: 10),
-
-            // Display remaining images (if any) in a wrap with padding
             if (_images.length > 1)
               Wrap(
                 spacing: 10,
                 runSpacing: 10,
                 children: _images
+                    .asMap()
+                    .entries
                     .skip(1)
-                    .map(
-                      (e) => Image.file(
-                        e,
-                        height: imageSize,
-                        width: imageSize,
-                        fit: BoxFit.cover,
-                      ),
-                    )
+                    .map((entry) => buildImageWithRemoveButton(entry.key))
                     .toList(),
               ),
-            const SizedBox(height: 60), 
+            const SizedBox(height: 60),
           ],
         ),
       ),
+    );
+  }
+
+  Widget buildImageWithRemoveButton(int index) {
+    return Stack(
+      children: [
+        Image.file(
+          _images[index],
+          height: imageSize,
+          width: imageSize,
+          fit: BoxFit.cover,
+        ),
+        Positioned(
+          top: 5,
+          right: 5,
+          child: GestureDetector(
+            onTap: () => removeImage(index),
+            child: const CircleAvatar(
+              radius: 10,
+              backgroundColor: Color.fromARGB(255, 238, 238, 238),
+              child: Icon(
+                Icons.close,
+                size: 18,
+                color: Color.fromARGB(255, 41, 41, 41),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
