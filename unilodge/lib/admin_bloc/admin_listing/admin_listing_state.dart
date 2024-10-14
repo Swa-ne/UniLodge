@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:unilodge/data/models/admin_listing.dart';
+import 'package:unilodge/data/models/listing.dart';
 
 abstract class AdminListingState extends Equatable {
   const AdminListingState();
@@ -16,13 +17,23 @@ class SubmittingState extends AdminListingState {}
 
 // Loaded States
 class ListingLoaded extends AdminListingState {
-  final List<AdminListing> listings;
+  final List<Listing> listings;
 
   const ListingLoaded(this.listings);
 
   @override
   List<Object> get props => [listings];
 }
+
+class ListingError extends AdminListingState {
+  final String message;
+
+  const ListingError(this.message);
+
+  @override
+  List<Object> get props => [message];
+}
+
 
 // Success States
 class ListingCreated extends AdminListingState {
@@ -59,15 +70,6 @@ class SuccessToggle extends AdminListingState {
 
   @override
   List<Object> get props => [timestamp];
-}
-
-class ListingError extends AdminListingState {
-  final String message;
-
-  const ListingError(this.message);
-
-  @override
-  List<Object> get props => [message];
 }
 
 class UpdateDormError extends AdminListingState {

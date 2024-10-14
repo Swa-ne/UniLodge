@@ -9,6 +9,14 @@ abstract class AdminListingEvent extends Equatable {
 
 class FetchListings extends AdminListingEvent {}
 
+class FetchAllDormsByStatus extends AdminListingEvent {
+  final String listingStatus;
+
+  FetchAllDormsByStatus(this.listingStatus);
+  @override
+  List<Object> get props => [listingStatus];
+}
+
 class DeleteListing extends AdminListingEvent {
   final String id;
 
@@ -17,7 +25,6 @@ class DeleteListing extends AdminListingEvent {
   @override
   List<Object> get props => [id];
 }
-
 
 class SelectCardEvent extends AdminListingEvent {
   final String cardName;

@@ -2,17 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:lottie/lottie.dart';
-import 'package:unilodge/bloc/chat/chat_bloc.dart';
-import 'package:unilodge/bloc/chat/chat_state.dart';
 import 'package:unilodge/bloc/renter/renter_bloc.dart';
-import 'package:unilodge/common/widgets/custom_text.dart';
 import 'package:unilodge/common/widgets/shimmer_loading.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
 import 'package:unilodge/presentation/widgets/admin/status_text.dart';
 import 'package:unilodge/presentation/widgets/home/price_text.dart';
 import 'package:unilodge/presentation/widgets/home/text_row.dart';
-import 'package:go_router/go_router.dart';
 
 class AdminListingDetailScreen extends StatefulWidget {
   final Listing listing;

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:unilodge/bloc/renter/renter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:unilodge/admin_bloc/admin_listing/admin_listing_bloc.dart';
+import 'package:unilodge/admin_bloc/admin_listing/admin_listing_state.dart';
+import 'package:unilodge/admin_bloc/admin_listing/admin_listing_event.dart';
 import 'package:unilodge/common/widgets/custom_text.dart';
 import 'package:unilodge/common/widgets/error_message.dart';
 import 'package:unilodge/common/widgets/no_listing_placeholder.dart';
@@ -17,18 +20,18 @@ class AdminListingsScreen extends StatefulWidget {
 }
 
 class _AdminListingsScreenState extends State<AdminListingsScreen> {
-  late RenterBloc _renterBloc;
+  late AdminBloc _adminBloc;
 
   @override
   void initState() {
     super.initState();
-    _renterBloc = BlocProvider.of<RenterBloc>(context);
-    _renterBloc.add(FetchAllDorms());
+    _adminBloc = BlocProvider.of<AdminBloc>(context);
+    _adminBloc.add(FetchListings());
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RenterBloc, RenterState>(
+    return BlocBuilder<AdminBloc, AdminListingState>(
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
@@ -48,36 +51,51 @@ class _AdminListingsScreenState extends State<AdminListingsScreen> {
                       width: 7,
                     ),
                     Expanded(
-                      child: CustomStatus(
-                        dataTitle: "Approved",
-                        data: "16",
-                        icon: Icon(
-                          Icons.check_circle,
-                          color: AppColors.lightBackground,
+                      child: GestureDetector(
+                        onTap: () {
+                          context.push('/status-listing/Approved');
+                        },
+                        child: CustomStatus(
+                          dataTitle: "Approved",
+                          data: "16",
+                          icon: Icon(
+                            Icons.check_circle,
+                            color: AppColors.lightBackground,
+                          ),
+                          color: AppColors.greenActive,
                         ),
-                        color: AppColors.greenActive,
                       ),
                     ),
                     Expanded(
-                      child: CustomStatus(
-                        dataTitle: "Declined",
-                        data: "16",
-                        icon: Icon(
-                          Icons.cancel,
-                          color: AppColors.lightBackground,
+                      child: GestureDetector(
+                        onTap: () {
+                          context.push('/status-listing/Declined');
+                        },
+                        child: CustomStatus(
+                          dataTitle: "Declined",
+                          data: "16",
+                          icon: Icon(
+                            Icons.cancel,
+                            color: AppColors.lightBackground,
+                          ),
+                          color: AppColors.redInactive,
                         ),
-                        color: AppColors.redInactive,
                       ),
                     ),
                     Expanded(
-                      child: CustomStatus(
-                        dataTitle: "Pending",
-                        data: "3",
-                        icon: Icon(
-                          Icons.hourglass_bottom,
-                          color: AppColors.lightBackground,
+                      child: GestureDetector(
+                        onTap: () {
+                          context.push('/status-listing/Pending');
+                        },
+                        child: CustomStatus(
+                          dataTitle: "Pending",
+                          data: "3",
+                          icon: Icon(
+                            Icons.hourglass_bottom,
+                            color: AppColors.lightBackground,
+                          ),
+                          color: AppColors.pending,
                         ),
-                        color: AppColors.pending,
                       ),
                     ),
                     SizedBox(
@@ -89,13 +107,13 @@ class _AdminListingsScreenState extends State<AdminListingsScreen> {
                     height: 20), // Space between statuses and the list
 
                 // Conditional state rendering
-                if (state is DormsLoading) ...[
+                if (state is ListingLoading) ...[
                   const SizedBox(
                     height: 800,
                     child: ShimmerLoading(),
                   ),
-                ] else if (state is AllDormsLoaded) ...[
-                  if (state.allDorms.isEmpty) ...[
+                ] else if (state is ListingLoaded) ...[
+                  if (state.listings.isEmpty) ...[
                     const NoListingPlaceholder(),
                   ] else ...[
                     Container(
@@ -103,9 +121,9 @@ class _AdminListingsScreenState extends State<AdminListingsScreen> {
                       child: ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: state.allDorms.length,
+                        itemCount: state.listings.length,
                         itemBuilder: (context, index) {
-                          final sortedDorms = List.from(state.allDorms)
+                          final sortedDorms = List.from(state.listings)
                             ..sort(
                                 (a, b) => b.createdAt.compareTo(a.createdAt));
 
@@ -126,7 +144,7 @@ class _AdminListingsScreenState extends State<AdminListingsScreen> {
                       ),
                     ),
                   ]
-                ] else if (state is DormsError) ...[
+                ] else if (state is ListingError) ...[
                   ErrorMessage(errorMessage: state.message),
                 ],
               ],

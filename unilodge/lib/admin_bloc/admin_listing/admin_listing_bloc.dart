@@ -4,10 +4,10 @@ import 'package:unilodge/admin_bloc/admin_listing/admin_listing_state.dart';
 import 'package:unilodge/data/admin_repository/admin_listing_repository.dart';
 import 'package:unilodge/data/models/admin_listing.dart';
 
-class Admin extends Bloc<AdminListingEvent, AdminListingState> {
+class AdminBloc extends Bloc<AdminListingEvent, AdminListingState> {
   final AdminListingRepository _listingRepository;
 
-  Admin(this._listingRepository) : super(ListingLoading()) {
+  AdminBloc(this._listingRepository) : super(ListingLoading()) {
     on<FetchListings>((event, emit) async {
       try {
         emit(FetchingLoading());
@@ -18,6 +18,26 @@ class Admin extends Bloc<AdminListingEvent, AdminListingState> {
       }
     });
 
+    on<FetchAllDormsByStatus>((event, emit) async {
+      try {
+        emit(FetchingLoading());
+        final listings = await _listingRepository.adminFetchListings();
+
+        print('Filtering listings by type: ${event.listingStatus}');
+        final filteredListings = listings.where((listing) {
+          final listingStatus = listing.status?.trim().toLowerCase();
+          print('Listing Type: $listingStatus');
+          return listingStatus == event.listingStatus.trim().toLowerCase();
+        }).toList();
+
+        print("this is from the bloc");
+        print(filteredListings);
+
+        emit(ListingLoaded(filteredListings));
+      } catch (e) {
+        emit(const ListingError("Internet Connection Error"));
+      }
+    });
 
     on<AcceptListing>((event, emit) async {
       try {
@@ -48,7 +68,8 @@ class Admin extends Bloc<AdminListingEvent, AdminListingState> {
     on<SelectCardEvent>((event, emit) {
       if (state is CardSelectedState) {
         final listing = (state as CardSelectedState).listing;
-        final updatedListing = listing.copyWith(selectedPropertyType: event.cardName);
+        final updatedListing =
+            listing.copyWith(selectedPropertyType: event.cardName);
         emit(CardSelectedState(updatedListing, event.cardName));
       } else {
         final listing = AdminListing(selectedPropertyType: event.cardName);

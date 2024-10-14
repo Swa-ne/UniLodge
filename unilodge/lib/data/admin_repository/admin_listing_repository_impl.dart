@@ -1,23 +1,22 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:http_parser/http_parser.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:unilodge/data/models/admin_listing.dart';
 import 'package:unilodge/data/admin_repository/admin_listing_repository.dart';
+import 'package:unilodge/data/models/listing.dart';
 import 'package:unilodge/data/sources/auth/token_controller.dart';
 
 final _apiUrl = "${dotenv.env['API_URL']}/listing";
+final _apiUrlRenter = "${dotenv.env['API_URL']}/render";
 
 class AdminListingRepositoryImpl implements AdminListingRepository {
   final TokenControllerImpl _tokenController = TokenControllerImpl();
 
   @override
-  Future<List<AdminListing>> adminFetchListings() async {
+  Future<List<Listing>> adminFetchListings() async {
     final access_token = await _tokenController.getAccessToken();
     final refresh_token = await _tokenController.getRefreshToken();
     final response = await http.get(
-      Uri.parse('$_apiUrl/my-dorms'),
+      Uri.parse('$_apiUrlRenter/my-dorms'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -28,7 +27,7 @@ class AdminListingRepositoryImpl implements AdminListingRepository {
     try {
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body)['message'];
-        return data.map((json) => AdminListing.fromJson(json)).toList();
+        return data.map((json) => Listing.fromJson(json)).toList();
       } else {
         throw Exception('Failed to load listings');
       }
