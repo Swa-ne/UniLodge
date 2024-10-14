@@ -13,6 +13,7 @@ import 'package:unilodge/data/sources/auth/token_controller.dart';
 class Chat extends StatefulWidget {
   final String chat_id;
   final InboxModel inbox;
+
   const Chat({super.key, required this.chat_id, required this.inbox});
 
   @override
@@ -22,15 +23,15 @@ class Chat extends StatefulWidget {
 class _ChatState extends State<Chat> {
   final ScrollController _scrollController = ScrollController();
   final TokenControllerImpl _tokenController = TokenControllerImpl();
-  TextEditingController messageController = TextEditingController();
+  final TextEditingController messageController = TextEditingController();
   List<MessageModel> messages = [];
 
   String receiver_name = "";
   late String receiver_id;
   late ChatBloc _chatBloc;
+  late String user_id;
   int currentPage = 1;
   bool isLoading = false;
-  late String user_id;
 
   void _onScroll() {
     if (_scrollController.position.pixels <= 100 && !isLoading) {
@@ -47,6 +48,7 @@ class _ChatState extends State<Chat> {
     super.initState();
     _chatBloc = BlocProvider.of<ChatBloc>(context);
     _initializeUserID();
+    _scrollController.addListener(_onScroll);
   }
 
   Future<void> _initializeUserID() async {
@@ -58,8 +60,6 @@ class _ChatState extends State<Chat> {
     super.didChangeDependencies();
     _chatBloc.add(GetMessageEvent(widget.chat_id, currentPage));
     _chatBloc.add(GetReceiverDetailsEvent(widget.chat_id));
-
-    _scrollController.addListener(_onScroll);
   }
 
   @override
@@ -76,15 +76,13 @@ class _ChatState extends State<Chat> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           color: AppColors.primary,
-          onPressed: () {
-            Navigator.pop(context);
-          },
+          onPressed: () => Navigator.pop(context),
         ),
       ),
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(AppImages.chatbg), // Update with your image path
+            image: AssetImage(AppImages.chatbg),
             fit: BoxFit.cover,
           ),
         ),
@@ -108,11 +106,12 @@ class _ChatState extends State<Chat> {
                     updated_at: DateTime.now().toString(),
                   ),
                 );
-                messageController.clear();
+                messageController.clear(); // Clear input on success
               });
             } else if (state is GetMessageSuccess) {
               setState(() {
                 messages.addAll(state.messages);
+                isLoading = false; // Reset loading flag
               });
             } else if (state is OnReceiveMessageSuccess) {
               if (widget.chat_id == state.message.chat_id) {
@@ -135,7 +134,7 @@ class _ChatState extends State<Chat> {
                   },
                 ),
               ),
-              messageInput(),
+              messageInput(), // Message input field
             ],
           ),
         ),
@@ -147,20 +146,20 @@ class _ChatState extends State<Chat> {
     return Align(
       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 300), 
+        constraints: const BoxConstraints(maxWidth: 300),
         child: Container(
           padding: const EdgeInsets.all(12),
           margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           decoration: BoxDecoration(
-            color: isMe
-                ? const Color.fromARGB(255, 238, 238, 238)
-                : AppColors.primary,
+            color: isMe ? Colors.grey[300] : AppColors.primary,
             borderRadius: BorderRadius.circular(15),
           ),
           child: Text(
             message,
             style: TextStyle(
-                color: isMe ? AppColors.textColor : Colors.white, fontSize: 16),
+              color: isMe ? AppColors.textColor : AppColors.lightBackground,
+              fontSize: 16,
+            ),
           ),
         ),
       ),
@@ -189,27 +188,48 @@ class _ChatState extends State<Chat> {
                 controller: messageController,
                 decoration: InputDecoration(
                   hintText: "Message...",
-                  hintStyle: const TextStyle(
-                    fontWeight: FontWeight.normal,
-                  ),
-                  border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                      borderRadius: BorderRadius.circular(15)),
+                  hintStyle: const TextStyle(fontWeight: FontWeight.normal),
                   filled: true,
                   fillColor: Colors.grey[200],
-                  contentPadding: const EdgeInsets.only(left: 16.0),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                    borderSide: BorderSide.none,
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 10.0,
+                    horizontal: 16.0,
+                  ),
                 ),
+                minLines: 1, 
+                maxLines:
+                    2, 
+                keyboardType: TextInputType.multiline,
+                textInputAction: TextInputAction.newline,
+                scrollController:
+                    ScrollController(), 
+                scrollPhysics: const BouncingScrollPhysics(),
               ),
             ),
-            IconButton(
-              icon: const Icon(Icons.send),
-              color: AppColors.linearOrange,
-              onPressed: () {
-                final message = messageController.text;
-                if (message.trim().isNotEmpty) {
-                  _chatBloc.add(
-                      SaveMessageEvent(message, widget.chat_id, receiver_id));
-                }
+            BlocBuilder<ChatBloc, ChatState>(
+              builder: (context, state) {
+                bool isButtonDisabled =
+                    state is MessageSending || state is ChatLoading;
+
+                return IconButton(
+                  icon: const Icon(Icons.send),
+                  color: AppColors.linearOrange,
+                  onPressed: isButtonDisabled
+                      ? null
+                      : () {
+                          final message = messageController.text.trim();
+                          if (message.isNotEmpty) {
+                            _chatBloc.add(
+                              SaveMessageEvent(
+                                  message, widget.chat_id, receiver_id),
+                            );
+                          }
+                        },
+                );
               },
             ),
           ],
@@ -217,4 +237,6 @@ class _ChatState extends State<Chat> {
       ),
     );
   }
+
+
 }

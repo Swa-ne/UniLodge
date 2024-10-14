@@ -1,5 +1,8 @@
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/data/models/inbox.dart';
+import 'package:unilodge/presentation/screens/admin/admin_listing_details_screen.dart';
+import 'package:unilodge/presentation/screens/admin/dashboard.dart';
+import 'package:unilodge/presentation/screens/admin/admin_listings_screen.dart';
 import 'package:unilodge/presentation/screens/auth/change_forgotten_password.dart';
 import 'package:unilodge/presentation/screens/auth/change_password.dart';
 import 'package:unilodge/presentation/screens/help_center/help_center.dart';
@@ -205,6 +208,20 @@ final GoRouter appRouter = GoRouter(
         final token = state.pathParameters['token'];
         return ChangeForgottenPassword(token: token!);
       },
+    ),
+    // TODO: admin routes
+    GoRoute(
+      path: '/admin-dashboard',
+      builder: (context, state) => const Dashboard(),
+    ),
+    GoRoute(
+      path: '/admin-dashboard-listings',
+      builder: (context, state) => const AdminListingsScreen(),
+    ),
+    GoRoute(
+      path: '/admin/listing-details',
+      builder: (context, state) =>
+          AdminListingDetailScreen(listing: state.extra as Listing),
     ),
   ],
 );
