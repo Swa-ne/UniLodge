@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 
 class CustomContainer extends StatefulWidget {
-  CustomContainer({super.key, required this.dataTitle, required this.data, required this.icon});
+  CustomContainer(
+      {super.key,
+      required this.dataTitle,
+      required this.data,
+      required this.icon});
   final String dataTitle;
   final String data;
   final Icon icon;
@@ -44,7 +48,23 @@ class _CustomContainerState extends State<CustomContainer> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [Text(widget.data, style: TextStyle(color: AppColors.textColor, fontSize: 20),), SizedBox(height: 15,), Text(widget.dataTitle, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.primary), )],
+                  children: [
+                    Text(
+                      widget.data,
+                      style:
+                          TextStyle(color: AppColors.textColor, fontSize: 18),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                      widget.dataTitle,
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primary),
+                    )
+                  ],
                 ),
               ),
             ],

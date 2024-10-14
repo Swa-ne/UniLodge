@@ -353,7 +353,7 @@ class _AdminListingDetailScreenState extends State<AdminListingDetailScreen> {
                         ),
                       ),
                       child: const Text(
-                        "Accept",
+                        "Approve",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,
