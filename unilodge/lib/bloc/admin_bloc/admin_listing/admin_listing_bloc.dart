@@ -2,25 +2,25 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unilodge/bloc/admin_bloc/admin_listing/admin_listing_event.dart';
 import 'package:unilodge/bloc/admin_bloc/admin_listing/admin_listing_state.dart';
 import 'package:unilodge/data/repository/admin_repository/admin_listing_repository.dart';
-import 'package:unilodge/data/models/listing.dart';
 
 class AdminBloc extends Bloc<AdminListingEvent, AdminListingState> {
   final AdminListingRepository _listingRepository;
 
   AdminBloc(this._listingRepository) : super(ListingLoading()) {
+
     on<FetchListings>((event, emit) async {
       try {
-        emit(FetchingLoading());
+        emit(ListingLoading());
         final listings = await _listingRepository.adminFetchListings();
         emit(ListingLoaded(listings));
       } catch (e) {
-        emit(const ListingError("Internet Connection Error"));
+        emit(ListingError("Internet Connection Error"));
       }
     });
 
     on<FetchAllDormsByStatus>((event, emit) async {
       try {
-        emit(FetchingLoading());
+        emit(ListingLoading());
         final listings = await _listingRepository.adminFetchListings();
 
         print('Filtering listings by type: ${event.listingStatus}');
@@ -29,51 +29,39 @@ class AdminBloc extends Bloc<AdminListingEvent, AdminListingState> {
           print('Listing Type: $listingStatus');
           return listingStatus == event.listingStatus.trim().toLowerCase();
         }).toList();
-
-        print("this is from the bloc");
         print(filteredListings);
 
         emit(ListingLoaded(filteredListings));
       } catch (e) {
-        emit(const ListingError("Internet Connection Error"));
+        emit(ListingError("Internet Connection Error"));
       }
     });
 
-    on<AcceptListing>((event, emit) async {
+    on<ApproveListing>((event, emit) async {
       try {
-        final isSuccess = await _listingRepository.acceptListing(event.id);
+        final isSuccess = await _listingRepository.approveListing(event.id);
         if (isSuccess) {
-          emit(AcceptListingSuccess(DateTime.now()));
+          emit(ApproveListingSuccess(DateTime.now()));
+          add(FetchListings());
         } else {
-          emit(const AcceptRejectError("Failed to accept listing"));
+          emit(const DeclineRejectError("Failed to accept listing"));
         }
       } catch (e) {
-        emit(const AcceptRejectError("Internet Connection Error"));
+        emit(const DeclineRejectError("Internet Connection Error"));
       }
     });
 
-    on<RejectListing>((event, emit) async {
+    on<DeclineListing>((event, emit) async {
       try {
-        final isSuccess = await _listingRepository.rejectListing(event.id);
+        final isSuccess = await _listingRepository.declineListing(event.id);
         if (isSuccess) {
-          emit(RejectListingSuccess(DateTime.now()));
+          emit(DeclineListingSuccess(DateTime.now()));
+          add(FetchListings());
         } else {
-          emit(const AcceptRejectError("Failed to reject listing"));
+          emit(const DeclineRejectError("Failed to reject listing"));
         }
       } catch (e) {
-        emit(const AcceptRejectError("Internet Connection Error"));
-      }
-    });
-
-    on<SelectCardEvent>((event, emit) {
-      if (state is CardSelectedState) {
-        final listing = (state as CardSelectedState).listing;
-        final updatedListing =
-            listing.copyWith(selectedPropertyType: event.cardName);
-        emit(CardSelectedState(updatedListing, event.cardName));
-      } else {
-        final listing = Listing(selectedPropertyType: event.cardName);
-        emit(CardSelectedState(listing, event.cardName));
+        emit(const DeclineRejectError("Internet Connection Error"));
       }
     });
   }

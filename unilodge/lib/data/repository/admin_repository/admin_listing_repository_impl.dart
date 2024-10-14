@@ -5,8 +5,7 @@ import 'package:unilodge/data/repository/admin_repository/admin_listing_reposito
 import 'package:unilodge/data/models/listing.dart';
 import 'package:unilodge/data/sources/auth/token_controller.dart';
 
-final _apiUrl = "${dotenv.env['API_URL']}/listing";
-final _apiUrlRenter = "${dotenv.env['API_URL']}/render";
+final _apiUrl = "${dotenv.env['API_URL']}/admin";
 
 class AdminListingRepositoryImpl implements AdminListingRepository {
   final TokenControllerImpl _tokenController = TokenControllerImpl();
@@ -16,7 +15,7 @@ class AdminListingRepositoryImpl implements AdminListingRepository {
     final access_token = await _tokenController.getAccessToken();
     final refresh_token = await _tokenController.getRefreshToken();
     final response = await http.get(
-      Uri.parse('$_apiUrlRenter/my-dorms'),
+      Uri.parse('$_apiUrl/get-dorms'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -36,30 +35,8 @@ class AdminListingRepositoryImpl implements AdminListingRepository {
     }
   }
 
-
-  // @override
-  // Future<bool> toggleListing(String id) async {
-  //   final access_token = await _tokenController.getAccessToken();
-  //   final refresh_token = await _tokenController.getRefreshToken();
-  //   final response = await http.put(
-  //     Uri.parse('$_apiUrl/toggle-visibility/$id'),
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       'Accept': 'application/json',
-  //       'Authorization': access_token,
-  //       'Cookie': 'refresh_token=$refresh_token',
-  //     },
-  //   );
-
-  //   if (response.statusCode != 200) {
-  //     final errorResponse = jsonDecode(response.body);
-  //     throw Exception('Failed to update listing: ${errorResponse['error']}');
-  //   }
-  //   return response.statusCode == 200;
-  // }
-
   @override
-  Future<bool> acceptListing(String id) async {
+  Future<bool> approveListing(String id) async {
     final access_token = await _tokenController.getAccessToken();
     final refresh_token = await _tokenController.getRefreshToken();
 
@@ -80,7 +57,7 @@ class AdminListingRepositoryImpl implements AdminListingRepository {
   }
 
   @override
-  Future<bool> rejectListing(String id) async {
+  Future<bool> declineListing(String id) async {
     final access_token = await _tokenController.getAccessToken();
     final refresh_token = await _tokenController.getRefreshToken();
 

@@ -17,38 +17,19 @@ class FetchAllDormsByStatus extends AdminListingEvent {
   List<Object> get props => [listingStatus];
 }
 
-class DeleteListing extends AdminListingEvent {
+class ApproveListing extends AdminListingEvent {
   final String id;
 
-  const DeleteListing(this.id);
+  const ApproveListing(this.id);
 
   @override
   List<Object> get props => [id];
 }
 
-class SelectCardEvent extends AdminListingEvent {
-  final String cardName;
-
-  const SelectCardEvent(this.cardName);
-
-  @override
-  List<Object> get props => [cardName];
-}
-
-// accepting and rejecting a listing
-class AcceptListing extends AdminListingEvent {
+class DeclineListing extends AdminListingEvent {
   final String id;
 
-  const AcceptListing(this.id);
-
-  @override
-  List<Object> get props => [id];
-}
-
-class RejectListing extends AdminListingEvent {
-  final String id;
-
-  const RejectListing(this.id);
+  const DeclineListing(this.id);
 
   @override
   List<Object> get props => [id];

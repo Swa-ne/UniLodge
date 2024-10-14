@@ -33,11 +33,27 @@ class _AdminListingsScreenState extends State<AdminListingsScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<AdminBloc, AdminListingState>(
       builder: (context, state) {
+        int pendingCount = 0;
+        int approvedCount = 0;
+        int declinedCount = 0;
+
+        if (state is ListingLoaded) {
+          pendingCount = state.listings
+              .where((listing) => listing.status == 'Pending')
+              .length;
+          approvedCount = state.listings
+              .where((listing) => listing.status == 'Approved')
+              .length;
+          declinedCount = state.listings
+              .where((listing) => listing.status == 'Declined')
+              .length;
+        }
+
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.white,
             title: const CustomText(
-              text: 'Listings',
+              text: 'Review Listings',
               color: AppColors.textColor,
               fontSize: 18,
             ),
@@ -47,9 +63,7 @@ class _AdminListingsScreenState extends State<AdminListingsScreen> {
               children: [
                 Row(
                   children: [
-                    SizedBox(
-                      width: 7,
-                    ),
+                    const SizedBox(width: 7),
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
@@ -57,8 +71,8 @@ class _AdminListingsScreenState extends State<AdminListingsScreen> {
                         },
                         child: CustomStatus(
                           dataTitle: "Approved",
-                          data: "16",
-                          icon: Icon(
+                          data: approvedCount.toString(),
+                          icon: const Icon(
                             Icons.check_circle,
                             color: AppColors.lightBackground,
                           ),
@@ -73,8 +87,8 @@ class _AdminListingsScreenState extends State<AdminListingsScreen> {
                         },
                         child: CustomStatus(
                           dataTitle: "Declined",
-                          data: "16",
-                          icon: Icon(
+                          data: declinedCount.toString(),
+                          icon: const Icon(
                             Icons.cancel,
                             color: AppColors.lightBackground,
                           ),
@@ -89,8 +103,8 @@ class _AdminListingsScreenState extends State<AdminListingsScreen> {
                         },
                         child: CustomStatus(
                           dataTitle: "Pending",
-                          data: "3",
-                          icon: Icon(
+                          data: pendingCount.toString(),
+                          icon: const Icon(
                             Icons.hourglass_bottom,
                             color: AppColors.lightBackground,
                           ),
@@ -98,15 +112,12 @@ class _AdminListingsScreenState extends State<AdminListingsScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      width: 7,
-                    ),
+                    const SizedBox(width: 7),
                   ],
                 ),
                 const SizedBox(
-                    height: 20), // Space between statuses and the list
+                    height: 20), 
 
-                // Conditional state rendering
                 if (state is ListingLoading) ...[
                   const SizedBox(
                     height: 800,
