@@ -50,7 +50,7 @@ app.use("/authentication", entryRoutes)
 app.use("/chat", chatRoutes)
 app.use("/dorm", dormRoutes)
 app.use("/listing", listingRoutes)
-app.use("/render", renterRoutes)
+app.use("/renter", renterRoutes)
 app.use("/admin", adminRoutes);
 
 
