@@ -393,6 +393,16 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                       },
                     ),
                   ),
+                  Expanded(
+                    flex: 7,
+                    child: CustomButton(
+                      text: "Connect wallet",
+                      onPressed: () {
+                        _chatBloc
+                            .add(CreateInboxEvent(widget.listing.owner_id!.id));
+                      },
+                    ),
+                  ),
                   const SizedBox(width: 10),
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 6.0),
