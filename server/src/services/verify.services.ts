@@ -80,12 +80,14 @@ export const verifyIDImage = async (user_id: string, image_file: Express.Multer.
 export const verifyUser = async (user_id: string) => {
     try {
 
-        const face = await VerifyUser.findOne({ user_id, type: "Face Image" });
-        const id = await VerifyUser.findOne({ user_id, type: "ID Image" });
+        const face = await VerifyUser.findOne({ user_id, type: "Face Image" }).sort({ _id: -1 });
+        const id = await VerifyUser.findOne({ user_id, type: "ID Image" }).sort({ _id: -1 });
 
         const data = { face: face?.url, id: id?.url };
         const result = await python_server.post(`/verify-user`, data);
-        console.log(result.data)
+
+        if (result.data === "Success") return { message: result.data, httpCode: 200 }
+
         return { message: result.data, httpCode: 200 }
     } catch (error) {
         return { error: "Internal Server Error", httpCode: 500 }

@@ -39,7 +39,6 @@ export const verifyIDImageController = async (req: Request & { user?: UserType }
 
         const image_file: Express.Multer.File | undefined = req.file as Express.Multer.File | undefined;
 
-
         if (!image_file) {
             return res.status(400).json({ error: "No files uploaded" });
         }
