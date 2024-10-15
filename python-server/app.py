@@ -1,6 +1,7 @@
 from flask import Flask, request, send_file, jsonify
 from dotenv import load_dotenv
 from email.message import EmailMessage
+from scripts.verifyUser import *
 import os
 import ssl
 import smtplib
@@ -12,6 +13,47 @@ app = Flask(__name__)
 _emailSender = os.getenv("EMAIL_SENDER")
 _emailPassword = os.getenv("EMAIL_PASSWORD")
 
+@app.route("/check-face", methods=["POST"])
+def verifyFace():
+    data = request.json
+    face = data.get('face')
+    isBlurred = isBlurry(face)
+    if isBlurred != "Image is good":
+        return isBlurred
+    
+    detectFace = detectFaceFromImage(face)
+    if(detectFace != "Face detected!"):
+        return detectFace
+    
+    return "Success"
+
+@app.route("/check-id", methods=["POST"])
+def verifyID():
+    data = request.json
+    id = data.get('id')
+    isBlurred = isBlurry(id)
+    if isBlurred != "Image is good":
+        return isBlurred
+    
+    detectFace = detectFaceFromImage(id)
+    if(detectFace != "Face detected!"):
+        return detectFace
+    
+    return "Success"
+
+@app.route("/verify-user", methods=["POST"])
+def verifyUser():
+    data = request.json
+    id = data.get('id')
+    face = data.get('face')
+    result = isMatching(face, id)
+    if (result['verified']):
+        return "Success"
+
+    if(result["distance"] <= 1):
+        return "For Checking"
+    
+    return "Failed"
 
 @app.route("/send-email-code", methods=["POST"])
 def sendEmailCode():
@@ -183,5 +225,5 @@ def display_logo():
 def index(): 
     return "Hello guys"
 
-if __name__ == "__main__":
+if __name__ == "_main_":
     app.run(debug=True)
