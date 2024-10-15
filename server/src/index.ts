@@ -14,6 +14,7 @@ import chatRoutes from "./routes/chat.routes";
 import dormRoutes from "./routes/dorm.routes";
 import listingRoutes from "./routes/listing.routes";
 import renterRoutes from "./routes/renter.routes";
+import verifyRoutes from "./routes/verify.routes";
 
 
 const port = 3000;
@@ -50,6 +51,7 @@ app.use("/chat", chatRoutes)
 app.use("/dorm", dormRoutes)
 app.use("/listing", listingRoutes)
 app.use("/render", renterRoutes)
+app.use("/verify", verifyRoutes)
 
 
 app.get('/', (req: Request, res: Response) => {
