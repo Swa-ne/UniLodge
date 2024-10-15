@@ -181,8 +181,9 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: PriceText(
-                        text:
-                            widget.listing.price != null ? '₱${widget.listing.price!}' : 'N/A'),
+                        text: widget.listing.price != null
+                            ? '₱${widget.listing.price!}'
+                            : 'N/A'),
                   ),
                 ],
               ),
@@ -393,14 +394,12 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                       },
                     ),
                   ),
+                  const SizedBox(width: 10),
                   Expanded(
                     flex: 7,
                     child: CustomButton(
-                      text: "Connect wallet",
-                      onPressed: () {
-                        _chatBloc
-                            .add(CreateInboxEvent(widget.listing.owner_id!.id));
-                      },
+                      text: "Book",
+                      onPressed: () {},
                     ),
                   ),
                   const SizedBox(width: 10),
