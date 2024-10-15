@@ -426,10 +426,10 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                             Icons.visibility,
                             color: AppColors.primary,
                           ),
-                          const SizedBox(width: 12),
+                          SizedBox(width: 12),
                           Text(
                             "Toggle post's visibility",
-                            style: const TextStyle(color: AppColors.textColor),
+                            style: TextStyle(color: AppColors.textColor),
                           ),
                         ],
                       ),

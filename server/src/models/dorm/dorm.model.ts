@@ -1,86 +1,102 @@
-import { Schema, Document, ObjectId, model } from 'mongoose';
-import { Image, ImageSchemaInterface } from './image.model';
+import { Schema, Document, ObjectId, model } from "mongoose";
+import { Image, ImageSchemaInterface } from "./image.model";
 
 export interface DormSchemaInterface extends Document {
-    _id: ObjectId,
-    owner_id: ObjectId,
-    property_name: string,
-    type: string,
-    location: ObjectId,
-    currency: ObjectId,
-    available_rooms: number,
-    price: number,
-    description: string,
-    least_terms?: string,
-    amenities?: string[],
-    utilities?: string[],
-    imageUrl: ObjectId[] | ImageSchemaInterface[],
-    tags?: string[],
-    isAvailable: boolean,
-    createdAt?: Date,
-    updatedAt?: Date,
+  _id: ObjectId;
+  owner_id: ObjectId;
+  property_name: string;
+  type: string;
+  location: ObjectId;
+  currency: ObjectId;
+  available_rooms: number;
+  price: number;
+  description: string;
+  least_terms?: string;
+  amenities?: string[];
+  utilities?: string[];
+  imageUrl: ObjectId[] | ImageSchemaInterface[];
+  tags?: string[];
+  isAvailable: boolean;
+  status: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
-const DormSchema: Schema = new Schema({
+const DormSchema: Schema = new Schema(
+  {
     owner_id: {
-        type: Schema.Types.ObjectId,
-        required: true,
-        ref: 'User',
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
     },
     property_name: {
-        type: String,
-        required: [true, 'Please enter property name.'],
+      type: String,
+      required: [true, "Please enter property name."],
     },
     type: {
-        type: String,
-        required: [true, 'Please enter property name.'],
+      type: String,
+      required: [true, "Please enter property name."],
     },
     location: {
-        type: Schema.Types.ObjectId,
-        required: true,
-        ref: 'Location',
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: "Location",
     },
     currency: {
-        type: Schema.Types.ObjectId,
-        required: true,
-        ref: 'Currency',
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: "Currency",
     },
     available_rooms: {
-        type: Number,
-        default: 0,
-        required: [true, 'Please enter available rooms.'],
+      type: Number,
+      default: 0,
+      required: [true, "Please enter available rooms."],
     },
     price: {
-        type: Number,
-        default: 0,
-        required: [true, 'Please enter price.'],
+      type: Number,
+      default: 0,
+      required: [true, "Please enter price."],
     },
     description: {
-        type: String,
-        required: [true, 'Please enter description.'],
+      type: String,
+      required: [true, "Please enter description."],
     },
     least_terms: {
-        type: String,
+      type: String,
     },
-    amenities: [{
+    amenities: [
+      {
         type: String,
-    }],
-    utilities: [{
+      },
+    ],
+    utilities: [
+      {
         type: String,
-    }],
-    imageUrl: [{
+      },
+    ],
+    imageUrl: [
+      {
         type: Schema.Types.ObjectId,
-        ref: 'Image',
-    }],
-    tags: [{
+        ref: "Image",
+      },
+    ],
+    tags: [
+      {
         type: String,
-    }],
+      },
+    ],
     isAvailable: {
-        type: Boolean,
-        default: true
+      type: Boolean,
+      default: true,
     },
-}, {
+    status: {
+      type: String,
+      default: "Pending",
+    },
+  },
+  {
     timestamps: true,
-});
+  }
+);
 
-export const Dorm = model<DormSchemaInterface>("Dorm", DormSchema)
+export const Dorm = model<DormSchemaInterface>("Dorm", DormSchema);

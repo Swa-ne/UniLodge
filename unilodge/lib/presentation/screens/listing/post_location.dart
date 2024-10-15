@@ -40,6 +40,18 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
     _cityController.addListener(_updateBarangays);
   }
 
+  @override
+  void dispose() {
+    _propertyNameController.dispose();
+    _cityController.dispose();
+    _streetController.dispose();
+    _barangayController.dispose();
+    _houseNumberController.dispose();
+    _regionController.dispose();
+    _provinceController.dispose();
+    super.dispose();
+  }
+
   void _updateProvinces() {
     if (_regionController.text.isNotEmpty) {
       var selectedRegion = allData.firstWhere(
@@ -49,8 +61,30 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
         provinces = selectedRegion['province_list'].keys.toList();
         setState(() {
           _provinceController.text = '';
+          cities = [];
+          barangays = [];
+          _cityController.text = '';
+          _barangayController.text = '';
+        });
+      } else {
+        setState(() {
+          provinces = [];
+          _provinceController.text = '';
+          cities = [];
+          barangays = [];
+          _cityController.text = '';
+          _barangayController.text = '';
         });
       }
+    } else {
+      setState(() {
+        provinces = [];
+        _provinceController.text = '';
+        cities = [];
+        barangays = [];
+        _cityController.text = '';
+        _barangayController.text = '';
+      });
     }
   }
 
@@ -66,9 +100,25 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
           cities = selectedProvince['municipality_list'].keys.toList();
           setState(() {
             _cityController.text = '';
+            barangays = [];
+            _barangayController.text = '';
+          });
+        } else {
+          setState(() {
+            cities = [];
+            _cityController.text = '';
+            barangays = [];
+            _barangayController.text = '';
           });
         }
       }
+    } else {
+      setState(() {
+        cities = [];
+        _cityController.text = '';
+        barangays = [];
+        _barangayController.text = '';
+      });
     }
   }
 
@@ -91,9 +141,19 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
             setState(() {
               _barangayController.text = '';
             });
+          } else {
+            setState(() {
+              barangays = [];
+              _barangayController.text = '';
+            });
           }
         }
       }
+    } else {
+      setState(() {
+        barangays = [];
+        _barangayController.text = '';
+      });
     }
   }
 
@@ -106,6 +166,7 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
     });
   }
 
+  
   void _showSearchDialog({
     required BuildContext context,
     required List<String> options,
@@ -115,43 +176,66 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: Text('Select $title'),
-          content: SizedBox(
-            width: double.maxFinite,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  onChanged: (value) => setState(() {}),
-                  decoration: InputDecoration(
-                    labelText: "Search $title",
-                    suffixIcon: const Icon(Icons.search),
-                  ),
+        List<String> filteredOptions = List.from(options);
+
+        return StatefulBuilder(
+          builder: (context, setState) {
+            void _filterOptions(String query) {
+              setState(() {
+                filteredOptions = options
+                    .where((option) =>
+                        option.toLowerCase().contains(query.toLowerCase()))
+                    .toList();
+              });
+            }
+
+            return AlertDialog(
+              title: Text('Select $title'),
+              content: SizedBox(
+                width: double.maxFinite,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Search TextField
+                    TextField(
+                      onChanged: _filterOptions,
+                      decoration: InputDecoration(
+                        labelText: "Search $title",
+                        suffixIcon: const Icon(Icons.search),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    // Display filtered options
+                    Expanded(
+                      child: filteredOptions.isNotEmpty
+                          ? ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: filteredOptions.length,
+                              itemBuilder: (context, index) {
+                                final option = filteredOptions[index];
+                                return ListTile(
+                                  title: Text(option),
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                    controller.text = option;
+                                  },
+                                );
+                              },
+                            )
+                          : const Center(
+                              child: Text('No results found'),
+                            ),
+                    ),
+                  ],
                 ),
-                Expanded(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: options.length,
-                    itemBuilder: (context, index) {
-                      final option = options[index];
-                      return ListTile(
-                        title: Text(option),
-                        onTap: () {
-                          Navigator.of(context).pop();
-                          controller.text = option;
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         );
       },
     );
   }
+
 
   Widget _buildTextField({
     required TextEditingController controller,
@@ -166,7 +250,7 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
         controller: controller,
         readOnly: options != null,
         onTap: () {
-          if (options != null) {
+          if (options != null && options.isNotEmpty) {
             _showSearchDialog(
               context: context,
               options: options,
@@ -202,7 +286,8 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
               }
               return null;
             },
-        keyboardType: options == null ? TextInputType.text : TextInputType.none,
+        keyboardType:
+            options == null ? TextInputType.text : TextInputType.none,
       ),
     );
   }
@@ -229,42 +314,41 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
                       padding: EdgeInsets.symmetric(vertical: 20.0),
                       child: Row(
                         children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Property Information',
-                                style: TextStyle(
-                                  color: AppColors.primary,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Property Information',
+                                  style: TextStyle(
+                                    color: AppColors.primary,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                'Please fill in all fields below to continue',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.normal,
-                                  color: AppColors.primary,
+                                SizedBox(
+                                  height: 10,
                                 ),
-                              ),
-                            ],
+                                Text(
+                                  'Please fill in all fields below to continue',
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.normal,
+                                    color: AppColors.primary,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                          Column(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 17.0),
-                                child: Icon(
-                                  Icons.draw,
-                                  size: 70,
-                                  color: AppColors.primary,
-                                ),
-                              ),
-                            ],
+                          
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 17.0),
+                            child: Icon(
+                              Icons.draw, 
+                              size: 70,
+                              color: AppColors.primary,
+                            ),
                           )
                         ],
                       ),
@@ -346,7 +430,8 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
                       style: OutlinedButton.styleFrom(
                         foregroundColor: Colors.black,
                         backgroundColor: Colors.transparent,
-                        side: const BorderSide(color: Colors.black, width: 1),
+                        side:
+                            const BorderSide(color: Colors.black, width: 1),
                         minimumSize: const Size(120, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),

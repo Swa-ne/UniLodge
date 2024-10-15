@@ -13,7 +13,7 @@ const router = Router();
 
 router.use(authenticateToken);
 
-router.get("/my-dorms", getDormsController);
+router.get("/get-dorms", getDormsController);
 router.get("/saved-dorms", getSavedDormsController);
 router.post("/give-review/:dorm_id", postReviewController);
 router.put("/add/saved/:dorm_id", saveDormLimiter, putSavedDormController);

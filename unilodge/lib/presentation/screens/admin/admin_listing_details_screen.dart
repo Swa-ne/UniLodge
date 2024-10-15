@@ -2,17 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:lottie/lottie.dart';
-import 'package:unilodge/bloc/chat/chat_bloc.dart';
-import 'package:unilodge/bloc/chat/chat_state.dart';
-import 'package:unilodge/bloc/renter/renter_bloc.dart';
-import 'package:unilodge/common/widgets/custom_text.dart';
-import 'package:unilodge/common/widgets/shimmer_loading.dart';
+import 'package:unilodge/bloc/admin_bloc/admin_listing/admin_listing_bloc.dart';
+import 'package:unilodge/bloc/admin_bloc/admin_listing/admin_listing_event.dart';
+import 'package:unilodge/bloc/admin_bloc/admin_listing/admin_listing_state.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
 import 'package:unilodge/presentation/widgets/admin/status_text.dart';
 import 'package:unilodge/presentation/widgets/home/price_text.dart';
 import 'package:unilodge/presentation/widgets/home/text_row.dart';
-import 'package:go_router/go_router.dart';
 
 class AdminListingDetailScreen extends StatefulWidget {
   final Listing listing;
@@ -25,34 +22,30 @@ class AdminListingDetailScreen extends StatefulWidget {
 }
 
 class _AdminListingDetailScreenState extends State<AdminListingDetailScreen> {
-  bool isSaved = false;
-
-  @override
-  void initState() {
-    super.initState();
-    BlocProvider.of<RenterBloc>(context).add(FetchAllDorms());
-  }
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
-        BlocListener<RenterBloc, RenterState>(
-          listener: (context, state) {
-            if (state is DormsLoading) {
-              const SizedBox(
-                height: 800,
-                child: ShimmerLoading(),
-              );
-            } else if (state is AllDormsLoaded) {
-              setState(() {
-                isSaved = state.savedDorms.any(
-                    (savedListing) => savedListing.id == widget.listing.id);
-              });
-            }
-          },
-        ),
-      ],
+      BlocListener<AdminBloc, AdminListingState>(
+        listener: (context, state) {
+          if (state is ApproveListingSuccess || state is DeclineListingSuccess) {
+            BlocProvider.of<AdminBloc>(context).add(FetchListings());
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Listing updated successfully")),
+            );
+          }
+          if (state is ListingLoading) {
+          }
+          if (state is ListingError) {
+            // Handle error state
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.message)),
+            );
+          }
+        },
+      ),
+    ],
       child: Scaffold(
         body: SingleChildScrollView(
           child: Column(
@@ -75,7 +68,9 @@ class _AdminListingDetailScreenState extends State<AdminListingDetailScreen> {
                   Spacer(),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: StatusText(),
+                    child: StatusText(
+                      statusText: widget.listing.status!,
+                    ),
                   )
                 ],
               ),
@@ -319,7 +314,11 @@ class _AdminListingDetailScreenState extends State<AdminListingDetailScreen> {
                 children: [
                   Expanded(
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        context
+                            .read<AdminBloc>()
+                            .add(DeclineListing(widget.listing.id!));
+                      },
                       style: TextButton.styleFrom(
                         backgroundColor: AppColors.redInactive,
                         padding: const EdgeInsets.symmetric(
@@ -343,7 +342,11 @@ class _AdminListingDetailScreenState extends State<AdminListingDetailScreen> {
                   ),
                   Expanded(
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        context
+                            .read<AdminBloc>()
+                            .add(ApproveListing(widget.listing.id!));
+                      },
                       style: TextButton.styleFrom(
                         backgroundColor: AppColors.greenActive,
                         padding: const EdgeInsets.symmetric(

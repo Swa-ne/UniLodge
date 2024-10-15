@@ -3,6 +3,7 @@ import 'package:unilodge/data/models/inbox.dart';
 import 'package:unilodge/presentation/screens/admin/admin_listing_details_screen.dart';
 import 'package:unilodge/presentation/screens/admin/dashboard.dart';
 import 'package:unilodge/presentation/screens/admin/admin_listings_screen.dart';
+import 'package:unilodge/presentation/screens/admin/status_listing_screen.dart';
 import 'package:unilodge/presentation/screens/auth/change_forgotten_password.dart';
 import 'package:unilodge/presentation/screens/auth/change_password.dart';
 import 'package:unilodge/presentation/screens/help_center/help_center.dart';
@@ -222,6 +223,13 @@ final GoRouter appRouter = GoRouter(
       path: '/admin/listing-details',
       builder: (context, state) =>
           AdminListingDetailScreen(listing: state.extra as Listing),
+    ),
+     GoRoute(
+      path: '/status-listing/:status',
+      builder: (context, state) {
+        final status = state.pathParameters['status'];
+        return StatusListingScreen(listingStatus: status!);
+      },
     ),
   ],
 );

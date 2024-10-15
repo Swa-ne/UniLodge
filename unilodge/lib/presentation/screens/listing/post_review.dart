@@ -313,7 +313,7 @@ class PostReview extends StatelessWidget {
                 BlocBuilder<ListingBloc, ListingState>(
                   builder: (context, state) {
                     bool isSubmitting = state is SubmittingState;
-                    return ElevatedButton (
+                    return ElevatedButton(
                       onPressed: isSubmitting
                           ? null
                           : () {
@@ -331,9 +331,14 @@ class PostReview extends StatelessWidget {
                         elevation: 0,
                       ),
                       child: isSubmitting
-                          ? const CircularProgressIndicator(
-                              valueColor:
-                                  AlwaysStoppedAnimation<Color>(Color.fromARGB(256, 46, 62, 74)),
+                          ? const SizedBox(
+                              height: 25,
+                              width: 25,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    Color.fromARGB(0, 0, 131, 231)),
+                              ),
                             )
                           : const Text('Submit'),
                     );

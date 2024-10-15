@@ -8,6 +8,7 @@ abstract class RenterEvent extends Equatable {
 }
 
 class FetchSavedDorms extends RenterEvent {
+  
 }
 
 class FetchAllDorms extends RenterEvent {}

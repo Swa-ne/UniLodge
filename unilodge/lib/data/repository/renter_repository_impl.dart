@@ -5,7 +5,7 @@ import 'package:unilodge/data/models/listing.dart';
 import 'package:unilodge/data/repository/renter_repository.dart';
 import 'package:unilodge/data/sources/auth/token_controller.dart';
 
-final _apiUrl = "${dotenv.env['API_URL']}/render";
+final _apiUrl = "${dotenv.env['API_URL']}/renter";
 
 class RenterRepositoryImpl implements RenterRepository {
   final TokenControllerImpl _tokenController = TokenControllerImpl();
@@ -16,7 +16,7 @@ class RenterRepositoryImpl implements RenterRepository {
     final refresh_token = await _tokenController.getRefreshToken();
 
     final response = await http.get(
-      Uri.parse('$_apiUrl/my-dorms'),
+      Uri.parse('$_apiUrl/get-dorms'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',

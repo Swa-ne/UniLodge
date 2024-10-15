@@ -8,7 +8,6 @@ import 'package:unilodge/bloc/authentication/auth_state.dart';
 import 'package:unilodge/common/widgets/custom_text.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/presentation/screens/auth/change_forgotten_password.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class VerifyEmail extends StatefulWidget {
   final String email_address;

@@ -23,6 +23,7 @@ class Listing {
   final int? rating;
   final String? address;
   final bool? isAvailable;
+  final String? status;
   final String? createdAt;
 
   Listing({
@@ -48,6 +49,7 @@ class Listing {
     this.rating,
     this.selectedPropertyType,
     this.isAvailable,
+    this.status,
     this.createdAt,
   });
 
@@ -87,6 +89,7 @@ class Listing {
     int? rating,
     String? selectedPropertyType,
     bool? isAvailable,
+    String? status,
     String? createdAt,
   }) {
     return Listing(
@@ -109,6 +112,7 @@ class Listing {
       region: region ?? this.region,
       selectedPropertyType: selectedPropertyType ?? this.selectedPropertyType,
       isAvailable: isAvailable ?? this.isAvailable,
+      status: status ?? this.status,
       createdAt: createdAt ?? this.createdAt,
     );
   }
@@ -138,6 +142,7 @@ class Listing {
       region: json["location"]['region'],
       selectedPropertyType: json['type'],
       isAvailable: json['isAvailable'],
+      status: json['status'],
       createdAt: "${json['createdAt']}",
     );
   }
@@ -162,6 +167,7 @@ class Listing {
       'imageUrl': imageUrl?.map((x) => x).toList(),
       'rating': rating,
       'type': selectedPropertyType,
+      'status': status
     };
   }
 }

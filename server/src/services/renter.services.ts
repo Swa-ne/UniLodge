@@ -7,7 +7,8 @@ export const getDorms = async (user_id: string) => {
     try {
         const dorms: DormSchemaInterface[] | null = await Dorm.find({
             owner_id: { $ne: user_id },
-            isAvailable: true
+            isAvailable: true,
+            status: "Approved"
         })
             .populate('owner_id')
             .populate('location')

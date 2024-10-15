@@ -3,24 +3,35 @@ import 'package:unilodge/common/widgets/custom_text.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 
 class StatusText extends StatelessWidget {
-  const StatusText({super.key});
+  const StatusText({super.key, required this.statusText});
+
+  final String statusText;
 
   @override
   Widget build(BuildContext context) {
+    Color statusColor;
+
+    if (statusText == "Declined") {
+      statusColor = AppColors.redInactive;
+    } else if (statusText == "Approved") {
+      statusColor = AppColors.greenActive;
+    } else {
+      statusColor =
+          AppColors.pending; // Fallback color in case of unknown status
+    }
+
     return Container(
+      width: 100,
+      height: 30,
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        // TODO: change this accdg to the state from bloc
-        color: "pending" == "pending"
-            ? AppColors.pending
-            : "pending" == "declined"
-                ? AppColors.redInactive
-                : AppColors.greenActive,
+        color: statusColor,
         borderRadius: BorderRadius.circular(10),
       ),
       child: CustomText(
-        text: "Pending",
+        text: statusText,
         color: AppColors.lightBackground,
+        textAlign: TextAlign.center,
         fontSize: 16,
         fontWeight: FontWeight.normal,
       ),

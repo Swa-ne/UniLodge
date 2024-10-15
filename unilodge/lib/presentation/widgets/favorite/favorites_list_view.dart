@@ -20,6 +20,7 @@ class _FavoritesListViewState extends State<FavoritesListView> {
     super.initState();
     _renterBloc = BlocProvider.of<RenterBloc>(context);
     _renterBloc.add(FetchSavedDorms());
+    context.read<RenterBloc>().add(FetchSavedDorms());
   }
 
   @override

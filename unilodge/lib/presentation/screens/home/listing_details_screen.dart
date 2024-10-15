@@ -39,7 +39,6 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
   Widget build(BuildContext context) {
     final _chatBloc = BlocProvider.of<ChatBloc>(context);
     final _renterBloc = BlocProvider.of<RenterBloc>(context);
-    final listingBloc = BlocProvider.of<RenterBloc>(context);
 
     return MultiBlocListener(
       listeners: [
