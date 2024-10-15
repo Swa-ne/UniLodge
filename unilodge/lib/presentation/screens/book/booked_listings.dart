@@ -25,17 +25,17 @@ ReownAppKitModal? _appKitModal;
     _appKitModal = ReownAppKitModal(
       context: context,
       projectId:
-          '51d85f4aa1e21fb201984e437e4c4061', // Replace with your actual project ID
+          '51d85f4aa1e21fb201984e437e4c4061', 
       metadata: const PairingMetadata(
         name: 'Unilodge Crypto',
-        description: 'A Crypto Flutter Example App',
+        description: 'A Crypto Flutter Unilodge',
         url: 'https://www.reown.com/',
         icons: ['https://reown.com/reown-logo.png'],
-        // redirect: Redirect(
-        //   native: 'cryptoflutter://',
-        //   universal: 'https://reown.com',
-        //   linkMode: true,
-        // ),
+        redirect: Redirect(
+          native: '/bookings',
+          universal: 'https://reown.com',
+          linkMode: true,
+        ),
       ),
     );
 
