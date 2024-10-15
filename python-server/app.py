@@ -39,6 +39,10 @@ def verifyID():
     if(detectFace != "Face detected!"):
         return detectFace
     
+    isValidId = checkIfIDisValid(id)
+    if(isValidId == "Invalid ID"):
+        return isValidId
+    
     return "Success"
 
 @app.route("/verify-user", methods=["POST"])
@@ -47,10 +51,11 @@ def verifyUser():
     id = data.get('id')
     face = data.get('face')
     result = isMatching(face, id)
+    
     if (result['verified']):
         return "Success"
 
-    if(result["distance"] <= 1):
+    if(result["distance"] <= 0.7):
         return "For Checking"
     
     return "Failed"
