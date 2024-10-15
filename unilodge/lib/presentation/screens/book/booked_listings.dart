@@ -10,7 +10,7 @@ class BookedListings extends StatefulWidget {
 }
 
 class _BookedListingsState extends State<BookedListings> {
-ReownAppKitModal? _appKitModal;
+  ReownAppKitModal? _appKitModal;
   String walletAddress = 'No Address';
   String _balance = '0';
   bool isLoading = false;
@@ -18,21 +18,30 @@ ReownAppKitModal? _appKitModal;
   @override
   void initState() {
     super.initState();
+    ReownAppKitModalNetworks.addNetworks('eip155', [customNetwork]);
     initializeAppKitModal();
   }
+
+  final customNetwork = ReownAppKitModalNetworkInfo(
+    name: 'Sepolia',
+    chainId: '11155111',
+    currency: 'ETH',
+    rpcUrl: 'https://rpc.sepolia.org/',
+    explorerUrl: 'https://sepolia.etherscan.io/',
+    isTestNetwork: true,
+  );
 
   void initializeAppKitModal() async {
     _appKitModal = ReownAppKitModal(
       context: context,
-      projectId:
-          '51d85f4aa1e21fb201984e437e4c4061', 
+      projectId: '51d85f4aa1e21fb201984e437e4c4061',
       metadata: const PairingMetadata(
         name: 'Unilodge Crypto',
         description: 'A Crypto Flutter Unilodge',
         url: 'https://www.reown.com/',
         icons: ['https://reown.com/reown-logo.png'],
         redirect: Redirect(
-          native: '/bookings',
+          native: 'unilodge://',
           universal: 'https://reown.com',
           linkMode: true,
         ),
@@ -118,28 +127,20 @@ ReownAppKitModal? _appKitModal;
           children: [
             if (_appKitModal != null)
               AppKitModalNetworkSelectButton(appKit: _appKitModal!),
-
             const SizedBox(height: 20),
-
             if (_appKitModal != null)
               Visibility(
                 visible: _appKitModal?.isConnected ?? false,
                 child: AppKitModalConnectButton(appKit: _appKitModal!),
               ),
-
             const SizedBox(height: 20),
-
             Visibility(
               visible: _appKitModal?.isConnected ?? false,
               child: AppKitModalAccountButton(appKit: _appKitModal!),
             ),
-
             const SizedBox(height: 20),
-
             loadingIndicator(),
-
             const SizedBox(height: 20),
-
             ElevatedButton(
               onPressed: () {
                 setState(() {
