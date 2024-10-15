@@ -34,7 +34,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
     super.initState();
     BlocProvider.of<RenterBloc>(context).add(FetchAllDorms());
   }
-
+  //TODO fix the bug when pressing the back button on phone, it's working well when pressing the x button.
   @override
   Widget build(BuildContext context) {
     final _chatBloc = BlocProvider.of<ChatBloc>(context);
@@ -98,7 +98,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                   ),
                   GestureDetector(
                       onTap: () {
-                        Navigator.pop(context);
+                        Navigator.pop(context, true);
                       },
                       child: const Icon(Icons.cancel,
                           color: Color.fromARGB(169, 60, 60, 67))),

@@ -19,8 +19,12 @@ class _FavoritesListViewState extends State<FavoritesListView> {
   void initState() {
     super.initState();
     _renterBloc = BlocProvider.of<RenterBloc>(context);
+    _fetchSavedDorms(); // Fetch saved dorms initially
+  }
+
+  void _fetchSavedDorms() {
+    print('Fetching saved dorms...');
     _renterBloc.add(FetchSavedDorms());
-    context.read<RenterBloc>().add(FetchSavedDorms());
   }
 
   @override
@@ -28,25 +32,31 @@ class _FavoritesListViewState extends State<FavoritesListView> {
     return Scaffold(
       body: BlocBuilder<RenterBloc, RenterState>(
         builder: (context, state) {
+          print('Current State: $state'); // Debugging log
+
           if (state is DormsLoading) {
             return const SizedBox(
               height: 800,
               child: ShimmerLoading(),
             );
-          } else if (state is DormsLoaded) {
+          } else if (state is SavedDormsLoaded) {
+            if (state.savedDorms.isEmpty) {
+              return const Center(child: Text('No favorites found.'));
+            }
             return ListView.builder(
-              itemCount: state.allDorms.length, 
+              itemCount: state.savedDorms.length,
               itemBuilder: (context, index) {
-                final listing = state.allDorms[index];
+                final listing = state.savedDorms[index];
                 return FavoriteCard(
                   listing: listing,
+                  onBack: _fetchSavedDorms, // Trigger fetch on return
                 );
               },
             );
           } else if (state is DormsError) {
             return ErrorMessage(errorMessage: state.message);
           }
-          return Container();
+          return const Center(child: CircularProgressIndicator());
         },
       ),
     );
