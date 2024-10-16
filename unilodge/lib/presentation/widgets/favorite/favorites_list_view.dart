@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unilodge/bloc/renter/renter_bloc.dart';
 import 'package:unilodge/common/widgets/error_message.dart';
+import 'package:unilodge/common/widgets/no_favs_placeholder.dart';
+import 'package:unilodge/common/widgets/no_listing_placeholder.dart';
 import 'package:unilodge/common/widgets/shimmer_loading.dart';
 import 'favorites_card.dart';
 
@@ -42,7 +44,7 @@ class _FavoritesListViewState extends State<FavoritesListView> {
             );
           } else if (state is SavedDormsLoaded) {
             if (state.savedDorms.isEmpty) {
-              return const Center(child: Text('No favorites found.'));
+              return const Center(child: NoFavsPlaceholder());
             }
             return ListView.builder(
               itemCount: state.savedDorms.length,

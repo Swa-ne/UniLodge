@@ -79,6 +79,7 @@ flutter:
     - assets/images/icons/email.png
     - assets/images/icons/security.png
     - assets/images/icons/mobile-password-forgot.png
+    - assets/images/no_favs.png
     - .env
 
   fonts:

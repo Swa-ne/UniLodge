@@ -3,8 +3,8 @@ import 'package:unilodge/common/widgets/custom_text.dart';
 import 'package:unilodge/core/configs/assets/app_images.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 
-class NoListingPlaceholder extends StatelessWidget {
-  const NoListingPlaceholder({super.key});
+class NoFavsPlaceholder extends StatelessWidget {
+  const NoFavsPlaceholder({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,14 +14,14 @@ class NoListingPlaceholder extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Image.asset(
-            AppImages.typeDorm,
+            AppImages.noFavs,
             height: 150,
           ),
           const SizedBox(
             height: 30,
           ),
           const CustomText( 
-            text: "No listings available.",
+            text: "No favorites found.",
             color: AppColors.textColor,
             fontSize: 16,
               ),
