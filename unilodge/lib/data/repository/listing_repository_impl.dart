@@ -68,6 +68,7 @@ class ListingRepositoryImpl implements ListingRepository {
     request.fields['province'] = dorm.province ?? '';
     request.fields['region'] = dorm.region ?? '';
     request.fields['price'] = dorm.price ?? '';
+    request.fields['walletAddress'] = dorm.walletAddress ?? '';
     request.fields['description'] = dorm.description ?? '';
     request.fields['least_terms'] = dorm.leastTerms ?? '';
     request.fields['amenities'] = dorm.amenities?.join(',') ?? '';
@@ -111,6 +112,7 @@ class ListingRepositoryImpl implements ListingRepository {
     request.fields['province'] = dorm.province ?? '';
     request.fields['region'] = dorm.region ?? '';
     request.fields['price'] = dorm.price ?? '';
+    request.fields['walletAddress'] = dorm.walletAddress ?? '';
     request.fields['description'] = dorm.description ?? '';
     request.fields['least_terms'] = dorm.leastTerms ?? '';
     request.fields['amenities'] = dorm.amenities?.join(',') ?? '';
