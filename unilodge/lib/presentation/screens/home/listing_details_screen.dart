@@ -32,9 +32,9 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<RenterBloc>(context).add(FetchAllDorms());
+    //BlocProvider.of<RenterBloc>(context).add(FetchAllDorms());
   }
-  //TODO fix the bug when pressing the back button on phone, it's working well when pressing the x button.
+
   @override
   Widget build(BuildContext context) {
     final _chatBloc = BlocProvider.of<ChatBloc>(context);

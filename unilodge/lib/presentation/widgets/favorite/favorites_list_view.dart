@@ -26,6 +26,7 @@ class _FavoritesListViewState extends State<FavoritesListView> {
     print('Fetching saved dorms...');
     _renterBloc.add(FetchSavedDorms());
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -48,15 +49,17 @@ class _FavoritesListViewState extends State<FavoritesListView> {
               itemBuilder: (context, index) {
                 final listing = state.savedDorms[index];
                 return FavoriteCard(
-                  listing: listing,
-                  onBack: _fetchSavedDorms, // Trigger fetch on return
-                );
+                    listing: listing,
+                    onBack: () {
+                      _fetchSavedDorms();
+                    });
               },
             );
           } else if (state is DormsError) {
             return ErrorMessage(errorMessage: state.message);
           }
-          return const Center(child: CircularProgressIndicator());
+          print('Current State: $state');
+          return const Center(child: ShimmerLoading());
         },
       ),
     );
