@@ -132,6 +132,14 @@ class PostReview extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: TextRow(text1: "Price:", text2: listing.price!),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: TextRow(text1: "Wallet address:", text2: listing.walletAddress!),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: TextRow(text1: "Address:", text2: listing.adddress),
               ),
               Theme(

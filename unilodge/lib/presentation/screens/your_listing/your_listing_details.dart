@@ -179,6 +179,15 @@ class _YourListingDetailsState extends State<YourListingDetails> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: TextRow(text1: "Price:", text2: widget.listing.price!),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: TextRow(
+                    text1: "Wallet address:", text2: widget.listing.walletAddress!),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child:
                     TextRow(text1: "Address:", text2: widget.listing.adddress),
               ),
