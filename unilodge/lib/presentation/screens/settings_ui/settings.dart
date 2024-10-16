@@ -67,6 +67,19 @@ class Settings extends StatelessWidget {
                       context.push('/my-profile');
                     },
                   ),
+                  // TODO: add logic if user is verified
+                  ListTile(
+                    leading: const Icon(Icons.verified_user,
+                        color: AppColors.textColor),
+                    title: const CustomText(
+                      text: 'Verify Account',
+                      fontSize: 16,
+                      color: AppColors.textColor,
+                    ),
+                    onTap: () {
+                      context.push('/verify-face');
+                    },
+                  ),
                   const Divider(),
                   ListTile(
                     leading: const Icon(Icons.lock, color: AppColors.textColor),
