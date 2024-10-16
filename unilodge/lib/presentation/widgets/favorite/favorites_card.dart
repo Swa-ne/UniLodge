@@ -9,17 +9,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FavoriteCard extends StatelessWidget {
   final Listing listing;
+  final VoidCallback onBack;
 
   const FavoriteCard({
     super.key,
     required this.listing,
+    required this.onBack,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        context.push('/listing-detail', extra: listing);
+      onTap: () async {
+        
+        final result = await context.push('/listing-detail', extra: listing);
+        if (result == true) {
+          onBack(); // Re-fetch saved dorms after returning
+        }
       },
       child: Card(
         margin: const EdgeInsets.all(5),
@@ -35,48 +41,42 @@ class FavoriteCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(5),
                 child: Opacity(
                   opacity: 0.9,
-                  child:
-                      listing.imageUrl != null && listing.imageUrl!.isNotEmpty
-                          ? Image.network(
-                              listing.imageUrl![0],
+                  child: listing.imageUrl != null &&
+                          listing.imageUrl!.isNotEmpty
+                      ? Image.network(
+                          listing.imageUrl![0],
+                          width: 150,
+                          height: 120,
+                          fit: BoxFit.cover,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) {
+                              return child;
+                            }
+                            return SizedBox(
                               width: 150,
                               height: 120,
-                              fit: BoxFit.cover,
-                              loadingBuilder: (BuildContext context,
-                                  Widget child,
-                                  ImageChunkEvent? loadingProgress) {
-                                if (loadingProgress == null) {
-                                  return child;
-                                } else {
-                                  return SizedBox(
-                                    width: 150,
-                                    height: 120,
-                                    child: Center(
-                                      child: Lottie.asset(
-                                        'assets/animation/home_loading.json',
-                                        width: 200,
-                                        height: 200,
-                                      ),
-                                    ),
-                                  );
-                                }
-                              },
-                            )
-                          : const SizedBox(
-                              width: 360,
-                              height: 200,
                               child: Center(
-                                child: Text('No Image Available'),
+                                child: Lottie.asset(
+                                  'assets/animation/home_loading.json',
+                                  width: 200,
+                                  height: 200,
+                                ),
                               ),
-                            ),
+                            );
+                          },
+                        )
+                      : const SizedBox(
+                          width: 150,
+                          height: 120,
+                          child: Center(child: Text('No Image Available')),
+                        ),
                 ),
               ),
             ),
-            // Dorm details
+            // Dorm Details
             Expanded(
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -117,30 +117,25 @@ class FavoriteCard extends StatelessWidget {
               onPressed: () async {
                 final bool? confirmed = await showDialog(
                   context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: const Text('Confirm Unsaved'),
-                      content: const Text(
-                          'Are you sure you want to unsave this dorm?'),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(false),
-                          child: const Text('No'),
-                        ),
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(true),
-                          child: const Text('Yes'),
-                        ),
-                      ],
-                    );
-                  },
+                  builder: (context) => AlertDialog(
+                    title: const Text('Confirm Unsaved'),
+                    content: const Text(
+                        'Are you sure you want to unsave this dorm?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(false),
+                        child: const Text('No'),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(true),
+                        child: const Text('Yes'),
+                      ),
+                    ],
+                  ),
                 );
 
                 if (confirmed == true) {
-                  // Call the delete function
                   context.read<RenterBloc>().add(DeleteSavedDorm(listing.id!));
-                  print("successfully removeddfkjasdklfja");
-                  // Optionally, refresh or perform any additional action after deletion
                 }
               },
             ),
