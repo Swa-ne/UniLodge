@@ -20,6 +20,7 @@ import 'package:unilodge/presentation/screens/home/type_listing_screen.dart';
 import 'package:unilodge/presentation/screens/message/chat.dart';
 import 'package:unilodge/presentation/screens/profile/my_profile.dart';
 import 'package:unilodge/presentation/screens/settings_ui/settings.dart';
+import 'package:unilodge/presentation/screens/verify_user/check_face.dart';
 import 'package:unilodge/presentation/screens/your_listing/edit_listing_post.dart';
 import 'package:unilodge/presentation/screens/your_listing/your_listing_details.dart';
 import 'package:unilodge/presentation/screens/profile/user_profile.dart';
@@ -193,6 +194,14 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => const MyProfile(),
     ),
     GoRoute(
+      path: '/verify-face',
+      builder: (context, state) => const CheckFaceScreen(),
+    ),
+    GoRoute(
+      path: '/verify-id',
+      builder: (context, state) => const MyProfile(),
+    ),
+    GoRoute(
       path: '/help-center',
       builder: (context, state) => const HelpCenter(),
     ),
@@ -224,7 +233,7 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) =>
           AdminListingDetailScreen(listing: state.extra as Listing),
     ),
-     GoRoute(
+    GoRoute(
       path: '/status-listing/:status',
       builder: (context, state) {
         final status = state.pathParameters['status'];
