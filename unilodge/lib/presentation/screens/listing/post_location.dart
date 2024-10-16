@@ -243,6 +243,7 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
     required String hint,
     String? Function(String?)? validator,
     List<String>? options,
+     TextInputType keyboardType = TextInputType.text, // Add keyboardType parameter with a default
   }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
@@ -286,8 +287,8 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
               }
               return null;
             },
-        keyboardType:
-            options == null ? TextInputType.text : TextInputType.none,
+         keyboardType: options == null ? keyboardType : TextInputType.none, // Use keyboardType parameter
+            
       ),
     );
   }
@@ -391,6 +392,9 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
                       label: 'House Number',
                       hint: "Enter house number",
                       validator: (value) => validateNumber(value ?? ''),
+                      keyboardType: TextInputType.number, 
+                      
+                      
                     ),
                     _buildTextField(
                       controller: _streetController,
