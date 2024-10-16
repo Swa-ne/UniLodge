@@ -18,10 +18,11 @@ class FaceOverlayPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 3.0;
 
-    // Draw the face oval overlay
     var center = Offset(size.width / 2, size.height / 2);
-    var radius = size.width / 3; // Adjust the size as needed
-    canvas.drawOval(Rect.fromCircle(center: center, radius: radius), paint);
+    var width = size.width / 1.3;
+    var height = size.height / 1.8;
+    canvas.drawOval(
+        Rect.fromCenter(center: center, width: width, height: height), paint);
   }
 
   @override

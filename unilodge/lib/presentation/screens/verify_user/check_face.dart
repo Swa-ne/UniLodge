@@ -11,8 +11,9 @@ class CheckFaceScreen extends StatefulWidget {
 }
 
 class _CheckFaceScreenState extends State<CheckFaceScreen> {
-  CameraController? controller; // Make the controller nullable
-  bool _isCameraInitialized = false; // Flag to track camera initialization
+  CameraController? controller;
+  bool _isCameraInitialized = false;
+  bool isFaceInsideOval = false;
 
   @override
   void initState() {
@@ -40,7 +41,6 @@ class _CheckFaceScreenState extends State<CheckFaceScreen> {
       setState(() {
         _isCameraInitialized = false;
       });
-      print('Error initializing camera: $e');
     }
   }
 
@@ -52,11 +52,8 @@ class _CheckFaceScreenState extends State<CheckFaceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var screenSize = MediaQuery.of(context).size;
-    double screenWidth = screenSize.width;
-    double screenHeight = screenSize.height;
     if (!_isCameraInitialized) {
-      return Scaffold(
+      return const Scaffold(
         body: Center(
           child: CircularProgressIndicator(),
         ),
@@ -65,23 +62,16 @@ class _CheckFaceScreenState extends State<CheckFaceScreen> {
 
     return Scaffold(
       body: Stack(
-        // alignment: Alignment.center,
         children: <Widget>[
-          AspectRatio(
-            aspectRatio: screenWidth / screenHeight,
+          Positioned.fill(
             child: Transform(
               alignment: Alignment.center,
-              transform: Matrix4.identity()
-                ..scale(-1.0, 1.0), // Flip horizontally
-              child: AspectRatio(
-                aspectRatio: screenWidth / screenHeight,
-                child: CameraPreview(controller!),
-              ),
+              transform: Matrix4.identity()..scale(-1.0, 1.0),
+              child: CameraPreview(controller!),
             ),
           ),
-          AspectRatio(
-            aspectRatio: screenWidth / screenHeight,
-            child: FaceOverlay(), // Custom overlay
+          const Positioned.fill(
+            child: FaceOverlay(),
           ),
         ],
       ),

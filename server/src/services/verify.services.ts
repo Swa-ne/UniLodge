@@ -82,8 +82,8 @@ export const verifyUser = async (user_id: string) => {
 
         const face = await VerifyUser.findOne({ user_id, type: "Face Image" }).sort({ _id: -1 });
         const id = await VerifyUser.findOne({ user_id, type: "ID Image" }).sort({ _id: -1 });
-
         const data = { face: face?.url, id: id?.url };
+        console.log(data)
         const result = await python_server.post(`/verify-user`, data);
 
         if (result.data === "Success") return { message: result.data, httpCode: 200 }

@@ -43,9 +43,10 @@ def isBlurry(image_url):
         img_np = np.array(img)  
 
         laplacian_var = cv2.Laplacian(img_np, cv2.CV_64F).var()
-        
+
         return "Image is blurry" if laplacian_var < 40 else "Image is good"
     except Exception as e:
+        print(e)
         return "Image is blurry"
 
 def detectFaceFromImage(image_url):
@@ -80,7 +81,9 @@ def isMatching(face, id):
         faceImg_np = np.array(faceImg)
         idImg_np = np.array(idImg)
         
-        result = DeepFace.verify(img1_path=faceImg_np, img2_path=idImg_np, model_name='VGG-Face', distance_metric='cosine')
+        result = DeepFace.verify(img1_path=faceImg_np, img2_path=idImg_np, model_name='Facenet512', distance_metric='cosine')
+        print(f"res {result}")
         return result
     except Exception as e:
+        print(f"e{e}")
         return f"Error during verification: {str(e)}"
