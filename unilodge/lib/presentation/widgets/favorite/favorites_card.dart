@@ -24,7 +24,7 @@ class FavoriteCard extends StatelessWidget {
         
         final result = await context.push('/listing-detail', extra: listing);
         if (result == true) {
-          onBack(); // Re-fetch saved dorms after returning
+          onBack(); 
         }
       },
       child: Card(
@@ -35,7 +35,7 @@ class FavoriteCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Image
-            Padding(
+            Padding(  
               padding: const EdgeInsets.all(8),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(5),
