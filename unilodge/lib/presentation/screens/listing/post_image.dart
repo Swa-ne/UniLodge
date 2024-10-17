@@ -48,7 +48,7 @@ class _PostImageState extends State<PostImage> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      // Pass callback to MultipleImages
+                      // call MultipleImages
                       MultipleImages(
                         onImagesSelected: (images) {
                           setState(() {

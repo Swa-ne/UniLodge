@@ -30,9 +30,15 @@ class _YourListingDetailsState extends State<YourListingDetails> {
 
   @override
   Widget build(BuildContext context) {
+    final listingBloc = BlocProvider.of<ListingBloc>(context);
+
     return BlocListener<ListingBloc, ListingState>(
       listener: (context, state) {
         if (state is SuccessDeleted) {
+          listingBloc.add(FetchListings());
+          context.go("/listings");
+        } else if (state is SuccessToggle) {
+          listingBloc.add(FetchListings());
           context.go("/listings");
         } else if (state is ToggleError) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -93,7 +99,7 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                           child: InstaImageViewer(
                             child: Center(
                               child: Container(
-                                constraints: BoxConstraints(
+                                constraints: const BoxConstraints(
                                   maxHeight: 250,
                                   maxWidth: 400,
                                 ),
@@ -111,7 +117,7 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                                         if (loadingProgress == null) {
                                           return child;
                                         } else {
-                                          return Container(
+                                          return SizedBox(
                                             width: 360,
                                             height: 200,
                                             child: Center(
@@ -173,6 +179,15 @@ class _YourListingDetailsState extends State<YourListingDetails> {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: TextRow(text1: "Price:", text2: widget.listing.price!),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: TextRow(
+                    text1: "Wallet address:", text2: widget.listing.walletAddress!),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child:
                     TextRow(text1: "Address:", text2: widget.listing.adddress),
               ),
@@ -189,8 +204,8 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                     .copyWith(dividerColor: const Color.fromARGB(6, 0, 0, 0)),
                 child: ExpansionTile(
                   backgroundColor: const Color.fromARGB(5, 0, 0, 0),
-                  title: Text(
-                    "Amenities",
+                  title: const Text(
+                    "Amenities and Utilities",
                     style: TextStyle(color: Color(0xff434343), fontSize: 15),
                   ),
                   children: [
@@ -215,7 +230,7 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                                             const SizedBox(width: 8),
                                             Text(
                                               amenity.trim(),
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 15,
                                                 color: AppColors.formTextColor,
                                               ),
@@ -255,7 +270,7 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                     .copyWith(dividerColor: const Color.fromARGB(6, 0, 0, 0)),
                 child: ExpansionTile(
                   backgroundColor: const Color.fromARGB(5, 0, 0, 0),
-                  title: Text(
+                  title: const Text(
                     "Lease Terms",
                     style: TextStyle(color: Color(0xff434343), fontSize: 15),
                   ),
@@ -270,7 +285,7 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                             child: Text(
                               widget.listing.leastTerms ??
                                   "No lease terms available",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: AppColors.formTextColor,
                                 fontSize: 15,
                               ),
@@ -420,10 +435,10 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                             Icons.visibility,
                             color: AppColors.primary,
                           ),
-                          const SizedBox(width: 12),
+                          SizedBox(width: 12),
                           Text(
                             "Toggle post's visibility",
-                            style: const TextStyle(color: AppColors.textColor),
+                            style: TextStyle(color: AppColors.textColor),
                           ),
                         ],
                       ),

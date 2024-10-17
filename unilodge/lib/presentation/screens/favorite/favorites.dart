@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:unilodge/common/widgets/custom_text.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/presentation/widgets/favorite/favorites_list_view.dart';
-import 'package:unilodge/presentation/widgets/message/custom_text.dart';
 
 class Favorites extends StatefulWidget {
   const Favorites({super.key});
@@ -15,11 +15,12 @@ class _FavoritesState extends State<Favorites> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        centerTitle: true,
         title: const CustomText(
-          text: 'Favorites',
-          color: AppColors.textColor,
-          fontSize: 18,
+          text: "Favorites",
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: AppColors.primary,
         ),
       ),
       body: const FavoritesListView(),

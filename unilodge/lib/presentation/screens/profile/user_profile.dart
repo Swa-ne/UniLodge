@@ -68,8 +68,7 @@ class _UserProfileState extends State<UserProfile> {
                         );
                       } else if (state is ProfileLoaded) {
                         return Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           child: CustomText(
                             text: state.username,
                             fontSize: 18,
@@ -77,9 +76,7 @@ class _UserProfileState extends State<UserProfile> {
                         );
                       }
                       return const Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal:
-                                16.0),
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
                         child: CustomText(text: "Error loading profile"),
                       );
                     },
@@ -149,13 +146,15 @@ class _UserProfileState extends State<UserProfile> {
                     Icons.star,
                     color: AppColors.textColor,
                   ),
-                  title: const Text('Reviews'),
+                  title: const Text('Bookings'),
                   trailing: const Icon(
                     Icons.arrow_forward_ios,
                     color: AppColors.textColor,
                     size: 20,
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    context.push("/bookings");
+                  },
                 ),
                 // ListTile for Settings navigation
                 ListTile(

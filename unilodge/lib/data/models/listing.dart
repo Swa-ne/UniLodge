@@ -15,6 +15,7 @@ class Listing {
   final int? lng;
   final int? available_rooms;
   final String? price;
+  final String? walletAddress;
   final String? description;
   final String? leastTerms;
   final List<String>? amenities;
@@ -23,6 +24,7 @@ class Listing {
   final int? rating;
   final String? address;
   final bool? isAvailable;
+  final String? status;
   final String? createdAt;
 
   Listing({
@@ -40,6 +42,7 @@ class Listing {
     this.province,
     this.region,
     this.price,
+    this.walletAddress,
     this.description,
     this.leastTerms,
     this.amenities,
@@ -48,6 +51,7 @@ class Listing {
     this.rating,
     this.selectedPropertyType,
     this.isAvailable,
+    this.status,
     this.createdAt,
   });
 
@@ -78,6 +82,7 @@ class Listing {
     String? region,
     String? house_number,
     String? price,
+    String? walletAddress,
     String? description,
     String? leastTerms,
     UserModel? owner_id,
@@ -87,6 +92,7 @@ class Listing {
     int? rating,
     String? selectedPropertyType,
     bool? isAvailable,
+    String? status,
     String? createdAt,
   }) {
     return Listing(
@@ -98,6 +104,7 @@ class Listing {
       barangay: barangay ?? this.barangay,
       house_number: house_number ?? this.house_number,
       price: price ?? this.price,
+      walletAddress: walletAddress ?? this.walletAddress,
       description: description ?? this.description,
       leastTerms: leastTerms ?? this.leastTerms,
       owner_id: owner_id ?? this.owner_id,
@@ -109,6 +116,7 @@ class Listing {
       region: region ?? this.region,
       selectedPropertyType: selectedPropertyType ?? this.selectedPropertyType,
       isAvailable: isAvailable ?? this.isAvailable,
+      status: status ?? this.status,
       createdAt: createdAt ?? this.createdAt,
     );
   }
@@ -125,6 +133,7 @@ class Listing {
       // lng: json["location"]["coordinates"]['lng'],
       available_rooms: json['available_rooms'],
       price: "${json['price']}",
+      walletAddress: "${json['walletAddress']}",
       description: json['description'],
       leastTerms: json['least_terms'],
       owner_id: UserModel.fromJson(json['owner_id']),
@@ -138,6 +147,7 @@ class Listing {
       region: json["location"]['region'],
       selectedPropertyType: json['type'],
       isAvailable: json['isAvailable'],
+      status: json['status'],
       createdAt: "${json['createdAt']}",
     );
   }
@@ -152,6 +162,7 @@ class Listing {
       'house_number': house_number,
       'available_rooms': available_rooms,
       'price': price,
+      'walletAddress': walletAddress,
       'description': description,
       'least_terms': leastTerms,
       'province': province,
@@ -162,6 +173,7 @@ class Listing {
       'imageUrl': imageUrl?.map((x) => x).toList(),
       'rating': rating,
       'type': selectedPropertyType,
+      'status': status
     };
   }
 }

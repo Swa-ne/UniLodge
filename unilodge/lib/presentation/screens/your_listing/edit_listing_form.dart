@@ -29,6 +29,7 @@ class _EditListingFormState extends State<EditListingForm> {
   late TextEditingController _propertyProvince;
   late TextEditingController _propertyRegion;
   late TextEditingController _propertyPrice;
+  late TextEditingController _propertyWalletAddress;
   late TextEditingController _propertyDescription;
   late TextEditingController _propertyLeaseTerms;
   late ListingBloc _listingBloc;
@@ -72,6 +73,8 @@ class _EditListingFormState extends State<EditListingForm> {
     _propertyProvince = TextEditingController(text: widget.listing.province);
     _propertyRegion = TextEditingController(text: widget.listing.region);
     _propertyPrice = TextEditingController(text: widget.listing.price);
+    _propertyWalletAddress =
+        TextEditingController(text: widget.listing.walletAddress);
     _propertyDescription =
         TextEditingController(text: widget.listing.description);
     _propertyLeaseTerms =
@@ -182,6 +185,8 @@ class _EditListingFormState extends State<EditListingForm> {
 
   @override
   Widget build(BuildContext context) {
+    final listingBloc = BlocProvider.of<ListingBloc>(context);
+
     return Theme(
       data: Theme.of(context).copyWith(
         colorScheme: const ColorScheme.light(
@@ -227,6 +232,7 @@ class _EditListingFormState extends State<EditListingForm> {
               province: _propertyProvince.text,
               region: _propertyRegion.text,
               price: _propertyPrice.text,
+              walletAddress: _propertyWalletAddress.text,
               description: _propertyDescription.text,
               leastTerms: _propertyLeaseTerms.text,
               amenities: _getSelectedAmenities(),
@@ -247,6 +253,7 @@ class _EditListingFormState extends State<EditListingForm> {
                           selectedImages,
                           updatedListing,
                         ));
+                        listingBloc.add(FetchListings());
                         context.go("/listings");
                       },
                       child: const Text("Save"),
@@ -382,6 +389,11 @@ class _EditListingFormState extends State<EditListingForm> {
               EditListingTextFormField(
                 label: "Price",
                 controller: _propertyPrice,
+              ),
+              const SizedBox(height: 20),
+              EditListingTextFormField(
+                label: "Wallet Address",
+                controller: _propertyWalletAddress,
               ),
               const SizedBox(height: 20),
               EditListingTextFormField(

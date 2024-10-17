@@ -1,7 +1,12 @@
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/data/models/inbox.dart';
+import 'package:unilodge/presentation/screens/admin/admin_listing_details_screen.dart';
+import 'package:unilodge/presentation/screens/admin/dashboard.dart';
+import 'package:unilodge/presentation/screens/admin/admin_listings_screen.dart';
+import 'package:unilodge/presentation/screens/admin/status_listing_screen.dart';
 import 'package:unilodge/presentation/screens/auth/change_forgotten_password.dart';
 import 'package:unilodge/presentation/screens/auth/change_password.dart';
+import 'package:unilodge/presentation/screens/book/booked_listings.dart';
 import 'package:unilodge/presentation/screens/help_center/help_center.dart';
 import 'package:unilodge/presentation/screens/auth/account_selection_login.dart';
 import 'package:unilodge/presentation/screens/auth/account_selection_sign_up.dart';
@@ -193,6 +198,12 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => const HelpCenter(),
     ),
     GoRoute(
+      path: '/bookings',
+      builder: (context, state) {
+        return BookedListings();
+      },
+    ),
+    GoRoute(
       path: '/change-password/:token',
       builder: (context, state) {
         final token = state.pathParameters['token'];
@@ -204,6 +215,27 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) {
         final token = state.pathParameters['token'];
         return ChangeForgottenPassword(token: token!);
+      },
+    ),
+    // TODO: admin routes
+    GoRoute(
+      path: '/admin-dashboard',
+      builder: (context, state) => const Dashboard(),
+    ),
+    GoRoute(
+      path: '/admin-dashboard-listings',
+      builder: (context, state) => const AdminListingsScreen(),
+    ),
+    GoRoute(
+      path: '/admin/listing-details',
+      builder: (context, state) =>
+          AdminListingDetailScreen(listing: state.extra as Listing),
+    ),
+    GoRoute(
+      path: '/status-listing/:status',
+      builder: (context, state) {
+        final status = state.pathParameters['status'];
+        return StatusListingScreen(listingStatus: status!);
       },
     ),
   ],

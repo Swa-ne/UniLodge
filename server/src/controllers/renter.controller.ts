@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { UserType } from '../middlewares/token.authentication';
-import { deleteSavedDorm, getDorms, postReviewForDorm, putSavedDorm } from '../services/renter.services';
+import { deleteSavedDorm, getDorms, getSavedDorms, postReviewForDorm, putSavedDorm } from '../services/renter.services';
 import { validateRequiredFields, validateReviewCommentLength } from '../utils/input.validators';
 
 export const getDormsController = async (req: Request & { user?: UserType }, res: Response) => {
@@ -18,6 +18,26 @@ export const getDormsController = async (req: Request & { user?: UserType }, res
         return res.status(500).json({ 'error': 'Internal Server Error' });
     }
 }
+
+export const getSavedDormsController = async (
+  req: Request & { user?: UserType },
+  res: Response
+) => {
+  try {
+    const user = req.user;
+    if (!user) return res.status(404).json({ error: "User not found" });
+    const { user_id } = user;
+    if (!user_id) {
+      return res.status(400).json({ message: "User ID not provided" });
+    }
+    const dorms = await getSavedDorms(user_id);
+    if (dorms.httpCode === 200)
+      return res.status(dorms.httpCode).json({ message: dorms.message });
+    return res.status(dorms.httpCode).json({ error: dorms.error });
+  } catch (error) {
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 
 export const postReviewController = async (req: Request & { user?: UserType }, res: Response) => {
     try {

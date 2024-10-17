@@ -2,11 +2,10 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:unilodge/data/models/listing.dart';
-import 'package:unilodge/data/models/renter.dart';
 import 'package:unilodge/data/repository/renter_repository.dart';
 import 'package:unilodge/data/sources/auth/token_controller.dart';
 
-final _apiUrl = "${dotenv.env['API_URL']}/render";
+final _apiUrl = "${dotenv.env['API_URL']}/renter";
 
 class RenterRepositoryImpl implements RenterRepository {
   final TokenControllerImpl _tokenController = TokenControllerImpl();
@@ -17,7 +16,7 @@ class RenterRepositoryImpl implements RenterRepository {
     final refresh_token = await _tokenController.getRefreshToken();
 
     final response = await http.get(
-      Uri.parse('$_apiUrl/my-dorms'),
+      Uri.parse('$_apiUrl/get-dorms'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -41,14 +40,31 @@ class RenterRepositoryImpl implements RenterRepository {
   }
 
   @override
-  Future<List<SavedDorm>> fetchSavedDorms(String userId) async {
-    final response = await http.get(Uri.parse('$_apiUrl/my-dorms'));
+  Future<List<Listing>> fetchSavedDorms() async {
+    final access_token = await _tokenController.getAccessToken();
+    final refresh_token = await _tokenController.getRefreshToken();
+
+    final response = await http.get(
+      Uri.parse('$_apiUrl/saved-dorms'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': access_token,
+        'Cookie': 'refresh_token=$refresh_token',
+      },
+    );
 
     if (response.statusCode == 200) {
-      final List<dynamic> data = json.decode(response.body)['savedDorms'];
-      return data.map((json) => SavedDorm.fromJson(json)).toList();
+      final Map<String, dynamic> responseBody = json.decode(response.body);
+
+      if (responseBody.containsKey('message')) {
+        final List<dynamic> data = responseBody['message'];
+        return data.map((json) => Listing.fromJson(json)).toList();
+      } else {
+        throw Exception('Invalid response format');
+      }
     } else {
-      throw Exception('Failed to load saved dorms');
+      throw Exception('Failed to load dorms');
     }
   }
 
@@ -72,34 +88,51 @@ class RenterRepositoryImpl implements RenterRepository {
   }
 
   @override
-  Future<void> saveDorm(String userId, String dormId) async {
+  Future<bool> saveDorm(String dormId) async {
+    final access_token = await _tokenController.getAccessToken();
+    final refresh_token = await _tokenController.getRefreshToken();
     final response = await http.put(
-      Uri.parse('$_apiUrl/add/saved'),
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode({
-        'userId': userId,
-        'dormId': dormId,
-      }),
+      Uri.parse('$_apiUrl/add/saved/$dormId'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': access_token,
+        'Cookie': 'refresh_token=$refresh_token',
+      },
     );
 
     if (response.statusCode != 200) {
-      throw Exception('Failed to save dorm');
+      final errorResponse = jsonDecode(response.body);
+      throw Exception(
+          'Failed to save dorm to favorites: ${errorResponse['error']}');
     }
+    return response.statusCode == 200;
   }
 
   @override
-  Future<void> deleteSavedDorm(String userId, String dormId) async {
+  Future<bool> deleteSavedDorm(String dormId) async {
+    final access_token = await _tokenController.getAccessToken();
+    final refresh_token = await _tokenController.getRefreshToken();
     final response = await http.delete(
-      Uri.parse('$_apiUrl/remove/saved'),
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode({
-        'userId': userId,
-        'dormId': dormId,
-      }),
+      Uri.parse('$_apiUrl/remove/saved/$dormId'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': access_token,
+        'Cookie': 'refresh_token=$refresh_token',
+      },
     );
 
     if (response.statusCode != 200) {
-      throw Exception('Failed to delete saved dorm');
+      final errorResponse = jsonDecode(response.body);
+      throw Exception(
+          'Failed to delete dorm from favorites: ${errorResponse['error']}');
     }
+    return response.statusCode == 200;
+  }
+
+  Future<bool> isDormSaved(String dormId) async {
+    final savedDorms = await fetchSavedDorms();
+    return savedDorms.any((savedListing) => savedListing.id == dormId);
   }
 }

@@ -10,7 +10,7 @@ final _apiUrl = "${dotenv.env['API_URL']}/authentication";
 
 abstract class AuthRepo {
   Future<String> login(LoginUserModel user);
-  Future<String> signUp(SignUpUserModel user);
+  Future<String> signUp(SignUpUserModel user, bool isThirdParty);
   Future<bool> checkEmailAvalability(String email);
   Future<bool> checkUsernameAvalability(String username);
   Future<bool> checkEmailVerified(String token);
@@ -61,7 +61,7 @@ class AuthRepoImpl extends AuthRepo {
   }
 
   @override
-  Future<String> signUp(SignUpUserModel user) async {
+  Future<String> signUp(SignUpUserModel user, bool isThirdParty) async {
     var response = await http.post(
       Uri.parse("$_apiUrl/signup"),
       headers: {
@@ -72,6 +72,23 @@ class AuthRepoImpl extends AuthRepo {
     );
     final response_body = json.decode(response.body);
     if (response.statusCode == 200) {
+      if (isThirdParty) {
+        _tokenController.updateAccessToken(response_body['access_token']);
+        _tokenController.updateUserID(response_body['user_id']);
+        _SocketController.connect(response_body['user_id']);
+
+        String? cookies = response.headers['set-cookie'];
+        if (cookies == null) {
+          throw Exception("Internet Connection Error");
+        }
+
+        String? refresh_token = _tokenController.extractRefreshToken(cookies);
+        if (refresh_token == null) {
+          throw Exception("Internet Connection Error");
+        }
+
+        _tokenController.updateRefreshToken(refresh_token);
+      }
       return response_body['access_token'];
     } else {
       throw Exception(response_body['error']);

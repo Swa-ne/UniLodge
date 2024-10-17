@@ -34,6 +34,8 @@ dependencies:
   animated_splash_screen: ^1.3.0
   lottie: ^3.1.2
   shimmer: ^3.0.0
+  reown_appkit: ^1.0.1
+  logger: ^2.4.0
 
 dev_dependencies:
   flutter_test:
@@ -66,6 +68,7 @@ flutter:
     - assets/images/people.png
     - assets/images/search.png
     - assets/images/error.png
+    - assets/images/chat.png
     - assets/images/listingIcons/apartment.png
     - assets/images/listingIcons/dorm.png
     - assets/images/listingIcons/bedspacer.png
@@ -76,6 +79,7 @@ flutter:
     - assets/images/icons/email.png
     - assets/images/icons/security.png
     - assets/images/icons/mobile-password-forgot.png
+    - assets/images/no_favs.png
     - .env
 
   fonts:

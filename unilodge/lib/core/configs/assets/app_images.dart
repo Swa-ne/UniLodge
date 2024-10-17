@@ -15,6 +15,8 @@ class AppImages {
   static const String findDorm = '${basePath}findDorm$pngformat';
   static const String typeDorm = '${basePath}search$pngformat';
   static const String errorIcon = '${basePath}error$pngformat';
+  static const String chatbg = '${basePath}chat$pngformat';
+  static const String noFavs = '${basePath}no_favs$pngformat';
 
   static const String dormListing = '${basePath}listingIcons/dorm$pngformat';
   static const String apartmentListing =
@@ -25,13 +27,10 @@ class AppImages {
       '${basePath}listingIcons/bedspacer$pngformat';
 
   // nav icons
-  static const String favoriteIcon =
-      '${basePath}navIcons/favorite$pngformat';
+  static const String favoriteIcon = '${basePath}navIcons/favorite$pngformat';
   static const String homeIcon = '${basePath}navIcons/home$pngformat';
 
   static const String homeeIcon = '${basePath}navIcons/homee$pngformat';
-  static const String listingIcon =
-      '${basePath}navIcons/listings$pngformat';
-  static const String messageIcon =
-      '${basePath}navIcons/message$pngformat';
+  static const String listingIcon = '${basePath}navIcons/listings$pngformat';
+  static const String messageIcon = '${basePath}navIcons/message$pngformat';
 }

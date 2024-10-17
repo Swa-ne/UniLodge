@@ -20,6 +20,25 @@ class DormsLoaded extends RenterState {
   List<Object> get props => [allDorms];
 }
 
+class AllDormsLoaded extends RenterState {
+  final List<Listing> allDorms;
+  final List<Listing> savedDorms;
+
+  const AllDormsLoaded(this.allDorms, this.savedDorms);
+
+  @override
+  List<Object> get props => [allDorms];
+}
+
+class SavedDormsLoaded extends RenterState {
+  final List<Listing> savedDorms;
+
+  const SavedDormsLoaded(this.savedDorms);
+
+  @override
+  List<Object> get props => [savedDorms];
+}
+
 class DormsError extends RenterState {
   final String message;
 
@@ -67,4 +86,13 @@ class DormSaveError extends RenterState {
 
   @override
   List<Object> get props => [message];
+}
+
+class DormUnsaved extends RenterState {
+  final String successMessage;
+
+  const DormUnsaved(this.successMessage);
+
+  @override
+  List<Object> get props => [successMessage];
 }

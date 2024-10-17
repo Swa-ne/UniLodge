@@ -8,12 +8,7 @@ abstract class RenterEvent extends Equatable {
 }
 
 class FetchSavedDorms extends RenterEvent {
-  final String userId;
-
-  const FetchSavedDorms(this.userId);
-
-  @override
-  List<Object> get props => [userId];
+  
 }
 
 class FetchAllDorms extends RenterEvent {}
@@ -38,22 +33,22 @@ class PostReview extends RenterEvent {
   List<Object> get props => [userId, dormId, stars, comment];
 }
 
+
 class SaveDorm extends RenterEvent {
-  final String userId;
   final String dormId;
 
-  const SaveDorm(this.userId, this.dormId);
+  const SaveDorm(this.dormId);
 
   @override
-  List<Object> get props => [userId, dormId];
+  List<Object> get props => [dormId];
 }
 
 class DeleteSavedDorm extends RenterEvent {
-  final String userId;
   final String dormId;
 
-  const DeleteSavedDorm(this.userId, this.dormId);
+  const DeleteSavedDorm(this.dormId);
 
   @override
-  List<Object> get props => [userId, dormId];
+  List<Object> get props => [dormId];
 }
+

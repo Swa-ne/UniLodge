@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:unilodge/bloc/chat/chat_bloc.dart';
 import 'package:unilodge/bloc/renter/renter_bloc.dart';
 import 'package:unilodge/common/widgets/error_message.dart';
+import 'package:unilodge/common/widgets/no_listing_placeholder.dart';
 import 'package:unilodge/common/widgets/shimmer_loading.dart';
 import 'package:unilodge/core/configs/assets/app_images.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
@@ -35,162 +36,175 @@ class _HomeState extends State<Home> {
     _renterBloc.add(FetchAllDorms());
   }
 
+  Future<void> _refreshDorms() async {
+    _renterBloc.add(FetchAllDorms());
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: BlocBuilder<RenterBloc, RenterState>(
-      builder: (context, state) {
-        return CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              backgroundColor: AppColors.lightBackground,
-              pinned: true,
-              floating: true,
-              actions: [
-                GestureDetector(
-                  onTap: () {
-                    showSearch(
-                      context: context,
-                      delegate: CustomSearchDelegate(),
-                    );
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(vertical: 8),
-                    width: 300,
-                    padding: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.grey.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                    child: const Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(right: 8.0),
-                          child: Icon(Icons.search),
+    return Scaffold(
+      body: BlocBuilder<RenterBloc, RenterState>(
+        builder: (context, state) {
+          return RefreshIndicator(
+            onRefresh: _refreshDorms, 
+            child: CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  backgroundColor: AppColors.lightBackground,
+                  pinned: true,
+                  floating: true,
+                  actions: [
+                    GestureDetector(
+                      onTap: () {
+                        showSearch(
+                          context: context,
+                          delegate: CustomSearchDelegate(),
+                        );
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(vertical: 8),
+                        width: 300,
+                        padding: const EdgeInsets.all(8.0),
+                        decoration: BoxDecoration(
+                          color: Colors.grey.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(25),
                         ),
-                        Text("Search"),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 15),
-                GestureDetector(
-                  onTap: () {
-                    context.push("/user-profile");
-                  },
-                  child: const CircleAvatar(
-                    backgroundImage: AssetImage(AppImages.emptyProfile),
-                  ),
-                ),
-                const SizedBox(width: 15),
-              ],
-            ),
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.all(6.0),
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.165,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              context.push('/type-listing/Dorm');
-                            },
-                            child: const Cards(
-                              text: "Dorm",
-                              imageUrl: AppImages.dorm,
-                              color: Color.fromARGB(137, 235, 214, 183),
+                        child: const Row(
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(right: 8.0),
+                              child: Icon(Icons.search),
                             ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              context.push('/type-listing/Solo room');
-                            },
-                            child: const Cards(
-                              text: "Solo Room",
-                              imageUrl: AppImages.soloRoom,
-                              color: Color(0xffCCE1D4),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              context.push('/type-listing/Bed Spacer');
-                            },
-                            child: const Cards(
-                              text: "Bedspacer",
-                              imageUrl: AppImages.bedspacer,
-                              color: Color.fromARGB(141, 235, 233, 183),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              context.push('/type-listing/Apartment');
-                            },
-                            child: const Cards(
-                              text: "Apartment",
-                              imageUrl: AppImages.apartment,
-                              color: Color(0xffCDDDEA),
-                            ),
-                          ),
-                        ],
+                            Text("Search"),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Text(
-                      "Listings",
-                      style: TextStyle(
-                        fontSize: 16,
+                    const SizedBox(width: 15),
+                    GestureDetector(
+                      onTap: () {
+                        context.push("/user-profile");
+                      },
+                      child: const CircleAvatar(
+                        backgroundImage: AssetImage(AppImages.emptyProfile),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  if (state is DormsLoading) ...[
-                    const SizedBox(
-                      height: 800,
-                      child: ShimmerLoading(),
-                    ),
-                  ] else if (state is DormsLoaded) ...[
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: state.allDorms.length,
-                        itemBuilder: (context, index) {
-                          final sortedDorms = List.from(state.allDorms)
-                            ..sort(
-                                (a, b) => b.createdAt.compareTo(a.createdAt));
-
-                          final listing = sortedDorms[index];
-                          return Column(
+                    const SizedBox(width: 15),
+                  ],
+                ),
+                SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      const SizedBox(height: 10),
+                      Padding(
+                        padding: const EdgeInsets.all(6.0),
+                        child: SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.165,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
                             children: [
-                              ListingCards(
-                                listing: listing,
+                              GestureDetector(
+                                onTap: () {
+                                  context.push('/type-listing/Dorm');
+                                },
+                                child: const Cards(
+                                  text: "Dorm",
+                                  imageUrl: AppImages.dorm,
+                                  color: Color.fromARGB(137, 235, 214, 183),
+                                ),
                               ),
-                              const Divider(
-                                height: 20,
-                                color: Color.fromARGB(255, 223, 223, 223),
+                              GestureDetector(
+                                onTap: () {
+                                  context.push('/type-listing/Solo room');
+                                },
+                                child: const Cards(
+                                  text: "Solo Room",
+                                  imageUrl: AppImages.soloRoom,
+                                  color: Color(0xffCCE1D4),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  context.push('/type-listing/Bed Spacer');
+                                },
+                                child: const Cards(
+                                  text: "Bedspacer",
+                                  imageUrl: AppImages.bedspacer,
+                                  color: Color.fromARGB(141, 235, 233, 183),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  context.push('/type-listing/Apartment');
+                                },
+                                child: const Cards(
+                                  text: "Apartment",
+                                  imageUrl: AppImages.apartment,
+                                  color: Color(0xffCDDDEA),
+                                ),
                               ),
                             ],
-                          );
-                        },
+                          ),
+                        ),
                       ),
-                    ),
-                  ] else if (state is DormsError) ...[
-                    ErrorMessage(errorMessage: state.message),
-                  ],
-                ],
-              ),
+                      const SizedBox(height: 10),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Text(
+                          "Listings",
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      if (state is DormsLoading) ...[
+                        const SizedBox(
+                          height: 800,
+                          child: ShimmerLoading(),
+                        ),
+                      ] else if (state is AllDormsLoaded) ...[
+                        if (state.allDorms.isEmpty) ...[
+                          const NoListingPlaceholder(),
+                        ] else ...[
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: state.allDorms.length,
+                              itemBuilder: (context, index) {
+                                final sortedDorms = List.from(state.allDorms)
+                                  ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+
+                                final listing = sortedDorms[index];
+
+                                return Column(
+                                  children: [
+                                    ListingCards(
+                                      listing: listing,
+                                    ),
+                                    const Divider(
+                                      height: 20,
+                                      color: Color.fromARGB(255, 223, 223, 223),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                        ]
+                      ] else if (state is DormsError) ...[
+                        ErrorMessage(errorMessage: state.message),
+                      ],
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
-        );
-      },
-    ));
+          );
+        },
+      ),
+    );
   }
 }

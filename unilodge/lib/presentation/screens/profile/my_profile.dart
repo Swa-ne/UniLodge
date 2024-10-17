@@ -139,8 +139,6 @@ class _MyProfileState extends State<MyProfile> {
                       ReadOnlyField(label: 'Email', value: state.personalEmail),
                       const Divider(),
                       const SizedBox(height: 20),
-                      const Divider(),
-                      const SizedBox(height: 20),
                       ReadOnlyField(
                         label: 'Birthday',
                         value:
@@ -164,14 +162,20 @@ class _MyProfileState extends State<MyProfile> {
                             final updatedProfilePictureUrl = _image != null
                                 ? _image!.path
                                 : state.profilePictureUrl;
-
+                            bool isUsernameChanged =
+                                _usernameController.text != state.username;
+                            print("profileeee: $updatedProfilePictureUrl");
                             context.read<ProfileBloc>().add(SaveProfile(
-                                  // id: state.id,
-                                  username: _usernameController.text,
+                                  username: isUsernameChanged
+                                      ? _usernameController.text
+                                      : state.username,
                                   fullName: state.fullName,
                                   profilePictureUrl: updatedProfilePictureUrl,
                                   personalEmail: state.personalEmail,
                                   birthday: state.birthday,
+                                  firstName: state.firstName,
+                                  middleName: state.middleName,
+                                  lastName: state.lastName,
                                 ));
                           },
                           child: const CustomText(

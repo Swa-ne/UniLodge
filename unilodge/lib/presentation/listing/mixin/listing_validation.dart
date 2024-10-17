@@ -1,4 +1,14 @@
 mixin InputValidationMixin {
+  String? validateWalletAddress(String value) {
+    final walletRegex = RegExp(r'^0x[a-fA-F0-9]{40}$');
+    if (value.isEmpty) {
+      return 'Wallet address is required';
+    } else if (!walletRegex.hasMatch(value)) {
+      return 'Please enter a valid wallet address';
+    }
+    return null;
+  }
+
   String? validateNumber(String value) {
     final numericRegex = RegExp(r'^[0-9]+$');
     if (value.isEmpty) {
@@ -8,7 +18,8 @@ mixin InputValidationMixin {
     }
     return null;
   }
-   String? validateMinLength(String value, int minLength) {
+
+  String? validateMinLength(String value, int minLength) {
     if (value.isEmpty) {
       return 'This field is required';
     } else if (value.length < minLength) {
@@ -16,43 +27,44 @@ mixin InputValidationMixin {
     }
     return null;
   }
+
   String? validateStreet(String value) {
-  if (value.length < 5) {
-    return 'Street must be at least 5 characters long';
-  }
-  final validCharacters = RegExp(r'^[a-zA-Z0-9\s-]+$');
-  if (!validCharacters.hasMatch(value)) {
-    return 'Street can only contain letters, numbers, spaces, and hyphens';
-  }
-  
-  return null; 
-}
-String? validateTextAndNumbers(String value) {
-  final textAndNumbersRegex = RegExp(r'^[a-zA-Z0-9\s]+$');
-  if (value.isEmpty) {
-    return 'Property Name is required';
-  } else if (!textAndNumbersRegex.hasMatch(value)) {
-    return 'Property Name should contain only letters, numbers, and spaces';
-  }
-  return null;
-}
+    if (value.length < 5) {
+      return 'Street must be at least 5 characters long';
+    }
+    final validCharacters = RegExp(r'^[a-zA-Z0-9\s-]+$');
+    if (!validCharacters.hasMatch(value)) {
+      return 'Street can only contain letters, numbers, spaces, and hyphens';
+    }
 
-String? validatepropertyName(String value) {
-  final textAndNumbersRegex = RegExp(r'^[a-zA-Z0-9\s]+$');
-  
-  if (value.isEmpty) {
-    return 'Property Name is required';
-  } else if (value.length < 5) {
-    return 'Property Name should be at least 5 characters long';
-  } else if (!textAndNumbersRegex.hasMatch(value)) {
-    return 'Property Name should contain only letters, numbers, and spaces';
+    return null;
   }
-  
-  return null;
 
-  
-}
-String? validateDescription(String value) {
+  String? validateTextAndNumbers(String value) {
+    final textAndNumbersRegex = RegExp(r'^[a-zA-Z0-9\s]+$');
+    if (value.isEmpty) {
+      return 'Property Name is required';
+    } else if (!textAndNumbersRegex.hasMatch(value)) {
+      return 'Property Name should contain only letters, numbers, and spaces';
+    }
+    return null;
+  }
+
+  String? validatepropertyName(String value) {
+    final textAndNumbersRegex = RegExp(r'^[a-zA-Z0-9\s]+$');
+
+    if (value.isEmpty) {
+      return 'Property Name is required';
+    } else if (value.length < 5) {
+      return 'Property Name should be at least 5 characters long';
+    } else if (!textAndNumbersRegex.hasMatch(value)) {
+      return 'Property Name should contain only letters, numbers, and spaces';
+    }
+
+    return null;
+  }
+
+  String? validateDescription(String value) {
     if (value.isEmpty) {
       return 'Description is required';
     } else if (value.length < 10) {
@@ -60,7 +72,8 @@ String? validateDescription(String value) {
     }
     return null;
   }
-String? validateLeaseTerms(String value) {
+
+  String? validateLeaseTerms(String value) {
     if (value.isEmpty) {
       return 'Lease terms are required';
     } else if (value.length < 10) {
@@ -68,6 +81,4 @@ String? validateLeaseTerms(String value) {
     }
     return null;
   }
-
-
 }

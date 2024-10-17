@@ -39,8 +39,6 @@ class _SignUpState extends State<SignUp> with InputValidationMixin {
   String? usernameError;
   String? birthdayError;
   String? confirmPasswordError;
-  String? phoneNumberError;
-  bool isPhoneNumberValid = false;
 
   @override
   void initState() {
@@ -403,7 +401,7 @@ class _SignUpState extends State<SignUp> with InputValidationMixin {
                 personal_number: "0",
                 birthday: _birthday.toString(),
               );
-              _authBloc.add(SignUpEvent(newUser));
+              _authBloc.add(SignUpEvent(newUser, false));
             },
           ),
           const SizedBox(height: 10),

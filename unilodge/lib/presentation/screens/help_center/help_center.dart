@@ -31,24 +31,24 @@ class HelpCenter extends StatelessWidget {
           child: Column(
             children: [
               FAQTile(
-                question: "Meow meow meow meow?",
+                question: "How do I create an account?",
                 answer:
-                    "Meow meow meow meow, meow meow meow meow.",
+                    "You can create an account using your email address, or you may choose to sign up using your Google account.",
               ),
               FAQTile(
-                question: "Meow meow meow meow?",
+                question: "How do I reset my password?",
                 answer:
-                    "Meow meow meow meow, meow meow meow meow.",
+                    "To reset your password, navigate to the Settings menu and select Change Password.",
               ),
               FAQTile(
-                question: "Meow meow meow meow?",
+                question: "How do I save a dorm as a favorite?",
                 answer:
-                    "Meow meow meow meow, meow meow meow meow meow meow meow meow meow meow meow meow.",
+                    "To save a dorm as a favorite, simply click the heart icon, and it will be added to your favorites list.",
               ),
               FAQTile(
-                question: "Meow meow meow meow?",
+                question: "How can I contact a property owner?",
                 answer:
-                    "Meow meow meow meow, meow meow meow meow.",
+                    "You can contact the property owner by selecting Chat with Owner, after clicking on the listed property.",
               ),
             ],
           ),

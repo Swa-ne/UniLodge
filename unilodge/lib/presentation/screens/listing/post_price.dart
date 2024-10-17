@@ -16,6 +16,8 @@ class PostPrice extends StatefulWidget {
 class _PostPriceState extends State<PostPrice> with InputValidationMixin {
   final _formKey = GlobalKey<FormState>(); // GlobalKey to track form state
   final TextEditingController _priceController = TextEditingController();
+  final TextEditingController _walletAddressController =
+      TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _leaseTermsController = TextEditingController();
 
@@ -30,65 +32,69 @@ class _PostPriceState extends State<PostPrice> with InputValidationMixin {
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Form(
-                    key: _formKey, 
+                    key: _formKey,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         const SizedBox(height: 17),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20.0),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 20.0),
                           child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Property Information',
-                                    style: TextStyle(
-                                      color: AppColors.primary,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Property Information',
+                                      style: TextStyle(
+                                        color: AppColors.primary,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                    'Please fill in all fields below to continue',
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.normal,
-                                      color: AppColors.primary,
+                                    SizedBox(height: 10),
+                                    Text(
+                                      'Please fill in all fields below to continue',
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.normal,
+                                        color: AppColors.primary,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                              Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 17.0),
-                                    child: Icon(
-                                      Icons.draw,
-                                      size: 70,
-                                      color: AppColors.primary,
-                                    ),
-                                  ),
-                                ],
-                              )
+                              SizedBox(
+                                  width: 8), // Add space between text and icon
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    right: 8.0), // Ensure padding
+                                child: Icon(
+                                  Icons.draw,
+                                  size: 70,
+                                  color: AppColors.primary,
+                                ),
+                              ),
                             ],
                           ),
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
+                        const SizedBox(height: 20),
                         _buildTextField(
                           controller: _priceController,
                           label: 'Price',
                           hint: 'Enter price',
                           contentPadding: const EdgeInsets.all(16),
                           validator: (value) => validateNumber(value ?? ''),
+                        ),
+                        _buildTextField(
+                          controller: _walletAddressController,
+                          label: 'Wallet address',
+                          hint: 'Enter your wallet address',
+                          contentPadding: const EdgeInsets.all(16),
+                          validator: (value) =>
+                              validateWalletAddress(value ?? ''),
                         ),
                         _buildTextField(
                           controller: _descriptionController,
@@ -153,6 +159,7 @@ class _PostPriceState extends State<PostPrice> with InputValidationMixin {
                         if (_formKey.currentState!.validate()) {
                           final updatedListing = widget.listing.copyWith(
                             price: _priceController.text,
+                            walletAddress: _walletAddressController.text,
                             description: _descriptionController.text,
                             leastTerms: _leaseTermsController.text,
                           );

@@ -16,4 +16,5 @@ class AppColors {
   static const ratingYellow = Color(0xffFFB800);
   static const greenActive = Color(0xff75CEA3);
   static const redInactive = Color(0xffE07878);
+  static const pending = Color.fromARGB(255, 228, 217, 124);
 }
