@@ -151,7 +151,7 @@ class BookingManagementWidget extends StatelessWidget {
                     final booking = pendingBookings[index];
                     return BookingCard(
                       propertyType: booking['propertyType'],
-                      userName: booking['userName'],
+                      userName: booking['user_id'].toString(),
                       price: booking['price'],
                       status: booking['status'],
                       onApprove: () {
@@ -173,7 +173,7 @@ class BookingManagementWidget extends StatelessWidget {
                     final booking = approvedBookings[index];
                     return BookingCard(
                       propertyType: booking['propertyType'],
-                      userName: booking['userName'],
+                      userName: booking['user_id'].toString(),
                       price: booking['price'],
                       status: booking['status'],
                       onApprove: null, // Approved bookings can't be approved again
@@ -192,7 +192,7 @@ class BookingManagementWidget extends StatelessWidget {
                     final booking = rejectedBookings[index];
                     return BookingCard(
                       propertyType: booking['propertyType'],
-                      userName: booking['userName'],
+                      userName: booking['user_id'].toString(),
                       price: booking['price'],
                       status: booking['status'],
                       onApprove: () {

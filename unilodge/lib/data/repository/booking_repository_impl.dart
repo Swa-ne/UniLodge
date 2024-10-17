@@ -3,9 +3,11 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:unilodge/data/models/booking.dart';
 import 'package:unilodge/data/repository/booking_repository.dart';
+import 'package:unilodge/data/sources/auth/token_controller.dart';
 
 class BookingRepositoryImpl implements BookingRepository {
   final String _apiUrl = "${dotenv.env['API_URL']}/booking";
+  final TokenControllerImpl _tokenController = TokenControllerImpl();
 
   @override
   Future<Booking> getBookingById(String bookingId) async {
@@ -57,16 +59,21 @@ class BookingRepositoryImpl implements BookingRepository {
   // Implement createBooking method to send booking data to the backend
   @override
   Future<void> createBooking(Map<String, dynamic> bookingData) async {
+    final access_token = await _tokenController.getAccessToken();
+    final refresh_token = await _tokenController.getRefreshToken();
     final response = await http.post(
-      Uri.parse('$_apiUrl/create'),
+      Uri.parse('$_apiUrl/create-booking'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
+        'Authorization': access_token,
+        'Cookie': 'refresh_token=$refresh_token',
       },
-      body: jsonEncode(bookingData),  // Send bookingData to backend
+      body: jsonEncode(bookingData), // Send bookingData to backend
     );
 
-    if (response.statusCode != 201) {  // Assuming 201 status code for successful creation
+    if (response.statusCode != 201) {
+      // Assuming 201 status code for successful creation
       throw Exception('Failed to create booking');
     }
   }

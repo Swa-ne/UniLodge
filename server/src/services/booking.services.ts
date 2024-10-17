@@ -1,4 +1,4 @@
-import { Booking } from "../models/booking/booking.model"; 
+import { Booking, BookingSchemaInterface } from "../models/booking/booking.model"; 
 import { CustomResponse } from "../utils/input.validators";
 
 export const getBookingById = async (bookingId: string)  => {
@@ -45,3 +45,15 @@ export const rejectBooking = async (bookingId: string): Promise<CustomResponse> 
         return { error: "Internal Server Error", httpCode: 500 };
     }
 };
+
+export const createBooking = async (bookingData: BookingSchemaInterface) => {
+    try {
+      const newBooking = new Booking(bookingData);
+      await newBooking.save();
+  
+      return { message: newBooking, httpCode: 201 }; 
+    } catch (error) {
+      console.error("Error creating booking:", error);
+      return { error: "Internal Server Error", httpCode: 500 };
+    }
+  };

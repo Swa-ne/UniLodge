@@ -435,11 +435,11 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                           'propertyType':
                               widget.listing.selectedPropertyType ?? 'N/A',
                           'userName':
-                              'User ', // You might want to get the logged-in user
+                              widget.listing.id,
                           'price':
-                              '₱${widget.listing.price ?? 0}', // Use the listing's price
+                              '₱${widget.listing.price ?? 0}',
                           'status':
-                              'Pending', // By default, the status will be pending
+                              'Pending',
                         };
                         BlocProvider.of<BookingBloc>(context)
                             .add(CreateBookingEvent(bookingData));
