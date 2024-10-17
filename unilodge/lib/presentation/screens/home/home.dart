@@ -3,12 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/bloc/chat/chat_bloc.dart';
 import 'package:unilodge/bloc/renter/renter_bloc.dart';
+import 'package:unilodge/common/widgets/custom_text.dart';
 import 'package:unilodge/common/widgets/error_message.dart';
 import 'package:unilodge/common/widgets/no_listing_placeholder.dart';
 import 'package:unilodge/common/widgets/shimmer_loading.dart';
 import 'package:unilodge/core/configs/assets/app_images.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
+import 'package:unilodge/core/configs/theme/app_theme.dart';
 import 'package:unilodge/data/sources/chat/socket_controller.dart';
+import 'package:unilodge/presentation/widgets/home/custom_drawer.dart';
 import 'package:unilodge/presentation/widgets/home/listing_cards.dart';
 import 'package:unilodge/presentation/widgets/home/type_cards.dart';
 import 'package:unilodge/presentation/widgets/home/search.dart';
@@ -43,59 +46,81 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const CustomDrawer(),
       body: BlocBuilder<RenterBloc, RenterState>(
         builder: (context, state) {
           return RefreshIndicator(
-            onRefresh: _refreshDorms, 
+            onRefresh: _refreshDorms,
             child: CustomScrollView(
               slivers: [
-                SliverAppBar(
+                const SliverAppBar(
                   backgroundColor: AppColors.lightBackground,
                   pinned: true,
                   floating: true,
-                  actions: [
-                    GestureDetector(
-                      onTap: () {
-                        showSearch(
-                          context: context,
-                          delegate: CustomSearchDelegate(),
-                        );
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(vertical: 8),
-                        width: 300,
-                        padding: const EdgeInsets.all(8.0),
-                        decoration: BoxDecoration(
-                          color: Colors.grey.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        child: const Row(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(right: 8.0),
-                              child: Icon(Icons.search),
+                  expandedHeight:
+                      70, 
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Stack(
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // GestureDetector(
+                              //   onTap: () {
+                              //     showSearch(
+                              //       context: context,
+                              //       delegate: CustomSearchDelegate(),
+                              //     );
+                              //   },
+                              //   child: Container(
+                              //     margin: const EdgeInsets.only(bottom: 8.0),
+                              //     width: double.infinity,
+                              //     padding: const EdgeInsets.all(8.0),
+                              //     decoration: BoxDecoration(
+                              //       color: Colors.grey.withOpacity(0.1),
+                              //       borderRadius: BorderRadius.circular(25),
+                              //     ),
+                              //     child: const Row(
+                              //       children: [
+                              //         Padding(
+                              //           padding: EdgeInsets.only(right: 8.0),
+                              //           child: Icon(Icons.search),
+                              //         ),
+                              //         Text("Search"),
+                              //       ],
+                              //     ),
+                              //   ),
+                              // ),
+                            ],
+                          ),
+                          Align(
+                            alignment: Alignment.topCenter,
+                            child: Padding(
+                              padding:
+                                  EdgeInsets.symmetric(vertical: 8.0),
+                              child: Text(
+                                'UniLodge',
+                                style: TextStyle(
+                                  fontFamily: AppTheme.logoFont,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.logoTextColor,
+                                ),
+                              ),
                             ),
-                            Text("Search"),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(width: 15),
-                    GestureDetector(
-                      onTap: () {
-                        context.push("/user-profile");
-                      },
-                      child: const CircleAvatar(
-                        backgroundImage: AssetImage(AppImages.emptyProfile),
-                      ),
-                    ),
-                    const SizedBox(width: 15),
-                  ],
+                  ),
                 ),
                 SliverList(
                   delegate: SliverChildListDelegate(
                     [
-                      const SizedBox(height: 10),
+                      // const SizedBox(height: 10),
                       Padding(
                         padding: const EdgeInsets.all(6.0),
                         child: SizedBox(
@@ -168,14 +193,16 @@ class _HomeState extends State<Home> {
                           const NoListingPlaceholder(),
                         ] else ...[
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
                             child: ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               itemCount: state.allDorms.length,
                               itemBuilder: (context, index) {
                                 final sortedDorms = List.from(state.allDorms)
-                                  ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+                                  ..sort((a, b) =>
+                                      b.createdAt.compareTo(a.createdAt));
 
                                 final listing = sortedDorms[index];
 

@@ -39,7 +39,7 @@ class Settings extends StatelessWidget {
                 icon: const Icon(Icons.arrow_back_ios,
                     color: AppColors.textColor),
                 onPressed: () {
-                  context.push('/user-profile');
+                  context.push('/home');
                 },
               ),
               title: const CustomText(

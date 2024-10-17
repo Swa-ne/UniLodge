@@ -62,7 +62,7 @@ class _MyProfileState extends State<MyProfile> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
-            context.go("/settings");
+            context.push('/settings');
           },
         ),
         elevation: 4,
