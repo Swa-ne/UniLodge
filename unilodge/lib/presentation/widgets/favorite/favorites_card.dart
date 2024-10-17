@@ -6,6 +6,7 @@ import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
 import 'package:unilodge/presentation/widgets/favorite/custom_text.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:unilodge/presentation/widgets/home/price_text.dart';
 
 class FavoriteCard extends StatelessWidget {
   final Listing listing;
@@ -102,12 +103,10 @@ class FavoriteCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    CustomText(
-                      text: listing.price ?? 'Price not available',
-                      color: AppColors.formTextColor,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                    ),
+                    PriceText(
+                        text: listing.price != null
+                            ? '₱${listing.price!}'
+                            : 'N/A'),
                   ],
                 ),
               ),

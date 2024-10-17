@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+// import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:go_router/go_router.dart';
 import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:lottie/lottie.dart';
@@ -9,7 +9,11 @@ import 'package:unilodge/bloc/listing/listing_event.dart';
 import 'package:unilodge/bloc/listing/listing_state.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
+import 'package:unilodge/presentation/widgets/home/price_text.dart';
 import 'package:unilodge/presentation/widgets/home/text_row.dart';
+import 'package:unilodge/presentation/widgets/listing/tab_bar.dart';
+
+
 
 class YourListingDetails extends StatefulWidget {
   const YourListingDetails({super.key, required this.listing});
@@ -151,14 +155,11 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 20.0, horizontal: 16.0),
-                    child: Text(
-                      widget.listing.property_name ?? "Unnamed Property",
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xff434343),
-                      ),
-                    ),
+                    child: Text(widget.listing.property_name ?? '',
+                        style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xff434343))),
                   ),
                   Container(
                     decoration: BoxDecoration(
@@ -174,17 +175,22 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                             const TextStyle(color: AppColors.lightBackground),
                       ),
                     ),
-                  )
+                  ),
+                  const Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: PriceText(
+                        text: widget.listing.price != null
+                            ? '₱${widget.listing.price!}'
+                            : 'N/A'),
+                  ),
                 ],
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: TextRow(text1: "Price:", text2: widget.listing.price!),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: TextRow(
-                    text1: "Wallet address:", text2: widget.listing.walletAddress!),
+                    text1: "Wallet address:",
+                    text2: widget.listing.walletAddress!),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -304,55 +310,56 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                     height: 20, color: Color.fromARGB(255, 223, 223, 223)),
               ),
               const SizedBox(height: 15),
-              Row(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 15.0),
-                    child: Text("Rating: ",
-                        style:
-                            TextStyle(color: Color(0xff434343), fontSize: 15)),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 2.0, vertical: 8),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: RatingBar.builder(
-                        initialRating: widget.listing.rating?.toDouble() ?? 0.0,
-                        minRating: 1,
-                        direction: Axis.horizontal,
-                        itemCount: 5,
-                        itemSize: 18,
-                        itemPadding: const EdgeInsets.symmetric(horizontal: 1),
-                        itemBuilder: (context, _) => const Icon(
-                          Icons.star,
-                          color: AppColors.ratingYellow,
-                        ),
-                        onRatingUpdate: (rating) {
-                          print(rating);
-                        },
-                        updateOnDrag: false,
-                        ignoreGestures: true,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-                child: Text(
-                  "Reviews (14)",
-                  style: TextStyle(color: Color(0xff434343), fontSize: 15),
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-                child: Text(
-                  "dropdown reviews or direct to another screen",
-                  style:
-                      TextStyle(color: AppColors.formTextColor, fontSize: 15),
-                ),
-              ),
+              const BookingManagementWidget(), 
+              // Row(
+              //   children: [
+              //     const Padding(
+              //       padding: EdgeInsets.only(left: 15.0),
+              //       child: Text("Rating: ",
+              //           style:
+              //               TextStyle(color: Color(0xff434343), fontSize: 15)),
+              //     ),
+              //     Padding(
+              //       padding: const EdgeInsets.symmetric(
+              //           horizontal: 2.0, vertical: 8),
+              //       child: Align(
+              //         alignment: Alignment.centerLeft,
+              //         child: RatingBar.builder(
+              //           initialRating: widget.listing.rating?.toDouble() ?? 0.0,
+              //           minRating: 1,
+              //           direction: Axis.horizontal,
+              //           itemCount: 5,
+              //           itemSize: 18,
+              //           itemPadding: const EdgeInsets.symmetric(horizontal: 1),
+              //           itemBuilder: (context, _) => const Icon(
+              //             Icons.star,
+              //             color: AppColors.ratingYellow,
+              //           ),
+              //           onRatingUpdate: (rating) {
+              //             print(rating);
+              //           },
+              //           updateOnDrag: false,
+              //           ignoreGestures: true,
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              // const Padding(
+              //   padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+              //   child: Text(
+              //     "Reviews (14)",
+              //     style: TextStyle(color: Color(0xff434343), fontSize: 15),
+              //   ),
+              // ),
+              // const Padding(
+              //   padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+              //   child: Text(
+              //     "dropdown reviews or direct to another screen",
+              //     style:
+              //         TextStyle(color: AppColors.formTextColor, fontSize: 15),
+              //   ),
+              // ),
               const SizedBox(height: 30),
             ],
           ),
