@@ -9,6 +9,7 @@ import 'package:unilodge/bloc/listing/listing_event.dart';
 import 'package:unilodge/bloc/listing/listing_state.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
+import 'package:unilodge/presentation/widgets/home/price_text.dart';
 import 'package:unilodge/presentation/widgets/home/text_row.dart';
 
 class YourListingDetails extends StatefulWidget {
@@ -151,14 +152,11 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 20.0, horizontal: 16.0),
-                    child: Text(
-                      widget.listing.property_name ?? "Unnamed Property",
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xff434343),
-                      ),
-                    ),
+                    child: Text(widget.listing.property_name ?? '',
+                        style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xff434343))),
                   ),
                   Container(
                     decoration: BoxDecoration(
@@ -174,17 +172,22 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                             const TextStyle(color: AppColors.lightBackground),
                       ),
                     ),
-                  )
+                  ),
+                  const Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: PriceText(
+                        text: widget.listing.price != null
+                            ? '₱${widget.listing.price!}'
+                            : 'N/A'),
+                  ),
                 ],
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: TextRow(text1: "Price:", text2: widget.listing.price!),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: TextRow(
-                    text1: "Wallet address:", text2: widget.listing.walletAddress!),
+                    text1: "Wallet address:",
+                    text2: widget.listing.walletAddress!),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
