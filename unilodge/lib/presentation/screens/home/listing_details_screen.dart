@@ -32,7 +32,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
   @override
   void initState() {
     super.initState();
-    //BlocProvider.of<RenterBloc>(context).add(FetchAllDorms());
+    BlocProvider.of<RenterBloc>(context).add(FetchAllDorms());
   }
 
   @override

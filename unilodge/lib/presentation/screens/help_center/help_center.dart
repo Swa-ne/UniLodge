@@ -18,12 +18,7 @@ class HelpCenter extends StatelessWidget {
           color: AppColors.primary,
         ),
         centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () {
-            context.push('/home');
-          },
-        ),
+        
       ),
       body: const Padding(
         padding: EdgeInsets.all(16.0),
