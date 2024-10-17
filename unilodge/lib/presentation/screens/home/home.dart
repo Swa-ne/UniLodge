@@ -8,7 +8,9 @@ import 'package:unilodge/common/widgets/no_listing_placeholder.dart';
 import 'package:unilodge/common/widgets/shimmer_loading.dart';
 import 'package:unilodge/core/configs/assets/app_images.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
+import 'package:unilodge/core/configs/theme/app_theme.dart';
 import 'package:unilodge/data/sources/chat/socket_controller.dart';
+import 'package:unilodge/presentation/widgets/home/custom_drawer.dart';
 import 'package:unilodge/presentation/widgets/home/listing_cards.dart';
 import 'package:unilodge/presentation/widgets/home/type_cards.dart';
 import 'package:unilodge/presentation/widgets/home/search.dart';
@@ -43,10 +45,11 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const CustomDrawer(),
       body: BlocBuilder<RenterBloc, RenterState>(
         builder: (context, state) {
           return RefreshIndicator(
-            onRefresh: _refreshDorms, 
+            onRefresh: _refreshDorms,
             child: CustomScrollView(
               slivers: [
                 SliverAppBar(
@@ -78,15 +81,6 @@ class _HomeState extends State<Home> {
                             Text("Search"),
                           ],
                         ),
-                      ),
-                    ),
-                    const SizedBox(width: 15),
-                    GestureDetector(
-                      onTap: () {
-                        context.push("/user-profile");
-                      },
-                      child: const CircleAvatar(
-                        backgroundImage: AssetImage(AppImages.emptyProfile),
                       ),
                     ),
                     const SizedBox(width: 15),
@@ -168,14 +162,16 @@ class _HomeState extends State<Home> {
                           const NoListingPlaceholder(),
                         ] else ...[
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
                             child: ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               itemCount: state.allDorms.length,
                               itemBuilder: (context, index) {
                                 final sortedDorms = List.from(state.allDorms)
-                                  ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+                                  ..sort((a, b) =>
+                                      b.createdAt.compareTo(a.createdAt));
 
                                 final listing = sortedDorms[index];
 

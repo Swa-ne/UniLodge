@@ -205,7 +205,7 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/bookings',
       builder: (context, state) {
-        return BookedListings();
+        return const BookedListings();
       },
     ),
     GoRoute(
