@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
-import 'package:unilodge/presentation/widgets/home/price_text.dart';
 
-class ListingCard extends StatelessWidget {
+class BookedCard extends StatelessWidget {
   final Listing listing;
 
-  const ListingCard({
+  const BookedCard({
     super.key,
     required this.listing,
   });
@@ -18,7 +17,7 @@ class ListingCard extends StatelessWidget {
       padding: const EdgeInsets.only(top: 10, right: 10, left: 10),
       child: GestureDetector(
         onTap: () async {
-          context.push('/your-listing-detail', extra: listing);
+          context.push('/listing-detail', extra: listing);
         },
         child: Container(
           height: 150,
@@ -74,59 +73,40 @@ class ListingCard extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         maxLines: 1,
                       ),
-                      SizedBox(height: 10,),
+                      const SizedBox(height: 5),
                       Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          PriceText(
-                              text: listing.price != null
-                                  ? '₱${listing.price!}'
-                                  : 'N/A'),
-                          Spacer(),
-                          Container(
-                            margin: EdgeInsets.only(top: 10),
-                           
-                            decoration: BoxDecoration(
-                              color: listing.isAvailable!
-                                  ? AppColors.greenActive
-                                  : AppColors.redInactive,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(6.0),
-                              child: Text(
-                                listing.isAvailable!
-                                    ? "Available"
-                                    : "Unavailable",
-                                style: const TextStyle(
-                                  color: AppColors.lightBackground,
-                                ),
-                              ),
-                            ),
+                          Text(
+                            listing.price != null
+                                ? '₱${listing.price!}'
+                                : 'N/A',
+                            style: TextStyle(color: AppColors.textColor),
                           ),
                         ],
                       ),
                       const Spacer(),
-                      // Align(
-                      //   alignment: Alignment.bottomRight,
-                      //   child: Container(
-                      //     decoration: BoxDecoration(
-                      //       color: listing.isAvailable!
-                      //           ? AppColors.greenActive
-                      //           : AppColors.redInactive,
-                      //       borderRadius: BorderRadius.circular(5),
-                      //     ),
-                      //     child: Padding(
-                      //       padding: const EdgeInsets.all(6.0),
-                      //       child: Text(
-                      //         listing.isAvailable! ? "Available" : "Unavailable",
-                      //         style: const TextStyle(
-                      //           color: AppColors.lightBackground,
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: listing.isAvailable!
+                                ? AppColors.greenActive
+                                : AppColors.redInactive,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Text(
+                              listing.isAvailable!
+                                  ? "Available"
+                                  : "Unavailable",
+                              style: const TextStyle(
+                                color: AppColors.lightBackground,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),

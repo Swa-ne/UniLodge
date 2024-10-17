@@ -76,7 +76,7 @@ class RenterBloc extends Bloc<RenterEvent, RenterState> {
         // emit(DormsLoading());
         
         final savedDorms= await renterRepository.fetchSavedDorms();
-         print('Fetched saved dorms: ${savedDorms.length} items'); // Debugging
+         print('Fetched savedsdsds dorms: ${savedDorms.length} items'); // Debugging
 
         // emit(DormsLoaded(savedDorms));
         emit(SavedDormsLoaded(savedDorms));

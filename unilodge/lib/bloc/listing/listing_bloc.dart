@@ -33,18 +33,18 @@ class ListingBloc extends Bloc<ListingEvent, ListingState> {
 
     on<CreateListing>((event, emit) async {
       emit(
-          SubmittingState()); // Emit submitting state to disable the button and show an indicator
+          SubmittingState()); 
       try {
         if (await _listingRepository.createListing(
             event.imageFiles, event.dorm)) {
           emit(ListingCreated(DateTime.now()));
         } else {
           emit(const ListingCreationError(
-              "Failed to create listing")); // Emit failure state on failure
+              "Failed to create listing")); 
         }
       } catch (e) {
         emit(const ListingCreationError(
-            "Internet Connection Error")); // Emit failure state on exception
+            "Internet Connection Error")); 
       }
     });
 

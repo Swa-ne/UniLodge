@@ -5,6 +5,7 @@ import 'package:unilodge/bloc/listing/listing_bloc.dart';
 import 'package:unilodge/bloc/listing/listing_event.dart';
 import 'package:unilodge/bloc/listing/listing_state.dart';
 import 'package:unilodge/common/widgets/error_message.dart';
+import 'package:unilodge/common/widgets/no_listing_placeholder.dart';
 import 'package:unilodge/common/widgets/shimmer_loading.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/presentation/widgets/favorite/custom_text.dart';
@@ -32,11 +33,12 @@ class _ListingsState extends State<Listings> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        centerTitle: true,
         title: const CustomText(
-          text: 'Your Listings',
-          color: AppColors.textColor,
-          fontSize: 18,
+          text: "Your Listings",
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: AppColors.primary,
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -60,6 +62,12 @@ class _ListingsState extends State<Listings> {
             final sortedListings = List.from(state.listing)
               ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
+            if (sortedListings.isEmpty) {
+              return const Center(
+                child: NoListingPlaceholder()
+              );
+            }
+
             return ListView.builder(
               itemCount: sortedListings.length,
               itemBuilder: (context, index) {
@@ -67,6 +75,7 @@ class _ListingsState extends State<Listings> {
                 return ListingCard(listing: listing);
               },
             );
+            
           } else if (state is ListingError) {
             return ErrorMessage(errorMessage: state.message);
           } else {

@@ -16,6 +16,7 @@ class AppImages {
   static const String typeDorm = '${basePath}search$pngformat';
   static const String errorIcon = '${basePath}error$pngformat';
   static const String chatbg = '${basePath}chat$pngformat';
+  static const String noFavs = '${basePath}no_favs$pngformat';
 
   static const String dormListing = '${basePath}listingIcons/dorm$pngformat';
   static const String apartmentListing =

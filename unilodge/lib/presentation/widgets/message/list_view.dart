@@ -92,17 +92,17 @@ class _MessagesListViewState extends State<MessagesListView>
                         margin: const EdgeInsets.symmetric(
                             vertical: 4, horizontal: 5),
                         padding: const EdgeInsets.all(14),
-                        // decoration: BoxDecoration(
-                        //   color: Colors.white,
-                        //   borderRadius: BorderRadius.circular(10),
-                        //   boxShadow: [
-                        //     BoxShadow(
-                        //       color: const Color(0xFF636464).withOpacity(0.15),
-                        //       offset: const Offset(0, 2),
-                        //       blurRadius: 8,
-                        //     ),
-                        //   ],
-                        // ),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFF636464).withOpacity(0.15),
+                              offset: const Offset(0, 2),
+                              blurRadius: 8,
+                            ),
+                          ],
+                        ),
                         child: Row(
                           children: [
                             Container(

@@ -10,6 +10,7 @@ export interface DormSchemaInterface extends Document {
   currency: ObjectId;
   available_rooms: number;
   price: number;
+  walletAddress: string;
   description: string;
   least_terms?: string;
   amenities?: string[];
@@ -51,6 +52,11 @@ const DormSchema: Schema = new Schema(
       type: Number,
       default: 0,
       required: [true, "Please enter available rooms."],
+    },
+    walletAddress: {
+      type: String,
+      default: "0xaE47bCd3a6781042961300136391bF91a55dEF0a",
+      required: [true, "Please enter wallet address."],
     },
     price: {
       type: Number,

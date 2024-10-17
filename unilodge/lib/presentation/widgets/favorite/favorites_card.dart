@@ -6,6 +6,7 @@ import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
 import 'package:unilodge/presentation/widgets/favorite/custom_text.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:unilodge/presentation/widgets/home/price_text.dart';
 
 class FavoriteCard extends StatelessWidget {
   final Listing listing;
@@ -24,7 +25,7 @@ class FavoriteCard extends StatelessWidget {
         
         final result = await context.push('/listing-detail', extra: listing);
         if (result == true) {
-          onBack(); // Re-fetch saved dorms after returning
+          onBack(); 
         }
       },
       child: Card(
@@ -35,7 +36,7 @@ class FavoriteCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Image
-            Padding(
+            Padding(  
               padding: const EdgeInsets.all(8),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(5),
@@ -102,12 +103,10 @@ class FavoriteCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    CustomText(
-                      text: listing.price ?? 'Price not available',
-                      color: AppColors.formTextColor,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                    ),
+                    PriceText(
+                        text: listing.price != null
+                            ? '₱${listing.price!}'
+                            : 'N/A'),
                   ],
                 ),
               ),

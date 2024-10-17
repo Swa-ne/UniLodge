@@ -32,9 +32,9 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<RenterBloc>(context).add(FetchAllDorms());
+    //BlocProvider.of<RenterBloc>(context).add(FetchAllDorms());
   }
-  //TODO fix the bug when pressing the back button on phone, it's working well when pressing the x button.
+
   @override
   Widget build(BuildContext context) {
     final _chatBloc = BlocProvider.of<ChatBloc>(context);
@@ -92,20 +92,59 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                 height: 20,
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  GestureDetector(
+                  // const SizedBox(
+                  //   width: 5,
+                  // ),
+                  Padding(padding: const EdgeInsets.only(left: 10),
+                  child: GestureDetector(
                       onTap: () {
                         Navigator.pop(context, true);
                       },
                       child: const Icon(Icons.cancel,
-                          color: Color.fromARGB(169, 60, 60, 67))),
+                          color: Color.fromARGB(169, 60, 60, 67))),),
+                  // const Padding(
+                  //   padding: EdgeInsets.only(right: 5),
+                  //   child: VerticalDivider(
+                  //     color: Color.fromARGB(75, 67, 67, 67),
+                  //     thickness: 1,
+                  //     width: 5,
+                  //   ),
+                  // ),
+                  // BlocBuilder<RenterBloc, RenterState>(
+                  //   builder: (context, state) {
+                  //     return IconButton(
+                  //       icon: Icon(
+                  //         isSaved ? Icons.favorite : Icons.favorite_border,
+                  //         color: isSaved ? Colors.red : Colors.grey,
+                  //       ),
+                  //       onPressed: () async {
+                  //         if (isSaved) {
+                  //           _renterBloc
+                  //               .add(DeleteSavedDorm(widget.listing.id!));
+                  //           setState(() {
+                  //             isSaved = false;
+                  //           });
+                  //           print(isSaved);
+                  //         } else {
+                  //           _renterBloc.add(SaveDorm(widget.listing.id!));
+                  //           setState(() {
+                  //             isSaved = true;
+                  //           });
+                  //           print(isSaved);
+                  //         }
+                  //       },
+                  //     );
+                  //   },
+                  // ),
+                  // const SizedBox(
+                  //   width: 5,
+                  // ),
                 ],
               ),
               const SizedBox(
-                height: 20,
+                height: 15,
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -181,8 +220,9 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: PriceText(
-                        text:
-                            widget.listing.price != null ? '₱${widget.listing.price!}' : 'N/A'),
+                        text: widget.listing.price != null
+                            ? '₱${widget.listing.price!}'
+                            : 'N/A'),
                   ),
                 ],
               ),
@@ -382,17 +422,34 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const SizedBox(width: 10),
                   Expanded(
                     flex: 7,
                     child: CustomButton(
-                      text: "Chat with owner",
+                      text: "Book now & pay",
+                      onPressed: () {},
+                    ),
+                  ),
+                  const SizedBox(width: 15),
+                  // const Padding(
+                  //   padding: EdgeInsets.symmetric(vertical: 6.0),
+                  //   child: VerticalDivider(
+                  //     color: Color.fromARGB(75, 67, 67, 67),
+                  //     thickness: 1,
+                  //     width: 20,
+                  //   ),
+                  // ),
+                  Expanded(
+                    flex: 1,
+                    child: IconButton(
+                      icon: Icon(Icons.message),
                       onPressed: () {
                         _chatBloc
                             .add(CreateInboxEvent(widget.listing.owner_id!.id));
                       },
                     ),
                   ),
+                  const SizedBox(width: 10),
+
                   const SizedBox(width: 10),
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 6.0),

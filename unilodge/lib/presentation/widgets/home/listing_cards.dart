@@ -29,12 +29,16 @@ class ListingCards extends StatelessWidget {
                   .any((savedListing) => savedListing.id == listing.id);
             }
 
-            return Container(
-              child: Column(
+            return ListTile(
+              contentPadding: EdgeInsets.zero,
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Center(
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(5),
+                      borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(5),
+                      ),
                       child: Opacity(
                         opacity: 0.9,
                         child: listing.imageUrl != null &&
@@ -97,22 +101,26 @@ class ListingCards extends StatelessWidget {
                           listing.adddress,
                           style: const TextStyle(color: AppColors.textColor),
                         ),
-                        Row(
-                          children: [
-                            PriceText(text: listing.price != null
-                                  ? '₱${listing.price!}'
-                                  : 'N/A'),
-                            const Spacer(),
-                            Icon(
-                              Icons.favorite,
-                              color: isSaved ? Colors.red : Colors.grey,
-                            ),
-                          ],
-                        ),
                       ],
                     ),
                   ),
                 ],
+              ),
+              subtitle: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: Row(
+                  children: [
+                    PriceText(
+                        text: listing.price != null
+                            ? '₱${listing.price!}'
+                            : 'N/A'),
+                    const Spacer(),
+                    Icon(
+                      Icons.favorite,
+                      color: isSaved ? Colors.red : Colors.grey,
+                    ),
+                  ],
+                ),
               ),
             );
           },

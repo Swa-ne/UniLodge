@@ -16,6 +16,8 @@ class PostPrice extends StatefulWidget {
 class _PostPriceState extends State<PostPrice> with InputValidationMixin {
   final _formKey = GlobalKey<FormState>(); // GlobalKey to track form state
   final TextEditingController _priceController = TextEditingController();
+  final TextEditingController _walletAddressController =
+      TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _leaseTermsController = TextEditingController();
 
@@ -64,9 +66,11 @@ class _PostPriceState extends State<PostPrice> with InputValidationMixin {
                                   ],
                                 ),
                               ),
-                              SizedBox(width: 8), // Add space between text and icon
+                              SizedBox(
+                                  width: 8), // Add space between text and icon
                               Padding(
-                                padding: EdgeInsets.only(right: 8.0), // Ensure padding
+                                padding: EdgeInsets.only(
+                                    right: 8.0), // Ensure padding
                                 child: Icon(
                                   Icons.draw,
                                   size: 70,
@@ -85,6 +89,14 @@ class _PostPriceState extends State<PostPrice> with InputValidationMixin {
                           validator: (value) => validateNumber(value ?? ''),
                         ),
                         _buildTextField(
+                          controller: _walletAddressController,
+                          label: 'Wallet address',
+                          hint: 'Enter your wallet address',
+                          contentPadding: const EdgeInsets.all(16),
+                          validator: (value) =>
+                              validateWalletAddress(value ?? ''),
+                        ),
+                        _buildTextField(
                           controller: _descriptionController,
                           label: 'Description',
                           hint: 'Enter description',
@@ -101,8 +113,7 @@ class _PostPriceState extends State<PostPrice> with InputValidationMixin {
                           maxLines: 5,
                           minLines: 5,
                           contentPadding: const EdgeInsets.all(16),
-                          validator: (value) =>
-                              validateLeaseTerms(value ?? ''),
+                          validator: (value) => validateLeaseTerms(value ?? ''),
                         ),
                       ],
                     ),
@@ -148,11 +159,11 @@ class _PostPriceState extends State<PostPrice> with InputValidationMixin {
                         if (_formKey.currentState!.validate()) {
                           final updatedListing = widget.listing.copyWith(
                             price: _priceController.text,
+                            walletAddress: _walletAddressController.text,
                             description: _descriptionController.text,
                             leastTerms: _leaseTermsController.text,
                           );
-                          context.push('/post-Facility',
-                              extra: updatedListing);
+                          context.push('/post-Facility', extra: updatedListing);
                         }
                       },
                       style: ElevatedButton.styleFrom(
