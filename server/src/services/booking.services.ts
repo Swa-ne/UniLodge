@@ -1,13 +1,13 @@
 import { Booking } from "../models/booking/booking.model"; 
 import { CustomResponse } from "../utils/input.validators";
 
-export const getBookingById = async (bookingId: string): Promise<CustomResponse> => {
+export const getBookingById = async (bookingId: string)  => {
     try {
         const booking = await Booking.findById(bookingId).populate("user_id").exec();
         if (!booking) {
             return { error: 'Booking not found', httpCode: 404 };
         }
-        return { message: booking.toObject(), httpCode: 200 };
+        return { message: booking, httpCode: 200 };
     } catch (error) {
         return { error: "Internal Server Error", httpCode: 500 };
     }

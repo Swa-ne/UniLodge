@@ -10,7 +10,7 @@ export interface BookingSchemaInterface extends Document {
     updatedAt?: Date;
 }
 
-const BookingSchema = new Schema<BookingSchemaInterface>(
+const BookingSchema = new Schema(
     {
         user_id: {
             type: Schema.Types.ObjectId,

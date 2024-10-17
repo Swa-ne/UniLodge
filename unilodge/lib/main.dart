@@ -17,6 +17,8 @@ import 'package:unilodge/data/sources/chat/chat_repo.dart';
 import 'app_routes.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:unilodge/bloc/booking_bloc/booking_bloc.dart'; // Import the BookingBloc
+import 'package:unilodge/data/repository/booking_repository_impl.dart'; // Import the BookingRepositoryImpl
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -56,6 +58,9 @@ class MainApp extends StatelessWidget {
                   ProfileBloc(userRepository: UserRepositoryImpl())),
           BlocProvider(
             create: (context) => AdminBloc(AdminListingRepositoryImpl()),
+          ),
+           BlocProvider(
+            create: (context) => BookingBloc(BookingRepositoryImpl()),
           ),
         ],
         child: MaterialApp.router(

@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:lottie/lottie.dart';
+import 'package:unilodge/bloc/booking_bloc/booking_bloc.dart';
+import 'package:unilodge/bloc/booking_bloc/booking_event.dart';
 import 'package:unilodge/bloc/chat/chat_bloc.dart';
 import 'package:unilodge/bloc/chat/chat_event.dart';
 import 'package:unilodge/bloc/chat/chat_state.dart';
@@ -97,13 +99,15 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                   // const SizedBox(
                   //   width: 5,
                   // ),
-                  Padding(padding: const EdgeInsets.only(left: 10),
-                  child: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context, true);
-                      },
-                      child: const Icon(Icons.cancel,
-                          color: Color.fromARGB(169, 60, 60, 67))),),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context, true);
+                        },
+                        child: const Icon(Icons.cancel,
+                            color: Color.fromARGB(169, 60, 60, 67))),
+                  ),
                   // const Padding(
                   //   padding: EdgeInsets.only(right: 5),
                   //   child: VerticalDivider(
@@ -426,7 +430,27 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                     flex: 7,
                     child: CustomButton(
                       text: "Book now & pay",
-                      onPressed: () {},
+                      onPressed: () {
+                        final bookingData = {
+                          'propertyType':
+                              widget.listing.selectedPropertyType ?? 'N/A',
+                          'userName':
+                              'User ', // You might want to get the logged-in user
+                          'price':
+                              '₱${widget.listing.price ?? 0}', // Use the listing's price
+                          'status':
+                              'Pending', // By default, the status will be pending
+                        };
+                        BlocProvider.of<BookingBloc>(context)
+                            .add(CreateBookingEvent(bookingData));
+
+                        // context.push('/booking-management', extra: bookingData);
+                        // Optionally show a SnackBar for confirmation
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text('Booking created successfully!')),
+                        );
+                      },
                     ),
                   ),
                   const SizedBox(width: 15),

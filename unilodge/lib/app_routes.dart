@@ -1,4 +1,7 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:unilodge/bloc/admin_bloc/my_profile/my_profile_bloc.dart';
+import 'package:unilodge/bloc/admin_bloc/my_profile/my_profile_state.dart';
 import 'package:unilodge/data/models/inbox.dart';
 import 'package:unilodge/presentation/screens/admin/admin_listing_details_screen.dart';
 import 'package:unilodge/presentation/screens/admin/dashboard.dart';
@@ -35,6 +38,7 @@ import 'package:unilodge/presentation/screens/onboarding/onboarding_view.dart';
 import 'package:unilodge/presentation/screens/splashscreen/spash_screen.dart';
 
 import 'package:unilodge/data/models/listing.dart';
+import 'package:unilodge/presentation/widgets/listing/tab_bar.dart';
 
 final GoRouter appRouter = GoRouter(
   routes: [
@@ -208,6 +212,31 @@ final GoRouter appRouter = GoRouter(
         return BookedListings();
       },
     ),
+   GoRoute(
+  path: '/booking-management',
+  builder: (context, state) {
+    // Fetching the current user profile from ProfileBloc or AuthBloc
+    final profileState = BlocProvider.of<ProfileBloc>(context).state;
+    String username = 'Guest';  // Default to 'Guest' if not logged in
+
+    if (profileState is ProfileLoaded) {
+      username = profileState.username;  // Fetch the actual username from profile
+    }
+
+    final bookingData = state.extra as Map<String, dynamic>;
+
+    // Modify bookingData to include the real username
+    bookingData['userName'] = username;
+
+    // Wrap the single bookingData in a list
+    final List<Map<String, dynamic>> bookingsData = [bookingData];
+
+    // Pass the bookingsData list to BookingManagementWidget
+    return BookingManagementWidget(bookingsData: bookingsData);
+  },
+),
+
+
     GoRoute(
       path: '/change-password/:token',
       builder: (context, state) {
