@@ -88,7 +88,7 @@ class _UserProfileState extends State<UserProfile> {
           const SizedBox(height: 20),
           Container(
             width: 350,
-            height: 180,
+            height: 280,
             decoration: BoxDecoration(
               color: const Color(0xFFFFFFFF),
               borderRadius: BorderRadius.circular(10),
@@ -154,6 +154,21 @@ class _UserProfileState extends State<UserProfile> {
                   ),
                   onTap: () {
                     context.push("/bookings");
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(
+                    Icons.history,
+                    color: AppColors.textColor,
+                  ),
+                  title: const Text('History'),
+                  trailing: const Icon(
+                    Icons.arrow_forward_ios,
+                    color: AppColors.textColor,
+                    size: 20,
+                  ),
+                  onTap: () {
+                    context.push("/history");
                   },
                 ),
                 // ListTile for Settings navigation

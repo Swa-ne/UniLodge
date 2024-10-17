@@ -21,6 +21,7 @@ import 'package:unilodge/presentation/screens/home/type_listing_screen.dart';
 import 'package:unilodge/presentation/screens/message/chat.dart';
 import 'package:unilodge/presentation/screens/profile/my_profile.dart';
 import 'package:unilodge/presentation/screens/settings_ui/settings.dart';
+import 'package:unilodge/presentation/screens/history/history.dart';
 import 'package:unilodge/presentation/screens/your_listing/edit_listing_post.dart';
 import 'package:unilodge/presentation/screens/your_listing/your_listing_details.dart';
 import 'package:unilodge/presentation/screens/profile/user_profile.dart';
@@ -196,6 +197,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/help-center',
       builder: (context, state) => const HelpCenter(),
+    ),
+    GoRoute(
+      path: '/history',
+      builder: (context, state) => History(),
     ),
     GoRoute(
       path: '/bookings',
