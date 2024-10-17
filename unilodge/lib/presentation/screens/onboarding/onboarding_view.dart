@@ -31,8 +31,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                   // Skip Button
                   TextButton(
                     onPressed: () {
-                      context.go(
-                          '/account-selection-login');
+                      context.go('/account-selection-login');
                     },
                     style: TextButton.styleFrom(
                         foregroundColor: AppColors.linearGreen),
@@ -71,7 +70,13 @@ class _OnboardingViewState extends State<OnboardingView> {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset(controller.items[index].image),
+                  index == 0
+                      ? SizedBox(
+                          width: 250, 
+                          height: 250, 
+                          child: Image.asset(controller.items[index].image),
+                        )
+                      : Image.asset(controller.items[index].image),
                   const SizedBox(height: 15),
                   Text(
                     controller.items[index].title,
