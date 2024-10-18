@@ -97,13 +97,15 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                   // const SizedBox(
                   //   width: 5,
                   // ),
-                  Padding(padding: const EdgeInsets.only(left: 10),
-                  child: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context, true);
-                      },
-                      child: const Icon(Icons.cancel,
-                          color: Color.fromARGB(169, 60, 60, 67))),),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context, true);
+                        },
+                        child: const Icon(Icons.cancel,
+                            color: Color.fromARGB(169, 60, 60, 67))),
+                  ),
                   // const Padding(
                   //   padding: EdgeInsets.only(right: 5),
                   //   child: VerticalDivider(
@@ -426,7 +428,9 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                     flex: 7,
                     child: CustomButton(
                       text: "Book now & pay",
-                      onPressed: () {},
+                      onPressed: () {
+                        context.push('/crypto-payment', extra: widget.listing);
+                      },
                     ),
                   ),
                   const SizedBox(width: 15),
