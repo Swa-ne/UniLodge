@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 
@@ -10,6 +9,7 @@ class AuthTextField extends StatefulWidget {
   final bool obscureText;
   final dynamic Function(String)? onChanged;
   final String? errorText;
+  final Widget? suffixIcon; 
 
   const AuthTextField({
     super.key,
@@ -19,6 +19,7 @@ class AuthTextField extends StatefulWidget {
     this.obscureText = false,
     this.onChanged,
     this.errorText,
+    this.suffixIcon, 
   });
 
   @override
@@ -126,6 +127,7 @@ class _AuthTextFieldState extends State<AuthTextField> {
           vertical: 20.0,
           horizontal: 16.0,
         ),
+        suffixIcon: widget.suffixIcon,
       ),
     );
   }
