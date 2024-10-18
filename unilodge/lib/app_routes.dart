@@ -22,6 +22,9 @@ import 'package:unilodge/presentation/screens/message/chat.dart';
 import 'package:unilodge/presentation/screens/profile/my_profile.dart';
 import 'package:unilodge/presentation/screens/settings_ui/settings.dart';
 import 'package:unilodge/presentation/screens/verify_user/check_face.dart';
+import 'package:unilodge/presentation/screens/verify_user/check_id.dart';
+import 'package:unilodge/presentation/screens/verify_user/face_details.dart';
+import 'package:unilodge/presentation/screens/verify_user/id_details.dart';
 import 'package:unilodge/presentation/screens/your_listing/edit_listing_post.dart';
 import 'package:unilodge/presentation/screens/your_listing/your_listing_details.dart';
 import 'package:unilodge/presentation/screens/profile/user_profile.dart';
@@ -200,7 +203,15 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(
       path: '/verify-id',
-      builder: (context, state) => const MyProfile(),
+      builder: (context, state) => const CheckIDScreen(),
+    ),
+    GoRoute(
+      path: '/id-details',
+      builder: (context, state) => const IdDetails(),
+    ),
+    GoRoute(
+      path: '/face-details',
+      builder: (context, state) => const FaceDetails(),
     ),
     GoRoute(
       path: '/help-center',
