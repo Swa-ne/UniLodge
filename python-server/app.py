@@ -50,13 +50,14 @@ def verifyUser():
     data = request.json
     id = data.get('id')
     face = data.get('face')
-    result = isMatching(face, id)
-    
-    if (result['verified']):
-        return "Success"
+    result, isMatch = isMatching(face, id)
 
-    if(result["distance"] <= 0.7):
-        return "For Checking"
+    if (isMatch):
+        if (result['verified']):
+            return "Success"
+
+        if(result["distance"] <= 0.7):
+            return "For Checking"
     
     return "Failed"
 

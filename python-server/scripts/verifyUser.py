@@ -43,8 +43,7 @@ def isBlurry(image_url):
         img_np = np.array(img)  
 
         laplacian_var = cv2.Laplacian(img_np, cv2.CV_64F).var()
-
-        return "Image is blurry" if laplacian_var < 40 else "Image is good"
+        return "Image is blurry" if laplacian_var < 20 else "Image is good"
     except Exception as e:
         print(e)
         return "Image is blurry"
@@ -73,17 +72,13 @@ def isMatching(face, id):
         idImg = Image.open(BytesIO(idResponse.content))
         
         if faceImg is None:
-            return "Face image not found"
+            return "Face image not found", False
         
         if idImg is None:
-            return "ID image not found"
+            return "ID image not found", False
         
-        faceImg_np = np.array(faceImg)
-        idImg_np = np.array(idImg)
-        
-        result = DeepFace.verify(img1_path=faceImg_np, img2_path=idImg_np, model_name='Facenet512', distance_metric='cosine')
-        print(f"res {result}")
-        return result
+        result = DeepFace.verify(img1_path=face, img2_path=id, model_name='Facenet', distance_metric='cosine')
+
+        return result, True
     except Exception as e:
-        print(f"e{e}")
-        return f"Error during verification: {str(e)}"
+        return f"Error during verification: {str(e)}", False
