@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:unilodge/data/models/booking.dart';
+import 'package:unilodge/data/models/booking_history.dart';
 import 'package:unilodge/data/repository/booking_repository.dart';
 import 'package:unilodge/data/sources/auth/token_controller.dart';
 
@@ -38,6 +39,36 @@ class BookingRepositoryImpl implements BookingRepository {
       if (response.statusCode == 200) {
         final responseBody = json.decode(response.body);
         return Booking.fromJson(responseBody['message']);
+      } else {
+        throw Exception('Failed to load booking: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching booking by ID: $e');
+      throw Exception('Error fetching booking by ID: $e');
+    }
+  }
+
+  @override
+  Future<List<BookingHistory>> getBookingsOfUser() async {
+    final access_token = await _tokenController.getAccessToken();
+    final refresh_token = await _tokenController.getRefreshToken();
+
+    try {
+      final response = await http.get(
+        Uri.parse('$_apiUrl/booking-history'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': access_token,
+          'Cookie': 'refresh_token=$refresh_token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        List<dynamic> data = jsonDecode(response.body)["message"];
+        return data
+            .map((listingData) => BookingHistory.fromJson(listingData))
+            .toList();
       } else {
         throw Exception('Failed to load booking: ${response.statusCode}');
       }

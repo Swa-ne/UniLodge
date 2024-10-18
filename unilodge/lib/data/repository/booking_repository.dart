@@ -1,4 +1,5 @@
 import 'package:unilodge/data/models/booking.dart';
+import 'package:unilodge/data/models/booking_history.dart';
 
 abstract class BookingRepository {
   Future<Booking> getBookingById(String bookingId);
@@ -9,5 +10,6 @@ abstract class BookingRepository {
   Future<void> bookDorm(String userId, String dormId); // for booking dorm
   Future<List<Booking>> getAllBookings();
   Future<List<Booking>> getBookingsForListing(String listingId);
+  Future<List<BookingHistory>> getBookingsOfUser();
   Future<bool> checkIfBooked(String listingId);
 }
