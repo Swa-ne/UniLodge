@@ -19,13 +19,22 @@ class _PostImageState extends State<PostImage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios, color: AppColors.textColor),
+          onPressed: () {
+            context.push("/listings");
+          },
+        ),
+      ),
       body: Stack(
         children: <Widget>[
           Column(
             children: <Widget>[
               Expanded(
                 child: SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
