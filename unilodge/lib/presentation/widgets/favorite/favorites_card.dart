@@ -105,7 +105,7 @@ class FavoriteCard extends StatelessWidget {
                     const SizedBox(height: 20),
                     PriceText(
                         text: listing.price != null
-                            ? '₱${listing.price!}'
+                            ? 'ETH ${listing.price!}'
                             : 'N/A'),
                   ],
                 ),

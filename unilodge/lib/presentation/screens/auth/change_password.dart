@@ -60,12 +60,12 @@ class _ChangePasswordState extends State<ChangePassword>
             color: AppColors.primary,
           ),
           centerTitle: true,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
+          // leading: IconButton(
+          //   icon: const Icon(Icons.arrow_back_ios),
+          //   onPressed: () {
+          //     Navigator.pop(context);
+          //   },
+          // ),
         ),
         backgroundColor: AppColors.lightBackground,
         body: SingleChildScrollView(

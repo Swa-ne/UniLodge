@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:unilodge/bloc/my_profile/my_profile_bloc.dart';
 import 'package:unilodge/bloc/my_profile/my_profile_event.dart';
@@ -59,12 +58,6 @@ class _MyProfileState extends State<MyProfile> {
           color: AppColors.primary,
         ),
         centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () {
-            context.push('/settings');
-          },
-        ),
         elevation: 4,
       ),
       body: Padding(

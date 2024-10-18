@@ -223,7 +223,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: PriceText(
                         text: widget.listing.price != null
-                            ? '₱${widget.listing.price!}'
+                            ? 'ETH ${widget.listing.price!}'
                             : 'N/A'),
                   ),
                 ],
