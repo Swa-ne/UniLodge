@@ -205,7 +205,7 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/bookings',
       builder: (context, state) {
-        return const PaymentPage(); // TODO: 
+        return PaymentPage(listing: state.extra as Listing); // TODO: 
       },
     ),
     GoRoute(
