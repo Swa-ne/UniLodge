@@ -23,11 +23,11 @@ class _MessagesListViewState extends State<MessagesListView>
   final List<InboxModel> inbox = [];
   late ChatBloc _chatBloc;
   late TokenControllerImpl _tokenController;
-  late String currentUserId;
+  String? currentUserId;
+
   @override
   void initState() {
     super.initState();
-
     _chatBloc = BlocProvider.of<ChatBloc>(context);
     _chatBloc.add(GetInboxEvent());
     _tokenController = TokenControllerImpl();
@@ -35,27 +35,35 @@ class _MessagesListViewState extends State<MessagesListView>
   }
 
   Future<void> _initializeUserID() async {
-    currentUserId = await _tokenController.getUserID();
+    final userId = await _tokenController.getUserID();
     if (mounted) {
-      setState(() {});
+      setState(() {
+        currentUserId = userId;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (currentUserId == null) {
+      return Center(
+        child: Lottie.asset(
+          'assets/animation/home_loading.json',
+          width: 200,
+          height: 200,
+        ),
+      );
+    }
+
     return Scaffold(
       body: BlocBuilder<ChatBloc, ChatState>(
         builder: (context, state) {
           if (state is ChatLoading) {
             return Center(
-              child: SizedBox(
-                width: 360,
+              child: Lottie.asset(
+                'assets/animation/home_loading.json',
+                width: 200,
                 height: 200,
-                child: Lottie.asset(
-                  'assets/animation/home_loading.json',
-                  width: 200,
-                  height: 200,
-                ),
               ),
             );
           } else if (state is GetInboxSuccess) {
@@ -63,10 +71,6 @@ class _MessagesListViewState extends State<MessagesListView>
             inbox.addAll(state.inbox);
             return Container(
               margin: const EdgeInsets.all(4),
-              // decoration: BoxDecoration(
-              //   color: Colors.white,
-              //   borderRadius: BorderRadius.circular(10),
-              // ),
               child: Padding(
                 padding: const EdgeInsets.all(2),
                 child: ListView.builder(
@@ -117,9 +121,7 @@ class _MessagesListViewState extends State<MessagesListView>
                                 color: AppColors.lightBackground,
                               ),
                             ),
-                            const SizedBox(
-                                width:
-                                    10), // Add some spacing between the icon and text
+                            const SizedBox(width: 10), // Add spacing
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
