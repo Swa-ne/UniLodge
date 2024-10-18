@@ -5,6 +5,7 @@ import 'package:unilodge/bloc/chat/chat_bloc.dart';
 import 'package:unilodge/bloc/listing/listing_bloc.dart';
 import 'package:unilodge/bloc/my_profile/my_profile_bloc.dart';
 import 'package:unilodge/bloc/renter/renter_bloc.dart';
+import 'package:unilodge/bloc/verify_user/verify_user_bloc.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/core/configs/theme/app_theme.dart';
 import 'package:unilodge/data/repository/admin_repository/admin_listing_repository_impl.dart';
@@ -14,6 +15,7 @@ import 'package:unilodge/data/repository/user_repository_impl.dart';
 import 'package:unilodge/data/sources/auth/auth_repo.dart';
 import 'package:unilodge/bloc/authentication/auth_bloc.dart';
 import 'package:unilodge/data/sources/chat/chat_repo.dart';
+import 'package:unilodge/data/sources/verify_user/verify_user_repo.dart';
 import 'app_routes.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -59,7 +61,10 @@ class MainApp extends StatelessWidget {
           BlocProvider(
             create: (context) => AdminBloc(AdminListingRepositoryImpl()),
           ),
-           BlocProvider(
+          BlocProvider(
+            create: (context) => VerifyUserBloc(VerifyUserRepoImpl()),
+          ),
+          BlocProvider(
             create: (context) => BookingBloc(BookingRepositoryImpl()),
           ),
         ],
