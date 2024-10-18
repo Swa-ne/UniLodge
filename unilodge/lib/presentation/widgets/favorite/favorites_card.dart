@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:unilodge/bloc/renter/renter_bloc.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
+import 'package:unilodge/presentation/widgets/favorite/custom_confirm_dialog.dart';
 import 'package:unilodge/presentation/widgets/favorite/custom_text.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unilodge/presentation/widgets/home/price_text.dart';
@@ -22,10 +23,9 @@ class FavoriteCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        
         final result = await context.push('/listing-detail', extra: listing);
         if (result == true) {
-          onBack(); 
+          onBack();
         }
       },
       child: Card(
@@ -36,14 +36,13 @@ class FavoriteCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Image
-            Padding(  
+            Padding(
               padding: const EdgeInsets.all(8),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(5),
                 child: Opacity(
                   opacity: 0.9,
-                  child: listing.imageUrl != null &&
-                          listing.imageUrl!.isNotEmpty
+                  child: listing.imageUrl != null && listing.imageUrl!.isNotEmpty
                       ? Image.network(
                           listing.imageUrl![0],
                           width: 150,
@@ -89,8 +88,7 @@ class FavoriteCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 4),
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                       decoration: BoxDecoration(
                         color: const Color(0xffF8F8F8),
                         borderRadius: BorderRadius.circular(16),
@@ -104,9 +102,8 @@ class FavoriteCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     PriceText(
-                        text: listing.price != null
-                            ? 'ETH ${listing.price!}'
-                            : 'N/A'),
+                      text: listing.price != null ? 'ETH ${listing.price!}' : 'N/A',
+                    ),
                   ],
                 ),
               ),
@@ -114,28 +111,17 @@ class FavoriteCard extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.favorite, color: Color(0xffF04F43)),
               onPressed: () async {
-                final bool? confirmed = await showDialog(
+                final bool? confirmed = await showDialog<bool>(
                   context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text('Confirm Unsaved'),
-                    content: const Text(
-                        'Are you sure you want to unsave this dorm?'),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(false),
-                        child: const Text('No'),
-                      ),
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(true),
-                        child: const Text('Yes'),
-                      ),
-                    ],
+                  builder: (context) => CustomConfirmDialog(
+                    onConfirm: () {
+                      context.read<RenterBloc>().add(DeleteSavedDorm(listing.id!));
+                    },
                   ),
                 );
 
-                if (confirmed == true) {
-                  context.read<RenterBloc>().add(DeleteSavedDorm(listing.id!));
-                }
+                // if (confirmed == true) {
+                // }
               },
             ),
           ],
