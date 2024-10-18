@@ -30,6 +30,8 @@ class AllBookingsLoaded extends BookingState {
   List<Object> get props => [bookings];
 }
 
+class AllBookingsEmptyLoaded extends BookingState {}
+
 class BookingApproved extends BookingState {
   final String bookingId;
 

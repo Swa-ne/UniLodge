@@ -17,14 +17,17 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
         emit(BookingError('Failed to load booking: $e'));
       }
     });
-   
-   
+
     on<FetchBookingsForListingEvent>((event, emit) async {
       emit(BookingLoading());
       try {
         final bookings =
             await bookingRepository.getBookingsForListing(event.listingId);
-        emit(AllBookingsLoaded(bookings));
+        if (bookings.isNotEmpty) {
+          emit(AllBookingsLoaded(bookings)); // New state for all bookings
+        } else {
+          emit(AllBookingsEmptyLoaded());
+        }
       } catch (e) {
         emit(BookingError('Failed to load bookings for listing: $e'));
       }
@@ -35,7 +38,11 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
       emit(BookingLoading());
       try {
         final bookings = await bookingRepository.getAllBookings();
-        emit(AllBookingsLoaded(bookings)); // New state for all bookings
+        if (bookings.isNotEmpty) {
+          emit(AllBookingsLoaded(bookings)); // New state for all bookings
+        } else {
+          emit(AllBookingsEmptyLoaded());
+        }
       } catch (e) {
         emit(BookingError('Failed to load bookings: $e'));
       }
@@ -85,10 +92,12 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     on<BookDormEvent>((event, emit) async {
       emit(BookingLoading());
       try {
-        await bookingRepository.bookDorm(event.userId, event.dormId); // Call the method to book the dorm
-        emit(DormBookedSuccess("Dorm booked successfully!"));  // Emit success state
+        await bookingRepository.bookDorm(
+            event.userId, event.dormId); // Call the method to book the dorm
+        emit(DormBookedSuccess(
+            "Dorm booked successfully!")); // Emit success state
       } catch (e) {
-        emit(DormBookedError('Failed to book dorm: $e'));  // Emit error state
+        emit(DormBookedError('Failed to book dorm: $e')); // Emit error state
       }
     });
   }
