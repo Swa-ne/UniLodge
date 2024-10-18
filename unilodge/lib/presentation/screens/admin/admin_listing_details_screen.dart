@@ -7,6 +7,7 @@ import 'package:unilodge/bloc/admin_bloc/admin_listing/admin_listing_event.dart'
 import 'package:unilodge/bloc/admin_bloc/admin_listing/admin_listing_state.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
+import 'package:unilodge/presentation/widgets/admin/confirmation_dialog.dart';
 import 'package:unilodge/presentation/widgets/admin/status_text.dart';
 import 'package:unilodge/presentation/widgets/home/price_text.dart';
 import 'package:unilodge/presentation/widgets/home/text_row.dart';
@@ -35,8 +36,7 @@ class _AdminListingDetailScreenState extends State<AdminListingDetailScreen> {
                 const SnackBar(content: Text("Listing updated successfully")),
               );
             }
-            if (state is ListingLoading) {
-            }
+            if (state is ListingLoading) {}
             if (state is ListingError) {
               // Handle error state
               ScaffoldMessenger.of(context).showSnackBar(
@@ -316,9 +316,7 @@ class _AdminListingDetailScreenState extends State<AdminListingDetailScreen> {
                         Expanded(
                           child: TextButton(
                             onPressed: () {
-                              context
-                                  .read<AdminBloc>()
-                                  .add(DeclineListing(widget.listing.id!));
+                              _showConfirmationDialog(context, 'Decline');
                             },
                             style: TextButton.styleFrom(
                               backgroundColor: AppColors.redInactive,
@@ -338,15 +336,11 @@ class _AdminListingDetailScreenState extends State<AdminListingDetailScreen> {
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          width: 10,
-                        ),
+                        const SizedBox(width: 10),
                         Expanded(
                           child: TextButton(
                             onPressed: () {
-                              context
-                                  .read<AdminBloc>()
-                                  .add(ApproveListing(widget.listing.id!));
+                              _showConfirmationDialog(context, 'Approve');
                             },
                             style: TextButton.styleFrom(
                               backgroundColor: AppColors.greenActive,
@@ -373,6 +367,28 @@ class _AdminListingDetailScreenState extends State<AdminListingDetailScreen> {
               )
             : null,
       ),
+    );
+  }
+
+  void _showConfirmationDialog(BuildContext context, String action) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return ConfirmationDialog(
+          title: 'Confirm $action Listing',
+          content: 'Are you sure you want to $action this listing?',
+          onConfirm: () {
+            if (action == 'Approve') {
+              context.read<AdminBloc>().add(ApproveListing(widget.listing.id!));
+            } else if (action == 'Decline') {
+              context.read<AdminBloc>().add(DeclineListing(widget.listing.id!));
+            }
+          },
+          onCancel: () {
+            Navigator.of(context).pop();
+          },
+        );
+      },
     );
   }
 }
