@@ -2,10 +2,10 @@ import { Document, model, ObjectId, Schema } from "mongoose";
 
 export interface BookingSchemaInterface extends Document {
     _id: ObjectId;
-    user_id: ObjectId; 
+    user_id: ObjectId;
     propertyType: string;
     price: number;
-    status: string; 
+    status: string;
     createdAt?: Date;
     updatedAt?: Date;
 }
@@ -21,7 +21,7 @@ const BookingSchema = new Schema(
             type: Schema.Types.ObjectId,  // Reference to the listing
             ref: 'Listing',               // Assuming there is a 'Listing' model
             required: true,
-          },
+        },
         propertyType: {
             type: String,
             required: true,

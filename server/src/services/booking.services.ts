@@ -69,6 +69,34 @@ export const getBookingsForListing = async (listingId: string): Promise<CustomRe
   }
 };
 
+export const checkIfBooked = async (user_id: string, listing_id: string): Promise<CustomResponse> => {
+  try {
+    const THIRTY_DAYS_AGO = new Date(new Date().setDate(new Date().getDate() - 30));
+    const bookings = await Booking.find({
+      $or: [
+        {
+          user_id,
+          listing_id,
+          status: { $in: ['Pending', 'Accepted'] },
+        },
+        {
+          user_id,
+          listing_id,
+          createdAt: { $lt: THIRTY_DAYS_AGO },
+        }
+      ]
+    }).exec();
+    if (bookings.length > 0) {
+
+      return { message: "Booked", httpCode: 200 };
+    }
+    return { message: "Nope", httpCode: 200 };
+  } catch (error) {
+    console.error("Error fetching bookings for listing:", error);
+    return { error: "Internal Server Error", httpCode: 500 };
+  }
+};
+
 
 
 
