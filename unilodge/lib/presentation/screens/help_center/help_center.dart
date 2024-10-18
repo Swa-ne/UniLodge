@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:unilodge/common/widgets/custom_text.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/presentation/widgets/help_center/faq_tile.dart';
@@ -18,12 +17,7 @@ class HelpCenter extends StatelessWidget {
           color: AppColors.primary,
         ),
         centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () {
-            context.push('/home');
-          },
-        ),
+        
       ),
       body: const Padding(
         padding: EdgeInsets.all(16.0),

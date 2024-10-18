@@ -31,7 +31,6 @@ class _PostFacilityState extends State<PostFacility> {
     'Internet': false,
   };
 
-  // Convert the amenities and utilities maps to a list of selected items
   List<String> _getSelectedAmenities() {
     return rentalAmenities.entries
         .where((element) => element.value == true)
@@ -85,10 +84,18 @@ class _PostFacilityState extends State<PostFacility> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios, color: AppColors.textColor),
+            onPressed: () {
+              context.push("/listings");
+            },
+          )),
       body: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(10.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

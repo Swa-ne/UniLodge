@@ -196,7 +196,6 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Search TextField
                     TextField(
                       onChanged: _filterOptions,
                       decoration: InputDecoration(
@@ -243,7 +242,7 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
     required String hint,
     String? Function(String?)? validator,
     List<String>? options,
-     TextInputType keyboardType = TextInputType.text, // Add keyboardType parameter with a default
+    TextInputType keyboardType = TextInputType.text,
   }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
@@ -287,7 +286,7 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
               }
               return null;
             },
-         keyboardType: options == null ? keyboardType : TextInputType.none, // Use keyboardType parameter
+        keyboardType: options == null ? keyboardType : TextInputType.none,
             
       ),
     );
@@ -300,6 +299,14 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
         .toList();
 
     return Scaffold(
+      appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios, color: AppColors.textColor),
+            onPressed: () {
+              context.push("/listings");
+            },
+          )),
       body: Form(
         key: _formKey,
         autovalidateMode: _autovalidateMode,
@@ -307,12 +314,12 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
           children: [
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(10.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 20.0),
+                      padding: EdgeInsets.symmetric(vertical: 0.0),
                       child: Row(
                         children: [
                           Expanded(
@@ -342,7 +349,7 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
                               ],
                             ),
                           ),
-                          
+
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 17.0),
                             child: Icon(
@@ -393,8 +400,6 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
                       hint: "Enter house number",
                       validator: (value) => validateNumber(value ?? ''),
                       keyboardType: TextInputType.number, 
-                      
-                      
                     ),
                     _buildTextField(
                       controller: _streetController,
@@ -434,8 +439,7 @@ class _PostLocationState extends State<PostLocation> with InputValidationMixin {
                       style: OutlinedButton.styleFrom(
                         foregroundColor: Colors.black,
                         backgroundColor: Colors.transparent,
-                        side:
-                            const BorderSide(color: Colors.black, width: 1),
+                        side: const BorderSide(color: Colors.black, width: 1),
                         minimumSize: const Size(120, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),

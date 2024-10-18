@@ -40,14 +40,23 @@ class _PostReviewState extends State<PostReview> {
         }
       },
       child: Scaffold(
+        appBar: AppBar(
+            backgroundColor: Colors.white,
+            leading: IconButton(
+              icon:
+                  const Icon(Icons.arrow_back_ios, color: AppColors.textColor),
+              onPressed: () {
+                context.push("/listings");
+              },
+            )),
         body: Stack(
           children: [
             SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 4),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 40),
+                  // const SizedBox(height: 10),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10.0),
                     child: Column(

@@ -36,7 +36,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
   @override
   void initState() {
     super.initState();
-    //BlocProvider.of<RenterBloc>(context).add(FetchAllDorms());
+    BlocProvider.of<RenterBloc>(context).add(FetchAllDorms());
     BlocProvider.of<BookingBloc>(context)
         .add(CheckIfBookedEvent(widget.listing.id));
   }
@@ -236,7 +236,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: PriceText(
                         text: widget.listing.price != null
-                            ? '₱${widget.listing.price!}'
+                            ? 'ETH ${widget.listing.price!}'
                             : 'N/A'),
                   ),
                 ],
@@ -444,30 +444,8 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                       onPressed: isBooked
                           ? null
                           : () {
-                              final bookingData = {
-                                'listing_id': widget.listing.id,
-                                'propertyType':
-                                    widget.listing.selectedPropertyType ??
-                                        'N/A',
-                                'userName': widget.listing.id,
-                                'price': widget.listing.price ?? 0,
-                                'status': 'Pending',
-                              };
-                              context.push(
-                                '/history', // Update the route as needed
-                                extra: widget
-                                    .listing, // Pass the listing data if needed
-                              );
-                              BlocProvider.of<BookingBloc>(context)
-                                  .add(CreateBookingEvent(bookingData));
-
-                              // context.push('/booking-management', extra: bookingData);
-                              // Optionally show a SnackBar for confirmation
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content:
-                                        Text('Booking created successfully!')),
-                              );
+                              context.push('/crypto-payment',
+                                  extra: widget.listing);
                             },
                     ),
                   ),

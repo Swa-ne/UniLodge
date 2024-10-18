@@ -78,7 +78,7 @@ class BookedCard extends StatelessWidget {
                         children: [
                           Text(
                             listing.price != null
-                                ? '₱${listing.price!}'
+                                ? 'ETH ${listing.price!}'
                                 : 'N/A',
                             style: TextStyle(color: AppColors.textColor),
                           ),
