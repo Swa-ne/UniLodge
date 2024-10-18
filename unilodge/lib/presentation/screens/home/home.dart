@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/bloc/chat/chat_bloc.dart';
 import 'package:unilodge/bloc/renter/renter_bloc.dart';
+import 'package:unilodge/common/widgets/custom_text.dart';
 import 'package:unilodge/common/widgets/error_message.dart';
 import 'package:unilodge/common/widgets/no_listing_placeholder.dart';
 import 'package:unilodge/common/widgets/shimmer_loading.dart';
@@ -51,44 +52,74 @@ class _HomeState extends State<Home> {
             onRefresh: _refreshDorms,
             child: CustomScrollView(
               slivers: [
-                SliverAppBar(
+                const SliverAppBar(
                   backgroundColor: AppColors.lightBackground,
                   pinned: true,
                   floating: true,
-                  actions: [
-                    GestureDetector(
-                      onTap: () {
-                        showSearch(
-                          context: context,
-                          delegate: CustomSearchDelegate(),
-                        );
-                      },
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(vertical: 8),
-                        width: 300,
-                        padding: const EdgeInsets.all(8.0),
-                        decoration: BoxDecoration(
-                          color: Colors.grey.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                        child: const Row(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(right: 8.0),
-                              child: Icon(Icons.search),
+                  expandedHeight:
+                      70, 
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Stack(
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // GestureDetector(
+                              //   onTap: () {
+                              //     showSearch(
+                              //       context: context,
+                              //       delegate: CustomSearchDelegate(),
+                              //     );
+                              //   },
+                              //   child: Container(
+                              //     margin: const EdgeInsets.only(bottom: 8.0),
+                              //     width: double.infinity,
+                              //     padding: const EdgeInsets.all(8.0),
+                              //     decoration: BoxDecoration(
+                              //       color: Colors.grey.withOpacity(0.1),
+                              //       borderRadius: BorderRadius.circular(25),
+                              //     ),
+                              //     child: const Row(
+                              //       children: [
+                              //         Padding(
+                              //           padding: EdgeInsets.only(right: 8.0),
+                              //           child: Icon(Icons.search),
+                              //         ),
+                              //         Text("Search"),
+                              //       ],
+                              //     ),
+                              //   ),
+                              // ),
+                            ],
+                          ),
+                          Align(
+                            alignment: Alignment.topCenter,
+                            child: Padding(
+                              padding:
+                                  EdgeInsets.symmetric(vertical: 8.0),
+                              child: Text(
+                                'UniLodge',
+                                style: TextStyle(
+                                  fontFamily: AppTheme.logoFont,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.logoTextColor,
+                                ),
+                              ),
                             ),
-                            Text("Search"),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(width: 15),
-                  ],
+                  ),
                 ),
                 SliverList(
                   delegate: SliverChildListDelegate(
                     [
-                      const SizedBox(height: 10),
+                      // const SizedBox(height: 10),
                       Padding(
                         padding: const EdgeInsets.all(6.0),
                         child: SizedBox(
