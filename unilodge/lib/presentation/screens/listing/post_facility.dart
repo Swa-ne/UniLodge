@@ -95,11 +95,11 @@ class _PostFacilityState extends State<PostFacility> {
       body: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(8.0), // Adjusted padding
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 35),
+                // Reduced height to move content higher
                 const Text(
                   'Facilities in your Dorm',
                   style: TextStyle(
@@ -108,8 +108,7 @@ class _PostFacilityState extends State<PostFacility> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 4),
-                const SizedBox(height: 10),
+                const SizedBox(height: 10), // Adjust spacing between sections
                 _buildCheckboxSection('Rental Amenities', rentalAmenities),
                 _buildCheckboxSection('Utility Included in rent', utilitiesIncluded),
               ],
