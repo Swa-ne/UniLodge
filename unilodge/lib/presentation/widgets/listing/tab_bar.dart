@@ -6,14 +6,13 @@ import 'package:unilodge/bloc/booking_bloc/booking_state.dart';
 import 'package:unilodge/presentation/widgets/listing/booking_card.dart';
 
 class BookingManagementWidget extends StatelessWidget {
-  final String listingId; 
-  
-  const BookingManagementWidget({super.key, required this.listingId}); 
+  final String listingId;
+
+  const BookingManagementWidget({super.key, required this.listingId});
 
   @override
   Widget build(BuildContext context) {
-  
-    context.read<BookingBloc>().add(FetchBookingsForListingEvent(listingId)); 
+    context.read<BookingBloc>().add(FetchBookingsForListingEvent(listingId));
 
     return DefaultTabController(
       length: 3,
@@ -74,7 +73,8 @@ class BookingManagementWidget extends StatelessWidget {
                       // Approved Bookings Tab
                       _buildBookingList(
                         bookings: approvedBookings,
-                        onApprove: null, // Approved bookings cannot be approved again
+                        onApprove:
+                            null, // Approved bookings cannot be approved again
                         onReject: (bookingId) {
                           context
                               .read<BookingBloc>()
@@ -92,10 +92,14 @@ class BookingManagementWidget extends StatelessWidget {
                               .add(ApproveBookingEvent(bookingId));
                           print('Approved rejected booking for $bookingId');
                         },
-                        onReject: null, // Rejected bookings cannot be rejected again
+                        onReject:
+                            null, // Rejected bookings cannot be rejected again
                       ),
                     ],
                   );
+                } else if (state is AllBookingsEmptyLoaded) {
+                  // Display error message if an error occurs
+                  return const Center(child: Text("No bookings available"));
                 } else if (state is BookingError) {
                   // Display error message if an error occurs
                   return Center(child: Text(state.message));
@@ -127,7 +131,7 @@ class BookingManagementWidget extends StatelessWidget {
         final booking = bookings[index];
         return BookingCard(
           propertyType: booking.propertyType,
-          userName: booking.userId.toString(),
+          userName: booking.userId.username.toString(),
           price: booking.price.toString(),
           status: booking.status,
           onApprove: onApprove != null

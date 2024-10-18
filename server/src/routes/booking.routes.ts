@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authenticateToken } from "../middlewares/token.authentication";
-import { getBookingController, approveBookingController, rejectBookingController, createBookingController, getBookingsForListingController  } from "../controllers/booking.controller";
+import { getBookingController, approveBookingController, rejectBookingController, createBookingController, getBookingsForListingController } from "../controllers/booking.controller";
 //getAllBookingsController
 const router = Router();
 
@@ -12,6 +12,6 @@ router.put("/reject-booking/:bookingId", rejectBookingController);
 router.post('/create-booking', authenticateToken, createBookingController);
 // router.get('/all-bookings', getAllBookingsController);
 
-router.get('/listings/:listingId/bookings', authenticateToken, getBookingsForListingController);
+router.get('/listings/bookings/:listingId', authenticateToken, getBookingsForListingController);
 
 export default router;

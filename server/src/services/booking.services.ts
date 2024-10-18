@@ -1,82 +1,79 @@
-import { Booking, BookingSchemaInterface } from "../models/booking/booking.model"; 
+import { Booking, BookingSchemaInterface } from "../models/booking/booking.model";
 import { CustomResponse } from "../utils/input.validators";
 
-export const getBookingById = async (bookingId: string)  => {
-    try {
-        const booking = await Booking.findById(bookingId).populate("user_id").exec();
-        if (!booking) {
-            return { error: 'Booking not found', httpCode: 404 };
-        }
-        return { message: booking, httpCode: 200 };
-    } catch (error) {
-        return { error: "Internal Server Error", httpCode: 500 };
+export const getBookingById = async (bookingId: string) => {
+  try {
+    const booking = await Booking.findById(bookingId).populate("user_id").exec();
+    if (!booking) {
+      return { error: 'Booking not found', httpCode: 404 };
     }
+    return { message: booking, httpCode: 200 };
+  } catch (error) {
+    return { error: "Internal Server Error", httpCode: 500 };
+  }
 };
 
 
 export const approveBooking = async (bookingId: string): Promise<CustomResponse> => {
-    try {
-        const booking = await Booking.findById(bookingId).exec();
-        if (!booking) {
-            return { error: 'Booking not found', httpCode: 404 };
-        }
-
-        booking.status = 'Accepted';
-        await booking.save();
-
-        return { message: 'Booking accepted', httpCode: 200 };
-    } catch (error) {
-        return { error: "Internal Server Error", httpCode: 500 };
+  try {
+    const booking = await Booking.findById(bookingId).exec();
+    if (!booking) {
+      return { error: 'Booking not found', httpCode: 404 };
     }
+
+    booking.status = 'Accepted';
+    await booking.save();
+
+    return { message: 'Booking accepted', httpCode: 200 };
+  } catch (error) {
+    return { error: "Internal Server Error", httpCode: 500 };
+  }
 };
 
 export const rejectBooking = async (bookingId: string): Promise<CustomResponse> => {
-    try {
-        const booking = await Booking.findById(bookingId).exec();
-        if (!booking) {
-            return { error: 'Booking not found', httpCode: 404 };
-        }
-
-        booking.status = 'Rejected';
-        await booking.save();
-
-        return { message: 'Booking rejected', httpCode: 200 };
-    } catch (error) {
-        return { error: "Internal Server Error", httpCode: 500 };
+  try {
+    const booking = await Booking.findById(bookingId).exec();
+    if (!booking) {
+      return { error: 'Booking not found', httpCode: 404 };
     }
+
+    booking.status = 'Rejected';
+    await booking.save();
+
+    return { message: 'Booking rejected', httpCode: 200 };
+  } catch (error) {
+    return { error: "Internal Server Error", httpCode: 500 };
+  }
 };
 
 export const createBooking = async (bookingData: BookingSchemaInterface) => {
-    try {
-      const newBooking = new Booking(bookingData);
-      await newBooking.save();
-  
-      return { message: newBooking, httpCode: 201 }; 
-    } catch (error) {
-      console.error("Error creating booking:", error);
-      return { error: "Internal Server Error", httpCode: 500 };
-    }
-    
-  };
+  try {
+    const newBooking = new Booking(bookingData);
+    await newBooking.save();
 
-  export const getBookingsForListing = async (listingId: string): Promise<CustomResponse> => {
-    try {
-      const bookings = await Booking.find({ listing_id: listingId }).populate("user_id").exec();
-      if (!bookings || bookings.length === 0) {
-        return { error: 'No bookings found for this listing', httpCode: 404 };
-      }
-      return { message: bookings, httpCode: 200 };  // Now this works, because message can be an array
-    } catch (error) {
-      console.error("Error fetching bookings for listing:", error);
-      return { error: "Internal Server Error", httpCode: 500 };
-    }
-  };
-  
-  
-  
-  
+    return { message: newBooking, httpCode: 201 };
+  } catch (error) {
+    console.error("Error creating booking:", error);
+    return { error: "Internal Server Error", httpCode: 500 };
+  }
 
-  //   export const getAllBookings = async (): Promise<CustomResponse> => {
+};
+
+export const getBookingsForListing = async (listingId: string): Promise<CustomResponse> => {
+  try {
+    const bookings = await Booking.find({ listing_id: listingId }).populate("user_id").exec();
+    return { message: bookings, httpCode: 200 };  // Now this works, because message can be an array
+  } catch (error) {
+    console.error("Error fetching bookings for listing:", error);
+    return { error: "Internal Server Error", httpCode: 500 };
+  }
+};
+
+
+
+
+
+//   export const getAllBookings = async (): Promise<CustomResponse> => {
 //     try {
 //         const bookings = await Booking.find().populate("user_id").exec();
 //         if (!bookings || bookings.length === 0) {

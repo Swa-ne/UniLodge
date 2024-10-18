@@ -1,6 +1,8 @@
+import 'package:unilodge/data/models/user.dart';
+
 class Booking {
   final String id;
-  final String userId;
+  final UserModel userId;
   final String propertyType;
   final double price;
   final String status;
@@ -20,7 +22,7 @@ class Booking {
   factory Booking.fromJson(Map<String, dynamic> json) {
     return Booking(
       id: json['_id'],
-      userId: json['user_id'],
+      userId: UserModel.fromJson(json['user_id']),
       propertyType: json['propertyType'],
       price: json['price'].toDouble(),
       status: json['status'],
