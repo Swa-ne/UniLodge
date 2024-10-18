@@ -36,10 +36,10 @@ class _YourListingDetailsState extends State<YourListingDetails> {
     _isAvailableBool = widget.listing.isAvailable ?? true;
 
     // Initialize bookings data
-   
-  // Fetch bookings for this listing by triggering an event in the BookingBloc
-  final bookingBloc = BlocProvider.of<BookingBloc>(context, listen: false);
-  bookingBloc.add(FetchBookingsForListingEvent(widget.listing.id!));
+
+    // Fetch bookings for this listing by triggering an event in the BookingBloc
+    final bookingBloc = BlocProvider.of<BookingBloc>(context, listen: false);
+    bookingBloc.add(FetchBookingsForListingEvent(widget.listing.id!));
   }
 
   @override
@@ -154,40 +154,66 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                 ),
               ),
               const SizedBox(height: 16),
-              Row(
+              Stack(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20.0, horizontal: 16.0),
-                    child: Text(widget.listing.property_name ?? '',
-                        style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xff434343))),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        color: _isAvailableBool
-                            ? AppColors.greenActive
-                            : AppColors.redInactive,
-                        borderRadius: BorderRadius.circular(5)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(6.0),
-                      child: Text(
-                        _isAvailableBool ? "Available" : "Unavailable",
-                        style:
-                            const TextStyle(color: AppColors.lightBackground),
-                      ),
+                    padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Property Name and ETH Price Row
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                widget.listing.property_name ?? '',
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xff434343),
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            const SizedBox(
+                                width: 8), // Add some space before the price
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  right: 8.0), // Move ETH price to the left
+                              child: PriceText(
+                                text: widget.listing.price != null
+                                    ? 'ETH ${widget.listing.price!}'
+                                    : 'N/A',
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                  const Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: PriceText(
-                        text: widget.listing.price != null
-                            ? 'ETH ${widget.listing.price!}'
-                            : 'N/A'),
-                  ),
+
+                  // Status on Top of Property Name
+                  // Positioned(
+                  //   top: 0, // Position the status on top of property name
+                  //   left: 16, // Align it with the left padding of the text
+                  //   child: Container(
+                  //     decoration: BoxDecoration(
+                  //       color: _isAvailableBool
+                  //           ? AppColors.greenActive
+                  //           : AppColors.redInactive,
+                  //       borderRadius: BorderRadius.circular(5),
+                  //     ),
+                  //     padding: const EdgeInsets.symmetric(
+                  //         horizontal: 8, vertical: 4),
+                  //     child: Text(
+                  //       _isAvailableBool ? "Available" : "Unavailable",
+                  //       style: const TextStyle(
+                  //         color: AppColors.lightBackground,
+                  //         fontSize: 12, // Smaller font for the status
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
               Padding(
@@ -275,15 +301,15 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                       color: AppColors.formTextColor, fontSize: 15),
                 ),
               ),
-              const SizedBox(height: 35),
+              const SizedBox(height: 45),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 15.0),
                 child: Divider(
                     height: 20, color: Color.fromARGB(255, 223, 223, 223)),
               ),
-              const SizedBox(height: 27),
-              // Pass bookingsData to the BookingManagementWidget
-             BookingManagementWidget(listingId: widget.listing.id!),
+              const SizedBox(height: 45),
+             
+              BookingManagementWidget(listingId: widget.listing.id!),
               const SizedBox(height: 30),
             ],
           ),
