@@ -88,7 +88,7 @@ export const verifyUser = async (user_id: string) => {
 
         if (result.data === "Success") return { message: result.data, httpCode: 200 }
 
-        return { message: result.data, httpCode: 200 }
+        return { error: result.data, httpCode: 400 }
     } catch (error) {
         return { error: "Internal Server Error", httpCode: 500 }
     }
