@@ -17,6 +17,9 @@ class AppImages {
   static const String errorIcon = '${basePath}error$pngformat';
   static const String chatbg = '${basePath}chat$pngformat';
   static const String noFavs = '${basePath}no_favs$pngformat';
+  static const String wallet = '${basePath}wallet$pngformat';
+  static const String ethereum = '${basePath}ethereum$pngformat';
+  static const String successTransaction = '${basePath}successTransaction$pngformat';
 
   static const String dormListing = '${basePath}listingIcons/dorm$pngformat';
   static const String apartmentListing =

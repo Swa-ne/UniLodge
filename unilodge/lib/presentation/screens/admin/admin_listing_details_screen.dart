@@ -7,6 +7,7 @@ import 'package:unilodge/bloc/admin_bloc/admin_listing/admin_listing_event.dart'
 import 'package:unilodge/bloc/admin_bloc/admin_listing/admin_listing_state.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
+import 'package:unilodge/presentation/widgets/admin/confirmation_dialog.dart';
 import 'package:unilodge/presentation/widgets/admin/status_text.dart';
 import 'package:unilodge/presentation/widgets/home/price_text.dart';
 import 'package:unilodge/presentation/widgets/home/text_row.dart';
@@ -27,25 +28,24 @@ class _AdminListingDetailScreenState extends State<AdminListingDetailScreen> {
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
-      BlocListener<AdminBloc, AdminListingState>(
-        listener: (context, state) {
-          if (state is ApproveListingSuccess || state is DeclineListingSuccess) {
-            BlocProvider.of<AdminBloc>(context).add(FetchListings());
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Listing updated successfully")),
-            );
-          }
-          if (state is ListingLoading) {
-          }
-          if (state is ListingError) {
-            // Handle error state
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
-          }
-        },
-      ),
-    ],
+        BlocListener<AdminBloc, AdminListingState>(
+          listener: (context, state) {
+            if (state is ApproveListingSuccess || state is DeclineListingSuccess) {
+              BlocProvider.of<AdminBloc>(context).add(FetchListings());
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Listing updated successfully")),
+              );
+            }
+            if (state is ListingLoading) {}
+            if (state is ListingError) {
+              // Handle error state
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.message)),
+              );
+            }
+          },
+        ),
+      ],
       child: Scaffold(
         body: SingleChildScrollView(
           child: Column(
@@ -65,7 +65,7 @@ class _AdminListingDetailScreenState extends State<AdminListingDetailScreen> {
                       },
                       child: const Icon(Icons.cancel,
                           color: Color.fromARGB(169, 60, 60, 67))),
-                  Spacer(),
+                  const Spacer(),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: StatusText(
@@ -106,7 +106,7 @@ class _AdminListingDetailScreenState extends State<AdminListingDetailScreen> {
                                         if (loadingProgress == null) {
                                           return child;
                                         } else {
-                                          return Container(
+                                          return SizedBox(
                                             width: 360,
                                             height: 200,
                                             child: Center(
@@ -152,7 +152,7 @@ class _AdminListingDetailScreenState extends State<AdminListingDetailScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: PriceText(
                         text: widget.listing.price != null
-                            ? '₱${widget.listing.price!}'
+                            ? 'ETH ${widget.listing.price!}'
                             : 'N/A'),
                   ),
                 ],
@@ -293,84 +293,102 @@ class _AdminListingDetailScreenState extends State<AdminListingDetailScreen> {
             ],
           ),
         ),
-        bottomNavigationBar: ClipRRect(
-          child: Container(
-            decoration: BoxDecoration(
-              color: AppColors.lightBackground,
-              boxShadow: [
-                BoxShadow(
-                  color: const Color.fromARGB(255, 59, 59, 59).withOpacity(1),
-                  spreadRadius: 10,
-                  blurRadius: 30,
-                  offset: const Offset(0, 2),
+        bottomNavigationBar: widget.listing.status == 'Pending'
+            ? ClipRRect(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.lightBackground,
+                    boxShadow: [
+                      BoxShadow(
+                        color: const Color.fromARGB(255, 59, 59, 59).withOpacity(1),
+                        spreadRadius: 10,
+                        blurRadius: 30,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  height: 65,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: TextButton(
+                            onPressed: () {
+                              _showConfirmationDialog(context, 'Decline');
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor: AppColors.redInactive,
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 12.0, horizontal: 24.0),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            child: const Text(
+                              "Decline",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: TextButton(
+                            onPressed: () {
+                              _showConfirmationDialog(context, 'Approve');
+                            },
+                            style: TextButton.styleFrom(
+                              backgroundColor: AppColors.greenActive,
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 12.0, horizontal: 24.0),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            child: const Text(
+                              "Approve",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ],
-            ),
-            height: 65,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: TextButton(
-                      onPressed: () {
-                        context
-                            .read<AdminBloc>()
-                            .add(DeclineListing(widget.listing.id!));
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: AppColors.redInactive,
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 12.0, horizontal: 24.0),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      child: const Text(
-                        "Decline",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: TextButton(
-                      onPressed: () {
-                        context
-                            .read<AdminBloc>()
-                            .add(ApproveListing(widget.listing.id!));
-                      },
-                      style: TextButton.styleFrom(
-                        backgroundColor: AppColors.greenActive,
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 12.0, horizontal: 24.0),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      child: const Text(
-                        "Approve",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
+              )
+            : null,
       ),
+    );
+  }
+
+  void _showConfirmationDialog(BuildContext context, String action) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return ConfirmationDialog(
+          title: 'Confirm $action Listing',
+          content: 'Are you sure you want to $action this listing?',
+          onConfirm: () {
+            if (action == 'Approve') {
+              context.read<AdminBloc>().add(ApproveListing(widget.listing.id!));
+            } else if (action == 'Decline') {
+              context.read<AdminBloc>().add(DeclineListing(widget.listing.id!));
+            }
+          },
+          onCancel: () {
+            Navigator.of(context).pop();
+          },
+        );
+      },
     );
   }
 }

@@ -3,6 +3,7 @@ import { Document, model, ObjectId, Schema } from "mongoose";
 export interface BookingSchemaInterface extends Document {
     _id: ObjectId;
     user_id: ObjectId; 
+    listing_id: ObjectId;
     propertyType: string;
     price: number;
     status: string; 
@@ -18,10 +19,10 @@ const BookingSchema = new Schema(
             required: true,
         },
         listing_id: {
-            type: Schema.Types.ObjectId,  // Reference to the listing
-            ref: 'Listing',               // Assuming there is a 'Listing' model
-            required: true,
-          },
+            type: Schema.Types.ObjectId,
+            ref: 'Dorm',
+            required: true
+        },
         propertyType: {
             type: String,
             required: true,
