@@ -441,6 +441,9 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                           'status':
                               'Pending',
                         };
+                        context.push('/history', // Update the route as needed
+                          extra: widget.listing, // Pass the listing data if needed
+                          );
                         BlocProvider.of<BookingBloc>(context)
                             .add(CreateBookingEvent(bookingData));
 

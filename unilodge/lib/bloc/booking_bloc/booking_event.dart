@@ -42,3 +42,14 @@ class CreateBookingEvent extends BookingEvent {
   @override
   List<Object> get props => [bookingData];
 }
+
+// For booking a dorm
+class BookDormEvent extends BookingEvent {
+  final String userId;
+  final String dormId;
+
+  const BookDormEvent(this.userId, this.dormId);
+
+  @override
+  List<Object> get props => [userId, dormId];
+}

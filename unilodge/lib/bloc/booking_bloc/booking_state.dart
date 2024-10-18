@@ -35,3 +35,23 @@ class BookingError extends BookingState {
   @override
   List<Object> get props => [message];
 }
+
+// For successful dorm booking
+class DormBookedSuccess extends BookingState {
+  final String successMessage;
+
+  const DormBookedSuccess(this.successMessage);
+
+  @override
+  List<Object> get props => [successMessage];
+}
+
+// For failed dorm booking
+class DormBookedError extends BookingState {
+  final String errorMessage;
+
+  const DormBookedError(this.errorMessage);
+
+  @override
+  List<Object> get props => [errorMessage];
+}

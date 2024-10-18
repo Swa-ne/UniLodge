@@ -95,4 +95,17 @@ class BookingRepositoryImpl implements BookingRepository {
       throw Exception('Failed to load pending bookings');
     }
   }
+
+  @override
+  Future<void> bookDorm(String userId, String dormId) async {
+    // Prepare the booking data
+    final bookingData = {
+      'userId': userId,
+      'dormId': dormId,
+      // pa-add na lang nung iba
+    };
+
+    // Call createBooking to send the booking data to the backend
+    await createBooking(bookingData);
+  }
 }

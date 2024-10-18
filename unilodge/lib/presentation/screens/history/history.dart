@@ -45,7 +45,7 @@ class _HistoryState extends State<History> {
       case 'rejected':
         return Colors.red;
       default:
-        return Colors.grey;
+        return Colors.black;
     }
   }
 
@@ -96,7 +96,7 @@ class _HistoryState extends State<History> {
               }).toList(),
             ),
           ),
-          const SizedBox(height: 10), // Space between filter and booking details
+          const SizedBox(height: 8), // Space between filter and booking details
           Expanded(
             child: ListView.builder(
               itemCount: filteredListings.length,
@@ -154,6 +154,12 @@ class _HistoryState extends State<History> {
                         DateTime.parse(listing.createdAt!).toLocal().toShortTimeString(),
                         style: const TextStyle(fontSize: 14),
                       ),
+                      const SizedBox(width: 12),
+                      // Action buttons based on status
+                      if (listing.status == 'accepted') 
+                        _buildActionButton('To Pay', Colors.blue),
+                      if (listing.status == 'rejected')
+                        _buildActionButton('Book Again', Colors.grey),
                     ],
                   ),
                 );
@@ -171,6 +177,23 @@ class _HistoryState extends State<History> {
           child: const Text('Cancel'),
         ),
       ),
+    );
+  }
+
+  // Action Button Widget
+  Widget _buildActionButton(String text, Color color) {
+    return ElevatedButton(
+      onPressed: () {
+        // Handle button action
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+      ),
+      child: Text(text),
     );
   }
 }

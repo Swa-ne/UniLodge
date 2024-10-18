@@ -51,5 +51,16 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
         emit(BookingError('Failed to create booking: $e'));
       }
     });
+
+    // For booking a dorm
+    on<BookDormEvent>((event, emit) async {
+      emit(BookingLoading());
+      try {
+        await bookingRepository.bookDorm(event.userId, event.dormId); // Call the method to book the dorm
+        emit(DormBookedSuccess("Dorm booked successfully!"));  // Emit success state
+      } catch (e) {
+        emit(DormBookedError('Failed to book dorm: $e'));  // Emit error state
+      }
+    });
   }
 }
