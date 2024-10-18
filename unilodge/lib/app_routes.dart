@@ -212,7 +212,8 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/crypto-payment-transaction',
       builder: (context, state) {
-        return SuccessTransaction(); // TODO:
+        final extras = state.extra as Map<dynamic, dynamic>;
+        return SuccessTransaction(transactionResult: extras['transactionResult'], listing: extras['listing']); 
       },
     ),
     GoRoute(

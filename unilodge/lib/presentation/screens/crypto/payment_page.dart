@@ -188,12 +188,12 @@ class _PaymentPageState extends State<PaymentPage> {
     }
   }
 
-  Future<void> sendTransaction(String receiver, String amount) async {
+  Future<String> sendTransaction(String receiver, String amount) async {
     if (receiver.isEmpty || amount.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Invalid receiver address or amount!')),
       );
-      return;
+      return "Invalid receiver address or amount.";
     }
 
     setState(() {
@@ -258,21 +258,33 @@ class _PaymentPageState extends State<PaymentPage> {
         ],
       );
 
+      // TODO: put in backend
+
+      debugPrint("RESULT OF TRANSACTION IN METAMASKKKK : " + result);
+
       if (result != null) {
+        debugPrint("RESULT OF TRANSACTION IN METAMASKKKK : " + result);
+
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Transaction successful!')),
         );
-        context.go("/crypto-payment-transaction");
+        debugPrint("RESULT OF TRANSACTION IN METAMASKKKK : " + result);
+        context.go("/crypto-payment-transaction",
+            extra: {'transactionResult': result, 'listing': widget.listing});
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Transaction failed.')),
         );
+        debugPrint("RESULT OF TRANSACTION IN METAMASKKKK NULL : " + result);
       }
+
+      return result;
     } catch (e) {
       debugPrint('Transaction error: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Transaction error: $e')),
       );
+      return "Transaction error: $e";
     } finally {
       setState(() {
         isLoading = false;

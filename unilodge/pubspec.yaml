@@ -82,6 +82,7 @@ flutter:
     - assets/images/no_favs.png
     - assets/images/wallet.png
     - assets/images/ethereum.png
+    - assets/images/successTransaction.png
     - .env
 
   fonts:
