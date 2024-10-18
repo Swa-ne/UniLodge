@@ -5,6 +5,7 @@ import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:lottie/lottie.dart';
 import 'package:unilodge/bloc/booking_bloc/booking_bloc.dart';
 import 'package:unilodge/bloc/booking_bloc/booking_event.dart';
+import 'package:unilodge/bloc/booking_bloc/booking_state.dart';
 import 'package:unilodge/bloc/chat/chat_bloc.dart';
 import 'package:unilodge/bloc/chat/chat_event.dart';
 import 'package:unilodge/bloc/chat/chat_state.dart';
@@ -30,11 +31,14 @@ class ListingDetailScreen extends StatefulWidget {
 
 class _ListingDetailScreenState extends State<ListingDetailScreen> {
   bool isSaved = false;
+  bool isBooked = true;
 
   @override
   void initState() {
     super.initState();
     //BlocProvider.of<RenterBloc>(context).add(FetchAllDorms());
+    BlocProvider.of<BookingBloc>(context)
+        .add(CheckIfBookedEvent(widget.listing.id));
   }
 
   @override
@@ -84,6 +88,13 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
             }
           },
         ),
+        BlocListener<BookingBloc, BookingState>(listener: (context, state) {
+          if (state is CheckIfBookedSuccess) {
+            setState(() {
+              isBooked = state.isBooked;
+            });
+          }
+        })
       ],
       child: Scaffold(
         body: SingleChildScrollView(
@@ -430,28 +441,34 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                     flex: 7,
                     child: CustomButton(
                       text: "Book now & pay",
-                      onPressed: () {
-                        final bookingData = {
-                          'listing_id': widget.listing.id,  
-                          'propertyType':
-                              widget.listing.selectedPropertyType ?? 'N/A',
-                          'userName': widget.listing.id,
-                          'price': widget.listing.price ??0, 
-                          'status': 'Pending',
-                        };
-                        context.push('/history', // Update the route as needed
-                          extra: widget.listing, // Pass the listing data if needed
-                          );
-                        BlocProvider.of<BookingBloc>(context)
-                            .add(CreateBookingEvent(bookingData));
+                      onPressed: isBooked
+                          ? null
+                          : () {
+                              final bookingData = {
+                                'listing_id': widget.listing.id,
+                                'propertyType':
+                                    widget.listing.selectedPropertyType ??
+                                        'N/A',
+                                'userName': widget.listing.id,
+                                'price': widget.listing.price ?? 0,
+                                'status': 'Pending',
+                              };
+                              context.push(
+                                '/history', // Update the route as needed
+                                extra: widget
+                                    .listing, // Pass the listing data if needed
+                              );
+                              BlocProvider.of<BookingBloc>(context)
+                                  .add(CreateBookingEvent(bookingData));
 
-                        // context.push('/booking-management', extra: bookingData);
-                        // Optionally show a SnackBar for confirmation
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text('Booking created successfully!')),
-                        );
-                      },
+                              // context.push('/booking-management', extra: bookingData);
+                              // Optionally show a SnackBar for confirmation
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content:
+                                        Text('Booking created successfully!')),
+                              );
+                            },
                     ),
                   ),
                   const SizedBox(width: 15),
