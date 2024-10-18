@@ -37,11 +37,10 @@ dependencies:
     reown_appkit: ^1.0.1
     logger: ^2.4.0
     camera: ^0.11.0+2
-    google_ml_kit: ^0.19.0
-    google_mlkit_face_detection: ^0.12.0
-    google_mlkit_commons: ^0.9.0
     path_provider: ^2.1.4
     path: ^1.9.0
+    google_mlkit_face_detection: ^0.12.0
+    google_mlkit_text_recognition: ^0.14.0
 
 dev_dependencies:
     flutter_test:
@@ -81,11 +80,20 @@ flutter:
         - assets/images/listingIcons/soloroom.png
         - assets/animation/animation.json
         - assets/animation/home_loading.json
+        - assets/animation/face_id_ring.json
         - assets/constant/address.json
         - assets/images/icons/email.png
         - assets/images/icons/security.png
         - assets/images/icons/mobile-password-forgot.png
         - assets/images/no_favs.png
+        - assets/images/verify_user/solo.webp
+        - assets/images/verify_user/no_cap.webp
+        - assets/images/verify_user/proper_attire.webp
+        - assets/images/verify_user/clear.webp
+        - assets/images/verify_user/readable.webp
+        - assets/images/verify_user/real_id.webp
+        - assets/images/verify_user/match.webp
+        - assets/images/verify_user/correct.webp
         - .env
 
     fonts:
