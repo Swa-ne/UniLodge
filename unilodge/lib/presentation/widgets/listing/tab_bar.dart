@@ -108,7 +108,9 @@ class BookingManagementWidget extends StatelessWidget {
                     return const Center(child: Text("No bookings available"));
                   } else if (state is BookingError) {
                     // Display error message if an error occurs
-                    return Center(child: Text(state.message));
+                    return const Center(child: Text("No bookings available"));
+
+                    // return Center(child: Text(state.message));
                   } else {
                     // Default state when no bookings are available
                     return const Center(child: Text('No bookings available'));
