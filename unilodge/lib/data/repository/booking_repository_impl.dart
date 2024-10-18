@@ -48,24 +48,30 @@ class BookingRepositoryImpl implements BookingRepository {
   }
 
   @override
-Future<List<Booking>> getBookingsForListing(String listingId) async {
-  final access_token = await _tokenController.getAccessToken();
-  final response = await http.get(
-    Uri.parse('$_apiUrl/listings/$listingId/bookings'), // Ensure this URL is correct
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': access_token,
-    },
-  );
-
-  if (response.statusCode == 200) {
-    List<dynamic> data = jsonDecode(response.body);
-    return data.map((bookingData) => Booking.fromJson(bookingData)).toList();
-  } else {
-    throw Exception('Failed to load bookings for listing: Status code ${response.statusCode}');
+  Future<List<Booking>> getBookingsForListing(String listingId) async {
+    final access_token = await _tokenController.getAccessToken();
+    final refresh_token = await _tokenController.getRefreshToken();
+    print("url is $_apiUrl/listings/$listingId/bookings");
+    final response = await http.get(
+      Uri.parse(
+          '$_apiUrl/listings/bookings/$listingId'), // Ensure this URL is correct
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': access_token,
+        'Cookie': 'refresh_token=$refresh_token',
+      },
+    );
+    print("${response.statusCode} and the body is ${response.body}");
+    if (response.statusCode == 200) {
+      List<dynamic> data = jsonDecode(response.body)["message"];
+      print("here is the data $data");
+      return data.map((bookingData) => Booking.fromJson(bookingData)).toList();
+    } else {
+      throw Exception(
+          'Failed to load bookings for listing: Status code ${response.statusCode}');
+    }
   }
-}
 
   // Approve booking
   @override
@@ -187,7 +193,8 @@ Future<List<Booking>> getBookingsForListing(String listingId) async {
       print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {
-        final List<dynamic> bookingsJson = json.decode(response.body)['message'];
+        final List<dynamic> bookingsJson =
+            json.decode(response.body)['message'];
         return bookingsJson.map((json) => Booking.fromJson(json)).toList();
       } else {
         throw Exception(
@@ -222,7 +229,8 @@ Future<List<Booking>> getBookingsForListing(String listingId) async {
       print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {
-        final List<dynamic> bookingsJson = json.decode(response.body)['message'];
+        final List<dynamic> bookingsJson =
+            json.decode(response.body)['message'];
         return bookingsJson.map((json) => Booking.fromJson(json)).toList();
       } else {
         throw Exception(
