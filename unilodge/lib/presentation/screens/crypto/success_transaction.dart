@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:unilodge/core/configs/assets/app_images.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
@@ -18,6 +19,8 @@ class SuccessTransaction extends StatefulWidget {
 class _SuccessTransactionState extends State<SuccessTransaction> {
   @override
   Widget build(BuildContext context) {
+    String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -43,11 +46,14 @@ class _SuccessTransactionState extends State<SuccessTransaction> {
                     width: 100,
                   ),
                   SizedBox(
-                    height: 10,
+                    height: 20,
                   ),
-                  Text("Sent to " + widget.listing.owner_id!.full_name),
+                  Text(
+                    "Sent to " + widget.listing.owner_id!.full_name,
+                    style: TextStyle(fontSize: 15, color: Color(0xff434343)),
+                  ),
                   SizedBox(
-                    height: 10,
+                    height: 20,
                   ),
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 130),
@@ -72,21 +78,21 @@ class _SuccessTransactionState extends State<SuccessTransaction> {
               ),
             ),
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 15, vertical: 30),
-              padding: EdgeInsets.all(8),
+              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 15),
               decoration: BoxDecoration(
                 color: AppColors.lightBackground,
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFF636464).withOpacity(0.15),
-                    offset: const Offset(0, 2),
-                    blurRadius: 8,
+                    color: const Color(0xFF636464).withOpacity(0.1),
+                    offset: const Offset(0, 1),
+                    blurRadius: 10,
                   ),
                 ],
               ),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
@@ -101,7 +107,39 @@ class _SuccessTransactionState extends State<SuccessTransaction> {
                         style: const TextStyle(
                             fontSize: 15, color: AppColors.formTextColor)),
                   ),
+                  SizedBox(height: 10,),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text("Date:",
+                        style: const TextStyle(
+                            fontSize: 15, color: Color(0xff434343))),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('$currentDate',
+                        style: const TextStyle(
+                            fontSize: 15, color: AppColors.formTextColor)),
+                  ),
                 ],
+              ),
+            ),
+            Spacer(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+              child: ElevatedButton(
+                onPressed: () {
+                  context.go('/home'); // Navigate back to home
+                },
+                child: const Text('Okay'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: AppColors.lightBackground,
+                  minimumSize: Size(double.infinity, 50), // Full width
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
               ),
             ),
           ],
