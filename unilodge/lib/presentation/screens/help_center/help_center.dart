@@ -21,7 +21,7 @@ class HelpCenter extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
-            context.go("/user-profile");
+            context.push('/home');
           },
         ),
       ),

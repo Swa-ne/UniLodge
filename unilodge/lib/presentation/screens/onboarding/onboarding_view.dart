@@ -67,28 +67,42 @@ class _OnboardingViewState extends State<OnboardingView> {
             itemCount: controller.items.length,
             controller: pageController,
             itemBuilder: (context, index) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  index == 0
-                      ? SizedBox(
-                          width: 250, 
-                          height: 250, 
-                          child: Image.asset(controller.items[index].image),
-                        )
-                      : Image.asset(controller.items[index].image),
-                  const SizedBox(height: 15),
-                  Text(
-                    controller.items[index].title,
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 15),
-                  Text(controller.items[index].descriptions,
+              return Center( 
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center, 
+                  crossAxisAlignment: CrossAxisAlignment.center, 
+                  children: [
+                    // Image widget
+                    Center(
+                      child: SizedBox(
+                        width: 250,
+                        height: 250,
+                        child: Image.asset(
+                          controller.items[index].image,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20), 
+                    Text(
+                      controller.items[index].title,
                       style: const TextStyle(
-                          color: AppColors.logoTextColor, fontSize: 17),
-                      textAlign: TextAlign.center),
-                ],
+                          fontSize: 22, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center, 
+                    ),
+                    const SizedBox(height: 10),
+                    // Description text
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0), 
+                      child: Text(
+                        controller.items[index].descriptions,
+                        style: const TextStyle(
+                            color: AppColors.logoTextColor, fontSize: 17),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                ),
               );
             }),
       ),

@@ -25,9 +25,9 @@ class _DashboardState extends State<Dashboard> {
       ),
       body: Column(
         children: [
-          SizedBox(height: 20,),
+          const SizedBox(height: 20,),
           CustomContainer(
-              icon: Icon(
+              icon: const Icon(
                 Icons.people,
                 size: 80,
                 color: AppColors.primary,
@@ -39,7 +39,7 @@ class _DashboardState extends State<Dashboard> {
               context.push("/admin-dashboard-listings");
             },
             child: CustomContainer(
-                icon: Icon(
+                icon: const Icon(
                   Icons.home_work,
                   size: 80,
                   color: AppColors.primary,

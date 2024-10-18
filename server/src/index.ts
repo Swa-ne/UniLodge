@@ -16,7 +16,7 @@ import listingRoutes from "./routes/listing.routes";
 import renterRoutes from "./routes/renter.routes";
 import adminRoutes from "./routes/admin.routes";
 import verifyRoutes from "./routes/verify.routes";
-
+import bookingRoutes from "./routes/booking.routes";
 
 const port = 3000;
 
@@ -54,7 +54,7 @@ app.use("/listing", listingRoutes)
 app.use("/renter", renterRoutes)
 app.use("/verify", verifyRoutes)
 app.use("/admin", adminRoutes);
-
+app.use("/booking", bookingRoutes);
 
 
 app.get('/', (req: Request, res: Response) => {
