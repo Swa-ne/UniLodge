@@ -1,120 +1,19 @@
-// import 'package:flutter/material.dart';
-// import 'package:unilodge/presentation/widgets/listing/booking_card.dart';
-
-// class BookingManagementWidget extends StatelessWidget {
-//    final Map<String, dynamic> bookingData;  // Accept booking data
-
-//   const BookingManagementWidget({super.key, required this.bookingData});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return DefaultTabController(
-//       length: 3,
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           const TabBar(
-//             labelColor: Colors.black,
-//             unselectedLabelColor: Color.fromARGB(255, 129, 129, 129),
-//             indicatorColor: Color.fromARGB(255, 0, 0, 0),
-//             tabs: [
-//               Tab(
-//                 icon: Icon(Icons.pending),
-//                 text: 'Pending',
-//               ),
-//               Tab(
-//                 icon: Icon(Icons.check_circle),
-//                 text: 'Approved',
-//               ),
-//               Tab(
-//                 icon: Icon(Icons.cancel),
-//                 text: 'Rejected',
-//               ),
-//             ],
-//           ),
-//           SizedBox(
-//             height: 500,
-//             child: TabBarView(
-//               children: [
-//                 ListView.builder(
-//                   itemCount: 1, 
-//                   itemBuilder: (context, index) {
-//                     return BookingCard(
-//                       propertyType: 'Dorm',
-//                       userName: 'User ${index + 1}',
-//                       price: '\₱100',
-//                       status: 'Pending',  
-//                       onApprove: () {
-//                         print('Approved booking for User ${index + 1}');
-//                       },
-//                       onReject: () {
-//                         print('Rejected booking for User ${index + 1}');
-//                       },
-//                     );
-//                   },
-//                 ),
-               
-//                 ListView.builder(
-//                   itemCount: 2, 
-//                   itemBuilder: (context, index) {
-//                     return BookingCard(
-//                       propertyType: 'Dorm',
-//                       userName: 'Approved User ${index + 1}',
-//                       price: '\₱150',
-//                       status: 'Paid', 
-//                       onApprove: null, 
-//                       onReject: () {
-//                         print('Rejected booking for Approved User ${index + 1}');
-//                       },
-//                     );
-//                   },
-//                 ),
-              
-//                 ListView.builder(
-//                   itemCount: 1,
-//                   itemBuilder: (context, index) {
-//                     return BookingCard(
-//                       propertyType: 'Dorm',
-//                       userName: 'Rejected User ${index + 1}',
-//                       price: '\₱80',
-//                       status: 'Rejected', 
-//                       onApprove: () {
-//                         print('Approved booking for Rejected User ${index + 1}');
-//                       },
-//                       onReject: null, 
-//                     );
-//                   },
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:unilodge/bloc/booking_bloc/booking_bloc.dart';
+import 'package:unilodge/bloc/booking_bloc/booking_event.dart';
+import 'package:unilodge/bloc/booking_bloc/booking_state.dart';
 import 'package:unilodge/presentation/widgets/listing/booking_card.dart';
 
 class BookingManagementWidget extends StatelessWidget {
-  final List<Map<String, dynamic>> bookingsData; // Accept a list of booking data
-
-  const BookingManagementWidget({super.key, required this.bookingsData});
+  final String listingId; 
+  
+  const BookingManagementWidget({super.key, required this.listingId}); 
 
   @override
   Widget build(BuildContext context) {
-    // Separate bookings based on their status
-    final pendingBookings = bookingsData
-        .where((booking) => booking['status'] == 'Pending')
-        .toList();
-
-    final approvedBookings = bookingsData
-        .where((booking) => booking['status'] == 'Approved')
-        .toList();
-
-    final rejectedBookings = bookingsData
-        .where((booking) => booking['status'] == 'Rejected')
-        .toList();
+  
+    context.read<BookingBloc>().add(FetchBookingsForListingEvent(listingId)); 
 
     return DefaultTabController(
       length: 3,
@@ -126,88 +25,119 @@ class BookingManagementWidget extends StatelessWidget {
             unselectedLabelColor: Color.fromARGB(255, 129, 129, 129),
             indicatorColor: Color.fromARGB(255, 0, 0, 0),
             tabs: [
-              Tab(
-                icon: Icon(Icons.pending),
-                text: 'Pending',
-              ),
-              Tab(
-                icon: Icon(Icons.check_circle),
-                text: 'Approved',
-              ),
-              Tab(
-                icon: Icon(Icons.cancel),
-                text: 'Rejected',
-              ),
+              Tab(icon: Icon(Icons.pending), text: 'Pending'),
+              Tab(icon: Icon(Icons.check_circle), text: 'Approved'),
+              Tab(icon: Icon(Icons.cancel), text: 'Rejected'),
             ],
           ),
           SizedBox(
             height: 500,
-            child: TabBarView(
-              children: [
-                // Pending Bookings Tab
-                ListView.builder(
-                  itemCount: pendingBookings.length,
-                  itemBuilder: (context, index) {
-                    final booking = pendingBookings[index];
-                    return BookingCard(
-                      propertyType: booking['propertyType'],
-                      userName: booking['user_id'].toString(),
-                      price: booking['price'],
-                      status: booking['status'],
-                      onApprove: () {
-                        // Handle approval logic here
-                        print('Approved booking for ${booking['userName']}');
-                      },
-                      onReject: () {
-                        // Handle rejection logic here
-                        print('Rejected booking for ${booking['userName']}');
-                      },
-                    );
-                  },
-                ),
+            child: BlocBuilder<BookingBloc, BookingState>(
+              builder: (context, state) {
+                if (state is BookingLoading) {
+                  // Display loading indicator when bookings are being fetched
+                  return const Center(child: CircularProgressIndicator());
+                } else if (state is AllBookingsLoaded) {
+                  // Separate bookings into their respective categories
+                  final pendingBookings = state.bookings
+                      .where((booking) => booking.status == 'Pending')
+                      .toList();
 
-                // Approved Bookings Tab
-                ListView.builder(
-                  itemCount: approvedBookings.length,
-                  itemBuilder: (context, index) {
-                    final booking = approvedBookings[index];
-                    return BookingCard(
-                      propertyType: booking['propertyType'],
-                      userName: booking['user_id'].toString(),
-                      price: booking['price'],
-                      status: booking['status'],
-                      onApprove: null, // Approved bookings can't be approved again
-                      onReject: () {
-                        // Handle rejection if you allow reverting approval
-                        print('Rejected approved booking for ${booking['userName']}');
-                      },
-                    );
-                  },
-                ),
+                  final approvedBookings = state.bookings
+                      .where((booking) => booking.status == 'Approved')
+                      .toList();
 
-                // Rejected Bookings Tab
-                ListView.builder(
-                  itemCount: rejectedBookings.length,
-                  itemBuilder: (context, index) {
-                    final booking = rejectedBookings[index];
-                    return BookingCard(
-                      propertyType: booking['propertyType'],
-                      userName: booking['user_id'].toString(),
-                      price: booking['price'],
-                      status: booking['status'],
-                      onApprove: () {
-                        // Handle approval if you allow reverting rejection
-                        print('Approved rejected booking for ${booking['userName']}');
-                      },
-                      onReject: null, // Rejected bookings can't be rejected again
-                    );
-                  },
-                ),
-              ],
+                  final rejectedBookings = state.bookings
+                      .where((booking) => booking.status == 'Rejected')
+                      .toList();
+
+                  // Display the tab views
+                  return TabBarView(
+                    children: [
+                      // Pending Bookings Tab
+                      _buildBookingList(
+                        bookings: pendingBookings,
+                        onApprove: (bookingId) {
+                          context
+                              .read<BookingBloc>()
+                              .add(ApproveBookingEvent(bookingId));
+                          print('Approved booking for $bookingId');
+                        },
+                        onReject: (bookingId) {
+                          context
+                              .read<BookingBloc>()
+                              .add(RejectBookingEvent(bookingId));
+                          print('Rejected booking for $bookingId');
+                        },
+                      ),
+
+                      // Approved Bookings Tab
+                      _buildBookingList(
+                        bookings: approvedBookings,
+                        onApprove: null, // Approved bookings cannot be approved again
+                        onReject: (bookingId) {
+                          context
+                              .read<BookingBloc>()
+                              .add(RejectBookingEvent(bookingId));
+                          print('Rejected approved booking for $bookingId');
+                        },
+                      ),
+
+                      // Rejected Bookings Tab
+                      _buildBookingList(
+                        bookings: rejectedBookings,
+                        onApprove: (bookingId) {
+                          context
+                              .read<BookingBloc>()
+                              .add(ApproveBookingEvent(bookingId));
+                          print('Approved rejected booking for $bookingId');
+                        },
+                        onReject: null, // Rejected bookings cannot be rejected again
+                      ),
+                    ],
+                  );
+                } else if (state is BookingError) {
+                  // Display error message if an error occurs
+                  return Center(child: Text(state.message));
+                } else {
+                  // Default state when no bookings are available
+                  return const Center(child: Text('No bookings available'));
+                }
+              },
             ),
           ),
         ],
       ),
+    );
+  }
+
+  // Helper method to build the booking list
+  Widget _buildBookingList({
+    required List<dynamic> bookings,
+    required Function(String)? onApprove,
+    required Function(String)? onReject,
+  }) {
+    if (bookings.isEmpty) {
+      return const Center(child: Text('No bookings in this category'));
+    }
+
+    return ListView.builder(
+      itemCount: bookings.length,
+      itemBuilder: (context, index) {
+        final booking = bookings[index];
+        return BookingCard(
+          propertyType: booking.propertyType,
+          userName: booking.userId.toString(),
+          price: booking.price.toString(),
+          status: booking.status,
+          onApprove: onApprove != null
+              ? () => onApprove(booking.id)
+              : null, // Approve button is only enabled when applicable
+          onReject: onReject != null
+              ? () => onReject(booking.id)
+              : null, // Reject button is only enabled when applicable
+        );
+      },
     );
   }
 }

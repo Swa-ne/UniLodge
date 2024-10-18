@@ -6,6 +6,7 @@ abstract class BookingEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+class FetchAllBookingsEvent extends BookingEvent {} 
 
 class FetchBookingByIdEvent extends BookingEvent {
   final String bookingId;
@@ -52,4 +53,11 @@ class BookDormEvent extends BookingEvent {
 
   @override
   List<Object> get props => [userId, dormId];
+}
+class FetchBookingsForListingEvent extends BookingEvent {
+  final String listingId;
+
+  FetchBookingsForListingEvent(this.listingId);
+   @override
+  List<Object> get props => [listingId];
 }

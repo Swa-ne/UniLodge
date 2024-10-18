@@ -6,7 +6,7 @@ class BookingCard extends StatelessWidget {
   final String price;
   final VoidCallback? onApprove;
   final VoidCallback? onReject;
-  final String status; // Add a status field like 'Paid' or 'Pending'
+  final String status; // Added status field to display 'Paid', 'Pending', etc.
 
   const BookingCard({
     super.key,
@@ -28,7 +28,7 @@ class BookingCard extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
-          color: const Color.fromARGB(255, 255, 255, 255),
+          color: Colors.white,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -45,29 +45,29 @@ class BookingCard extends StatelessWidget {
                 Text('User: $userName'),
                 const SizedBox(height: 8),
                 Text('Price: $price'),
-
                 const SizedBox(height: 16),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    if (onReject != null)
-                     ElevatedButton(
+                    if (onApprove != null)
+                      ElevatedButton(
                         onPressed: onApprove,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color.fromARGB(255, 117, 206, 163),
                           foregroundColor: Colors.white,
                         ),
-                        child: const Text('Approved'),
+                        child: const Text('Approve'),
                       ),
                     const SizedBox(width: 8),
-                    if (onApprove != null)
+                    if (onReject != null)
                       ElevatedButton(
                         onPressed: onReject,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color.fromARGB(255, 244, 120, 120),
                           foregroundColor: Colors.white,
                         ),
-                        child: const Text('Rejected'),
+                        child: const Text('Reject'),
                       ),
                   ],
                 ),
@@ -75,6 +75,8 @@ class BookingCard extends StatelessWidget {
             ),
           ),
         ),
+
+        // Displaying status badge (Paid, Pending, etc.)
         if (status.isNotEmpty)
           Positioned(
             top: 15,
@@ -82,9 +84,7 @@ class BookingCard extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
               decoration: BoxDecoration(
-                color: status == 'Paid' 
-                    ? Colors.green 
-                    : Colors.orange, 
+                color: _getStatusColor(status),
                 borderRadius: BorderRadius.circular(20.0),
               ),
               child: Text(
@@ -98,5 +98,21 @@ class BookingCard extends StatelessWidget {
           ),
       ],
     );
+  }
+
+  // Method to handle various statuses and assign colors
+  Color _getStatusColor(String status) {
+    switch (status) {
+      case 'Paid':
+        return Colors.green;
+      case 'Rejected':
+        return Colors.red;
+      case 'Pending':
+        return Colors.orange;
+      case 'Approved':
+        return Colors.blue;
+      default:
+        return Colors.grey; // Default case for unknown statuses
+    }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/bloc/admin_bloc/my_profile/my_profile_bloc.dart';
@@ -212,7 +213,7 @@ final GoRouter appRouter = GoRouter(
         return const BookedListings();
       },
     ),
-   GoRoute(
+ GoRoute(
   path: '/booking-management',
   builder: (context, state) {
     // Fetching the current user profile from ProfileBloc or AuthBloc
@@ -223,18 +224,28 @@ final GoRouter appRouter = GoRouter(
       username = profileState.username;  // Fetch the actual username from profile
     }
 
-    final bookingData = state.extra as Map<String, dynamic>;
+    // Check if state.extra is null or doesn't contain 'listingId'
+    final extraData = state.extra as Map<String, dynamic>?;  // Safely cast extra to Map
+    if (extraData == null || extraData['listingId'] == null) {
+      return const Scaffold(
+        body: Center(
+          child: Text('Invalid listing or booking data'),
+        ),
+      );
+    }
 
-    // Modify bookingData to include the real username
-    bookingData['userName'] = username;
+    // Safely accessing the listingId and other fields
+    final listingId = extraData['listingId'] as String;
 
-    // Wrap the single bookingData in a list
-    final List<Map<String, dynamic>> bookingsData = [bookingData];
+    // Include the real username in the booking data
+    extraData['userName'] = username;
 
-    // Pass the bookingsData list to BookingManagementWidget
-    return BookingManagementWidget(bookingsData: bookingsData);
+    // Pass listingId to BookingManagementWidget
+    return BookingManagementWidget(listingId: listingId);
   },
 ),
+
+
 
 
     GoRoute(

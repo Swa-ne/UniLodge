@@ -432,14 +432,12 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                       text: "Book now & pay",
                       onPressed: () {
                         final bookingData = {
+                          'listing_id': widget.listing.id,  
                           'propertyType':
                               widget.listing.selectedPropertyType ?? 'N/A',
-                          'userName':
-                              widget.listing.id,
-                          'price':
-                              '₱${widget.listing.price ?? 0}',
-                          'status':
-                              'Pending',
+                          'userName': widget.listing.id,
+                          'price': widget.listing.price ??0, 
+                          'status': 'Pending',
                         };
                         context.push('/history', // Update the route as needed
                           extra: widget.listing, // Pass the listing data if needed

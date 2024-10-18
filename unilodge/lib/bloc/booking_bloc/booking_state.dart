@@ -21,9 +21,32 @@ class BookingLoaded extends BookingState {
   List<Object> get props => [booking];
 }
 
-class BookingApproved extends BookingState {}
+class AllBookingsLoaded extends BookingState {
+  final List<Booking> bookings;
 
-class BookingRejected extends BookingState {}
+  const AllBookingsLoaded(this.bookings);
+
+  @override
+  List<Object> get props => [bookings];
+}
+
+class BookingApproved extends BookingState {
+  final String bookingId;
+
+  const BookingApproved(this.bookingId);
+
+  @override
+  List<Object> get props => [bookingId];
+}
+
+class BookingRejected extends BookingState {
+  final String bookingId;
+
+  const BookingRejected(this.bookingId);
+
+  @override
+  List<Object> get props => [bookingId];
+}
 
 class BookingCreated extends BookingState {}
 
