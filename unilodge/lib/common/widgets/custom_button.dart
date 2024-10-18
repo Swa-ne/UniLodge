@@ -3,7 +3,7 @@ import 'package:unilodge/core/configs/theme/app_colors.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final Color backgroundColor;
   final double fontSize;
   final double borderRadius;
@@ -14,7 +14,7 @@ class CustomButton extends StatelessWidget {
     super.key,
     required this.text,
     required this.onPressed,
-    this.backgroundColor = AppColors.primary, 
+    this.backgroundColor = AppColors.primary,
     this.fontSize = 18,
     this.borderRadius = 10,
     this.paddingVertical = 12,
@@ -30,10 +30,9 @@ class CustomButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(borderRadius),
         ),
         minimumSize: Size(double.infinity, height),
-       
       ),
       onPressed: onPressed,
-      child: Center( 
+      child: Center(
         child: Text(
           text,
           style: TextStyle(
