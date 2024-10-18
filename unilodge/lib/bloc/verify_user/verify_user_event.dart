@@ -1,10 +1,28 @@
-// import 'package:equatable/equatable.dart';
+import 'dart:io';
 
-// abstract class VerifyUserEvent extends Equatable {
-//   const VerifyUserEvent();
+import 'package:equatable/equatable.dart';
 
-//   @override
-//   List<Object> get props => [];
-// }
+abstract class VerificationrEvent extends Equatable {
+  const VerificationrEvent();
 
-// class CheckFaceEvent extends VerifyUserEvent {}
+  @override
+  List<Object> get props => [];
+}
+
+class CheckFaceEvent extends VerificationrEvent {
+  final File image;
+
+  const CheckFaceEvent(this.image);
+  @override
+  List<Object> get props => [image];
+}
+
+class CheckIdEvent extends VerificationrEvent {
+  final File image;
+
+  const CheckIdEvent(this.image);
+  @override
+  List<Object> get props => [image];
+}
+
+class VerifyUserEvent extends VerificationrEvent {}
