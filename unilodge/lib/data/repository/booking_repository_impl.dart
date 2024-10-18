@@ -22,7 +22,7 @@ class BookingRepositoryImpl implements BookingRepository {
 
     try {
       final response = await http.get(
-        Uri.parse('$_apiUrl/$bookingId'),
+        Uri.parse('$_apiUrl/get-booking/$bookingId'),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -83,7 +83,7 @@ class BookingRepositoryImpl implements BookingRepository {
 
     try {
       final response = await http.put(
-        Uri.parse('$_apiUrl/$bookingId/approve'),
+        Uri.parse('$_apiUrl/approve-booking/$bookingId'),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -115,7 +115,7 @@ class BookingRepositoryImpl implements BookingRepository {
 
     try {
       final response = await http.put(
-        Uri.parse('$_apiUrl/$bookingId/reject'),
+        Uri.parse('$_apiUrl/reject-booking/$bookingId'),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',

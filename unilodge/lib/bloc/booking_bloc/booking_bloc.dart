@@ -53,10 +53,6 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
       try {
         await bookingRepository.approveBooking(event.bookingId);
         emit(BookingApproved(event.bookingId)); // Emit updated bookingId state
-
-        // Fetch updated booking after approval
-        final booking = await bookingRepository.getBookingById(event.bookingId);
-        emit(BookingLoaded(booking)); // Emit updated booking state
       } catch (e) {
         emit(BookingError('Failed to approve booking: $e'));
       }
@@ -66,11 +62,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     on<RejectBookingEvent>((event, emit) async {
       try {
         await bookingRepository.rejectBooking(event.bookingId);
-        emit(BookingRejected(event.bookingId)); // Emit updated bookingId state
-
-        // Fetch updated booking after rejection
-        final booking = await bookingRepository.getBookingById(event.bookingId);
-        emit(BookingLoaded(booking)); // Emit updated booking state
+        emit(BookingApproved(event.bookingId)); // Emit updated bookingId state
       } catch (e) {
         emit(BookingError('Failed to reject booking: $e'));
       }
