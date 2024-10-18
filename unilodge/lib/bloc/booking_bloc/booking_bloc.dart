@@ -7,7 +7,6 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
   final BookingRepository bookingRepository;
 
   BookingBloc(this.bookingRepository) : super(BookingInitial()) {
-    
     // Fetch booking by ID
     on<FetchBookingByIdEvent>((event, emit) async {
       emit(BookingLoading());
@@ -18,13 +17,39 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
         emit(BookingError('Failed to load booking: $e'));
       }
     });
+   
+   
+    on<FetchBookingsForListingEvent>((event, emit) async {
+      emit(BookingLoading());
+      try {
+        final bookings =
+            await bookingRepository.getBookingsForListing(event.listingId);
+        emit(AllBookingsLoaded(bookings));
+      } catch (e) {
+        emit(BookingError('Failed to load bookings for listing: $e'));
+      }
+    });
+
+    // Fetch all bookings
+    on<FetchAllBookingsEvent>((event, emit) async {
+      emit(BookingLoading());
+      try {
+        final bookings = await bookingRepository.getAllBookings();
+        emit(AllBookingsLoaded(bookings)); // New state for all bookings
+      } catch (e) {
+        emit(BookingError('Failed to load bookings: $e'));
+      }
+    });
 
     // Approve booking
     on<ApproveBookingEvent>((event, emit) async {
-      emit(BookingLoading());
       try {
         await bookingRepository.approveBooking(event.bookingId);
-        emit(BookingApproved());  // Emit BookingApproved state after successful approval
+        emit(BookingApproved(event.bookingId)); // Emit updated bookingId state
+
+        // Fetch updated booking after approval
+        final booking = await bookingRepository.getBookingById(event.bookingId);
+        emit(BookingLoaded(booking)); // Emit updated booking state
       } catch (e) {
         emit(BookingError('Failed to approve booking: $e'));
       }
@@ -32,10 +57,13 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
 
     // Reject booking
     on<RejectBookingEvent>((event, emit) async {
-      emit(BookingLoading());
       try {
         await bookingRepository.rejectBooking(event.bookingId);
-        emit(BookingRejected());  // Emit BookingRejected state after successful rejection
+        emit(BookingRejected(event.bookingId)); // Emit updated bookingId state
+
+        // Fetch updated booking after rejection
+        final booking = await bookingRepository.getBookingById(event.bookingId);
+        emit(BookingLoaded(booking)); // Emit updated booking state
       } catch (e) {
         emit(BookingError('Failed to reject booking: $e'));
       }
@@ -45,8 +73,9 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     on<CreateBookingEvent>((event, emit) async {
       emit(BookingLoading());
       try {
-        await bookingRepository.createBooking(event.bookingData); // Call repository to create a new booking
-        emit(BookingCreated());  // Emit BookingCreated state after booking is created successfully
+        await bookingRepository.createBooking(event.bookingData);
+        emit(BookingCreated());
+        // Optionally refetch all bookings if needed
       } catch (e) {
         emit(BookingError('Failed to create booking: $e'));
       }

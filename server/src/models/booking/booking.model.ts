@@ -17,6 +17,11 @@ const BookingSchema = new Schema(
             ref: 'User',
             required: true,
         },
+        listing_id: {
+            type: Schema.Types.ObjectId,  // Reference to the listing
+            ref: 'Listing',               // Assuming there is a 'Listing' model
+            required: true,
+          },
         propertyType: {
             type: String,
             required: true,

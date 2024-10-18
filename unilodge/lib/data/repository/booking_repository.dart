@@ -6,4 +6,6 @@ abstract class BookingRepository {
   Future<void> rejectBooking(String bookingId);
   Future<void> createBooking(Map<String, dynamic> bookingData); 
   Future<List<Booking>> getPendingBookings();  
+  Future<List<Booking>> getAllBookings(); 
+  Future<List<Booking>> getBookingsForListing(String listingId); 
 }
