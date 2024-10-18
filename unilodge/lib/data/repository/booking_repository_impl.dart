@@ -254,4 +254,33 @@ class BookingRepositoryImpl implements BookingRepository {
     // Call createBooking to send the booking data to the backend
     await createBooking(bookingData);
   }
+
+  @override
+  Future<bool> checkIfBooked(String dormId) async {
+    final access_token = await _tokenController.getAccessToken();
+    final refresh_token = await _tokenController.getRefreshToken();
+
+    print("Fetching all bookings $dormId");
+
+    try {
+      final response = await http.get(
+        Uri.parse('$_apiUrl/check-if-booked/$dormId'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': access_token,
+          'Cookie': 'refresh_token=$refresh_token',
+        },
+      );
+      print(response.body);
+      if (response.statusCode == 200) {
+        return json.decode(response.body)['message'] == "Booked";
+      } else {
+        throw Exception('Internet Connection Error');
+      }
+    } catch (e) {
+      print('Error fetching all bookings: $e');
+      throw Exception('Error fetching all bookings: $e');
+    }
+  }
 }
