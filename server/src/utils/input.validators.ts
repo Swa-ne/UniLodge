@@ -4,7 +4,7 @@ import { checkEmailAvailability, checkUsernameAvailability } from "../services/a
 
 export interface CustomResponse {
     user_id?: ObjectId,
-    message?: string,
+    message?: string | any[];
     error?: string,
     access_token?: string,
     refresh_token?: string,

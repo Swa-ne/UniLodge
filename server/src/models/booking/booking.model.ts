@@ -2,16 +2,16 @@ import { Document, model, ObjectId, Schema } from "mongoose";
 
 export interface BookingSchemaInterface extends Document {
     _id: ObjectId;
-    user_id: ObjectId; 
+    user_id: ObjectId;
     listing_id: ObjectId;
     propertyType: string;
     price: number;
-    status: string; 
+    status: string;
     createdAt?: Date;
     updatedAt?: Date;
 }
 
-const BookingSchema = new Schema<BookingSchemaInterface>(
+const BookingSchema = new Schema(
     {
         user_id: {
             type: Schema.Types.ObjectId,

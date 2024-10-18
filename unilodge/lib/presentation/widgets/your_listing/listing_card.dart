@@ -21,7 +21,7 @@ class ListingCard extends StatelessWidget {
           context.push('/your-listing-detail', extra: listing);
         },
         child: Container(
-          height: 150,
+          height: 160,
           decoration: const BoxDecoration(
             color: Color.fromARGB(255, 255, 255, 255),
             borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -33,101 +33,86 @@ class ListingCard extends StatelessWidget {
               ),
             ],
           ),
-          child: Row(
+          child: Stack(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(5),
-                  child: Opacity(
-                    opacity: 0.9,
-                    child: Image.network(
-                      listing.imageUrl?[0] ?? '',
-                      width: 150,
-                      height: 90,
-                      fit: BoxFit.cover,
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(5),
+                      child: Opacity(
+                        opacity: 0.9,
+                        child: Image.network(
+                          listing.imageUrl?[0] ?? '',
+                          width: 150,
+                          height: 90,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 20.0, right: 15, bottom: 8, left: 3),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        listing.property_name ?? '',
-                        style: const TextStyle(
-                          color: AppColors.textColor,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        listing.adddress,
-                        style: TextStyle(color: AppColors.textColor),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                      ),
-                      SizedBox(height: 10,),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          top: 27.0, right: 15, bottom: 10, left: 3),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          PriceText(
-                              text: listing.price != null
-                                  ? 'ETH ${listing.price!}'
-                                  : 'N/A'),
-                          Spacer(),
-                          Container(
-                            margin: EdgeInsets.only(top: 10),
-                           
-                            decoration: BoxDecoration(
-                              color: listing.isAvailable!
-                                  ? AppColors.greenActive
-                                  : AppColors.redInactive,
-                              borderRadius: BorderRadius.circular(5),
+                          Text(
+                            listing.property_name ?? '',
+                            style: const TextStyle(
+                              color: AppColors.textColor,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16,
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(6.0),
-                              child: Text(
-                                listing.isAvailable!
-                                    ? "Available"
-                                    : "Unavailable",
-                                style: const TextStyle(
-                                  color: AppColors.lightBackground,
-                                ),
-                              ),
-                            ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
                           ),
+                          const SizedBox(height: 10),
+                          Text(
+                            listing.adddress,
+                            style: TextStyle(color: AppColors.textColor),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              PriceText(
+                                  text: listing.price != null
+                                      ? 'ETH ${listing.price!}'
+                                      : 'N/A'),
+                              const Spacer(),
+                            ],
+                          ),
+                          const Spacer(),
                         ],
                       ),
-                      const Spacer(),
-                      // Align(
-                      //   alignment: Alignment.bottomRight,
-                      //   child: Container(
-                      //     decoration: BoxDecoration(
-                      //       color: listing.isAvailable!
-                      //           ? AppColors.greenActive
-                      //           : AppColors.redInactive,
-                      //       borderRadius: BorderRadius.circular(5),
-                      //     ),
-                      //     child: Padding(
-                      //       padding: const EdgeInsets.all(6.0),
-                      //       child: Text(
-                      //         listing.isAvailable! ? "Available" : "Unavailable",
-                      //         style: const TextStyle(
-                      //           color: AppColors.lightBackground,
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
-                    ],
+                    ),
+                  ),
+                ],
+              ),
+              Positioned(
+                top: 8,
+                right: 8,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 4.0, horizontal: 8.0),
+                  decoration: BoxDecoration(
+                    color: listing.isAvailable!
+                        ? AppColors.greenActive
+                        : AppColors.redInactive,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Text(
+                    listing.isAvailable! ? "Available" : "Unavailable",
+                    style: const TextStyle(
+                      color: AppColors.lightBackground,
+                      fontSize: 12, // Make the text smaller
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),

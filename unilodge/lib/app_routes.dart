@@ -1,4 +1,8 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:unilodge/bloc/admin_bloc/my_profile/my_profile_bloc.dart';
+import 'package:unilodge/bloc/admin_bloc/my_profile/my_profile_state.dart';
 import 'package:unilodge/data/models/inbox.dart';
 import 'package:unilodge/presentation/screens/admin/admin_listing_details_screen.dart';
 import 'package:unilodge/presentation/screens/admin/dashboard.dart';
@@ -36,6 +40,7 @@ import 'package:unilodge/presentation/screens/onboarding/onboarding_view.dart';
 import 'package:unilodge/presentation/screens/splashscreen/spash_screen.dart';
 
 import 'package:unilodge/data/models/listing.dart';
+import 'package:unilodge/presentation/widgets/listing/tab_bar.dart';
 
 final GoRouter appRouter = GoRouter(
   routes: [
@@ -216,6 +221,41 @@ final GoRouter appRouter = GoRouter(
         return SuccessTransaction(transactionResult: extras['transactionResult'], listing: extras['listing']); 
       },
     ),
+ GoRoute(
+  path: '/booking-management',
+  builder: (context, state) {
+    // Fetching the current user profile from ProfileBloc or AuthBloc
+    final profileState = BlocProvider.of<ProfileBloc>(context).state;
+    String username = 'Guest';  // Default to 'Guest' if not logged in
+
+    if (profileState is ProfileLoaded) {
+      username = profileState.username;  // Fetch the actual username from profile
+    }
+
+    // Check if state.extra is null or doesn't contain 'listingId'
+    final extraData = state.extra as Map<String, dynamic>?;  // Safely cast extra to Map
+    if (extraData == null || extraData['listingId'] == null) {
+      return const Scaffold(
+        body: Center(
+          child: Text('Invalid listing or booking data'),
+        ),
+      );
+    }
+
+    // Safely accessing the listingId and other fields
+    final listingId = extraData['listingId'] as String;
+
+    // Include the real username in the booking data
+    extraData['userName'] = username;
+
+    // Pass listingId to BookingManagementWidget
+    return BookingManagementWidget(listingId: listingId);
+  },
+),
+
+
+
+
     GoRoute(
       path: '/change-password/:token',
       builder: (context, state) {

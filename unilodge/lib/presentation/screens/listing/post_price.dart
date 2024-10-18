@@ -94,7 +94,7 @@ class _PostPriceState extends State<PostPrice> with InputValidationMixin {
                           label: 'Price',
                           hint: 'Enter price',
                           contentPadding: const EdgeInsets.all(16),
-                          validator: (value) => validateNumber(value ?? ''),
+                          // validator: (value) => validateNumber(value ?? ''),
                         ),
                         _buildTextField(
                           controller: _walletAddressController,
