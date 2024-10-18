@@ -1,9 +1,13 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:reown_appkit/reown_appkit.dart' as apkit;
+import 'package:unilodge/bloc/listing/listing_event.dart';
+import 'package:unilodge/bloc/listing/listing_bloc.dart';
+import 'package:unilodge/bloc/listing/listing_state.dart';
 import 'package:unilodge/core/configs/assets/app_images.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/core/utils/smart_contract.dart';
@@ -26,6 +30,8 @@ class _PaymentPageState extends State<PaymentPage> {
   String balance = '0';
   BigInt? gasPrice;
   bool isLoading = false;
+  bool _isDarkMode = false;
+  bool _isAvailableBool = true;
 
   final String etherscanApiKey = 'VMVKI11F5IVSQUVQ5Q9CTB4KGKAEM46TTA';
 
@@ -44,6 +50,7 @@ class _PaymentPageState extends State<PaymentPage> {
     apkit.ReownAppKitModalNetworks.addNetworks('eip155', [customNetwork]);
     initializeAppKitModal();
     fetchGasPrice();
+    _isAvailableBool = widget.listing.isAvailable!;
   }
 
   Widget homeLoading() {
@@ -86,8 +93,9 @@ class _PaymentPageState extends State<PaymentPage> {
     }
 
     appKit?.addListener(() {
-      updateWalletAddress();
-      print("goods na apkit");
+      if (mounted) {
+        updateWalletAddress();
+      }
     });
 
     setState(() {});
@@ -156,6 +164,13 @@ class _PaymentPageState extends State<PaymentPage> {
       debugPrint('Error fetching gas price: $e');
       throw Exception('Error fetching gas price: $e');
     }
+  }
+
+  @override
+  void dispose() {
+    appKit?.removeListener(() {
+    });
+    super.dispose();
   }
 
   void updateWalletAddress() {
@@ -294,161 +309,196 @@ class _PaymentPageState extends State<PaymentPage> {
 
   @override
   Widget build(BuildContext context) {
+    final listingBloc = BlocProvider.of<ListingBloc>(context);
     final screenWidth = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Awaiting Payment'),
+    final _themeData = apkit.ReownAppKitModalThemeData(
+      lightColors: apkit.ReownAppKitModalColors.lightMode.copyWith(
+        accent100: AppColors.primary,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            if (appKit == null || !(appKit?.isConnected ?? false))
-              Container(
-                width: screenWidth,
-                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                decoration:
-                    BoxDecoration(color: AppColors.primary.withOpacity(0.1)),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: Text("No wallet connected",
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: AppColors.textColor,
-                          )),
-                    ),
-                    apkit.AppKitModalConnectButton(appKit: appKit!),
-                  ],
-                ),
-              ),
-            if (appKit != null && appKit!.isConnected)
-              Column(
-                children: [
+      darkColors: apkit.ReownAppKitModalColors.darkMode.copyWith(
+        accent100: const Color.fromARGB(255, 255, 255, 255),
+      ),
+    );
+
+    return BlocListener<ListingBloc, ListingState>(
+      listener: (context, state) {
+        if (state is SuccessToggle) {
+          listingBloc.add(FetchListings());
+          context.go("/home");
+        } else if (state is ToggleError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.error)),
+          );
+        } else if (state is SuccessToggle) {
+          setState(() {
+            _isAvailableBool = !_isAvailableBool;
+          });
+        }
+      },
+      child: apkit.ReownAppKitModalTheme(
+        isDarkMode: _isDarkMode,
+        themeData: _themeData,
+        child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Awaiting Payment'),
+          ),
+          body: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                if (appKit == null || !(appKit?.isConnected ?? false))
                   Container(
+                    width: screenWidth,
                     padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                     decoration: BoxDecoration(
                         color: AppColors.primary.withOpacity(0.1)),
                     child: Column(
                       children: [
-                        Row(
-                          children: [
-                            Expanded(
-                                flex: 2,
-                                child: Image.asset(
-                                  AppImages.wallet,
-                                  height: 33,
-                                )),
-                            Expanded(
-                              flex: 9,
-                              child: Container(
-                                padding: EdgeInsets.all(12),
-                                height: 45,
-                                decoration: BoxDecoration(
-                                    color: AppColors.lightBackground,
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Text("$walletAddress"),
-                              ),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                                flex: 2,
-                                child: Image.asset(
-                                  AppImages.ethereum,
-                                  height: 40,
-                                )),
-                            Expanded(
-                              flex: 9,
-                              child: Container(
-                                padding: EdgeInsets.all(12),
-                                height: 45,
-                                decoration: BoxDecoration(
-                                    color: AppColors.lightBackground,
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Text("$balance"),
-                              ),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: apkit.AppKitModalConnectButton(
-                                    appKit: appKit!),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: TextButton(
-                                  onPressed: () {
-                                    openWalletApp();
-                                  },
-                                  style: TextButton.styleFrom(
-                                    backgroundColor: AppColors.primary,
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 12.0, horizontal: 24.0),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
-                                  child: const Text(
-                                    "Open wallet",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Text("No wallet connected",
+                              style: TextStyle(
+                                fontSize: 18,
+                                color: AppColors.textColor,
+                              )),
                         ),
+                        apkit.AppKitModalConnectButton(appKit: appKit!),
                       ],
                     ),
                   ),
-                ],
-              ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child:
-                  Divider(height: 20, color: Color.fromARGB(68, 168, 168, 168)),
+                if (appKit != null && appKit!.isConnected)
+                  Column(
+                    children: [
+                      Container(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                        decoration: BoxDecoration(
+                            color: AppColors.primary.withOpacity(0.1)),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                    flex: 2,
+                                    child: Image.asset(
+                                      AppImages.wallet,
+                                      height: 33,
+                                    )),
+                                Expanded(
+                                  flex: 9,
+                                  child: Container(
+                                    padding: EdgeInsets.all(12),
+                                    height: 45,
+                                    decoration: BoxDecoration(
+                                        color: AppColors.lightBackground,
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: Text("$walletAddress"),
+                                  ),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                    flex: 2,
+                                    child: Image.asset(
+                                      AppImages.ethereum,
+                                      height: 40,
+                                    )),
+                                Expanded(
+                                  flex: 9,
+                                  child: Container(
+                                    padding: EdgeInsets.all(12),
+                                    height: 45,
+                                    decoration: BoxDecoration(
+                                        color: AppColors.lightBackground,
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: Text("$balance"),
+                                  ),
+                                )
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: apkit.AppKitModalConnectButton(
+                                        appKit: appKit!),
+                                  ),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 30.0),
+                                      child: TextButton(
+                                        onPressed: () {
+                                          openWalletApp();
+                                        },
+                                        style: TextButton.styleFrom(
+                                          backgroundColor: AppColors.primary,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                        ),
+                                        child: const Text(
+                                          "Open wallet",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Divider(
+                      height: 20, color: Color.fromARGB(68, 168, 168, 168)),
+                ),
+                PaymentDetails(listing: widget.listing),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: SendPaymentCrypto(
+                    text: 'Send Payment',
+                    onPressed: appKit?.isConnected == true
+                        ? () async {
+                            await sendTransaction(
+                              widget.listing.walletAddress!,
+                              widget.listing.price!,
+                            );
+                            listingBloc.add(ToggleListing(widget.listing.id!));
+                          }
+                        : null,
+                    backgroundColor: appKit?.isConnected == true
+                        ? AppColors.primary
+                        : const Color.fromARGB(195, 113, 117, 121),
+                  ),
+                ),
+              ],
             ),
-            PaymentDetails(listing: widget.listing),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: SendPaymentCrypto(
-                text: 'Send Payment',
-                onPressed: appKit?.isConnected == true
-                    ? () {
-                        sendTransaction(
-                          widget.listing.walletAddress!,
-                          widget.listing.price!,
-                        );
-                      }
-                    : null,
-                backgroundColor: appKit?.isConnected == true
-                    ? AppColors.primary
-                    : const Color.fromARGB(195, 113, 117, 121),
-              ),
-            ),
-            homeLoading(),
-          ],
+          ),
         ),
       ),
     );
