@@ -108,5 +108,19 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
             'Internet Connection Error')); // Emit error state
       }
     });
+    on<GetBookingsOfUserEvent>((event, emit) async {
+      emit(BookingLoading());
+      try {
+        final bookings = await bookingRepository.getBookingsOfUser();
+        if (bookings.isEmpty) {
+          emit(BookingsOfUserEmptyLoaded());
+        } else {
+          emit(BookingsOfUserLoaded(bookings));
+        }
+      } catch (e) {
+        emit(BookingsOfUserError(
+            'Internet Connection Error')); // Emit error state
+      }
+    });
   }
 }

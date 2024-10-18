@@ -71,3 +71,5 @@ class CheckIfBookedEvent extends BookingEvent {
   @override
   List<Object> get props => [];
 }
+
+class GetBookingsOfUserEvent extends BookingEvent {}

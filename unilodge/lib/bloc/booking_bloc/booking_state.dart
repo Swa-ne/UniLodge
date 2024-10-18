@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:unilodge/data/models/booking.dart';
+import 'package:unilodge/data/models/booking_history.dart';
 
 abstract class BookingState extends Equatable {
   const BookingState();
@@ -31,6 +32,26 @@ class AllBookingsLoaded extends BookingState {
 }
 
 class AllBookingsEmptyLoaded extends BookingState {}
+
+class BookingsOfUserLoaded extends BookingState {
+  final List<BookingHistory> listings;
+
+  const BookingsOfUserLoaded(this.listings);
+
+  @override
+  List<Object> get props => [listings];
+}
+
+class BookingsOfUserEmptyLoaded extends BookingState {}
+
+class BookingsOfUserError extends BookingState {
+  final String errorMessage;
+
+  const BookingsOfUserError(this.errorMessage);
+
+  @override
+  List<Object> get props => [errorMessage];
+}
 
 class BookingApproved extends BookingState {
   final String bookingId;
