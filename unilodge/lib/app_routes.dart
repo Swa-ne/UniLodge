@@ -7,6 +7,7 @@ import 'package:unilodge/presentation/screens/admin/status_listing_screen.dart';
 import 'package:unilodge/presentation/screens/auth/change_forgotten_password.dart';
 import 'package:unilodge/presentation/screens/auth/change_password.dart';
 import 'package:unilodge/presentation/screens/crypto/payment_page.dart';
+import 'package:unilodge/presentation/screens/crypto/success_transaction.dart';
 import 'package:unilodge/presentation/screens/help_center/help_center.dart';
 import 'package:unilodge/presentation/screens/auth/account_selection_login.dart';
 import 'package:unilodge/presentation/screens/auth/account_selection_sign_up.dart';
@@ -205,7 +206,13 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/crypto-payment',
       builder: (context, state) {
-        return PaymentPage(listing: state.extra as Listing); // TODO: 
+        return PaymentPage(listing: state.extra as Listing); // TODO:
+      },
+    ),
+    GoRoute(
+      path: '/crypto-payment-transaction',
+      builder: (context, state) {
+        return SuccessTransaction(); // TODO:
       },
     ),
     GoRoute(

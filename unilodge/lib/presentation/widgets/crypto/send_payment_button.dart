@@ -37,6 +37,7 @@ class SendPaymentCrypto extends StatelessWidget {
           text,
           style: TextStyle(
             fontSize: fontSize,
+            fontWeight: FontWeight.normal,
             color: Colors.white,
           ),
           textAlign: TextAlign.center,

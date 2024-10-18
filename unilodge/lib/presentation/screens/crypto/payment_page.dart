@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:reown_appkit/reown_appkit.dart' as apkit;
@@ -261,6 +262,7 @@ class _PaymentPageState extends State<PaymentPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Transaction successful!')),
         );
+        context.go("/crypto-payment-transaction");
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Transaction failed.')),
@@ -310,7 +312,6 @@ class _PaymentPageState extends State<PaymentPage> {
                   ],
                 ),
               ),
-     
             if (appKit != null && appKit!.isConnected)
               Column(
                 children: [
@@ -326,7 +327,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                 flex: 2,
                                 child: Image.asset(
                                   AppImages.wallet,
-                                  height: 35,
+                                  height: 33,
                                 )),
                             Expanded(
                               flex: 9,
@@ -350,7 +351,7 @@ class _PaymentPageState extends State<PaymentPage> {
                                 flex: 2,
                                 child: Image.asset(
                                   AppImages.ethereum,
-                                  height: 35,
+                                  height: 40,
                                 )),
                             Expanded(
                               flex: 9,
@@ -411,7 +412,7 @@ class _PaymentPageState extends State<PaymentPage> {
                   ),
                 ],
               ),
-              Padding(
+            Padding(
               padding: const EdgeInsets.all(8.0),
               child:
                   Divider(height: 20, color: Color.fromARGB(68, 168, 168, 168)),
