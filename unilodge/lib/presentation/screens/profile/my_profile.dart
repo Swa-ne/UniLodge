@@ -90,33 +90,49 @@ class _MyProfileState extends State<MyProfile> {
                         child: Stack(
                           alignment: Alignment.center,
                           children: [
-                            GestureDetector(
-                              onTap: _pickImage,
-                              child: CircleAvatar(
-                                radius: 50,
-                                backgroundImage: _image != null
-                                    ? FileImage(_image!)
-                                    : state.profilePictureUrl.isNotEmpty
-                                        ? NetworkImage(state.profilePictureUrl)
-                                        : null,
-                                child: _image == null &&
-                                        state.profilePictureUrl.isEmpty
-                                    ? const Icon(Icons.person, size: 50)
-                                    : null,
-                              ),
-                            ),
-                            Positioned(
-                              right: 0,
-                              bottom: 0,
-                              child: IconButton(
-                                icon: const Icon(
-                                  Icons.edit,
-                                  color: Colors.white,
-                                  size: 20,
+                            // GestureDetector(
+                            //   onTap: _pickImage,
+                            //   child: CircleAvatar(
+                            //     radius: 50,
+                            //     backgroundImage: _image != null
+                            //         ? FileImage(_image!)
+                            //         : state.profilePictureUrl.isNotEmpty
+                            //             ? NetworkImage(state.profilePictureUrl)
+                            //             : null,
+                            //     child: _image == null &&
+                            //             state.profilePictureUrl.isEmpty
+                            //         ? const Icon(Icons.person, size: 50)
+                            //         : null,
+                            //   ),
+                            // ),
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Container(
+                                width: 100,
+                                height: 100,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xff2E3E4A),
+                                  borderRadius: BorderRadius.circular(70),
                                 ),
-                                onPressed: _pickImage,
+                                child: const Icon(
+                                  Icons.person,
+                                  color: Color(0xFFFFFFFF),
+                                  size: 50,
+                                ),
                               ),
                             ),
+                            // Positioned(
+                            //   right: 0,
+                            //   bottom: 0,
+                            //   child: IconButton(
+                            //     icon: const Icon(
+                            //       Icons.edit,
+                            //       color: Colors.white,
+                            //       size: 20,
+                            //     ),
+                            //     onPressed: _pickImage,
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
