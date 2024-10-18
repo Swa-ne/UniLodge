@@ -77,7 +77,7 @@ class Settings extends StatelessWidget {
                       color: AppColors.textColor,
                     ),
                     onTap: () {
-                      context.push('/verify-face');
+                      context.push('/id-details');
                     },
                   ),
                   const Divider(),
