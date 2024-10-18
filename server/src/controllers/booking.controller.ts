@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { UserType } from '../middlewares/token.authentication';
-import { getBookingById, approveBooking, rejectBooking, createBooking, getBookingsForListing, checkIfBooked, } from '../services/booking.services';
+import { getBookingById, approveBooking, rejectBooking, createBooking, getBookingsForListing, checkIfBooked, getBookingHistory, } from '../services/booking.services';
 
 // Get booking by ID controller
 export const getBookingController = async (req: Request & { user?: UserType }, res: Response) => {
@@ -143,6 +143,26 @@ export const checkIfBookedController = async (req: Request & { user?: UserType }
     if (!listingId) return res.status(400).json({ error: "Bad Request: Listing ID is required." });
 
     const bookings = await checkIfBooked(user_id, listingId);
+
+    if (bookings.httpCode === 200) {
+      return res.status(200).json({ message: bookings.message });  // Will now handle array or string
+    } else {
+      return res.status(bookings.httpCode).json({ error: bookings.error });
+    }
+  } catch (error) {
+    console.error("Error fetching bookings for listing:", error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
+export const getbookingHistoryController = async (req: Request & { user?: UserType }, res: Response) => {
+  try {
+    const user = req.user;
+    if (!user) return res.status(401).json({ error: "Unauthorized: User not found." });
+
+    const { user_id } = user;
+    if (!user_id) return res.status(400).json({ message: "User ID not provided" });
+
+    const bookings = await getBookingHistory(user_id);
 
     if (bookings.httpCode === 200) {
       return res.status(200).json({ message: bookings.message });  // Will now handle array or string

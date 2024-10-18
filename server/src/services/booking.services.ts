@@ -69,6 +69,29 @@ export const getBookingsForListing = async (listingId: string): Promise<CustomRe
   }
 };
 
+export const getBookingHistory = async (user_id: string): Promise<CustomResponse> => {
+  try {
+    const bookings = await Booking.find({ user_id }).populate({
+      path: "listing_id", populate: [{
+        path: "owner_id",
+        model: "User",
+      }, {
+        path: "location",
+        model: "Location",
+      }, {
+        path: "imageUrl",
+        model: "Image",
+      }],
+    }).exec();
+    // const listings = bookings.map((booking) => booking.listing_id);
+    console.log(bookings)
+    return { message: bookings, httpCode: 200 };  // Now this works, because message can be an array
+  } catch (error) {
+    console.error("Error fetching bookings for listing:", error);
+    return { error: "Internal Server Error", httpCode: 500 };
+  }
+};
+
 export const checkIfBooked = async (user_id: string, listing_id: string): Promise<CustomResponse> => {
   try {
     const THIRTY_DAYS_AGO = new Date(new Date().setDate(new Date().getDate() - 30));
