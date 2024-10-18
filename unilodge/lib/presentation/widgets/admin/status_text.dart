@@ -26,13 +26,13 @@ class StatusText extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
         color: statusColor,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(8),
       ),
       child: CustomText(
         text: statusText,
         color: AppColors.lightBackground,
         textAlign: TextAlign.center,
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: FontWeight.normal,
       ),
     );

@@ -34,14 +34,6 @@ class Settings extends StatelessWidget {
           },
           child: Scaffold(
             appBar: AppBar(
-              backgroundColor: Colors.white,
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back_ios,
-                    color: AppColors.textColor),
-                onPressed: () {
-                  context.push('/home');
-                },
-              ),
               title: const CustomText(
                 text: 'Settings',
                 color: AppColors.primary,

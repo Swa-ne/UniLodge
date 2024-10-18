@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:lottie/lottie.dart';
+import 'package:unilodge/bloc/booking_bloc/booking_bloc.dart';
+import 'package:unilodge/bloc/booking_bloc/booking_event.dart';
+import 'package:unilodge/bloc/booking_bloc/booking_state.dart';
 import 'package:unilodge/bloc/chat/chat_bloc.dart';
 import 'package:unilodge/bloc/chat/chat_event.dart';
 import 'package:unilodge/bloc/chat/chat_state.dart';
@@ -28,11 +31,14 @@ class ListingDetailScreen extends StatefulWidget {
 
 class _ListingDetailScreenState extends State<ListingDetailScreen> {
   bool isSaved = false;
+  bool isBooked = true;
 
   @override
   void initState() {
     super.initState();
-    //BlocProvider.of<RenterBloc>(context).add(FetchAllDorms());
+    BlocProvider.of<RenterBloc>(context).add(FetchAllDorms());
+    BlocProvider.of<BookingBloc>(context)
+        .add(CheckIfBookedEvent(widget.listing.id));
   }
 
   @override
@@ -82,6 +88,13 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
             }
           },
         ),
+        BlocListener<BookingBloc, BookingState>(listener: (context, state) {
+          if (state is CheckIfBookedSuccess) {
+            setState(() {
+              isBooked = state.isBooked;
+            });
+          }
+        })
       ],
       child: Scaffold(
         body: SingleChildScrollView(
@@ -97,13 +110,15 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                   // const SizedBox(
                   //   width: 5,
                   // ),
-                  Padding(padding: const EdgeInsets.only(left: 10),
-                  child: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context, true);
-                      },
-                      child: const Icon(Icons.cancel,
-                          color: Color.fromARGB(169, 60, 60, 67))),),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context, true);
+                        },
+                        child: const Icon(Icons.cancel,
+                            color: Color.fromARGB(169, 60, 60, 67))),
+                  ),
                   // const Padding(
                   //   padding: EdgeInsets.only(right: 5),
                   //   child: VerticalDivider(
@@ -221,7 +236,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: PriceText(
                         text: widget.listing.price != null
-                            ? '₱${widget.listing.price!}'
+                            ? 'ETH ${widget.listing.price!}'
                             : 'N/A'),
                   ),
                 ],
@@ -426,7 +441,12 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                     flex: 7,
                     child: CustomButton(
                       text: "Book now & pay",
-                      onPressed: () {},
+                      onPressed: isBooked
+                          ? null
+                          : () {
+                              context.push('/crypto-payment',
+                                  extra: widget.listing);
+                            },
                     ),
                   ),
                   const SizedBox(width: 15),

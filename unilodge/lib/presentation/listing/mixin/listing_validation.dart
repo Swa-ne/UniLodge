@@ -9,15 +9,28 @@ mixin InputValidationMixin {
     return null;
   }
 
-  String? validateNumber(String value) {
-    final numericRegex = RegExp(r'^[0-9]+$');
-    if (value.isEmpty) {
-      return 'This field is required';
-    } else if (!numericRegex.hasMatch(value)) {
-      return 'Please enter a valid number';
-    }
-    return null;
+  // String? validateNumber(String value) {
+  //   final numericRegex = RegExp(r'^[0-9]+$');
+  //   if (value.isEmpty) {
+  //     return 'This field is required';
+  //   } else if (!numericRegex.hasMatch(value)) {
+  //     return 'Please enter a valid number';
+  //   }
+  //   return null;
+  // }
+
+ String? validateNumber(String value) {
+  final houseNumberRegex = RegExp(r'^[0-9\- ]+$');
+  if (value.isEmpty) {
+    return 'This field is required';
+  } else if (!houseNumberRegex.hasMatch(value)) {
+    return 'Please enter a valid house number';
   }
+  return null;
+}
+
+
+
 
   String? validateMinLength(String value, int minLength) {
     if (value.isEmpty) {

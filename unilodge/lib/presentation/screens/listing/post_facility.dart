@@ -31,7 +31,6 @@ class _PostFacilityState extends State<PostFacility> {
     'Internet': false,
   };
 
-  // Convert the amenities and utilities maps to a list of selected items
   List<String> _getSelectedAmenities() {
     return rentalAmenities.entries
         .where((element) => element.value == true)
@@ -85,14 +84,22 @@ class _PostFacilityState extends State<PostFacility> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios, color: AppColors.textColor),
+            onPressed: () {
+              context.push("/listings");
+            },
+          )),
       body: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(8.0), // Adjusted padding
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 35),
+                // Reduced height to move content higher
                 const Text(
                   'Facilities in your Dorm',
                   style: TextStyle(
@@ -101,8 +108,7 @@ class _PostFacilityState extends State<PostFacility> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 4),
-                const SizedBox(height: 10),
+                const SizedBox(height: 10), // Adjust spacing between sections
                 _buildCheckboxSection('Rental Amenities', rentalAmenities),
                 _buildCheckboxSection('Utility Included in rent', utilitiesIncluded),
               ],

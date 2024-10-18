@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unilodge/core/configs/assets/app_images.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/presentation/widgets/favorite/custom_text.dart';
 
@@ -15,11 +16,22 @@ class PriceText extends StatelessWidget {
         color: const Color.fromARGB(255, 235, 235, 235),
         borderRadius: BorderRadius.circular(16),
       ),
-      child: CustomText(
-        text: text,
-        color: AppColors.formTextColor,
-        fontSize: 16,
-        fontWeight: FontWeight.normal,
+      child: Row(
+        children: [
+          Image.asset(
+            AppImages.ethereum,
+            height: 20,
+          ),
+          SizedBox(
+            width: 5,
+          ),
+          CustomText(
+            text: text,
+            color: AppColors.formTextColor,
+            fontSize: 16,
+            fontWeight: FontWeight.normal,
+          ),
+        ],
       ),
     );
   }

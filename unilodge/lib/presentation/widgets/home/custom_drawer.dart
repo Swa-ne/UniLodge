@@ -84,16 +84,16 @@ class CustomDrawer extends StatelessWidget {
                     context.push("/help-center");
                   },
                 ),
-                ListTile(
-                  leading: const Icon(
-                    Icons.star,
-                    color: AppColors.textColor,
-                  ),
-                  title: const Text('Bookings'),
-                  onTap: () {
-                    context.push("/bookings");
-                  },
-                ),
+                // ListTile(
+                //   leading: const Icon(
+                //     Icons.star,
+                //     color: AppColors.textColor,
+                //   ),
+                //   title: const Text('Bookings'),
+                //   onTap: () {
+                //     context.push("/bookings");
+                //   },
+                // ),
                 ListTile(
                   leading: const Icon(
                     Icons.history,

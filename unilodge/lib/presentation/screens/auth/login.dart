@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lottie/lottie.dart'; 
 import 'package:unilodge/common/widgets/custom_button.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/login_user.dart';
@@ -25,6 +26,7 @@ class _LoginState extends State<Login> with InputValidationMixin {
 
   String? emailError;
   String? passwordError;
+  bool _isPasswordVisible = false; 
 
   @override
   void initState() {
@@ -53,153 +55,174 @@ class _LoginState extends State<Login> with InputValidationMixin {
             emailError = "Incorrect Email or Password";
             passwordError = "Incorrect Email or Password";
           });
+        } else if (state is AuthSuccess) {
+          Navigator.of(context).pop(); 
         }
       },
-      child: PopScope(
-        canPop: true,
-        onPopInvokedWithResult: (bool didPop, Object? result) {
-          if (didPop) {
-            return;
-          }
-          if (context.mounted) {
-            Navigator.pop(context, result);
-          }
-        },
-        child: Scaffold(
-          resizeToAvoidBottomInset:
-              false,
-          body: SizedBox(
-            width: screenWidth,
-            height: screenHeight,
-            child: Stack(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: screenWidth * 0.1,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(height: screenHeight * 0.1),
-                      const UnilodgeText(),
-                      SizedBox(height: screenHeight * 0.10),
-                      Flexible(
-                        child: Form(
-                          child: Column(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: SizedBox(
+          width: screenWidth,
+          height: screenHeight,
+          child: Stack(
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: screenHeight * 0.1),
+                    const UnilodgeText(),
+                    SizedBox(height: screenHeight * 0.10),
+                    Flexible(
+                      child: Form(
+                        child: Column(
+                          children: [
+                            AuthTextField(
+                              labelText: "Email",
+                              hintText: "Enter email",
+                              controller: emailController,
+                              onChanged: validateEmail,
+                              errorText: emailError,
+                            ),
+                            const SizedBox(height: 20.0),
+                            AuthTextField(
+                              labelText: "Password",
+                              hintText: "Enter password",
+                              obscureText: !_isPasswordVisible,
+                              controller: passwordController,
+                              errorText: passwordError,
+                              suffixIcon: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _isPasswordVisible = !_isPasswordVisible;
+                                  });
+                                },
+                                child: Icon(
+                                  _isPasswordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: AppColors.primary,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 5),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: InkWell(
+                                onTap: () {
+                                  context.push("/forget-password");
+                                },
+                                child: const Text(
+                                  "Forgot your password?",
+                                  textAlign: TextAlign.right,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: AppColors.primary,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          CustomButton(
+                            text: "Log in",
+                            onPressed: () {
+                              String? isValidEmail =
+                                  validateEmail(emailController.text);
+                              if (isValidEmail != null) {
+                                setState(() {
+                                  emailError = "Email can't be empty";
+                                });
+                                return;
+                              }
+                              if (passwordController.text.isEmpty) {
+                                setState(() {
+                                  passwordError = "Password can't be empty";
+                                });
+                                return;
+                              }
+
+                              _showLoading(context);
+
+                              final newUser = LoginUserModel(
+                                email: emailController.text,
+                                password: passwordController.text,
+                              );
+                              _authBloc.add(LoginEvent(newUser));
+                            },
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              AuthTextField(
-                                labelText: "Email",
-                                hintText: "Enter email",
-                                controller: emailController,
-                                onChanged: validateEmail,
-                                errorText: emailError,
+                              const Text(
+                                "Don't have an account? ",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: AppColors.formTextColor,
+                                ),
                               ),
-                              const SizedBox(height: 20.0),
-                              AuthTextField(
-                                labelText: "Password",
-                                hintText: "Enter password",
-                                obscureText: true,
-                                controller: passwordController,
-                                errorText: passwordError,
-                              ),
-                              const SizedBox(height: 5),
-                              Align(
-                                alignment: Alignment.centerRight,
-                                child: InkWell(
-                                  onTap: () {
-                                    context.push("/forget-password");
-                                  },
-                                  child: const Text(
-                                    "Forgot your password?",
-                                    textAlign: TextAlign.right,
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Color.fromARGB(255, 36, 141, 221),
-                                    ),
+                              InkWell(
+                                onTap: () {
+                                  context.go("/sign-up");
+                                },
+                                child: const Text(
+                                  "Sign up",
+                                  textAlign: TextAlign.right,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.primary,
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                        ),
+                          const SizedBox(height: 150),
+                        ],
                       ),
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            CustomButton(
-                              text: "Log in",
-                              onPressed: () {
-                                String? isValidEmail =
-                                    validateEmail(emailController.text);
-                                if (isValidEmail != null) {
-                                  setState(() {
-                                    emailError = "Email can't be empty";
-                                  });
-                                  return;
-                                }
-                                if (passwordController.text.isEmpty) {
-                                  setState(() {
-                                    passwordError = "Password can't be empty";
-                                  });
-                                  return;
-                                }
-                                final newUser = LoginUserModel(
-                                  email: emailController.text,
-                                  password: passwordController.text,
-                                );
-                                _authBloc.add(LoginEvent(newUser));
-                              },
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  "Don't have an account? ",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: AppColors.formTextColor,
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    context.go("/sign-up");
-                                  },
-                                  child: const Text(
-                                    "Sign up",
-                                    textAlign: TextAlign.right,
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      color: AppColors.primary,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 40), 
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                Positioned(
-                  top: 16.0,
-                  left: 16.0,
-                  child: IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: () {
-                      context.go("/account-selection-login");
-                    },
-                  ),
+              ),
+              Positioned(
+                top: 16.0,
+                left: 16.0,
+                child: IconButton(
+                  icon: const Icon(Icons.arrow_back),
+                  onPressed: () {
+                    context.go("/account-selection-login");
+                  },
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
+    );
+  }
+
+  void _showLoading(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return Center(
+          child: SizedBox(
+            width: 200,
+            height: 200,
+            child: Lottie.asset('assets/animation/home_loading.json'),
+          ),
+        );
+      },
     );
   }
 }

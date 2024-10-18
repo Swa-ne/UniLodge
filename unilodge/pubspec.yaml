@@ -94,6 +94,9 @@ flutter:
         - assets/images/verify_user/real_id.webp
         - assets/images/verify_user/match.webp
         - assets/images/verify_user/correct.webp
+        - assets/images/wallet.png
+        - assets/images/ethereum.png
+        - assets/images/successTransaction.png
         - .env
 
     fonts:
