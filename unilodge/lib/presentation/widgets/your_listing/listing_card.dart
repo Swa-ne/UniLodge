@@ -53,7 +53,7 @@ class ListingCard extends StatelessWidget {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(
-                      top: 20.0, right: 15, bottom: 8, left: 15),
+                      top: 20.0, right: 15, bottom: 8, left: 3),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -80,7 +80,7 @@ class ListingCard extends StatelessWidget {
                         children: [
                           PriceText(
                               text: listing.price != null
-                                  ? '₱${listing.price!}'
+                                  ? 'ETH ${listing.price!}'
                                   : 'N/A'),
                           Spacer(),
                           Container(

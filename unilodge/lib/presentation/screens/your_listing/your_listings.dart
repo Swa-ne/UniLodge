@@ -34,6 +34,7 @@ class _ListingsState extends State<Listings> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
+        automaticallyImplyLeading: false,
         title: const CustomText(
           text: "Your Listings",
           fontSize: 20,
@@ -63,9 +64,7 @@ class _ListingsState extends State<Listings> {
               ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
             if (sortedListings.isEmpty) {
-              return const Center(
-                child: NoListingPlaceholder()
-              );
+              return const Center(child: NoListingPlaceholder());
             }
 
             return ListView.builder(

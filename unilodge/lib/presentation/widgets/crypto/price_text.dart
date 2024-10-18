@@ -13,18 +13,13 @@ class PriceText extends StatelessWidget {
       margin: EdgeInsets.only(top: 10),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 235, 235, 235),
+        color: AppColors.lightBackground,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
         children: [
-          Image.asset(
-            AppImages.ethereum,
-            height: 20,
-          ),
-          SizedBox(
-            width: 5,
-          ),
+          Image.asset(AppImages.ethereum, height: 20,),
+          SizedBox(width: 5,),
           CustomText(
             text: text,
             color: AppColors.formTextColor,

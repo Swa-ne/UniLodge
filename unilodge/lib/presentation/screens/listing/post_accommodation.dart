@@ -19,9 +19,17 @@ class _PostAccommodationState extends State<PostAccommodation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios, color: AppColors.textColor),
+            onPressed: () {
+              context.push("/listings");
+            },
+          )),
       body: Column(
         children: [
-          const SizedBox(height: 50),
+          // const SizedBox(height: 50),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: Align(
@@ -36,7 +44,7 @@ class _PostAccommodationState extends State<PostAccommodation> {
               ),
             ),
           ),
-          const SizedBox(height: 40),
+          const SizedBox(height: 20), 
           Expanded(
             child: Column(
               children: [

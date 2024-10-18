@@ -34,7 +34,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
   @override
   void initState() {
     super.initState();
-    //BlocProvider.of<RenterBloc>(context).add(FetchAllDorms());
+    BlocProvider.of<RenterBloc>(context).add(FetchAllDorms());
   }
 
   @override
@@ -99,6 +99,15 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                   // const SizedBox(
                   //   width: 5,
                   // ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context, true);
+                        },
+                        child: const Icon(Icons.cancel,
+                            color: Color.fromARGB(169, 60, 60, 67))),
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
                     child: GestureDetector(
@@ -225,7 +234,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: PriceText(
                         text: widget.listing.price != null
-                            ? '₱${widget.listing.price!}'
+                            ? 'ETH ${widget.listing.price!}'
                             : 'N/A'),
                   ),
                 ],
@@ -431,26 +440,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                     child: CustomButton(
                       text: "Book now & pay",
                       onPressed: () {
-                        final bookingData = {
-                          'listing_id': widget.listing.id,  
-                          'propertyType':
-                              widget.listing.selectedPropertyType ?? 'N/A',
-                          'userName': widget.listing.id,
-                          'price': widget.listing.price ??0, 
-                          'status': 'Pending',
-                        };
-                        context.push('/history', // Update the route as needed
-                          extra: widget.listing, // Pass the listing data if needed
-                          );
-                        BlocProvider.of<BookingBloc>(context)
-                            .add(CreateBookingEvent(bookingData));
-
-                        // context.push('/booking-management', extra: bookingData);
-                        // Optionally show a SnackBar for confirmation
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text('Booking created successfully!')),
-                        );
+                        context.push('/crypto-payment', extra: widget.listing);
                       },
                     ),
                   ),

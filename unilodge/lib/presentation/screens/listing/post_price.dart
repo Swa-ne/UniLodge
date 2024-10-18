@@ -24,19 +24,27 @@ class _PostPriceState extends State<PostPrice> with InputValidationMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios, color: AppColors.textColor),
+            onPressed: () {
+              context.push("/listings");
+            },
+          )),
       body: Stack(
         children: <Widget>[
           Column(
             children: <Widget>[
               Expanded(
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Form(
                     key: _formKey,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        const SizedBox(height: 17),
+                        // const SizedBox(height: 17),
                         const Padding(
                           padding: EdgeInsets.symmetric(vertical: 20.0),
                           child: Row(
@@ -67,7 +75,7 @@ class _PostPriceState extends State<PostPrice> with InputValidationMixin {
                                 ),
                               ),
                               SizedBox(
-                                  width: 8), // Add space between text and icon
+                                  width: 8),
                               Padding(
                                 padding: EdgeInsets.only(
                                     right: 8.0), // Ensure padding
@@ -196,12 +204,12 @@ class _PostPriceState extends State<PostPrice> with InputValidationMixin {
     int minLines = 1,
     EdgeInsetsGeometry contentPadding =
         const EdgeInsets.symmetric(vertical: 16.0),
-    String? Function(String?)? validator, // Add validator parameter
+    String? Function(String?)? validator,
   }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
       child: TextFormField(
-        controller: controller, // Bind the controller to capture input
+        controller: controller, 
         maxLines: maxLines,
         minLines: minLines,
         decoration: InputDecoration(
