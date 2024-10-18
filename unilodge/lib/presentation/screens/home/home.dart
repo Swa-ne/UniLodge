@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/bloc/chat/chat_bloc.dart';
 import 'package:unilodge/bloc/renter/renter_bloc.dart';
-import 'package:unilodge/common/widgets/custom_text.dart';
 import 'package:unilodge/common/widgets/error_message.dart';
 import 'package:unilodge/common/widgets/no_listing_placeholder.dart';
 import 'package:unilodge/common/widgets/shimmer_loading.dart';
@@ -14,7 +13,6 @@ import 'package:unilodge/data/sources/chat/socket_controller.dart';
 import 'package:unilodge/presentation/widgets/home/custom_drawer.dart';
 import 'package:unilodge/presentation/widgets/home/listing_cards.dart';
 import 'package:unilodge/presentation/widgets/home/type_cards.dart';
-import 'package:unilodge/presentation/widgets/home/search.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});

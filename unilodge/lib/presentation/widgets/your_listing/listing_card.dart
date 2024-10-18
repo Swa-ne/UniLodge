@@ -80,7 +80,7 @@ class ListingCard extends StatelessWidget {
                         children: [
                           PriceText(
                               text: listing.price != null
-                                  ? '₱${listing.price!}'
+                                  ? 'ETH ${listing.price!}'
                                   : 'N/A'),
                           Spacer(),
                           Container(

@@ -80,6 +80,9 @@ flutter:
     - assets/images/icons/security.png
     - assets/images/icons/mobile-password-forgot.png
     - assets/images/no_favs.png
+    - assets/images/wallet.png
+    - assets/images/ethereum.png
+    - assets/images/successTransaction.png
     - .env
 
   fonts:
