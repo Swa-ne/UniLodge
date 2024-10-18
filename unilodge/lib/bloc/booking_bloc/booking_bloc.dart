@@ -92,5 +92,21 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
         emit(DormBookedError('Failed to book dorm: $e')); // Emit error state
       }
     });
+    on<CheckIfBookedEvent>((event, emit) async {
+      emit(BookingLoading());
+      try {
+        if (event.listingId != null) {
+          final isBooked =
+              await bookingRepository.checkIfBooked(event.listingId!);
+
+          emit(CheckIfBookedSuccess(isBooked)); // Emit success state
+        } else {
+          emit(CheckIfBookedError('Internet Connection Error'));
+        }
+      } catch (e) {
+        emit(CheckIfBookedError(
+            'Internet Connection Error')); // Emit error state
+      }
+    });
   }
 }

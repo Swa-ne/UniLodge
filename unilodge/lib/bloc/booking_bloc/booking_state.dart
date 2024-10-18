@@ -80,3 +80,21 @@ class DormBookedError extends BookingState {
   @override
   List<Object> get props => [errorMessage];
 }
+
+class CheckIfBookedSuccess extends BookingState {
+  final bool isBooked;
+
+  const CheckIfBookedSuccess(this.isBooked);
+
+  @override
+  List<Object> get props => [isBooked];
+}
+
+class CheckIfBookedError extends BookingState {
+  final String errorMessage;
+
+  const CheckIfBookedError(this.errorMessage);
+
+  @override
+  List<Object> get props => [errorMessage];
+}
