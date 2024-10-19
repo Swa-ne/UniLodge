@@ -40,7 +40,7 @@ export const signupUsertoDatabase = async (
 
         await sendEmailCode(`${userCredentialResult._id}`, personal_email, first_name)
 
-        const result = await generateAccessAndRefereshTokens(userCredentialResult._id.toString());
+        const result: any = await generateAccessAndRefereshTokens(userCredentialResult._id.toString());
         if (result.httpCode === 200) {
             return {
                 message: "Congratulations, your account has been successfully created",
