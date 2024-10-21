@@ -67,33 +67,35 @@ class _OnboardingViewState extends State<OnboardingView> {
             itemCount: controller.items.length,
             controller: pageController,
             itemBuilder: (context, index) {
-              return Center( 
+              return Center(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center, 
-                  crossAxisAlignment: CrossAxisAlignment.center, 
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     // Image widget
                     Center(
                       child: SizedBox(
-                        width: 250,
-                        height: 250,
+                        width: 230,
+                        height: 230,
                         child: Image.asset(
                           controller.items[index].image,
                           fit: BoxFit.contain,
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20), 
+                    const SizedBox(height: 30),
                     Text(
                       controller.items[index].title,
                       style: const TextStyle(
-                          fontSize: 22, fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center, 
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primary),
+                      textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 20),
                     // Description text
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0), 
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
                       child: Text(
                         controller.items[index].descriptions,
                         style: const TextStyle(
