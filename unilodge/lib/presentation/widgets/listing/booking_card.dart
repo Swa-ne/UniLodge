@@ -54,7 +54,7 @@ class BookingCard extends StatelessWidget {
                       ElevatedButton(
                         onPressed: onApprove,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromARGB(255, 117, 206, 163), // Green for Paid
+                          backgroundColor: const Color.fromARGB(255, 117, 206, 163),
                           foregroundColor: Colors.white,
                         ),
                         child: const Text('Approve'),
@@ -64,7 +64,7 @@ class BookingCard extends StatelessWidget {
                       ElevatedButton(
                         onPressed: onReject,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromRGBO(224, 120, 120, 1),
+                          backgroundColor: const Color.fromARGB(255, 244, 120, 120),
                           foregroundColor: Colors.white,
                         ),
                         child: const Text('Reject'),
@@ -88,7 +88,7 @@ class BookingCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20.0),
               ),
               child: Text(
-                status,
+                _getStatusText(status), // Display the updated status text
                 style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -100,21 +100,27 @@ class BookingCard extends StatelessWidget {
     );
   }
 
+  // Method to display 'Approved' instead of 'Accepted'
+  String _getStatusText(String status) {
+    if (status == 'Accepted') {
+      return 'Approved'; // Change 'Accepted' to 'Approved'
+    }
+    return status; // Return the original status for other cases
+  }
+
   // Method to handle various statuses and assign colors
   Color _getStatusColor(String status) {
-  switch (status) {
-    case 'Paid':
-      return const Color.fromARGB(255, 117, 206, 163); // Green for Paid
-    case 'Rejected':
-      return const Color.fromRGBO(224, 120, 120, 1); // Red for Rejected
-    case 'Pending':
-      return const Color.fromARGB(255, 255, 152, 0); // Orange for Pending
-    case 'Approved':
-      return const Color.fromARGB(255, 117, 206, 163); // Green for Approved
-    default:
-      return const Color.fromARGB(255, 117, 206, 163); // Default Green for unknown statuses
+    switch (status) {
+      case 'Paid':
+        return const Color.fromARGB(255, 76, 175, 80);
+      case 'Rejected':
+        return Colors.red;
+      case 'Pending':
+        return Colors.orange;
+      case 'Accepted': // Accepted will show the 'Approved' label but use this color
+        return const Color.fromARGB(255, 76, 175, 80);
+      default:
+        return const Color.fromARGB(255, 76, 175, 80); // Default case for unknown statuses
+    }
   }
 }
-
-}
-

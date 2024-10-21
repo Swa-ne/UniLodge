@@ -148,10 +148,10 @@ class BookingManagementWidget extends StatelessWidget {
           status: booking.status,
            onApprove: showApproveButton && onApprove != null
             ? () => onApprove(booking.id)
-            : null, // Approve button is only enabled when applicable
+            : null, 
         onReject: showRejectButton && onReject != null
             ? () => onReject(booking.id)
-            : null, // Reject button is only enabled when applicable
+            : null, 
         );
       },
     );
