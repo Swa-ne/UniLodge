@@ -150,7 +150,7 @@ class _HistoryState extends State<History> with SingleTickerProviderStateMixin {
                 }),
               if (listing.status == 'Rejected')
                 _buildActionButton('Book Again', Colors.grey, () {
-                  // context.push('/listings', extra: listing.listing);
+                  context.push('/listing-detail', extra: listing.listing);
                   print("Attempt to re-book ${listing.listing.property_name}");
                 }),
             ],
