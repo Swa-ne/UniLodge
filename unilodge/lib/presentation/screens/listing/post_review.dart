@@ -346,15 +346,14 @@ class _PostReviewState extends State<PostReview> {
                   child: const Text("Back"),
                 ),
                 ElevatedButton(
-                  onPressed: isSubmitted
+                  onPressed: isSubmitted ||
+                          isLoading 
                       ? null
                       : () async {
                           setState(() {
                             isLoading = true;
-                            isSubmitted =
-                                true; 
+                            isSubmitted = true; 
                           });
-                          await Future.delayed(const Duration(seconds: 1));
                           listingBloc.add(CreateListing(
                             imageFiles,
                             widget.listing,
