@@ -15,12 +15,14 @@ class _MessagesState extends State<Messages> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          automaticallyImplyLeading: false,
           centerTitle: true,
           title: const CustomText(
             text: "Messages",
             fontSize: 20,
             fontWeight: FontWeight.bold,
             color: AppColors.primary,
+          
           ),
         ),
       body: const MessagesListView(),
