@@ -168,8 +168,7 @@ class _PaymentPageState extends State<PaymentPage> {
 
   @override
   void dispose() {
-    appKit?.removeListener(() {
-    });
+    appKit?.removeListener(() {});
     super.dispose();
   }
 
@@ -275,22 +274,16 @@ class _PaymentPageState extends State<PaymentPage> {
 
       // TODO: put in backend
 
-      debugPrint("RESULT OF TRANSACTION IN METAMASKKKK : " + result);
-
       if (result != null) {
-        debugPrint("RESULT OF TRANSACTION IN METAMASKKKK : " + result);
-
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Transaction successful!')),
         );
-        debugPrint("RESULT OF TRANSACTION IN METAMASKKKK : " + result);
         context.go("/crypto-payment-transaction",
             extra: {'transactionResult': result, 'listing': widget.listing});
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Transaction failed.')),
         );
-        debugPrint("RESULT OF TRANSACTION IN METAMASKKKK NULL : " + result);
       }
 
       return result;
@@ -324,16 +317,14 @@ class _PaymentPageState extends State<PaymentPage> {
     return BlocListener<ListingBloc, ListingState>(
       listener: (context, state) {
         if (state is SuccessToggle) {
+          setState(() {
+            _isAvailableBool = !_isAvailableBool;
+          });
           listingBloc.add(FetchListings());
-          context.go("/home");
         } else if (state is ToggleError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.error)),
           );
-        } else if (state is SuccessToggle) {
-          setState(() {
-            _isAvailableBool = !_isAvailableBool;
-          });
         }
       },
       child: apkit.ReownAppKitModalTheme(
