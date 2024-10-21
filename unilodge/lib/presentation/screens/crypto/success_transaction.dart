@@ -59,8 +59,8 @@ class _SuccessTransactionState extends State<SuccessTransaction> {
                     margin: EdgeInsets.symmetric(horizontal: 130),
                     padding: EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 235, 235, 235),
-                      borderRadius: BorderRadius.circular(16),
+                      color: const Color.fromARGB(123, 235, 235, 235),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -81,15 +81,15 @@ class _SuccessTransactionState extends State<SuccessTransaction> {
               margin: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 15),
               decoration: BoxDecoration(
-                color: AppColors.lightBackground,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xFF636464).withOpacity(0.1),
-                    offset: const Offset(0, 1),
-                    blurRadius: 10,
-                  ),
-                ],
+                color: const Color.fromARGB(123, 235, 235, 235),
+                borderRadius: BorderRadius.circular(10),
+                // boxShadow: [
+                //   BoxShadow(
+                //     color: const Color(0xFF636464).withOpacity(0.1),
+                //     offset: const Offset(0, 1),
+                //     blurRadius: 10,
+                //   ),
+                // ],
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -102,14 +102,23 @@ class _SuccessTransactionState extends State<SuccessTransaction> {
                             fontSize: 15, color: Color(0xff434343))),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.only(
+                        bottom: 3.0, right: 8, top: 8, left: 8),
                     child: Text(widget.transactionResult,
                         style: const TextStyle(
                             fontSize: 15, color: AppColors.formTextColor)),
                   ),
-                  SizedBox(height: 10,),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
+                    child:
+                        Divider(height: 20, color: AppColors.lightBackground),
+                  ),
+                  // SizedBox(
+                  //   height: 10,
+                  // ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 3.0, right: 8, bottom: 8, left: 8),
                     child: Text("Date:",
                         style: const TextStyle(
                             fontSize: 15, color: Color(0xff434343))),
