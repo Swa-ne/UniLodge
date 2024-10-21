@@ -6,7 +6,7 @@ class BookingCard extends StatelessWidget {
   final String price;
   final VoidCallback? onApprove;
   final VoidCallback? onReject;
-  final String status; // Added status field to display 'Paid', 'Pending', etc.
+  final String status;
 
   const BookingCard({
     super.key,
@@ -15,7 +15,7 @@ class BookingCard extends StatelessWidget {
     required this.price,
     this.onApprove,
     this.onReject,
-    required this.status, // Require status in the constructor
+    required this.status,
   });
 
   @override
@@ -50,21 +50,21 @@ class BookingCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    if (onApprove != null)
+                    if (onApprove != null && status != 'Rejected')
                       ElevatedButton(
                         onPressed: onApprove,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromARGB(255, 117, 206, 163),
+                          backgroundColor: const Color.fromARGB(255, 117, 206, 163), // Green for Paid
                           foregroundColor: Colors.white,
                         ),
                         child: const Text('Approve'),
                       ),
                     const SizedBox(width: 8),
-                    if (onReject != null)
+                    if (onReject != null && status != 'Rejected')
                       ElevatedButton(
                         onPressed: onReject,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromARGB(255, 244, 120, 120),
+                          backgroundColor: const Color.fromRGBO(224, 120, 120, 1),
                           foregroundColor: Colors.white,
                         ),
                         child: const Text('Reject'),
@@ -102,17 +102,19 @@ class BookingCard extends StatelessWidget {
 
   // Method to handle various statuses and assign colors
   Color _getStatusColor(String status) {
-    switch (status) {
-      case 'Paid':
-        return Colors.green;
-      case 'Rejected':
-        return Colors.red;
-      case 'Pending':
-        return Colors.orange;
-      case 'Approved':
-        return Colors.blue;
-      default:
-        return Colors.grey; // Default case for unknown statuses
-    }
+  switch (status) {
+    case 'Paid':
+      return const Color.fromARGB(255, 117, 206, 163); // Green for Paid
+    case 'Rejected':
+      return const Color.fromRGBO(224, 120, 120, 1); // Red for Rejected
+    case 'Pending':
+      return const Color.fromARGB(255, 255, 152, 0); // Orange for Pending
+    case 'Approved':
+      return const Color.fromARGB(255, 117, 206, 163); // Green for Approved
+    default:
+      return const Color.fromARGB(255, 117, 206, 163); // Default Green for unknown statuses
   }
 }
+
+}
+
