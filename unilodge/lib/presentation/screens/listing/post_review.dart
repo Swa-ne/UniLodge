@@ -21,6 +21,7 @@ class PostReview extends StatefulWidget {
 
 class _PostReviewState extends State<PostReview> {
   bool isLoading = false;
+  bool isSubmitted = false;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +38,10 @@ class _PostReviewState extends State<PostReview> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.error)),
           );
+          setState(() {
+            isLoading = false;
+            isSubmitted = false;
+          });
         }
       },
       child: Scaffold(
@@ -341,19 +346,20 @@ class _PostReviewState extends State<PostReview> {
                   child: const Text("Back"),
                 ),
                 ElevatedButton(
-                  onPressed: () async {
-                    setState(() {
-                      isLoading = true;
-                    });
-                    await Future.delayed(const Duration(seconds: 1));
-                    listingBloc.add(CreateListing(
-                      imageFiles,
-                      widget.listing,
-                    ));
-                    setState(() {
-                      isLoading = false;
-                    });
-                  },
+                  onPressed: isSubmitted
+                      ? null
+                      : () async {
+                          setState(() {
+                            isLoading = true;
+                            isSubmitted =
+                                true; 
+                          });
+                          await Future.delayed(const Duration(seconds: 1));
+                          listingBloc.add(CreateListing(
+                            imageFiles,
+                            widget.listing,
+                          ));
+                        },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
                     backgroundColor:
