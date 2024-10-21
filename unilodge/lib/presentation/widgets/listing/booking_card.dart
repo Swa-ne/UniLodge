@@ -76,7 +76,7 @@ class BookingCard extends StatelessWidget {
           ),
         ),
 
-        // Displaying status badge (Paid, Pending, etc.)
+       
         if (status.isNotEmpty)
           Positioned(
             top: 15,
@@ -88,7 +88,7 @@ class BookingCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20.0),
               ),
               child: Text(
-                _getStatusText(status), // Display the updated status text
+                _getStatusText(status), 
                 style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -100,27 +100,25 @@ class BookingCard extends StatelessWidget {
     );
   }
 
-  // Method to display 'Approved' instead of 'Accepted'
+ 
   String _getStatusText(String status) {
     if (status == 'Accepted') {
-      return 'Approved'; // Change 'Accepted' to 'Approved'
+      return 'Approved'; 
     }
-    return status; // Return the original status for other cases
+    return status; 
   }
 
-  // Method to handle various statuses and assign colors
+
   Color _getStatusColor(String status) {
     switch (status) {
-      case 'Paid':
-        return const Color.fromARGB(255, 76, 175, 80);
+      // case 'Paid':
+      //   return const Color.fromARGB(255, 76, 175, 80);
       case 'Rejected':
-        return Colors.red;
+        return const Color.fromARGB(255, 224, 120, 120);
       case 'Pending':
         return Colors.orange;
-      case 'Accepted': // Accepted will show the 'Approved' label but use this color
-        return const Color.fromARGB(255, 76, 175, 80);
       default:
-        return const Color.fromARGB(255, 76, 175, 80); // Default case for unknown statuses
+        return const Color.fromARGB(255, 117, 206, 163);
     }
   }
 }
