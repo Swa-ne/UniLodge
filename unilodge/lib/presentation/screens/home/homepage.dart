@@ -37,73 +37,60 @@ class _HomePageState extends State<HomePage> {
     const Messages(),
   ];
 
-  Widget _buildIcon(String assetPath) {
-    return ColorFiltered(
-      colorFilter: ColorFilter.mode(
-        _selectedIndex == _getIndex(assetPath)
-            ? AppColors.primary
-            : const Color.fromARGB(255, 119, 142, 160),
-        BlendMode.srcIn,
-      ),
-      child: Image.asset(assetPath, width: 24),
-    );
-  }
-
-  int _getIndex(String assetPath) {
-    switch (assetPath) {
-      case AppImages.homeeIcon:
-        return 0;
-      case AppImages.listingIcon:
-        return 1;
-      case AppImages.favoriteIcon:
-        return 2;
-      case AppImages.messageIcon:
-        return 3;
-      default:
-        return -1;
-    }
+  Widget _buildIcon(
+      String selectedIconPath, String unselectedIconPath, int index) {
+    return Image.asset(
+        _selectedIndex == index ? selectedIconPath : unselectedIconPath,
+        width: 24,
+        color: AppColors.primary);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages[_selectedIndex],
-      bottomNavigationBar: ClipRRect(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(30),
-          topRight: Radius.circular(30),
+      bottomNavigationBar: Container(
+        height: 60,
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(202, 255, 255, 255),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              spreadRadius: 0,
+              blurRadius: 6,
+              offset: const Offset(0, 1),
+            ),
+          ],
         ),
-        child: Container(
-          height: 60,
-          decoration: BoxDecoration(
-            color: AppColors.lightBackground,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                spreadRadius: 5,
-                blurRadius: 10,
-                offset: const Offset(0, -3),
-              ),
-            ],
-          ),
-          child: BottomNavigationBar(
-            selectedItemColor: AppColors.primary,
-            unselectedItemColor: AppColors.primary.withOpacity(0.8),
-            backgroundColor: AppColors.lightBackground,
-            currentIndex: _selectedIndex,
-            onTap: _navigateBottomBar,
-            type: BottomNavigationBarType.fixed,
-            items: [
-              BottomNavigationBarItem(
-                  icon: _buildIcon(AppImages.homeeIcon), label: 'Home'),
-              BottomNavigationBarItem(
-                  icon: _buildIcon(AppImages.listingIcon), label: 'Listings'),
-              BottomNavigationBarItem(
-                  icon: _buildIcon(AppImages.favoriteIcon), label: 'Favorites'),
-              BottomNavigationBarItem(
-                  icon: _buildIcon(AppImages.messageIcon), label: 'Messages'),
-            ],
-          ),
+        child: BottomNavigationBar(
+          selectedItemColor: AppColors.primary,
+          unselectedItemColor: AppColors.primary.withOpacity(0.8),
+          backgroundColor: AppColors.lightBackground,
+          currentIndex: _selectedIndex,
+          onTap: _navigateBottomBar,
+          type: BottomNavigationBarType.fixed,
+          items: [
+            BottomNavigationBarItem(
+              icon: _buildIcon(
+                  AppImages.homeeIcon, AppImages.homeUnselectedIcon, 0),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: _buildIcon(
+                  AppImages.listingIcon, AppImages.listingUnselectedIcon, 1),
+              label: 'Listings',
+            ),
+            BottomNavigationBarItem(
+              icon: _buildIcon(
+                  AppImages.favoriteIcon, AppImages.favoriteUnselectedIcon, 2),
+              label: 'Favorites',
+            ),
+            BottomNavigationBarItem(
+              icon: _buildIcon(
+                  AppImages.messageIcon, AppImages.messageUnselectedIcon, 3),
+              label: 'Messages',
+            )
+          ],
         ),
       ),
     );
