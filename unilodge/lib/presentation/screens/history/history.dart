@@ -152,7 +152,7 @@ class _HistoryState extends State<History> with SingleTickerProviderStateMixin {
                 // action buttons based on status
                 if (listing.status == 'Accepted')
                   _buildActionButton('To Pay', AppColors.primary, () {
-                    context.push('/crypto-payment', extra: listing.listing);
+                    context.push('/crypto-payment', extra: listing);
 
                     print(
                         "Proceed to payment for ${listing.listing.property_name}");
