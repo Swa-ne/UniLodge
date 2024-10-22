@@ -29,7 +29,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
           emit(AllBookingsEmptyLoaded());
         }
       } catch (e) {
-        emit(BookingError('Failed to load bookings for listing: $e'));
+        emit(BookingError('Failed to load bookings for listingssss: $e'));
       }
     });
 
