@@ -9,7 +9,7 @@ import 'package:unilodge/data/sources/chat/socket_controller.dart';
 final _apiUrl = "${dotenv.env['API_URL']}/authentication";
 
 abstract class AuthRepo {
-  Future<String> login(LoginUserModel user);
+  Future<Map<String, dynamic>> login(LoginUserModel user);
   Future<String> signUp(SignUpUserModel user, bool isThirdParty);
   Future<bool> checkEmailAvalability(String email);
   Future<bool> checkUsernameAvalability(String username);
@@ -20,7 +20,7 @@ abstract class AuthRepo {
   Future<bool> postResetPassword(
       String token, String password, String confirmation_password);
   Future<bool> logout();
-  Future<bool> authenticateToken();
+  Future<Map<String, dynamic>> authenticateToken();
 }
 
 class AuthRepoImpl extends AuthRepo {
@@ -28,7 +28,7 @@ class AuthRepoImpl extends AuthRepo {
   final SocketControllerImpl _SocketController = SocketControllerImpl();
 
   @override
-  Future<String> login(LoginUserModel user) async {
+  Future<Map<String, dynamic>> login(LoginUserModel user) async {
     var response = await http.post(
       Uri.parse("$_apiUrl/login"),
       headers: {
@@ -38,7 +38,6 @@ class AuthRepoImpl extends AuthRepo {
       body: json.encode(user.toJson()),
     );
     final response_body = json.decode(response.body);
-
     if (response.statusCode == 200) {
       _tokenController.updateAccessToken(response_body['access_token']);
       _tokenController.updateUserID(response_body['user_id']);
@@ -54,7 +53,10 @@ class AuthRepoImpl extends AuthRepo {
       }
 
       _tokenController.updateRefreshToken(refresh_token);
-      return response_body['access_token'];
+      return {
+        "access_token": response_body['access_token'],
+        "is_admin": response_body['is_admin'] ?? false
+      };
     } else {
       throw Exception(response_body['error']);
     }
@@ -288,7 +290,7 @@ class AuthRepoImpl extends AuthRepo {
   }
 
   @override
-  Future<bool> authenticateToken() async {
+  Future<Map<String, dynamic>> authenticateToken() async {
     final access_token = await _tokenController.getAccessToken();
     final refresh_token = await _tokenController.getRefreshToken();
     final user_id = await _tokenController.getUserID();
@@ -309,7 +311,11 @@ class AuthRepoImpl extends AuthRepo {
         var tokenValue = newAccessToken.split(' ')[1];
         await _tokenController.updateAccessToken(tokenValue);
       }
-      return true;
+      print("natakbo ${response_body["message"]["is_admin"]}");
+      return {
+        "is_authenticated": true,
+        "is_admin": response_body["message"]["is_admin"] ?? false
+      };
     } else if (response.statusCode == 401) {
       throw Exception('Unauthorized');
     } else {
