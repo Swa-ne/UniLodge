@@ -14,14 +14,14 @@ import 'package:unilodge/core/configs/assets/app_images.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/core/utils/smart_contract.dart';
 import 'package:lottie/lottie.dart';
-import 'package:unilodge/data/models/listing.dart';
+import 'package:unilodge/data/models/booking_history.dart';
 import 'package:unilodge/presentation/widgets/crypto/payment_details.dart';
 import 'package:unilodge/presentation/widgets/crypto/send_payment_button.dart';
 
 class PaymentPage extends StatefulWidget {
-  const PaymentPage({super.key, required this.listing});
+  const PaymentPage({super.key, required this.bookingHistory});
 
-  final Listing listing;
+  final BookingHistory bookingHistory;
   @override
   State<PaymentPage> createState() => _PaymentPageState();
 }
@@ -52,7 +52,7 @@ class _PaymentPageState extends State<PaymentPage> {
     apkit.ReownAppKitModalNetworks.addNetworks('eip155', [customNetwork]);
     initializeAppKitModal();
     fetchGasPrice();
-    _isAvailableBool = widget.listing.isAvailable!;
+    _isAvailableBool = widget.bookingHistory.listing.isAvailable!;
   }
 
   Widget homeLoading() {
@@ -280,8 +280,10 @@ class _PaymentPageState extends State<PaymentPage> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Transaction successful!')),
         );
-        context.go("/crypto-payment-transaction",
-            extra: {'transactionResult': result, 'listing': widget.listing});
+        context.go("/crypto-payment-transaction", extra: {
+          'transactionResult': result,
+          'listing': widget.bookingHistory.listing
+        });
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Transaction failed.')),
@@ -471,7 +473,7 @@ class _PaymentPageState extends State<PaymentPage> {
                   child: Divider(
                       height: 20, color: Color.fromARGB(68, 168, 168, 168)),
                 ),
-                PaymentDetails(listing: widget.listing),
+                PaymentDetails(listing: widget.bookingHistory.listing),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: SendPaymentCrypto(
@@ -479,11 +481,13 @@ class _PaymentPageState extends State<PaymentPage> {
                     onPressed: appKit?.isConnected == true
                         ? () async {
                             await sendTransaction(
-                              widget.listing.walletAddress!,
-                              widget.listing.price!,
+                              widget.bookingHistory.listing.walletAddress!,
+                              widget.bookingHistory.listing.price!,
                             );
-                            listingBloc.add(ToggleListing(widget.listing.id!));
-                            bookingBloc.add(PayBookingEvent(widget.listing.id!));
+                            listingBloc.add(ToggleListing(
+                                widget.bookingHistory.listing.id!));
+                            bookingBloc.add(
+                                PayBookingEvent(widget.bookingHistory.id!));
                           }
                         : null,
                     backgroundColor: appKit?.isConnected == true

@@ -48,59 +48,58 @@ class BookingRepositoryImpl implements BookingRepository {
     }
   }
 
- @override
-Future<List<BookingHistory>> getBookingsOfUser() async {
-  final access_token = await _tokenController.getAccessToken();
-  final refresh_token = await _tokenController.getRefreshToken();
+  @override
+  Future<List<BookingHistory>> getBookingsOfUser() async {
+    final access_token = await _tokenController.getAccessToken();
+    final refresh_token = await _tokenController.getRefreshToken();
 
-  try {
-    final response = await http.get(
-      Uri.parse('$_apiUrl/booking-history'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': access_token,
-        'Cookie': 'refresh_token=$refresh_token',
-      },
-    );
+    try {
+      final response = await http.get(
+        Uri.parse('$_apiUrl/booking-history'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': access_token,
+          'Cookie': 'refresh_token=$refresh_token',
+        },
+      );
 
-    if (response.statusCode == 200) {
-      print('Response statussssessssss: ${response.statusCode}');
-      print('Response body: ${response.body}');
-      List<dynamic> jsonResponse = jsonDecode(response.body)["message"];
+      if (response.statusCode == 200) {
+        print('Response statussssessssss: ${response.statusCode}');
+        print('Response body: ${response.body}');
+        List<dynamic> jsonResponse = jsonDecode(response.body)["message"];
 
-    
-      List<BookingHistory> bookings = [];
-      try {
-        bookings = jsonResponse.map((json) {
-          try {
-            if (json['listing_id'] != null) {
-              return BookingHistory.fromJson(json);
-            } else {
-              print('Skipping entry due to missing listing information: $json');
-              return null;
-            }
-          } catch (e) {
-            print('Error parsing booking entry: $e');
-            return null;
-          }
-        }).whereType<BookingHistory>().toList(); 
-      } catch (e) {
-        print('Error parsing bookings: $e');
+        List<BookingHistory> bookings = [];
+        try {
+          bookings = jsonResponse
+              .map((json) {
+                try {
+                  if (json['listing_id'] != null) {
+                    return BookingHistory.fromJson(json);
+                  } else {
+                    print(
+                        'Skipping entry due to missing listing information: $json');
+                    return null;
+                  }
+                } catch (e) {
+                  print('Error parsing booking entry: $e');
+                  return null;
+                }
+              })
+              .whereType<BookingHistory>()
+              .toList();
+        } catch (e) {
+          print('Error parsing bookings: $e');
+        }
+        return bookings;
+      } else {
+        throw Exception('Failed to load bookings: ${response.statusCode}');
       }
-      return bookings;
-    } else {
-      throw Exception('Failed to load bookings: ${response.statusCode}');
+    } catch (e) {
+      print('Error fetching bookings by user: $e');
+      throw Exception('Failed to fetch bookings');
     }
-  } catch (e) {
-    print('Error fetching bookings by user: $e');
-    throw Exception('Failed to fetch bookings');
   }
-}
-
-
-
-
 
   @override
   Future<List<Booking>> getBookingsForListing(String listingId) async {
@@ -192,7 +191,7 @@ Future<List<BookingHistory>> getBookingsOfUser() async {
     }
   }
 
-    @override
+  @override
   Future<void> payBooking(String bookingId) async {
     final access_token = await _tokenController.getAccessToken();
     final refresh_token = await _tokenController.getRefreshToken();
@@ -209,17 +208,17 @@ Future<List<BookingHistory>> getBookingsOfUser() async {
           'Cookie': 'refresh_token=$refresh_token',
         },
       );
-
+      print("Pay booking ID: $bookingId");
       print('Response status: ${response.statusCode}');
       print('Response body: ${response.body}');
 
       if (response.statusCode != 200) {
         throw Exception(
-            'Failed to reject booking: ${response.statusCode}, ${response.body}');
+            'Failed to pay booking: ${response.statusCode}, ${response.body}');
       }
     } catch (e) {
-      print('Error rejecting booking: $e');
-      throw Exception('Error rejecting booking: $e');
+      print('Error paying booking: $e');
+      throw Exception('Error paying booking: $e');
     }
   }
 

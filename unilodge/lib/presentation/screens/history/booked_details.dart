@@ -57,7 +57,6 @@ class _BookedDetailsState extends State<BookedDetails> {
                 ),
                 Icon: Icons.hourglass_bottom,
               ),
-
               if (bookingHistory.status.toLowerCase() == 'accepted' ||
                   bookingHistory.status.toLowerCase() == 'paid')
                 MyTimelineTile(
@@ -89,7 +88,7 @@ class _BookedDetailsState extends State<BookedDetails> {
                           child: TextButton(
                             onPressed: () {
                               context.push('/crypto-payment',
-                                  extra: widget.bookingHistory.listing);
+                                  extra: widget.bookingHistory);
                             },
                             style: TextButton.styleFrom(
                               backgroundColor: AppColors.primary,
@@ -162,112 +161,10 @@ class _BookedDetailsState extends State<BookedDetails> {
                   ),
                   Icon: Icons.payments,
                 )
-
-              // TimelineTile(
-              //   alignment: TimelineAlign.manual,
-              //   lineXY: 0.1,
-              //   isFirst: true,
-              //   beforeLineStyle: const LineStyle(
-              //     color: Colors.grey,
-              //     thickness: 3,
-              //   ),
-              //   indicatorStyle: IndicatorStyle(
-              //     width: 20,
-              //     color: _getStatusColor(bookingHistory.status),
-              //   ),
-              //   endChild: Padding(
-              //     padding: const EdgeInsets.all(8.0),
-              //     child: Text(
-              //       bookingHistory.status == 'pending' ||
-              //               bookingHistory.status == 'received'
-              //           ? 'Pending/Received'
-              //           : 'Pending/Received (Completed)',
-              //       style: const TextStyle(fontSize: 16),
-              //     ),
-              //   ),
-              // ),
-
-              // if (bookingHistory.status.toLowerCase() == 'accepted' || bookingHistory.status.toLowerCase() == 'paid')
-              //   TimelineTile(
-              //     alignment: TimelineAlign.manual,
-              //     lineXY: 0.1,
-              //     isLast: bookingHistory.status.toLowerCase() == 'paid' ? false : true,
-              //     beforeLineStyle: const LineStyle(
-              //       color: Colors.grey,
-              //       thickness: 3,
-              //     ),
-              //     indicatorStyle: const IndicatorStyle(
-              //       width: 20,
-              //       color: Colors.green,
-              //     ),
-              //     endChild: Padding(
-              //       padding: const EdgeInsets.all(8.0),
-              //       child: Column(
-              //         crossAxisAlignment: CrossAxisAlignment.start,
-              //         children: [
-              //           const Text(
-              //             'Accepted',
-              //             style: TextStyle(fontSize: 16),
-              //           ),
-              //           const SizedBox(height: 8),
-              //           ElevatedButton(
-              //             onPressed: () {
-              //               // Navigate to payment screen or handle payment logic
-              //               print('Proceeding to payment');
-              //             },
-              //             style: ElevatedButton.styleFrom(
-              //               backgroundColor: AppColors.primary,
-              //               padding: const EdgeInsets.symmetric(
-              //                 horizontal: 24.0,
-              //                 vertical: 12.0,
-              //               ),
-              //             ),
-              //             child: const Text('Pay Now'),
-              //           ),
-              //         ],
-              //       ),
-              //     ),
-              //   ),
-
-              // if (bookingHistory.status.toLowerCase() == 'rejected')
-              //   TimelineTile(
-              //     alignment: TimelineAlign.manual,
-              //     lineXY: 0.1,
-              //     isLast: true,
-              //     beforeLineStyle: const LineStyle(
-              //       color: Colors.grey,
-              //       thickness: 3,
-              //     ),
-              //     indicatorStyle: const IndicatorStyle(
-              //       width: 20,
-              //       color: Colors.red,
-              //     ),
-              //     endChild: Padding(
-              //       padding: const EdgeInsets.all(8.0),
-              //       child: const Text(
-              //         'Rejected',
-              //         style: TextStyle(fontSize: 16),
-              //       ),
-              //     ),
-              //   ),
             ],
           ),
         ),
       ),
     );
   }
-
-  // Function to get color based on booking status
-  // Color _getStatusColor(String status) {
-  //   switch (status) {
-  //     case 'pending':
-  //       return Colors.yellow;
-  //     case 'accepted':
-  //       return Colors.green;
-  //     case 'rejected':
-  //       return Colors.red;
-  //     default:
-  //       return Colors.grey;
-  //   }
-  // }
 }

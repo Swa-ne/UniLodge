@@ -243,7 +243,7 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/crypto-payment',
       builder: (context, state) {
-        return PaymentPage(listing: state.extra as Listing); 
+        return PaymentPage(bookingHistory: state.extra as BookingHistory); 
       },
     ),
     GoRoute(

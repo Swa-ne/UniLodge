@@ -70,9 +70,9 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     on<PayBookingEvent>((event, emit) async {
       try {
         await bookingRepository.payBooking(event.bookingId);
-        emit(BookingApproved(event.bookingId));
+        emit(BookingPaid(event.bookingId));
       } catch (e) {
-        emit(BookingError('Failed to reject booking: $e'));
+        emit(BookingError('Failed to pay booking: $e'));
       }
     });
 
