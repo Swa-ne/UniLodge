@@ -35,7 +35,7 @@ export const loginUserController = async (req: Request, res: Response) => {
                             sameSite: 'none',
                         }
                     )
-                    .json({ message: "Success", access_token: result.message?.access_token, user_id: user_data._id });
+                    .json({ message: "Success", access_token: result.message?.access_token, user_id: user_data._id, is_admin: user_data.is_admin });
             }
             return res.status(data.httpCode).json({ error: data.error });
         }

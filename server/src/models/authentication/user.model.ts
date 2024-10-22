@@ -14,6 +14,7 @@ export interface UserSchemaInterface extends Document {
     password_hash: string,
     valid_email: boolean,
     valid_landlord: boolean,
+    is_admin: boolean,
     refresh_token_version: number,
     createdAt?: Date,
     updatedAt?: Date,
@@ -65,6 +66,10 @@ const UserSchema: Schema = new Schema({
         default: false
     },
     valid_landlord: {
+        type: Boolean,
+        default: false
+    },
+    is_admin: {
         type: Boolean,
         default: false
     },
