@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:unilodge/bloc/booking_bloc/booking_bloc.dart';
 import 'package:unilodge/bloc/booking_bloc/booking_event.dart';
 import 'package:unilodge/bloc/booking_bloc/booking_state.dart';
+import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/booking_history.dart';
 
 class History extends StatefulWidget {
@@ -88,72 +89,82 @@ class _HistoryState extends State<History> with SingleTickerProviderStateMixin {
       itemCount: filteredListings.length,
       itemBuilder: (context, index) {
         final listing = filteredListings[index];
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Status indicator
-              Column(
-                children: [
-                  Container(
-                    width: 12,
-                    height: 12,
-                    decoration: BoxDecoration(
-                      color: getStatusColor(listing.status),
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                  if (index != filteredListings.length - 1)
-                    Container(
-                      width: 2,
-                      height: 40,
-                      color: Colors.grey.shade400,
-                    ),
-                ],
-              ),
-              const SizedBox(width: 12),
-              // Booking details
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+        return GestureDetector(
+          onTap: () {
+            context.push('/booking-details', extra: listing);
+          },
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Status indicator
+                Column(
                   children: [
-                    Text(
-                      listing.listing.property_name ?? 'No Name',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                    Container(
+                      width: 12,
+                      height: 12,
+                      decoration: BoxDecoration(
+                        color: getStatusColor(listing.status),
+                        shape: BoxShape.circle,
                       ),
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '${listing.listing.address ?? 'No Address'}\nBook: ${DateTime.parse(listing.createdAt).toLocal().toShortDateString()}\nPrice: ${listing.listing.price}',
-                      style: const TextStyle(
-                        fontSize: 14,
+                    if (index != filteredListings.length - 1)
+                      Container(
+                        width: 2,
+                        height: 40,
+                        color: Colors.grey.shade400,
                       ),
-                    ),
                   ],
                 ),
-              ),
-              // time
-              Text(
-                DateTime.parse(listing.createdAt).toLocal().toShortTimeString(),
-                style: const TextStyle(fontSize: 14),
-              ),
-              const SizedBox(width: 12),
-              // action buttons based on status
-              if (listing.status == 'Accepted')
-                _buildActionButton('To Pay', Colors.blue, () {
-                  context.push('/crypto-payment', extra: listing.listing);
-                  print(
-                      "Proceed to payment for ${listing.listing.property_name}");
-                }),
-              if (listing.status == 'Rejected')
-                _buildActionButton('Book Again', Colors.grey, () {
-                  context.push('/listing-detail', extra: listing.listing);
-                  print("Attempt to re-book ${listing.listing.property_name}");
-                }),
-            ],
+                const SizedBox(width: 12),
+                // Booking details
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        listing.listing.property_name ?? 'No Name',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        '${listing.listing.address ?? 'No Address'}\nBook: ${DateTime.parse(listing.createdAt).toLocal().toShortDateString()}\nPrice: ${listing.listing.price}',
+                        style: const TextStyle(
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // time
+                Text(
+                  DateTime.parse(listing.createdAt)
+                      .toLocal()
+                      .toShortTimeString(),
+                  style: const TextStyle(fontSize: 14),
+                ),
+                const SizedBox(width: 12),
+                // action buttons based on status
+                if (listing.status == 'Accepted')
+                  _buildActionButton('To Pay', AppColors.primary, () {
+                    context.push('/crypto-payment', extra: listing.listing);
+
+                    print(
+                        "Proceed to payment for ${listing.listing.property_name}");
+                  }),
+                if (listing.status == 'Rejected')
+                  _buildActionButton('Book Again', Colors.grey, () {
+                    context.push('/listing-detail', extra: listing.listing);
+                    print(
+                        "Attempt to re-book ${listing.listing.property_name}");
+                  }),
+              ],
+            ),
           ),
         );
       },
@@ -177,6 +188,7 @@ class _HistoryState extends State<History> with SingleTickerProviderStateMixin {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: color,
+        foregroundColor: AppColors.lightBackground,
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),

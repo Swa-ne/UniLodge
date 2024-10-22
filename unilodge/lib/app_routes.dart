@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:unilodge/bloc/admin_bloc/my_profile/my_profile_bloc.dart';
 import 'package:unilodge/bloc/admin_bloc/my_profile/my_profile_state.dart';
+import 'package:unilodge/data/models/booking_history.dart';
 import 'package:unilodge/data/models/inbox.dart';
 import 'package:unilodge/data/models/user_profile.dart';
 import 'package:unilodge/presentation/screens/admin/admin_listing_details_screen.dart';
@@ -23,6 +24,7 @@ import 'package:unilodge/presentation/screens/auth/login.dart';
 import 'package:unilodge/presentation/screens/auth/sign_up.dart';
 import 'package:unilodge/presentation/screens/auth/verify_email.dart';
 import 'package:unilodge/presentation/screens/edit_profile/edit_profile_info.dart';
+import 'package:unilodge/presentation/screens/history/booked_details.dart';
 import 'package:unilodge/presentation/screens/home/homepage.dart';
 import 'package:unilodge/presentation/screens/home/listing_details_screen.dart';
 import 'package:unilodge/presentation/screens/home/type_listing_screen.dart';
@@ -233,9 +235,15 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) => History(),
     ),
     GoRoute(
+      path: '/booking-details',
+      builder: (context, state) {
+        return BookedDetails(bookingHistory: state.extra as BookingHistory);
+      },
+    ),
+    GoRoute(
       path: '/crypto-payment',
       builder: (context, state) {
-        return PaymentPage(listing: state.extra as Listing); // TODO:
+        return PaymentPage(listing: state.extra as Listing); 
       },
     ),
     GoRoute(
