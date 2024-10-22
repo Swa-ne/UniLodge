@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:reown_appkit/reown_appkit.dart' as apkit;
+import 'package:unilodge/bloc/booking_bloc/booking_bloc.dart';
+import 'package:unilodge/bloc/booking_bloc/booking_event.dart';
 import 'package:unilodge/bloc/listing/listing_event.dart';
 import 'package:unilodge/bloc/listing/listing_bloc.dart';
 import 'package:unilodge/bloc/listing/listing_state.dart';
@@ -303,6 +305,7 @@ class _PaymentPageState extends State<PaymentPage> {
   @override
   Widget build(BuildContext context) {
     final listingBloc = BlocProvider.of<ListingBloc>(context);
+    final bookingBloc = BlocProvider.of<BookingBloc>(context);
     final screenWidth = MediaQuery.of(context).size.width;
 
     final _themeData = apkit.ReownAppKitModalThemeData(
@@ -480,6 +483,7 @@ class _PaymentPageState extends State<PaymentPage> {
                               widget.listing.price!,
                             );
                             listingBloc.add(ToggleListing(widget.listing.id!));
+                            bookingBloc.add(PayBookingEvent(widget.listing.id!));
                           }
                         : null,
                     backgroundColor: appKit?.isConnected == true

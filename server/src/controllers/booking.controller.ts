@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { UserType } from '../middlewares/token.authentication';
-import { getBookingById, approveBooking, rejectBooking, createBooking, getBookingsForListing, checkIfBooked, getBookingHistory, } from '../services/booking.services';
+import { getBookingById, approveBooking, rejectBooking, createBooking, getBookingsForListing, checkIfBooked, getBookingHistory, paidBooking, } from '../services/booking.services';
 
 // Get booking by ID controller
 export const getBookingController = async (req: Request & { user?: UserType }, res: Response) => {
@@ -64,6 +64,27 @@ export const rejectBookingController = async (req: Request & { user?: UserType }
     }
   } catch (error) {
     console.error("Error rejecting booking:", error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+export const paidBookingController = async (req: Request & { user?: UserType }, res: Response) => {
+  try {
+    const user = req.user;
+    if (!user) return res.status(401).json({ error: "Unauthorized: User not found." });
+
+    const { bookingId } = req.params;
+    if (!bookingId) return res.status(400).json({ error: "Bad Request: Booking ID is required." });
+
+    const booking = await paidBooking(bookingId);
+
+    if (booking.httpCode === 200) {
+      return res.status(200).json({ message: booking.message, booking });
+    } else {
+      return res.status(booking.httpCode).json({ error: booking.error });
+    }
+  } catch (error) {
+    console.error("Error paid booking:", error);
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 };

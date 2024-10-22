@@ -24,7 +24,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
         final bookings =
             await bookingRepository.getBookingsForListing(event.listingId);
         if (bookings.isNotEmpty) {
-          emit(AllBookingsLoaded(bookings)); // New state for all bookings
+          emit(AllBookingsLoaded(bookings));
         } else {
           emit(AllBookingsEmptyLoaded());
         }
@@ -33,13 +33,12 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
       }
     });
 
-    // Fetch all bookings
     on<FetchAllBookingsEvent>((event, emit) async {
       emit(BookingLoading());
       try {
         final bookings = await bookingRepository.getAllBookings();
         if (bookings.isNotEmpty) {
-          emit(AllBookingsLoaded(bookings)); // New state for all bookings
+          emit(AllBookingsLoaded(bookings));
         } else {
           emit(AllBookingsEmptyLoaded());
         }
@@ -52,7 +51,7 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     on<ApproveBookingEvent>((event, emit) async {
       try {
         await bookingRepository.approveBooking(event.bookingId);
-        emit(BookingApproved(event.bookingId)); // Emit updated bookingId state
+        emit(BookingApproved(event.bookingId));
       } catch (e) {
         emit(BookingError('Failed to approve booking: $e'));
       }
@@ -62,7 +61,16 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     on<RejectBookingEvent>((event, emit) async {
       try {
         await bookingRepository.rejectBooking(event.bookingId);
-        emit(BookingApproved(event.bookingId)); // Emit updated bookingId state
+        emit(BookingApproved(event.bookingId));
+      } catch (e) {
+        emit(BookingError('Failed to reject booking: $e'));
+      }
+    });
+
+    on<PayBookingEvent>((event, emit) async {
+      try {
+        await bookingRepository.payBooking(event.bookingId);
+        emit(BookingApproved(event.bookingId));
       } catch (e) {
         emit(BookingError('Failed to reject booking: $e'));
       }

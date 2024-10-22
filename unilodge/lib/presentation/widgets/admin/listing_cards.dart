@@ -105,9 +105,15 @@ class AdminListingCards extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 10),
-                        Text(
-                          listing.adddress,
-                          style: const TextStyle(color: AppColors.textColor),
+                        
+                        Row(
+                          children: [
+                            Icon(Icons.location_on),
+                            Text(
+                              listing.adddress,
+                              style: const TextStyle(color: AppColors.textColor),
+                            ),
+                          ],
                         ),
                         Row(
                           children: [

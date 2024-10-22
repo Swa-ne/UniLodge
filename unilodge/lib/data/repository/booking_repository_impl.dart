@@ -192,6 +192,37 @@ Future<List<BookingHistory>> getBookingsOfUser() async {
     }
   }
 
+    @override
+  Future<void> payBooking(String bookingId) async {
+    final access_token = await _tokenController.getAccessToken();
+    final refresh_token = await _tokenController.getRefreshToken();
+
+    print("Pay booking ID: $bookingId");
+
+    try {
+      final response = await http.put(
+        Uri.parse('$_apiUrl/pay-booking/$bookingId'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': access_token,
+          'Cookie': 'refresh_token=$refresh_token',
+        },
+      );
+
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode != 200) {
+        throw Exception(
+            'Failed to reject booking: ${response.statusCode}, ${response.body}');
+      }
+    } catch (e) {
+      print('Error rejecting booking: $e');
+      throw Exception('Error rejecting booking: $e');
+    }
+  }
+
   // Create a new booking
   @override
   Future<void> createBooking(Map<String, dynamic> bookingData) async {
