@@ -31,7 +31,10 @@ class _AccountSelectionLoginState extends State<AccountSelectionLogin> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is LoginSuccess) {
-          context.go("/home");
+          if (state.isAdmin) {
+            return context.go("/admin-dashboard");
+          }
+          return context.go("/home");
         } else if (state is LoginError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.error)),

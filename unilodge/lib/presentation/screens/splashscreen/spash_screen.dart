@@ -30,18 +30,21 @@ class _SplashScreenState extends State<SplashScreen> {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthSuccess) {
-          context.go('/home'); 
+          print("typesh ${state.isAdmin}");
+          if (state.isAdmin) {
+            return context.go('/admin-dashboard');
+          }
+          return context.go('/home');
         } else if (state is AuthFailure) {
-          context.go('/onboarding'); 
+          context.go('/onboarding');
         }
       },
       child: Scaffold(
         body: Center(
           child: SizedBox(
             width: 250,
-            child: Lottie.asset(
-                'assets/animation/animation.json'),
-          ), 
+            child: Lottie.asset('assets/animation/animation.json'),
+          ),
         ),
       ),
     );
