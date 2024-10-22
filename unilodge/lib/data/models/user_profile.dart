@@ -1,4 +1,5 @@
 class UserProfileModel {
+  final String? id;
   final String firstName;
   final String middleName;
   final String lastName;
@@ -8,8 +9,8 @@ class UserProfileModel {
   final String personalEmail;
   final DateTime birthday;
 
-  
   UserProfileModel({
+    this.id,
     required this.firstName,
     required this.middleName,
     required this.lastName,
@@ -22,12 +23,13 @@ class UserProfileModel {
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) {
     return UserProfileModel(
+      id: json['_id'] ?? "",
       firstName: json['first_name'],
       middleName: json['middle_name'] ?? '',
-      lastName: json['last_name'],
-      username: json['username'],
+      lastName: json['last_name'] ?? "",
+      username: json['username'] ?? "",
       fullName: json['full_name'],
-      profilePictureUrl: json['profile_picture_url'] ?? '', 
+      profilePictureUrl: json['profile_picture_url'] ?? '',
       personalEmail: json['personal_email'],
       birthday: DateTime.parse(json['birthday']),
     );

@@ -4,7 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:unilodge/bloc/admin_bloc/my_profile/my_profile_bloc.dart';
 import 'package:unilodge/bloc/admin_bloc/my_profile/my_profile_state.dart';
 import 'package:unilodge/data/models/inbox.dart';
+import 'package:unilodge/data/models/user_profile.dart';
 import 'package:unilodge/presentation/screens/admin/admin_listing_details_screen.dart';
+import 'package:unilodge/presentation/screens/admin/admin_user_dorm_screen.dart';
+import 'package:unilodge/presentation/screens/admin/admin_users_screen.dart';
 import 'package:unilodge/presentation/screens/admin/dashboard.dart';
 import 'package:unilodge/presentation/screens/admin/admin_listings_screen.dart';
 import 'package:unilodge/presentation/screens/admin/status_listing_screen.dart';
@@ -44,6 +47,7 @@ import 'package:unilodge/presentation/screens/onboarding/onboarding_view.dart';
 import 'package:unilodge/presentation/screens/splashscreen/spash_screen.dart';
 
 import 'package:unilodge/data/models/listing.dart';
+import 'package:unilodge/presentation/widgets/admin/your_admin_listing_details.dart';
 import 'package:unilodge/presentation/widgets/listing/tab_bar.dart';
 
 final GoRouter appRouter = GoRouter(
@@ -238,43 +242,44 @@ final GoRouter appRouter = GoRouter(
       path: '/crypto-payment-transaction',
       builder: (context, state) {
         final extras = state.extra as Map<dynamic, dynamic>;
-        return SuccessTransaction(transactionResult: extras['transactionResult'], listing: extras['listing']); 
+        return SuccessTransaction(
+            transactionResult: extras['transactionResult'],
+            listing: extras['listing']);
       },
     ),
- GoRoute(
-  path: '/booking-management',
-  builder: (context, state) {
-    // Fetching the current user profile from ProfileBloc or AuthBloc
-    final profileState = BlocProvider.of<ProfileBloc>(context).state;
-    String username = 'Guest';  // Default to 'Guest' if not logged in
+    GoRoute(
+      path: '/booking-management',
+      builder: (context, state) {
+        // Fetching the current user profile from ProfileBloc or AuthBloc
+        final profileState = BlocProvider.of<ProfileBloc>(context).state;
+        String username = 'Guest'; // Default to 'Guest' if not logged in
 
-    if (profileState is ProfileLoaded) {
-      username = profileState.username;  // Fetch the actual username from profile
-    }
+        if (profileState is ProfileLoaded) {
+          username =
+              profileState.username; // Fetch the actual username from profile
+        }
 
-    // Check if state.extra is null or doesn't contain 'listingId'
-    final extraData = state.extra as Map<String, dynamic>?;  // Safely cast extra to Map
-    if (extraData == null || extraData['listingId'] == null) {
-      return const Scaffold(
-        body: Center(
-          child: Text('Invalid listing or booking data'),
-        ),
-      );
-    }
+        // Check if state.extra is null or doesn't contain 'listingId'
+        final extraData =
+            state.extra as Map<String, dynamic>?; // Safely cast extra to Map
+        if (extraData == null || extraData['listingId'] == null) {
+          return const Scaffold(
+            body: Center(
+              child: Text('Invalid listing or booking data'),
+            ),
+          );
+        }
 
-    // Safely accessing the listingId and other fields
-    final listingId = extraData['listingId'] as String;
+        // Safely accessing the listingId and other fields
+        final listingId = extraData['listingId'] as String;
 
-    // Include the real username in the booking data
-    extraData['userName'] = username;
+        // Include the real username in the booking data
+        extraData['userName'] = username;
 
-    // Pass listingId to BookingManagementWidget
-    return BookingManagementWidget(listingId: listingId);
-  },
-),
-
-
-
+        // Pass listingId to BookingManagementWidget
+        return BookingManagementWidget(listingId: listingId);
+      },
+    ),
 
     GoRoute(
       path: '/change-password/:token',
@@ -294,6 +299,20 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/admin-dashboard',
       builder: (context, state) => const Dashboard(),
+    ),
+    GoRoute(
+      path: '/admin-dashboard-users',
+      builder: (context, state) => const AdminUsersScreen(),
+    ),
+    GoRoute(
+        path: '/admin/user-dorms',
+        builder: (context, state) {
+          return AdminUserDormsScreen(user: state.extra as UserProfileModel);
+        }),
+    GoRoute(
+      path: '/your-admin-listing-detail',
+      builder: (context, state) =>
+          YourAdminListingDetails(listing: state.extra as Listing),
     ),
     GoRoute(
       path: '/admin-dashboard-listings',

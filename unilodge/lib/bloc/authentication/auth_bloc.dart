@@ -2,10 +2,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unilodge/data/sources/auth/auth_repo.dart';
 import 'package:unilodge/bloc/authentication/auth_event.dart';
 import 'package:unilodge/bloc/authentication/auth_state.dart';
-import 'package:unilodge/data/sources/auth/token_controller.dart';
+// import 'package:unilodge/data/sources/auth/token_controller.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final TokenControllerImpl _tokenController = TokenControllerImpl();
+  // final TokenControllerImpl _tokenController = TokenControllerImpl();
   final AuthRepo _authRepo;
 
   AuthBloc(this._authRepo) : super(AuthLoading()) {
@@ -13,13 +13,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       (event, emit) async {
         try {
           emit(AuthLoading());
-          final accessToken = await _authRepo.login(event.user);
+          final result = await _authRepo.login(event.user);
           final isEmailVerified =
-              await _authRepo.checkEmailVerified(accessToken);
+              await _authRepo.checkEmailVerified(result["access_token"]);
           if (isEmailVerified) {
-            emit(LoginSuccess(accessToken));
+            emit(LoginSuccess(result["access_token"], result["is_admin"]));
           } else {
-            emit(EmailNotVerified(accessToken));
+            emit(EmailNotVerified(result["access_token"]));
           }
         } catch (e) {
           emit(const LoginError("Internet Connection Error"));
@@ -87,9 +87,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthenticateTokenEvent>((event, emit) async {
       try {
         emit(AuthLoading());
-        final isAuthenticated = await _authRepo.authenticateToken();
+        final result = await _authRepo.authenticateToken();
+        final isAuthenticated = result["is_authenticated"];
         if (isAuthenticated) {
-          emit(AuthSuccess());
+          emit(AuthSuccess(result["is_admin"]));
         } else {
           emit(AuthFailure());
         }
@@ -114,22 +115,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     );
     on<CheckAuthenticationEvent>((event, emit) async {
       emit(AuthLoading());
-      final accessToken = await _tokenController.getAccessToken();
+      // final accessToken = await _tokenController.getAccessToken();
 
-      if (accessToken.isNotEmpty) {
-        try {
-          final isAuthenticated = await _authRepo.authenticateToken();
-          if (isAuthenticated) {
-            emit(AuthSuccess());
-          } else {
-            emit(AuthFailure());
-          }
-        } catch (e) {
-          emit(AuthFailure());
-        }
-      } else {
-        emit(AuthFailure());
-      }
+      // if (accessToken.isNotEmpty) {
+      //   try {
+      //     final isAuthenticated = await _authRepo.authenticateToken();
+      //     if (isAuthenticated) {
+      //       emit(AuthSuccess());
+      //     } else {
+      //       emit(AuthFailure());
+      //     }
+      //   } catch (e) {
+      //     emit(AuthFailure());
+      //   }
+      // } else {
+      //   emit(AuthFailure());
+      // }
     });
   }
 }

@@ -9,7 +9,14 @@ abstract class AuthState extends Equatable {
 
 class AuthLoading extends AuthState {}
 
-class AuthSuccess extends AuthState {}
+class AuthSuccess extends AuthState {
+  final bool isAdmin;
+
+  const AuthSuccess(this.isAdmin);
+
+  @override
+  List<Object> get props => [isAdmin];
+}
 
 class AuthFailure extends AuthState {}
 
@@ -24,11 +31,12 @@ class SignUpSuccess extends AuthState {
 
 class LoginSuccess extends AuthState {
   final String token;
+  final bool isAdmin;
 
-  const LoginSuccess(this.token);
+  const LoginSuccess(this.token, this.isAdmin);
 
   @override
-  List<Object> get props => [token];
+  List<Object> get props => [token, isAdmin];
 }
 
 class VerifyEmailSuccess extends AuthState {

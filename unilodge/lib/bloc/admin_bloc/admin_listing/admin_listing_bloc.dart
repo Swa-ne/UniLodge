@@ -7,14 +7,32 @@ class AdminBloc extends Bloc<AdminListingEvent, AdminListingState> {
   final AdminListingRepository _listingRepository;
 
   AdminBloc(this._listingRepository) : super(ListingLoading()) {
-
     on<FetchListings>((event, emit) async {
       try {
         emit(ListingLoading());
         final listings = await _listingRepository.adminFetchListings();
         emit(ListingLoaded(listings));
       } catch (e) {
-        emit(ListingError("Internet Connection Error"));
+        emit(const ListingError("Internet Connection Error"));
+      }
+    });
+    on<FetchUserListings>((event, emit) async {
+      try {
+        emit(ListingLoading());
+        final listings =
+            await _listingRepository.adminFetchUserListings(event.user_id);
+        emit(ListingUserLoaded(listings));
+      } catch (e) {
+        emit(const ListingUserError("Internet Connection Error"));
+      }
+    });
+    on<FetchUsers>((event, emit) async {
+      try {
+        emit(ListingLoading());
+        final user = await _listingRepository.adminFetchUsers();
+        emit(UsersLoaded(user));
+      } catch (e) {
+        emit(const UsersError("Internet Connection Error"));
       }
     });
 

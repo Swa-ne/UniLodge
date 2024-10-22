@@ -103,18 +103,6 @@ class Settings extends StatelessWidget {
                       _showLogoutConfirmation(context);
                     },
                   ),
-                  // TODO: to remove
-                  ListTile(
-                    leading: const Icon(Icons.lock, color: AppColors.textColor),
-                    title: const CustomText(
-                      text: 'Go to Admin page',
-                      fontSize: 16,
-                      color: AppColors.textColor,
-                    ),
-                    onTap: () {
-                      context.push('/admin-dashboard');
-                    },
-                  ),
                 ],
               ),
             ),

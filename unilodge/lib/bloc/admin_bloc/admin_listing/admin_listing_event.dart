@@ -9,6 +9,16 @@ abstract class AdminListingEvent extends Equatable {
 
 class FetchListings extends AdminListingEvent {}
 
+class FetchUserListings extends AdminListingEvent {
+  final String user_id;
+
+  const FetchUserListings(this.user_id);
+  @override
+  List<Object> get props => [user_id];
+}
+
+class FetchUsers extends AdminListingEvent {}
+
 class FetchAllDormsByStatus extends AdminListingEvent {
   final String listingStatus;
 
