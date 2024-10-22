@@ -48,35 +48,59 @@ class BookingRepositoryImpl implements BookingRepository {
     }
   }
 
-  @override
-  Future<List<BookingHistory>> getBookingsOfUser() async {
-    final access_token = await _tokenController.getAccessToken();
-    final refresh_token = await _tokenController.getRefreshToken();
+ @override
+Future<List<BookingHistory>> getBookingsOfUser() async {
+  final access_token = await _tokenController.getAccessToken();
+  final refresh_token = await _tokenController.getRefreshToken();
 
-    try {
-      final response = await http.get(
-        Uri.parse('$_apiUrl/booking-history'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': access_token,
-          'Cookie': 'refresh_token=$refresh_token',
-        },
-      );
+  try {
+    final response = await http.get(
+      Uri.parse('$_apiUrl/booking-history'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': access_token,
+        'Cookie': 'refresh_token=$refresh_token',
+      },
+    );
 
-      if (response.statusCode == 200) {
-        List<dynamic> data = jsonDecode(response.body)["message"];
-        return data
-            .map((listingData) => BookingHistory.fromJson(listingData))
-            .toList();
-      } else {
-        throw Exception('Failed to load booking: ${response.statusCode}');
+    if (response.statusCode == 200) {
+      print('Response statussssessssss: ${response.statusCode}');
+      print('Response body: ${response.body}');
+      List<dynamic> jsonResponse = jsonDecode(response.body)["message"];
+
+    
+      List<BookingHistory> bookings = [];
+      try {
+        bookings = jsonResponse.map((json) {
+          try {
+            if (json['listing_id'] != null) {
+              return BookingHistory.fromJson(json);
+            } else {
+              print('Skipping entry due to missing listing information: $json');
+              return null;
+            }
+          } catch (e) {
+            print('Error parsing booking entry: $e');
+            return null;
+          }
+        }).whereType<BookingHistory>().toList(); 
+      } catch (e) {
+        print('Error parsing bookings: $e');
       }
-    } catch (e) {
-      print('Error fetching booking by ID: $e');
-      throw Exception('Error fetching booking by ID: $e');
+      return bookings;
+    } else {
+      throw Exception('Failed to load bookings: ${response.statusCode}');
     }
+  } catch (e) {
+    print('Error fetching bookings by user: $e');
+    throw Exception('Failed to fetch bookings');
   }
+}
+
+
+
+
 
   @override
   Future<List<Booking>> getBookingsForListing(String listingId) async {

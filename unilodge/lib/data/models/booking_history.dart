@@ -13,6 +13,11 @@ class BookingHistory extends Equatable {
   });
 
   factory BookingHistory.fromJson(Map<String, dynamic> json) {
+    // Check if 'listing_id' is not null
+    if (json['listing_id'] == null) {
+      throw ArgumentError('Missing listing information in booking history');
+    }
+
     return BookingHistory(
       listing: Listing.fromJson(json['listing_id']),
       status: json['status'],
