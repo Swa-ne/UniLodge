@@ -36,4 +36,9 @@ class AppImages {
   static const String homeeIcon = '${basePath}navIcons/homee$pngformat';
   static const String listingIcon = '${basePath}navIcons/listings$pngformat';
   static const String messageIcon = '${basePath}navIcons/message$pngformat';
+
+  static const String favoriteUnselectedIcon = '${basePath}navIcons/favoriteUnselected$pngformat';
+  static const String homeUnselectedIcon = '${basePath}navIcons/homeUnselected$pngformat';
+  static const String listingUnselectedIcon = '${basePath}navIcons/listingsUnselected$pngformat';
+  static const String messageUnselectedIcon = '${basePath}navIcons/messageUnselected$pngformat';
 }
