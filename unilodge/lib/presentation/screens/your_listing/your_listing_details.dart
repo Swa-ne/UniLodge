@@ -8,7 +8,7 @@ import 'package:unilodge/bloc/booking_bloc/booking_event.dart';
 import 'package:unilodge/bloc/listing/listing_bloc.dart';
 import 'package:unilodge/bloc/listing/listing_event.dart';
 import 'package:unilodge/bloc/listing/listing_state.dart';
-import 'package:unilodge/bloc/booking_bloc/booking_bloc.dart'; // Import BookingBloc
+import 'package:unilodge/bloc/booking_bloc/booking_bloc.dart'; 
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
 import 'package:unilodge/presentation/widgets/home/price_text.dart';
@@ -45,7 +45,7 @@ class _YourListingDetailsState extends State<YourListingDetails> {
   @override
   Widget build(BuildContext context) {
     final listingBloc = BlocProvider.of<ListingBloc>(context);
-    final bookingBloc = BlocProvider.of<BookingBloc>(context);
+    // final bookingBloc = BlocProvider.of<BookingBloc>(context);
 
     return BlocListener<ListingBloc, ListingState>(
       listener: (context, state) {

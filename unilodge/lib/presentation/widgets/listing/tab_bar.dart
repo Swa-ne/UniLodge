@@ -138,17 +138,20 @@ class BookingManagementWidget extends StatelessWidget {
       itemCount: bookings.length,
       itemBuilder: (context, index) {
         final booking = bookings[index];
+        final bool showApproveButton = booking.status == 'Pending';
+         final bool showRejectButton = booking.status == 'Pending';
+
         return BookingCard(
           propertyType: booking.propertyType,
           userName: booking.userId.full_name.toString(),
           price: booking.price.toString(),
           status: booking.status,
-          onApprove: onApprove != null
-              ? () => onApprove(booking.id)
-              : null, // Approve button is only enabled when applicable
-          onReject: onReject != null
-              ? () => onReject(booking.id)
-              : null, // Reject button is only enabled when applicable
+           onApprove: showApproveButton && onApprove != null
+            ? () => onApprove(booking.id)
+            : null, 
+        onReject: showRejectButton && onReject != null
+            ? () => onReject(booking.id)
+            : null, 
         );
       },
     );

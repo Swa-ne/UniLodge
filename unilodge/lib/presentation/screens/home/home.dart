@@ -13,6 +13,7 @@ import 'package:unilodge/data/sources/chat/socket_controller.dart';
 import 'package:unilodge/presentation/widgets/home/custom_drawer.dart';
 import 'package:unilodge/presentation/widgets/home/listing_cards.dart';
 import 'package:unilodge/presentation/widgets/home/type_cards.dart';
+import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -47,16 +48,19 @@ class _HomeState extends State<Home> {
       drawer: const CustomDrawer(),
       body: BlocBuilder<RenterBloc, RenterState>(
         builder: (context, state) {
-          return RefreshIndicator(
+          return LiquidPullToRefresh(
             onRefresh: _refreshDorms,
+            color: AppColors.primary,
+            height: 80,
+            animSpeedFactor: 2,
+            showChildOpacityTransition: false,
             child: CustomScrollView(
               slivers: [
                 const SliverAppBar(
                   backgroundColor: AppColors.lightBackground,
                   pinned: true,
                   floating: true,
-                  expandedHeight:
-                      70, 
+                  expandedHeight: 70,
                   flexibleSpace: FlexibleSpaceBar(
                     background: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16.0),
@@ -97,8 +101,7 @@ class _HomeState extends State<Home> {
                           Align(
                             alignment: Alignment.topCenter,
                             child: Padding(
-                              padding:
-                                  EdgeInsets.symmetric(vertical: 8.0),
+                              padding: EdgeInsets.symmetric(vertical: 8.0),
                               child: Text(
                                 'UniLodge',
                                 style: TextStyle(

@@ -8,7 +8,7 @@ class BookedListings extends StatefulWidget {
   @override
   State<BookedListings> createState() => _BookedListingsState();
 }
-
+  
 class _BookedListingsState extends State<BookedListings> {
   ReownAppKitModal? _appKitModal;
   String walletAddress = 'No Address';

@@ -6,7 +6,7 @@ class BookingCard extends StatelessWidget {
   final String price;
   final VoidCallback? onApprove;
   final VoidCallback? onReject;
-  final String status; // Added status field to display 'Paid', 'Pending', etc.
+  final String status;
 
   const BookingCard({
     super.key,
@@ -15,7 +15,7 @@ class BookingCard extends StatelessWidget {
     required this.price,
     this.onApprove,
     this.onReject,
-    required this.status, // Require status in the constructor
+    required this.status,
   });
 
   @override
@@ -50,7 +50,7 @@ class BookingCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    if (onApprove != null)
+                    if (onApprove != null && status != 'Rejected')
                       ElevatedButton(
                         onPressed: onApprove,
                         style: ElevatedButton.styleFrom(
@@ -60,7 +60,7 @@ class BookingCard extends StatelessWidget {
                         child: const Text('Approve'),
                       ),
                     const SizedBox(width: 8),
-                    if (onReject != null)
+                    if (onReject != null && status != 'Rejected')
                       ElevatedButton(
                         onPressed: onReject,
                         style: ElevatedButton.styleFrom(
@@ -76,7 +76,7 @@ class BookingCard extends StatelessWidget {
           ),
         ),
 
-        // Displaying status badge (Paid, Pending, etc.)
+       
         if (status.isNotEmpty)
           Positioned(
             top: 15,
@@ -88,7 +88,7 @@ class BookingCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20.0),
               ),
               child: Text(
-                status,
+                _getStatusText(status), 
                 style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -100,19 +100,25 @@ class BookingCard extends StatelessWidget {
     );
   }
 
-  // Method to handle various statuses and assign colors
+ 
+  String _getStatusText(String status) {
+    if (status == 'Accepted') {
+      return 'Approved'; 
+    }
+    return status; 
+  }
+
+
   Color _getStatusColor(String status) {
     switch (status) {
-      case 'Paid':
-        return Colors.green;
+      // case 'Paid':
+      //   return const Color.fromARGB(255, 76, 175, 80);
       case 'Rejected':
-        return Colors.red;
+        return const Color.fromARGB(255, 224, 120, 120);
       case 'Pending':
         return Colors.orange;
-      case 'Approved':
-        return Colors.blue;
       default:
-        return Colors.grey; // Default case for unknown statuses
+        return const Color.fromARGB(255, 117, 206, 163);
     }
   }
 }
