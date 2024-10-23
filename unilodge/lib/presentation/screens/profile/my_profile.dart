@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:unilodge/bloc/my_profile/my_profile_bloc.dart';
 import 'package:unilodge/bloc/my_profile/my_profile_event.dart';
 import 'package:unilodge/bloc/my_profile/my_profile_state.dart';
+import 'package:unilodge/common/widgets/custom_loading.dart';
 import 'package:unilodge/common/widgets/custom_text.dart';
 import 'package:unilodge/common/widgets/shimmer_loading.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
@@ -74,6 +75,7 @@ class _MyProfileState extends State<MyProfile> {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text(state.message)),
               );
+              Navigator.of(context).pop();
             }
           },
           child: BlocBuilder<ProfileBloc, ProfileState>(
@@ -138,7 +140,7 @@ class _MyProfileState extends State<MyProfile> {
                       ),
                       const SizedBox(height: 30),
                       EditableTextField(
-                        label: 'Name',
+                        label: 'Username',
                         controller: _usernameController,
                         value: state.username,
                       ),
@@ -173,7 +175,7 @@ class _MyProfileState extends State<MyProfile> {
                                 : state.profilePictureUrl;
                             bool isUsernameChanged =
                                 _usernameController.text != state.username;
-                            print("profileeee: $updatedProfilePictureUrl");
+                            // print("profileeee: $updatedProfilePictureUrl");
                             context.read<ProfileBloc>().add(SaveProfile(
                                   username: isUsernameChanged
                                       ? _usernameController.text
@@ -198,16 +200,16 @@ class _MyProfileState extends State<MyProfile> {
                     ],
                   ),
                 );
-              } else if (state is ProfileError) {
-                return Center(
-                  child: CustomText(
-                    text: state.message,
-                    color: Colors.red,
-                    fontSize: 16,
-                  ),
-                );
+              // } else if (state is ProfileError) {
+              //   return Center(
+              //     child: CustomText(
+              //       text: state.message,
+              //       color: Colors.red,
+              //       fontSize: 16,
+              //     ),
+              //   );
               } else {
-                return const Center(child: Text('Unknown state'));
+                return const Center(child: CustomLoading());
               }
             },
           ),

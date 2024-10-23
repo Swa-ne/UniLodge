@@ -16,7 +16,7 @@ class FetchAllDorms extends RenterEvent {}
 class FetchAllDormsByType extends RenterEvent {
   final String listingType;
 
-  FetchAllDormsByType(this.listingType);
+  const FetchAllDormsByType(this.listingType);
   @override
   List<Object> get props => [listingType];
 }
