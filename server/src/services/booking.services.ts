@@ -84,7 +84,6 @@ export const getBookingHistory = async (user_id: string): Promise<CustomResponse
       }],
     }).exec();
     // const listings = bookings.map((booking) => booking.listing_id);
-    console.log(bookings)
     return { message: bookings, httpCode: 200 };  // Now this works, because message can be an array
   } catch (error) {
     console.error("Error fetching bookings for listing:", error);

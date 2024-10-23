@@ -15,7 +15,6 @@ interface AuthenticatedRequest extends Request {
 export async function authenticateToken(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     try {
         const token = req.headers['authorization'];
-        console.log("con1", token)
         if (token == null) return res.status(401).json({ error: 'Unauthorized' });
 
         const user = verify(token, process.env.ACCESS_TOKEN_SECRET as string) as UserType;
@@ -48,14 +47,12 @@ export async function authenticateToken(req: AuthenticatedRequest, res: Response
                     };
                     next();
                 } else {
-                    console.log("con2", user)
                     return res.status(401).json({ error: 'Unauthorized' });
                 }
             } catch (error) {
                 return res.status(401).json({ error: 'Refresh token is invalid or expired' });
             }
         } else {
-            console.log("con3", err)
             return res.status(401).json({ error: 'Unauthorized' });
         }
     }
