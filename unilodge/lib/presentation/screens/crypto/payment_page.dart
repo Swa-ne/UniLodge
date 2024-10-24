@@ -476,7 +476,7 @@ class _PaymentPageState extends State<PaymentPage> {
                 PaymentDetails(listing: widget.bookingHistory.listing),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: SendPaymentCrypto(
+                  child: CustomButton(
                     text: 'Send Payment',
                     onPressed: appKit?.isConnected == true
                         ? () async {

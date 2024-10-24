@@ -17,7 +17,7 @@ class BookedCard extends StatelessWidget {
       padding: const EdgeInsets.only(top: 10, right: 10, left: 10),
       child: GestureDetector(
         onTap: () async {
-          context.push('/booking-details', extra: listing);
+          context.push('/listing-detail', extra: listing);
         },
         child: Container(
           height: 150,
@@ -74,13 +74,39 @@ class BookedCard extends StatelessWidget {
                         maxLines: 1,
                       ),
                       const SizedBox(height: 5),
-                      Text(
-                        listing.price != null
-                            ? 'ETH ${listing.price!}'
-                            : 'N/A',
-                        style: TextStyle(color: AppColors.textColor),
+                      Row(
+                        children: [
+                          Text(
+                            listing.price != null
+                                ? 'ETH ${listing.price!}'
+                                : 'N/A',
+                            style: TextStyle(color: AppColors.textColor),
+                          ),
+                        ],
                       ),
-                      
+                      const Spacer(),
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: listing.isAvailable!
+                                ? AppColors.greenActive
+                                : AppColors.redInactive,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Text(
+                              listing.isAvailable!
+                                  ? "Available"
+                                  : "Unavailable",
+                              style: const TextStyle(
+                                color: AppColors.lightBackground,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),

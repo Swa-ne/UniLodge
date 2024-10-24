@@ -11,8 +11,7 @@ class MyTimelineTile extends StatelessWidget {
       required this.isLast,
       required this.isPast,
       required this.child,
-      required this.Icon
-      });
+      required this.Icon});
 
   final String listingStatus;
   final bool isFirst;
@@ -30,12 +29,12 @@ class MyTimelineTile extends StatelessWidget {
             isFirst: isFirst,
             isLast: isLast,
             beforeLineStyle:
-                LineStyle(color: const Color.fromARGB(85, 67, 67, 67)),
+                LineStyle(color: AppColors.primary.withOpacity(0.6)),
             indicatorStyle: IndicatorStyle(
-                width: 35,
+                width: 37,
                 color: AppColors.lightBackground,
-                iconStyle:
-                    IconStyle(iconData: Icon, color: AppColors.primary)),
+                iconStyle: IconStyle(
+                    iconData: Icon, color: AppColors.primary, fontSize: 22)),
             endChild: TimelineCard(
               child: child,
             ),
