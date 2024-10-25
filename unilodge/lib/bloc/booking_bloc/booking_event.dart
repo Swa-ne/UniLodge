@@ -36,6 +36,15 @@ class RejectBookingEvent extends BookingEvent {
   List<Object> get props => [bookingId];
 }
 
+class PayBookingEvent extends BookingEvent {
+  final String bookingId;
+
+  const PayBookingEvent(this.bookingId);
+
+  @override
+  List<Object> get props => [bookingId];
+}
+
 class CreateBookingEvent extends BookingEvent {
   final Map<String, dynamic> bookingData;
 

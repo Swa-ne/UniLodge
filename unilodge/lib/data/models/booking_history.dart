@@ -2,11 +2,13 @@ import 'package:equatable/equatable.dart';
 import 'package:unilodge/data/models/listing.dart';
 
 class BookingHistory extends Equatable {
+  final String? id;
   final Listing listing;
   final String status;
   final String createdAt;
 
   const BookingHistory({
+    this.id,
     required this.listing,
     required this.status,
     required this.createdAt,
@@ -19,6 +21,7 @@ class BookingHistory extends Equatable {
     }
 
     return BookingHistory(
+      id: json['_id'],
       listing: Listing.fromJson(json['listing_id']),
       status: json['status'],
       createdAt: json['createdAt'],

@@ -76,9 +76,25 @@ class _ListingsState extends State<Listings> {
             );
             
           } else if (state is ListingError) {
-            return ErrorMessage(errorMessage: state.message);
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ErrorMessage(errorMessage: state.message),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      _listingBloc.add(FetchListings());
+                    },
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            );
           } else {
-            return const Center(child: Text('No listings found.'));
+            return const Center(
+              child: Text('No listings found.'),
+            );
           }
         },
       ),

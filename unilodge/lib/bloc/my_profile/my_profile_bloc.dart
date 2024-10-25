@@ -33,7 +33,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       try {
         final updatedUser = UserProfileModel(
           firstName: event.firstName,
-          middleName: '',
+          middleName: event.middleName,
           lastName: event.lastName,
           username: event.username,
           fullName: event.fullName,
@@ -43,16 +43,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         );
 
         await userRepository.updateUserProfile(updatedUser);
-        emit(ProfileLoaded(
-          firstName: updatedUser.firstName,
-          middleName: updatedUser.middleName,
-          lastName: updatedUser.lastName,
-          username: updatedUser.username,
-          fullName: updatedUser.fullName,
-          profilePictureUrl: updatedUser.profilePictureUrl,
-          personalEmail: updatedUser.personalEmail,
-          birthday: updatedUser.birthday,
-        ));
+        add(LoadProfile());
       } catch (e) {
         emit(const ProfileError('Failed to save profile'));
       }

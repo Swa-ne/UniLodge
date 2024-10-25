@@ -93,17 +93,33 @@ class ListingCards extends StatelessWidget {
                                 fontSize: 16,
                               ),
                             ),
-                            
                           ],
                         ),
                         const SizedBox(height: 10),
-                        Text(
-                          listing.adddress,
-                          style: const TextStyle(color: AppColors.textColor),
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.location_on, 
+                              color:
+                                  AppColors.textColor, 
+                              size: 16, 
+                            ),
+                            const SizedBox(
+                                width: 4),
+                            Expanded(
+                              child: Text(
+                                listing.adddress,
+                                style:
+                                    const TextStyle(color: AppColors.textColor),
+                                overflow:
+                                    TextOverflow.ellipsis, 
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ),
+                  )
                 ],
               ),
               subtitle: Padding(

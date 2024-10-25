@@ -71,6 +71,15 @@ class BookingRejected extends BookingState {
   List<Object> get props => [bookingId];
 }
 
+class BookingPaid extends BookingState {
+  final String bookingId;
+
+  const BookingPaid(this.bookingId);
+
+  @override
+  List<Object> get props => [bookingId];
+}
+
 class BookingCreated extends BookingState {}
 
 class BookingError extends BookingState {

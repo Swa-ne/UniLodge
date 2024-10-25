@@ -72,11 +72,11 @@ class RenterBloc extends Bloc<RenterEvent, RenterState> {
     on<FetchSavedDorms>((event, emit) async {
       emit(DormsLoading());
       try {
-        print('Fetching saved dorms...'); 
+        print('Fetching saved dorms...');
         // emit(DormsLoading());
         
         final savedDorms= await renterRepository.fetchSavedDorms();
-         print('Fetched savedsdsds dorms: ${savedDorms.length} items'); // Debugging
+        print('Fetched savedsdsds dorms: ${savedDorms.length} items'); 
 
         // emit(DormsLoaded(savedDorms));
         emit(SavedDormsLoaded(savedDorms));
@@ -87,9 +87,9 @@ class RenterBloc extends Bloc<RenterEvent, RenterState> {
     });
 
     on<SaveDorm>((event, emit) async {
-      // emit(DormSaving());
+      emit(DormSaving());
       try {
-        emit(DormSaving());
+        // emit(DormSaving());
         await renterRepository.saveDorm(event.dormId);
         emit(const DormSaved("Dorm saved successfully!"));
         add(FetchSavedDorms());
@@ -99,11 +99,11 @@ class RenterBloc extends Bloc<RenterEvent, RenterState> {
     });
 
     on<DeleteSavedDorm>((event, emit) async {
-      // emit(DormSaving());
+      emit(DormSaving());
       try {
-        emit(DormSaving());
+        // emit(DormSaving());
         await renterRepository.deleteSavedDorm(event.dormId);
-        emit(const DormSaved("Dorm removed from saved list!"));
+        emit(const DormUnsaved("Dorm removed successfully!"));
         add(FetchSavedDorms());
       } catch (e) {
         emit(DormSaveError(e.toString()));

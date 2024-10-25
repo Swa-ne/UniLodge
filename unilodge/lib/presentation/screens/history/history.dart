@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:unilodge/bloc/booking_bloc/booking_bloc.dart';
 import 'package:unilodge/bloc/booking_bloc/booking_event.dart';
 import 'package:unilodge/bloc/booking_bloc/booking_state.dart';
+import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/booking_history.dart';
 
 class History extends StatefulWidget {
@@ -18,13 +20,13 @@ class _HistoryState extends State<History> with SingleTickerProviderStateMixin {
   Color getStatusColor(String? status) {
     switch (status) {
       case 'pending':
-        return Colors.yellow;
+        return AppColors.pending;
       case 'accepted':
-        return Colors.green;
+        return AppColors.greenActive;
       case 'rejected':
-        return Colors.red;
+        return AppColors.redInactive;
       default:
-        return Colors.black;
+        return AppColors.primary.withOpacity(0.3);
     }
   }
 
@@ -49,8 +51,7 @@ class _HistoryState extends State<History> with SingleTickerProviderStateMixin {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Booking History'),
-          centerTitle: true,
+          title: const Text('Booking history'),
           bottom: TabBar(
             controller: _tabController,
             isScrollable: true,
@@ -58,7 +59,7 @@ class _HistoryState extends State<History> with SingleTickerProviderStateMixin {
               Tab(text: 'All'),
               Tab(text: 'Pending'),
               Tab(text: 'Accepted'),
-              Tab(text: 'Rejected'),
+              Tab(text: 'Rejected'), // TODO: create tabs for paid and cancelled
             ],
           ),
         ),
@@ -88,95 +89,123 @@ class _HistoryState extends State<History> with SingleTickerProviderStateMixin {
       itemCount: filteredListings.length,
       itemBuilder: (context, index) {
         final listing = filteredListings[index];
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Status indicator
-              Column(
-                children: [
-                  Container(
-                    width: 12,
-                    height: 12,
-                    decoration: BoxDecoration(
-                      color: getStatusColor(listing.status),
-                      shape: BoxShape.circle,
-                    ),
+        return GestureDetector(
+          onTap: () {
+            context.push('/booking-details', extra: listing);
+          },
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
+            child: Container(
+              height: 120,
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 255, 255, 255),
+                borderRadius: BorderRadius.all(Radius.circular(10)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color.fromARGB(43, 99, 100, 100),
+                    offset: Offset(0, 2),
+                    blurRadius: 8,
                   ),
-                  if (index != filteredListings.length - 1)
-                    Container(
-                      width: 2,
-                      height: 40,
-                      color: Colors.grey.shade400,
-                    ),
                 ],
               ),
-              const SizedBox(width: 12),
-              // Booking details
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      listing.listing.property_name ?? 'No Name',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    children: [
+                      Container(
+                        width: 12,
+                        height: 12,
+                        decoration: BoxDecoration(
+                          color: getStatusColor(listing.status.toLowerCase()),
+                          shape: BoxShape.circle,
+                        ),
                       ),
+                    ],
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          listing.listing.property_name ?? 'No Name',
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                              color: AppColors.primary),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          listing.listing.adddress,
+                          style: const TextStyle(
+                              fontSize: 14,
+                              color: AppColors.textColor,
+                              overflow: TextOverflow.ellipsis),
+                        ),
+                        Text(
+                            'Booked: ${DateTime.parse(listing.createdAt).toLocal().toShortDateString()} ${DateTime.parse(listing.createdAt).toLocal().toShortTimeString()}',
+                            style: const TextStyle(
+                                fontSize: 14, color: AppColors.textColor)),
+                        Text(
+                          'Price: ${listing.listing.price}',
+                          style: const TextStyle(
+                              fontSize: 14, color: AppColors.textColor),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '${listing.listing.address ?? 'No Address'}\nBook: ${DateTime.parse(listing.createdAt).toLocal().toShortDateString()}\nPrice: ${listing.listing.price}',
-                      style: const TextStyle(
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+
+                  const SizedBox(width: 12),
+                  // action buttons based on status
+                  if (listing.status == 'Accepted')
+                    _buildActionButton('Pay now', AppColors.primary, () {
+                      context.push('/crypto-payment', extra: listing);
+
+                      print(
+                          "Proceed to payment for ${listing.listing.property_name}");
+                    }),
+                  if (listing.status == 'Rejected')
+                    _buildActionButton('Book Again', Colors.grey, () {
+                      context.push('/listing-detail', extra: listing.listing);
+                      print(
+                          "Attempt to re-book ${listing.listing.property_name}");
+                    }),
+                ],
               ),
-              // time
-              Text(
-                DateTime.parse(listing.createdAt).toLocal().toShortTimeString(),
-                style: const TextStyle(fontSize: 14),
-              ),
-              const SizedBox(width: 12),
-              // action buttons based on status
-              if (listing.status == 'Accepted')
-                _buildActionButton('To Pay', Colors.blue, () {
-                  context.push('/crypto-payment', extra: listing.listing);
-                  print(
-                      "Proceed to payment for ${listing.listing.property_name}");
-                }),
-              if (listing.status == 'Rejected')
-                _buildActionButton('Book Again', Colors.grey, () {
-                  context.push('/listing-detail', extra: listing.listing);
-                  print("Attempt to re-book ${listing.listing.property_name}");
-                }),
-            ],
+            ),
           ),
         );
       },
     );
   }
 
-  // filter Listings based on status
   List<BookingHistory> _getFilteredListings(String status) {
+    List<BookingHistory> filteredListings;
+
     if (status == 'all') {
-      return listings;
+      filteredListings = listings;
     } else {
-      return listings
+      filteredListings = listings
           .where((listing) => listing.status.toLowerCase() == status)
           .toList();
     }
+
+    filteredListings.sort((a, b) =>
+        DateTime.parse(b.createdAt).compareTo(DateTime.parse(a.createdAt)));
+
+    return filteredListings;
   }
 
-  // action button widget
   Widget _buildActionButton(String text, Color color, VoidCallback onPressed) {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: color,
+        foregroundColor: AppColors.lightBackground,
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
@@ -195,10 +224,10 @@ class _HistoryState extends State<History> with SingleTickerProviderStateMixin {
 
 extension DateTimeExtension on DateTime {
   String toShortDateString() {
-    return '$day/$month/$year';
+    return DateFormat('MMMM d').format(this); // e.g., "January 24"
   }
 
   String toShortTimeString() {
-    return '$hour:${minute.toString().padLeft(2, '0')}';
+    return DateFormat.jm().format(this); // e.g., "2:30 PM"
   }
 }

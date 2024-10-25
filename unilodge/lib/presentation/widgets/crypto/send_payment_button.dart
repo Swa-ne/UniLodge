@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 
-class SendPaymentCrypto extends StatelessWidget {
+class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback? onPressed;
   final Color backgroundColor;
@@ -10,7 +10,7 @@ class SendPaymentCrypto extends StatelessWidget {
   final double paddingVertical;
   final double height;
 
-  const SendPaymentCrypto({
+  const CustomButton({
     super.key,
     required this.text,
     required this.onPressed,

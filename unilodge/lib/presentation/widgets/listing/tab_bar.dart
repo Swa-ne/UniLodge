@@ -39,6 +39,7 @@ class BookingManagementWidget extends StatelessWidget {
                 Tab(icon: Icon(Icons.pending), text: 'Pending'),
                 Tab(icon: Icon(Icons.check_circle), text: 'Approved'),
                 Tab(icon: Icon(Icons.cancel), text: 'Rejected'),
+                // TODO: add Paid section
               ],
             ),
             SizedBox(

@@ -17,7 +17,7 @@ class TypeListingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => RenterBloc(renterRepository: RenterRepositoryImpl())
-        ..add(FetchAllDormsByType(listingType)),
+        ..add(FetchAllDormsByType(listingType)), // Initial fetch
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -28,44 +28,53 @@ class TypeListingScreen extends StatelessWidget {
             color: AppColors.primary,
           ),
         ),
-        body: BlocBuilder<RenterBloc, RenterState>(
-          builder: (context, state) {
-            if (state is DormsLoading) {
-              return const Center(child: ShimmerLoading());
-            } else if (state is DormsError) {
-              return Center(
-                child: CustomText(
-                  text: state.message,
-                  fontSize: 18,
-                  color: Colors.red,
-                ),
-              );
-            } else if (state is DormsLoaded) {
-              final listings = state.allDorms;
-              if (listings.isEmpty) {
-                return const NoListingPlaceholder();
-              }
-
-              return ListView.builder(
-                itemCount: listings.length,
-                itemBuilder: (context, index) {
-                  final listing = listings[index];
-                  return Column(
-                    children: [
-                      ListingCards(
-                        listing: listing,
-                      ),
-                      const Divider(
-                        height: 30,
-                        color: Color.fromARGB(255, 223, 223, 223),
-                      ),
-                    ],
-                  );
-                },
-              );
+        body: BlocListener<RenterBloc, RenterState>(
+          listener: (context, state) {
+            // Listen for state changes that require re-fetching
+            if (state is DormSaved || state is DormUnsaved) {
+              // Re-fetch dorms after save/delete actions
+              context.read<RenterBloc>().add(FetchAllDormsByType(listingType));
             }
-            return const SizedBox.shrink();
           },
+          child: BlocBuilder<RenterBloc, RenterState>(
+            builder: (context, state) {
+              if (state is DormsLoading) {
+                return const Center(child: ShimmerLoading());
+              } else if (state is DormsError) {
+                return Center(
+                  child: CustomText(
+                    text: state.message,
+                    fontSize: 18,
+                    color: Colors.red,
+                  ),
+                );
+              } else if (state is DormsLoaded) {
+                final listings = state.allDorms; 
+                if (listings.isEmpty) {
+                  return const NoListingPlaceholder();
+                }
+
+                return ListView.builder(
+                  itemCount: listings.length,
+                  itemBuilder: (context, index) {
+                    final listing = listings[index];
+                    return Column(
+                      children: [
+                        ListingCards(
+                          listing: listing,
+                        ),
+                        const Divider(
+                          height: 30,
+                          color: Color.fromARGB(255, 223, 223, 223),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
+              return const SizedBox.shrink();
+            },
+          ),
         ),
       ),
     );
