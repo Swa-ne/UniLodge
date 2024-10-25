@@ -441,26 +441,24 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                     flex: 7,
                     child: CustomButton(
                       text: "Book now & pay",
-                      // onPressed: isBooked
-                      //     ? null
-                      //     : () {
-                      //         context.push('/crypto-payment',
-                      //             extra: widget.listing);
-                      //       },
-                      onPressed: () {
-                        final bookingData = {
-                          'listing_id': widget.listing.id,
-                          'propertyType': widget.listing.selectedPropertyType,
-                          'userName': widget.listing.id,
-                          'price': widget.listing.price ?? 0,
-                          'status': 'Pending'
-                        };
-                        context.push('/history', extra: widget.listing);
-                        BlocProvider.of<BookingBloc>(context)
-                            .add(CreateBookingEvent(bookingData));
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text("bOOKING CREATED")));
-                      },
+                      onPressed: isBooked
+                          ? null
+                          : () {
+                              final bookingData = {
+                                'listing_id': widget.listing.id,
+                                'propertyType':
+                                    widget.listing.selectedPropertyType,
+                                'userName': widget.listing.id,
+                                'price': widget.listing.price ?? 0,
+                                'status': 'Pending'
+                              };
+                              context.push('/history', extra: widget.listing);
+                              BlocProvider.of<BookingBloc>(context)
+                                  .add(CreateBookingEvent(bookingData));
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text("bOOKING CREATED")));
+                            },
                     ),
                   ),
                   const SizedBox(width: 15),
