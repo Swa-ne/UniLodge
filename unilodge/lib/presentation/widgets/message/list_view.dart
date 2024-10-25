@@ -141,6 +141,10 @@ class _MessagesListViewState extends State<MessagesListView>
                                     text: ibx.last_message?.message ?? "",
                                     color: AppColors.formTextColor,
                                     fontSize: 15,
+                                    // fontWeight:
+                                    //     ibx.last_message?.is_read == false
+                                    //         ? FontWeight.bold
+                                    //         : FontWeight.normal,
                                   ),
                                 ],
                               ),

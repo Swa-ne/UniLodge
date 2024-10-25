@@ -7,7 +7,6 @@ import 'package:unilodge/bloc/chat/chat_event.dart';
 import 'package:unilodge/common/widgets/custom_button.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/booking_history.dart';
-import 'package:unilodge/presentation/widgets/crypto/payment_details.dart';
 import 'package:unilodge/presentation/widgets/history/booked_listing_details.dart';
 import 'package:unilodge/presentation/widgets/history/my_timeline_tile.dart';
 
