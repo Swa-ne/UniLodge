@@ -128,3 +128,15 @@ class CheckIfBookedError extends BookingState {
   @override
   List<Object> get props => [errorMessage];
 }
+
+
+//For cancel dorm booking
+class BookingCancelled extends BookingState {
+  final String bookingId;
+
+  const BookingCancelled(this.bookingId);
+
+  @override
+  List<Object> get props => [bookingId];
+}
+

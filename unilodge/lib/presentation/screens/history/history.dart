@@ -33,7 +33,7 @@ class _HistoryState extends State<History> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 6, vsync: this);
     BlocProvider.of<BookingBloc>(context).add(GetBookingsOfUserEvent());
   }
 
@@ -59,7 +59,9 @@ class _HistoryState extends State<History> with SingleTickerProviderStateMixin {
               Tab(text: 'All'),
               Tab(text: 'Pending'),
               Tab(text: 'Accepted'),
-              Tab(text: 'Rejected'), // TODO: create tabs for paid and cancelled
+              Tab(text: 'Rejected'),
+              Tab(text: 'Cancelled'),
+              Tab(text: 'Paid'), 
             ],
           ),
         ),
@@ -70,6 +72,8 @@ class _HistoryState extends State<History> with SingleTickerProviderStateMixin {
             _buildListingTab('pending'),
             _buildListingTab('accepted'),
             _buildListingTab('rejected'),
+            _buildListingTab('cancelled'),
+            _buildListingTab('paid')
           ],
         ),
       ),
@@ -98,8 +102,8 @@ class _HistoryState extends State<History> with SingleTickerProviderStateMixin {
                 const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
             child: Container(
               height: 120,
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
+              padding: const EdgeInsets.all(10),
+              decoration: const BoxDecoration(
                 color: Color.fromARGB(255, 255, 255, 255),
                 borderRadius: BorderRadius.all(Radius.circular(10)),
                 boxShadow: [

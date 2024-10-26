@@ -81,4 +81,10 @@ class CheckIfBookedEvent extends BookingEvent {
   List<Object> get props => [];
 }
 
+class CancelBookingEvent extends BookingEvent {
+  final String bookingId;
+  const CancelBookingEvent(this.bookingId);
+}
+
+
 class GetBookingsOfUserEvent extends BookingEvent {}

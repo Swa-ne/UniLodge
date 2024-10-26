@@ -53,6 +53,25 @@ export const rejectBooking = async (
     return { error: "Internal Server Error", httpCode: 500 };
   }
 };
+//cancel booking
+export const cancelBooking = async (
+  bookingId: string
+): Promise<CustomResponse> => {
+  try {
+    const booking = await Booking.findById(bookingId).exec();
+    if (!booking) {
+      return { error: "Booking not found", httpCode: 404 };
+    }
+
+    booking.status = "Cancelled";
+    await booking.save();
+
+    return { message: "Booking cancelled successfully", httpCode: 200 };
+  } catch (error) {
+    console.error("Error cancelling booking:", error);
+    return { error: "Internal Server Error", httpCode: 500 };
+  }
+};
 
 export const paidBooking = async (
   bookingId: string
@@ -83,6 +102,7 @@ export const createBooking = async (bookingData: BookingSchemaInterface) => {
     return { error: "Internal Server Error", httpCode: 500 };
   }
 };
+
 
 export const getBookingsForListing = async (
   listingId: string
@@ -160,16 +180,3 @@ export const checkIfBooked = async (
     return { error: "Internal Server Error", httpCode: 500 };
   }
 };
-
-//   export const getAllBookings = async (): Promise<CustomResponse> => {
-//     try {
-//         const bookings = await Booking.find().populate("user_id").exec();
-//         if (!bookings || bookings.length === 0) {
-//             return { error: 'No bookings found', httpCode: 404 };
-//         }
-//         return { message: bookings, httpCode: 200 };
-//     } catch (error) {
-//         console.error("Error fetching all bookings:", error);
-//         return { error: "Internal Server Error", httpCode: 500 };
-//     }
-// };

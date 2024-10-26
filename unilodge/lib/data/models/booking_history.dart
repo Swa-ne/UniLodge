@@ -37,6 +37,19 @@ class BookingHistory extends Equatable {
   //     'lastMessage': last_message,
   //   };
   // }
+  BookingHistory copyWith({
+    String? id,
+    Listing? listing,
+    String? status,
+    String? createdAt,
+  }) {
+    return BookingHistory(
+      id: id ?? this.id,
+      listing: listing ?? this.listing,
+      status: status ?? this.status,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
 
   @override
   List<Object> get props => [listing, status, createdAt];

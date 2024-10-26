@@ -368,4 +368,36 @@ class BookingRepositoryImpl implements BookingRepository {
       throw Exception('Error fetching all bookings: $e');
     }
   }
+
+
+    @override
+  Future<void> cancelBooking(String bookingId) async {
+    final access_token = await _tokenController.getAccessToken();
+    final refresh_token = await _tokenController.getRefreshToken();
+
+    print("Cancelling booking ID: $bookingId");
+
+    try {
+      final response = await http.put(
+        Uri.parse('$_apiUrl/cancel-booking/$bookingId'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': access_token,
+          'Cookie': 'refresh_token=$refresh_token',
+        },
+      );
+
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to cancel booking: ${response.statusCode}, ${response.body}');
+      }
+    } catch (e) {
+      print('Error cancelling booking: $e');
+      throw Exception('Error cancelling booking: $e');
+    }
+  }
+
 }

@@ -457,7 +457,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                                   .add(CreateBookingEvent(bookingData));
                               ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                      content: Text("bOOKING CREATED")));
+                                      content: Text("BOOKING CREATED")));
                             },
                     ),
                   ),
