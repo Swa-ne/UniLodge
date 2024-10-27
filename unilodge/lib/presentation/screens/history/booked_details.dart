@@ -36,7 +36,7 @@ class _BookedDetailsState extends State<BookedDetails> {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text("Booking cancelled successfully")),
               );
-              context.pushReplacement('/history'); // Navigate without stacking
+              context.pushReplacement('/history'); 
             }
           },
         ),
@@ -176,6 +176,28 @@ class _BookedDetailsState extends State<BookedDetails> {
                               SizedBox(height: 5),
                               Text("The owner has received the payment.",
                                   style: TextStyle(color: AppColors.textColor)),
+                            ],
+                          ),
+                        ),
+                      if (bookingHistory.status.toLowerCase() == 'cancelled')
+                        MyTimelineTile(
+                          listingStatus: bookingHistory.status,
+                          isFirst: false,
+                          isLast: true,
+                          isPast: true,
+                          Icon: Icons.cancel,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text("Cancelled",
+                                  style: TextStyle(
+                                      color: AppColors.primary,
+                                      fontWeight: FontWeight.bold)),
+                              const SizedBox(height: 5),
+                              Text(
+                                  "You have cancelled your request to rent ${bookingHistory.listing.property_name}.",
+                                  style: const TextStyle(color: AppColors.textColor)),
                             ],
                           ),
                         ),
