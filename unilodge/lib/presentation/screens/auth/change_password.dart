@@ -24,6 +24,9 @@ class _ChangePasswordState extends State<ChangePassword>
   late TextEditingController confirmPasswordController;
   late AuthBloc _authBloc;
 
+  bool _isPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false;
+
   String? passwordError;
   String? confirmPasswordError;
 
@@ -104,16 +107,28 @@ class _ChangePasswordState extends State<ChangePassword>
                       AuthTextField(
                         labelText: "New Password",
                         hintText: "Enter password",
-                        obscureText: true,
+                        obscureText: !_isPasswordVisible,
                         controller: passwordController,
                         onChanged: validatePassword,
                         errorText: passwordError,
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _isPasswordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _isPasswordVisible = !_isPasswordVisible;
+                            });
+                          },
+                        ),
                       ),
                       const SizedBox(height: 20.0),
                       AuthTextField(
                         labelText: "Confirm Password",
                         hintText: "Enter confirm password",
-                        obscureText: true,
+                        obscureText: !_isConfirmPasswordVisible,
                         controller: confirmPasswordController,
                         onChanged: (confirmPasswordText) {
                           return validateConfirmPassword(
@@ -122,6 +137,19 @@ class _ChangePasswordState extends State<ChangePassword>
                           );
                         },
                         errorText: confirmPasswordError,
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _isConfirmPasswordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _isConfirmPasswordVisible =
+                                  !_isConfirmPasswordVisible;
+                            });
+                          },
+                        ),
                       ),
                       const SizedBox(height: 20),
                       CustomButton(
