@@ -357,46 +357,46 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
                 ),
               ),
               const SizedBox(height: 15),
-              Row(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 15.0),
-                    child: Text("Rating: ",
-                        style:
-                            TextStyle(color: Color(0xff434343), fontSize: 15)),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 2.0, vertical: 8),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: RatingBar.builder(
-                          initialRating:
-                              widget.listing.rating?.toDouble() ?? 0.0,
-                          minRating: 1,
-                          direction: Axis.horizontal,
-                          itemCount: 5,
-                          itemSize: 18,
-                          itemPadding:
-                              const EdgeInsets.symmetric(horizontal: 1),
-                          itemBuilder: (context, _) => const Icon(
-                                Icons.star,
-                                color: AppColors.ratingYellow,
-                              ),
-                          onRatingUpdate: (rating) {
-                            print(rating);
-                          }),
-                    ),
-                  ),
-                ],
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-                child: Text(
-                  "Reviews (0)",
-                  style: TextStyle(color: Color(0xff434343), fontSize: 15),
-                ),
-              ),
+              // Row(
+              //   children: [
+              //     const Padding(
+              //       padding: EdgeInsets.only(left: 15.0),
+              //       child: Text("Rating: ",
+              //           style:
+              //               TextStyle(color: Color(0xff434343), fontSize: 15)),
+              //     ),
+              //     Padding(
+              //       padding: const EdgeInsets.symmetric(
+              //           horizontal: 2.0, vertical: 8),
+              //       child: Align(
+              //         alignment: Alignment.centerLeft,
+              //         child: RatingBar.builder(
+              //             initialRating:
+              //                 widget.listing.rating?.toDouble() ?? 0.0,
+              //             minRating: 1,
+              //             direction: Axis.horizontal,
+              //             itemCount: 5,
+              //             itemSize: 18,
+              //             itemPadding:
+              //                 const EdgeInsets.symmetric(horizontal: 1),
+              //             itemBuilder: (context, _) => const Icon(
+              //                   Icons.star,
+              //                   color: AppColors.ratingYellow,
+              //                 ),
+              //             onRatingUpdate: (rating) {
+              //               print(rating);
+              //             }),
+              //       ),
+              //     ),
+              //   ],
+              // ),
+              // const Padding(
+              //   padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+              //   child: Text(
+              //     "Reviews (0)",
+              //     style: TextStyle(color: Color(0xff434343), fontSize: 15),
+              //   ),
+              // ),
               // const Padding(
               //   padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
               //   child: Text(
@@ -405,7 +405,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
               //         TextStyle(color: AppColors.formTextColor, fontSize: 15),
               //   ),
               // ),
-              const SizedBox(height: 30),
+              // const SizedBox(height: 30),
               // const Padding(
               //   padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
               //   child: Text(
@@ -414,7 +414,7 @@ class _ListingDetailScreenState extends State<ListingDetailScreen> {
               //   ),
               // ),
               // i should pass the data here
-              NearbyProperties(listings: dummyListings)
+              // NearbyProperties(listings: dummyListings)
             ],
           ),
         ),
