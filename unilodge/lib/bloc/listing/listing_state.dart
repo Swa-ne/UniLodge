@@ -112,5 +112,23 @@ class CardSelectedState extends ListingState {
   @override
   List<Object> get props => [listing, cardName];
 }
+
 class SubmittingState extends ListingState {}
 
+class IsValidLandlordSuccess extends ListingState {
+  final bool isValid;
+
+  const IsValidLandlordSuccess(this.isValid);
+
+  @override
+  List<Object> get props => [isValid];
+}
+
+class IsValidLandlordError extends ListingState {
+  final String error;
+
+  const IsValidLandlordError(this.error);
+
+  @override
+  List<Object> get props => [error];
+}

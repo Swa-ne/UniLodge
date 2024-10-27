@@ -59,3 +59,5 @@ class SelectCardEvent extends ListingEvent {
   @override
   List<Object> get props => [cardName];
 }
+
+class IsValidLandlordListings extends ListingEvent {}

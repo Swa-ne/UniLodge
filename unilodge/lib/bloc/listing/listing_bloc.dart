@@ -17,7 +17,19 @@ class ListingBloc extends Bloc<ListingEvent, ListingState> {
         emit(const ListingError("Internet Connection Error"));
       }
     });
-
+    on<IsValidLandlordListings>((event, emit) async {
+      try {
+        emit(ListingLoading());
+        final isValid = await _listingRepository.IsValidLandlord();
+        if (isValid) {
+          emit(IsValidLandlordSuccess(isValid));
+        } else {
+          emit(const IsValidLandlordError("You need to verify yourself first"));
+        }
+      } catch (e) {
+        emit(const IsValidLandlordError("Internet Connection Error"));
+      }
+    });
     // on<CreateListing>((event, emit) async {
     //   try {
     //     if (await _listingRepository.createListing(
@@ -32,8 +44,7 @@ class ListingBloc extends Bloc<ListingEvent, ListingState> {
     // });
 
     on<CreateListing>((event, emit) async {
-      emit(
-          SubmittingState()); 
+      emit(SubmittingState());
       try {
         final isSuccess = await _listingRepository.createListing(
             event.imageFiles, event.dorm);
@@ -54,7 +65,7 @@ class ListingBloc extends Bloc<ListingEvent, ListingState> {
     on<UpdateListing>((event, emit) async {
       try {
         await _listingRepository.updateListing(
-          event.id, event.imageFiles, event.listing);
+            event.id, event.imageFiles, event.listing);
         // emit update success
         emit(SuccessUpdateDorm(DateTime.now()));
         // re-fetch listings after update
@@ -64,7 +75,7 @@ class ListingBloc extends Bloc<ListingEvent, ListingState> {
         emit(const UpdateDormError("Internet Connection Error"));
       }
     });
-        on<ToggleListing>((event, emit) async {
+    on<ToggleListing>((event, emit) async {
       try {
         final isSuccess = await _listingRepository.toggleListing(event.id);
         if (isSuccess) {
