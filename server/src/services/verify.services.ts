@@ -2,6 +2,7 @@ import axios from 'axios';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { deleteImage, storage } from '../middlewares/save.config';
 import { VerifyUser } from '../models/verify.model';
+import { User } from '../models/authentication/user.model';
 
 
 const python_server = axios.create({
@@ -85,7 +86,14 @@ export const verifyUser = async (user_id: string) => {
         const data = { face: face?.url, id: id?.url };
         const result = await python_server.post(`/verify-user`, data);
 
-        if (result.data === "Success") return { message: result.data, httpCode: 200 }
+        if (result.data === "Success") {
+            const user = await User.findById(user_id)
+            if (user) {
+                user.valid_landlord = true;
+                user.save();
+            }
+            return { message: result.data, httpCode: 200 }
+        }
 
         return { error: result.data, httpCode: 400 }
     } catch (error) {

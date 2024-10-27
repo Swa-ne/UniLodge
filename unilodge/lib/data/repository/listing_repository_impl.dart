@@ -164,4 +164,25 @@ class ListingRepositoryImpl implements ListingRepository {
     }
     return response.statusCode == 200;
   }
+
+  @override
+  Future<bool> IsValidLandlord() async {
+    final access_token = await _tokenController.getAccessToken();
+    final refresh_token = await _tokenController.getRefreshToken();
+
+    final response = await http.get(
+      Uri.parse('$_apiUrl/is-valid-landlord'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': access_token,
+        'Cookie': 'refresh_token=$refresh_token',
+      },
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to reject listing');
+    }
+    return json.decode(response.body)['message'] == "Valid User";
+  }
 }

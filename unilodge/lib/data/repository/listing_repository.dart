@@ -12,4 +12,5 @@ abstract class ListingRepository {
     List<File>? imageFiles,
     Listing listing,
   );
+  Future<bool> IsValidLandlord();
 }
