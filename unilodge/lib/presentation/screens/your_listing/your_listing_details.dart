@@ -8,7 +8,9 @@ import 'package:unilodge/bloc/booking_bloc/booking_event.dart';
 import 'package:unilodge/bloc/listing/listing_bloc.dart';
 import 'package:unilodge/bloc/listing/listing_event.dart';
 import 'package:unilodge/bloc/listing/listing_state.dart';
-import 'package:unilodge/bloc/booking_bloc/booking_bloc.dart'; 
+import 'package:unilodge/bloc/booking_bloc/booking_bloc.dart';
+import 'package:unilodge/common/widgets/custom_confirm_dialog.dart';
+import 'package:unilodge/common/widgets/custom_text.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
 import 'package:unilodge/presentation/widgets/home/price_text.dart';
@@ -308,7 +310,6 @@ class _YourListingDetailsState extends State<YourListingDetails> {
                     height: 20, color: Color.fromARGB(255, 223, 223, 223)),
               ),
               const SizedBox(height: 45),
-             
               BookingManagementWidget(listingId: widget.listing.id!),
               const SizedBox(height: 30),
             ],
@@ -320,89 +321,100 @@ class _YourListingDetailsState extends State<YourListingDetails> {
 
   Future _displayBottomSheet(BuildContext context) {
     final listingBloc = BlocProvider.of<ListingBloc>(context);
-    return showModalBottomSheet(
+
+    Future<void> _showConfirmationDialog({
+      required BuildContext context,
+      required String title,
+      required String content,
+      required VoidCallback onConfirm,
+      Color yesButtonColor = AppColors.redInactive,
+    }) async {
+      await showDialog(
         context: context,
-        backgroundColor: AppColors.lightBackground,
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(30))),
-        builder: (context) => SizedBox(
-              height: 250,
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        context.push("/edit-listing-post",
-                            extra: widget.listing);
-                      },
-                      child: const Row(
-                        children: [
-                          Icon(
-                            Icons.edit,
-                            color: AppColors.primary,
-                          ),
-                          SizedBox(width: 12),
-                          Text("Edit post",
-                              style: TextStyle(color: AppColors.textColor)),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        listingBloc.add(DeleteListing(widget.listing.id!));
-                      },
-                      child: const Row(
-                        children: [
-                          Icon(
-                            Icons.delete,
-                            color: AppColors.primary,
-                          ),
-                          SizedBox(width: 12),
-                          Text(
-                            "Remove post",
-                            style: TextStyle(color: AppColors.textColor),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        listingBloc.add(ToggleListing(widget.listing.id!));
-                        Navigator.pop(context);
-                      },
-                      child: const Row(
-                        children: [
-                          Icon(
-                            Icons.visibility,
-                            color: AppColors.primary,
-                          ),
-                          SizedBox(width: 12),
-                          Text(
-                            "Toggle post's visibility",
-                            style: TextStyle(color: AppColors.textColor),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+        builder: (dialogContext) {
+          return ConfirmationDialog(
+            title: title,
+            content: content,
+            onConfirm: onConfirm,
+            yesButtonColor: yesButtonColor,
+          );
+        },
+      );
+    }
+
+    return showModalBottomSheet(
+      context: context,
+      backgroundColor: AppColors.lightBackground,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+      ),
+      builder: (context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(height: 10),
+          ListTile(
+            leading: const Icon(Icons.edit, color: AppColors.primary),
+            title: const CustomText(
+              text: "Edit post",
+              color: AppColors.textColor,
+              fontSize: 14,
+            ),
+            onTap: () {
+              _showConfirmationDialog(
+                context: context,
+                title: "Edit Listing",
+                content: "Are you sure you want to edit this post?",
+                onConfirm: () {
+                  context.push("/edit-listing-post", extra: widget.listing);
+                },
+                yesButtonColor: AppColors.primary,
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.delete, color: AppColors.primary),
+            title: const CustomText(
+              text: "Remove post",
+              color: AppColors.textColor,
+              fontSize: 14,
+            ),
+            onTap: () {
+              _showConfirmationDialog(
+                context: context,
+                title: "Remove Post",
+                content: "Are you sure you want to remove this post?",
+                onConfirm: () {
+                  listingBloc.add(DeleteListing(widget.listing.id!));
+                  Navigator.pop(context);
+                },
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.visibility, color: AppColors.primary),
+            title: const Text(
+              "Toggle post's visibility",
+              style: TextStyle(
+                color: AppColors.textColor,
+                fontSize: 14, // Smaller font size
               ),
-            ));
+            ),
+            onTap: () {
+              _showConfirmationDialog(
+                context: context,
+                title: "Toggle Visibility",
+                content:
+                    "Are you sure you want to toggle the visibility of this post?",
+                onConfirm: () {
+                  listingBloc.add(ToggleListing(widget.listing.id!));
+                  Navigator.pop(context);
+                },
+              );
+            },
+          ),
+          const SizedBox(height: 5),
+        ],
+      ),
+    );
   }
 }
