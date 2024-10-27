@@ -135,7 +135,7 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) {
         final selectedPropertyType = state.extra as String;
         return PostLocation(selectedPropertyType: selectedPropertyType);
-      },
+      },  
     ),
     GoRoute(
       path: '/post-price',
@@ -258,18 +258,14 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/booking-management',
       builder: (context, state) {
-        // Fetching the current user profile from ProfileBloc or AuthBloc
         final profileState = BlocProvider.of<ProfileBloc>(context).state;
-        String username = 'Guest'; // Default to 'Guest' if not logged in
-
+        String username = 'Guest'; 
         if (profileState is ProfileLoaded) {
           username =
-              profileState.username; // Fetch the actual username from profile
+              profileState.username;
         }
-
-        // Check if state.extra is null or doesn't contain 'listingId'
         final extraData =
-            state.extra as Map<String, dynamic>?; // Safely cast extra to Map
+            state.extra as Map<String, dynamic>?; 
         if (extraData == null || extraData['listingId'] == null) {
           return const Scaffold(
             body: Center(
@@ -277,11 +273,7 @@ final GoRouter appRouter = GoRouter(
             ),
           );
         }
-
-        // Safely accessing the listingId and other fields
         final listingId = extraData['listingId'] as String;
-
-        // Include the real username in the booking data
         extraData['userName'] = username;
 
         // Pass listingId to BookingManagementWidget

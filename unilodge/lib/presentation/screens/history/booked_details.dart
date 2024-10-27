@@ -214,7 +214,7 @@ class _BookedDetailsState extends State<BookedDetails> {
                       ],
                     ),
                     BookedListingDetails(listing: widget.bookingHistory.listing),
-                    if (bookingHistory.status.toLowerCase() != "paid")
+                    if (bookingHistory.status.toLowerCase() != "paid" && bookingHistory.status.toLowerCase() != "cancelled")
                       Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: CustomButton(
