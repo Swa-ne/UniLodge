@@ -36,7 +36,7 @@ class _BookedDetailsState extends State<BookedDetails> {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text("Booking cancelled successfully")),
               );
-              context.pushReplacement('/history'); 
+              context.pushReplacement('/history');
             }
           },
         ),
@@ -68,10 +68,17 @@ class _BookedDetailsState extends State<BookedDetails> {
                       MyTimelineTile(
                         listingStatus: bookingHistory.status,
                         isFirst: true,
-                        isLast: bookingHistory.status.toLowerCase() == 'accepted' ||
-                                bookingHistory.status.toLowerCase() == 'paid'
-                            ? false
-                            : true,
+                        isLast:
+                            bookingHistory.status.toLowerCase() == 'accepted' ||
+                                    bookingHistory.status.toLowerCase() ==
+                                        'paid' ||
+                                    bookingHistory.status
+                                            .toLowerCase() ==
+                                        'rejected' ||
+                                    bookingHistory.status.toLowerCase() ==
+                                        'cancelled'
+                                ? false
+                                : true,
                         isPast: true,
                         Icon: Icons.hourglass_bottom,
                         child: Column(
@@ -85,7 +92,8 @@ class _BookedDetailsState extends State<BookedDetails> {
                             const SizedBox(height: 5),
                             Text(
                                 "The owner of ${bookingHistory.listing.property_name} has received your request to rent the place. Please wait for them to accept your request.",
-                                style: const TextStyle(color: AppColors.textColor)),
+                                style: const TextStyle(
+                                    color: AppColors.textColor)),
                           ],
                         ),
                       ),
@@ -110,7 +118,8 @@ class _BookedDetailsState extends State<BookedDetails> {
                               const SizedBox(height: 5),
                               Text(
                                   "The owner of ${bookingHistory.listing.property_name} has accepted your request to rent the place.",
-                                  style: const TextStyle(color: AppColors.textColor)),
+                                  style: const TextStyle(
+                                      color: AppColors.textColor)),
                               if (bookingHistory.status.toLowerCase() != "paid")
                                 Align(
                                   alignment: Alignment.bottomRight,
@@ -154,7 +163,8 @@ class _BookedDetailsState extends State<BookedDetails> {
                               const SizedBox(height: 5),
                               Text(
                                   "The owner of ${bookingHistory.listing.property_name} has rejected your request to rent the place.",
-                                  style: const TextStyle(color: AppColors.textColor)),
+                                  style: const TextStyle(
+                                      color: AppColors.textColor)),
                             ],
                           ),
                         ),
@@ -197,7 +207,8 @@ class _BookedDetailsState extends State<BookedDetails> {
                               const SizedBox(height: 5),
                               Text(
                                   "You have cancelled your request to rent ${bookingHistory.listing.property_name}.",
-                                  style: const TextStyle(color: AppColors.textColor)),
+                                  style: const TextStyle(
+                                      color: AppColors.textColor)),
                             ],
                           ),
                         ),
@@ -229,7 +240,8 @@ class _BookedDetailsState extends State<BookedDetails> {
                       child: CustomButton(
                           text: "Cancel",
                           onPressed: () {
-                            _showCancelConfirmationDialog(context, bookingHistory.id!);
+                            _showCancelConfirmationDialog(
+                                context, bookingHistory.id!);
                           })),
               ],
             ),
@@ -237,7 +249,8 @@ class _BookedDetailsState extends State<BookedDetails> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            _chatBloc.add(CreateInboxEvent(widget.bookingHistory.listing.owner_id!.id));
+            _chatBloc.add(
+                CreateInboxEvent(widget.bookingHistory.listing.owner_id!.id));
           },
           backgroundColor: AppColors.primary,
           child: const Icon(Icons.message, color: Colors.white),
@@ -246,7 +259,8 @@ class _BookedDetailsState extends State<BookedDetails> {
     );
   }
 
-  Future<void> _showCancelConfirmationDialog(BuildContext context, String bookingId) async {
+  Future<void> _showCancelConfirmationDialog(
+      BuildContext context, String bookingId) async {
     await showDialog<bool>(
       context: context,
       builder: (context) {
@@ -260,7 +274,8 @@ class _BookedDetailsState extends State<BookedDetails> {
             ),
             TextButton(
               onPressed: () {
-                BlocProvider.of<BookingBloc>(context).add(CancelBookingEvent(bookingId));
+                BlocProvider.of<BookingBloc>(context)
+                    .add(CancelBookingEvent(bookingId));
                 Navigator.of(context).pop(true);
               },
               child: const Text("Yes"),
