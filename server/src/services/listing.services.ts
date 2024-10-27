@@ -9,6 +9,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { deleteImage, storage } from "../middlewares/save.config";
 import { Image } from "../models/media/image.model";
 import { Currency } from "../models/dorm/currency.model";
+import { User } from "../models/authentication/user.model";
 
 export const getMyDorms = async (user_id: string) => {
   try {
@@ -90,20 +91,20 @@ export const postDormListing = async (
 
     const newLoc:
       | (Document<unknown, {}, LocationSchemaInterface> &
-          LocationSchemaInterface &
-          Required<{ _id: ObjectId }>)
+        LocationSchemaInterface &
+        Required<{ _id: ObjectId }>)
       | null = await new Location({
-      city,
-      street,
-      barangay,
-      house_number,
-      province,
-      region,
-      coordinates: {
-        lat,
-        lng,
-      },
-    }).save({ session });
+        city,
+        street,
+        barangay,
+        house_number,
+        province,
+        region,
+        coordinates: {
+          lat,
+          lng,
+        },
+      }).save({ session });
 
     const currency = await Currency.findById("670b44533093ffb1a1969c3b");
 
@@ -290,3 +291,20 @@ export const deleteDorm = async (dorm_id: string): Promise<CustomResponse> => {
     return { error: "Internal Server Error", httpCode: 500 };
   }
 };
+
+export const isValidLandlord = async (user_id: string) => {
+  try {
+
+    const user = await User.findById(user_id);
+    if (user) {
+      if (user.valid_landlord) {
+        return { message: "Valid User", httpCode: 200 }
+      }
+      return { message: "Invalid User", httpCode: 200 }
+    }
+
+    return { error: "User not found", httpCode: 400 }
+  } catch (error) {
+    return { error: "Internal Server Error", httpCode: 500 }
+  }
+}

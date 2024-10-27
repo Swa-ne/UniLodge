@@ -3,6 +3,7 @@ import { UserType } from "../middlewares/token.authentication";
 import {
   deleteDorm,
   getMyDorms,
+  isValidLandlord,
   postDormListing,
   putDormListing,
   toggleVisibilityDormListing,
@@ -285,3 +286,24 @@ export const deleteDormController = async (
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+export const isValidLandlordController = async (req: Request & { user?: UserType }, res: Response) => {
+  try {
+    const user = req.user;
+    console.log("runnong", user)
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+
+    const { user_id } = user;
+    if (!user_id) return res.status(400).json({ error: 'User ID not provided' });
+
+    const result = await isValidLandlord(
+      user_id,
+    );
+
+    if (result.httpCode === 200) return res.status(result.httpCode).json({ 'message': result.message });
+    return res.status(result.httpCode).json({ 'error': result.error });
+  } catch (error) {
+    return res.status(500).json({ 'error': 'Internal Server Error' });
+  }
+}
