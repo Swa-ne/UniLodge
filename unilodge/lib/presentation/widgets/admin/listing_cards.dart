@@ -24,114 +24,124 @@ class AdminListingCards extends StatelessWidget {
           print(listing.status);
         },
         child: BlocBuilder<AdminBloc, AdminListingState>(
-            builder: (context, state) {
-          if (state is ListingLoaded) {
-            return Container(
-              child: Column(
-                children: [
-                  Center(
-                    child: Stack(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(5),
-                          child: Opacity(
-                            opacity: 0.9,
-                            child: listing.imageUrl != null &&
-                                    listing.imageUrl!.isNotEmpty
-                                ? Image.network(
-                                    listing.imageUrl![0],
-                                    width: 360,
-                                    height: 200,
-                                    fit: BoxFit.cover,
-                                    loadingBuilder: (BuildContext context,
-                                        Widget child,
-                                        ImageChunkEvent? loadingProgress) {
-                                      if (loadingProgress == null) {
-                                        return child;
-                                      } else {
-                                        return SizedBox(
-                                          width: 360,
-                                          height: 200,
-                                          child: Center(
-                                            child: Lottie.asset(
-                                              'assets/animation/home_loading.json',
-                                              width: 200,
-                                              height: 200,
+          builder: (context, state) {
+            if (state is ListingLoaded) {
+              return ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Stack(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(5),
+                            child: Opacity(
+                              opacity: 0.9,
+                              child: listing.imageUrl != null &&
+                                      listing.imageUrl!.isNotEmpty
+                                  ? Image.network(
+                                      listing.imageUrl![0],
+                                      width: 360,
+                                      height: 200,
+                                      fit: BoxFit.cover,
+                                      loadingBuilder: (BuildContext context,
+                                          Widget child,
+                                          ImageChunkEvent? loadingProgress) {
+                                        if (loadingProgress == null) {
+                                          return child;
+                                        } else {
+                                          return SizedBox(
+                                            width: 360,
+                                            height: 200,
+                                            child: Center(
+                                              child: Lottie.asset(
+                                                'assets/animation/home_loading.json',
+                                                width: 200,
+                                                height: 200,
+                                              ),
                                             ),
-                                          ),
-                                        );
-                                      }
-                                    },
-                                  )
-                                : const SizedBox(
-                                    width: 360,
-                                    height: 200,
-                                    child: Center(
-                                      child: Text('No Image Available'),
+                                          );
+                                        }
+                                      },
+                                    )
+                                  : const SizedBox(
+                                      width: 360,
+                                      height: 200,
+                                      child: Center(
+                                          child: Text('No Image Available')),
                                     ),
-                                  ),
+                            ),
                           ),
-                        ),
-                        Container(
-                          width: 360,
-                          height: 200,
-                          color: Colors.black.withOpacity(
-                              0.3), // Adjust opacity to make it darker
-                        ),
-                        Positioned(
+                          Container(
+                            width: 360,
+                            height: 200,
+                            color: Colors.black.withOpacity(0.3),
+                          ),
+                          Positioned(
                             top: 10,
                             right: 10,
-                            child: StatusText(
-                              statusText: listing.status!,
-                            )),
-                      ],
+                            child: StatusText(statusText: listing.status!),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              listing.property_name ?? '',
-                              style: const TextStyle(
-                                color: AppColors.textColor,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16,
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                listing.property_name ?? '',
+                                style: const TextStyle(
+                                  color: AppColors.textColor,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        
-                        Row(
-                          children: [
-                            Icon(Icons.location_on),
-                            Text(
-                              listing.adddress,
-                              style: const TextStyle(color: AppColors.textColor),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            PriceText(
-                                text: listing.price != null
-                                    ? 'ETH ${listing.price!}'
-                                    : 'N/A'),
-                          ],
-                        ),
-                      ],
-                    ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              const Icon(Icons.location_on,
+                                  color: AppColors.textColor, size: 16),
+                              const SizedBox(width: 4),
+                              Expanded(
+                                child: Text(
+                                  listing.adddress,
+                                  style: const TextStyle(
+                                      color: AppColors.textColor),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+                subtitle: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: Row(
+                    children: [
+                      PriceText(
+                        text: listing.price != null
+                            ? 'ETH ${listing.price!}'
+                            : 'N/A',
+                      ),
+                      Spacer()
+                    ],
                   ),
-                ],
-              ),
-            );
-          }
-          return Container();
-        }),
+                ),
+              );
+            }
+            return Container();
+          },
+        ),
       ),
     );
   }
