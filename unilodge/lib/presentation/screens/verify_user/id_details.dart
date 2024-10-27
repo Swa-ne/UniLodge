@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:unilodge/common/widgets/custom_button.dart';
+import 'package:unilodge/common/widgets/custom_text.dart';
+import 'package:unilodge/core/configs/theme/app_colors.dart';
 
 class IdDetails extends StatelessWidget {
   const IdDetails({super.key});
@@ -7,7 +10,13 @@ class IdDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Get Verified'),
+        centerTitle: true,
+        title: const CustomText(
+          text: "Get Verified",
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: AppColors.primary,
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -49,27 +58,32 @@ class IdDetails extends StatelessWidget {
             ),
             const SizedBox(
                 height: 16), // Add some space between GridView and the button
-            SizedBox(
-              width: double
-                  .infinity, // Make the button take almost the full width of the screen
-              child: ElevatedButton(
+            // SizedBox(
+            //   width: double
+            //       .infinity, // Make the button take almost the full width of the screen
+            //   child: ElevatedButton(
+            //     onPressed: () {
+            //       context.push('/verify-id');
+            //     },
+            //     style: ElevatedButton.styleFrom(
+            //       backgroundColor: Colors.blue,
+            //       padding:
+            //           const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            //       shape: RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.circular(10),
+            //       ),
+            //     ),
+            //     child: const Text(
+            //       'Next',
+            //       style: TextStyle(fontSize: 16, color: Colors.white),
+            //     ),
+            //   ),
+            // ),
+            CustomButton(
+                text: "Next",
                 onPressed: () {
                   context.push('/verify-id');
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: const Text(
-                  'Next',
-                  style: TextStyle(fontSize: 16, color: Colors.white),
-                ),
-              ),
-            ),
+                })
           ],
         ),
       ),

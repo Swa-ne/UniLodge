@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:unilodge/bloc/my_profile/my_profile_bloc.dart';
 import 'package:unilodge/bloc/my_profile/my_profile_event.dart';
 import 'package:unilodge/bloc/my_profile/my_profile_state.dart';
+import 'package:unilodge/common/widgets/custom_button.dart';
 import 'package:unilodge/common/widgets/custom_loading.dart';
 import 'package:unilodge/common/widgets/custom_text.dart';
 import 'package:unilodge/common/widgets/shimmer_loading.dart';
@@ -157,18 +159,48 @@ class _MyProfileState extends State<MyProfile> {
                       ),
                       const Divider(),
                       const SizedBox(height: 24),
-                      Center(
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 50,
-                              vertical: 10,
-                            ),
-                            backgroundColor: AppColors.lightBlueTextColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                          ),
+                      // Center(
+                      //   child: ElevatedButton(
+                      //     style: ElevatedButton.styleFrom(
+                      //       padding: const EdgeInsets.symmetric(
+                      //         horizontal: 50,
+                      //         vertical: 10,
+                      //       ),
+                      //       backgroundColor: AppColors.lightBlueTextColor,
+                      //       shape: RoundedRectangleBorder(
+                      //         borderRadius: BorderRadius.circular(30),
+                      //       ),
+                      //     ),
+                      //     onPressed: () {
+                      //       final updatedProfilePictureUrl = _image != null
+                      //           ? _image!.path
+                      //           : state.profilePictureUrl;
+                      //       bool isUsernameChanged =
+                      //           _usernameController.text != state.username;
+                      //       // print("profileeee: $updatedProfilePictureUrl");
+                      //       context.read<ProfileBloc>().add(SaveProfile(
+                      //             username: isUsernameChanged
+                      //                 ? _usernameController.text
+                      //                 : state.username,
+                      //             fullName: state.fullName,
+                      //             profilePictureUrl: updatedProfilePictureUrl,
+                      //             personalEmail: state.personalEmail,
+                      //             birthday: state.birthday,
+                      //             firstName: state.firstName,
+                      //             middleName: state.middleName,
+                      //             lastName: state.lastName,
+                      //           ));
+                      //     },
+                      //     child: const CustomText(
+                      //       text: "Save",
+                      //       color: Colors.white,
+                      //       fontSize: 16,
+                      //       fontWeight: FontWeight.bold,
+                      //     ),
+                      //   ),
+                      // ),
+                      CustomButton(
+                          text: "Save",
                           onPressed: () {
                             final updatedProfilePictureUrl = _image != null
                                 ? _image!.path
@@ -188,26 +220,18 @@ class _MyProfileState extends State<MyProfile> {
                                   middleName: state.middleName,
                                   lastName: state.lastName,
                                 ));
-                          },
-                          child: const CustomText(
-                            text: "Save",
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
+                          })
                     ],
                   ),
                 );
-              // } else if (state is ProfileError) {
-              //   return Center(
-              //     child: CustomText(
-              //       text: state.message,
-              //       color: Colors.red,
-              //       fontSize: 16,
-              //     ),
-              //   );
+                // } else if (state is ProfileError) {
+                //   return Center(
+                //     child: CustomText(
+                //       text: state.message,
+                //       color: Colors.red,
+                //       fontSize: 16,
+                //     ),
+                //   );
               } else {
                 return const Center(child: CustomLoading());
               }

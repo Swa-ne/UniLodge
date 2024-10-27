@@ -153,7 +153,7 @@ class _ChangePasswordState extends State<ChangePassword>
                       ),
                       const SizedBox(height: 20),
                       CustomButton(
-                        text: "Send",
+                        text: "Save",
                         onPressed: () {
                           String? isPasswordValid =
                               validatePassword(passwordController.text);

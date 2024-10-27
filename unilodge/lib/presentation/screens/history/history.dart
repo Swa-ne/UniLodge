@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:unilodge/bloc/booking_bloc/booking_bloc.dart';
 import 'package:unilodge/bloc/booking_bloc/booking_event.dart';
 import 'package:unilodge/bloc/booking_bloc/booking_state.dart';
+import 'package:unilodge/common/widgets/custom_text.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/booking_history.dart';
 
@@ -51,7 +52,13 @@ class _HistoryState extends State<History> with SingleTickerProviderStateMixin {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Booking history'),
+          centerTitle: true,
+          title: const CustomText(
+            text: "Booking History",
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: AppColors.primary,
+          ),
           bottom: TabBar(
             controller: _tabController,
             isScrollable: true,
