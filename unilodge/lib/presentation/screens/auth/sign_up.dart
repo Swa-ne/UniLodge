@@ -21,6 +21,8 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> with InputValidationMixin {
   final PageController _pageController = PageController();
+  bool _isPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false;
   int _currentPage = 0;
   DateTime? _birthday;
   late TextEditingController emailController;
@@ -333,16 +335,26 @@ class _SignUpState extends State<SignUp> with InputValidationMixin {
           AuthTextField(
             labelText: "Password *",
             hintText: "Enter password",
-            obscureText: true,
+            obscureText: !_isPasswordVisible,
             controller: passwordController,
             onChanged: validatePassword,
             errorText: passwordError,
+            suffixIcon: IconButton(
+              icon: Icon(
+                _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+              ),
+              onPressed: () {
+                setState(() {
+                  _isPasswordVisible = !_isPasswordVisible;
+                });
+              },
+            ),
           ),
           const SizedBox(height: 20.0),
           AuthTextField(
             labelText: "Confirm Password *",
             hintText: "Enter confirm password",
-            obscureText: true,
+            obscureText: !_isConfirmPasswordVisible,
             controller: confirmPasswordController,
             onChanged: (confirmPasswordText) {
               return validateConfirmPassword(
@@ -351,6 +363,18 @@ class _SignUpState extends State<SignUp> with InputValidationMixin {
               );
             },
             errorText: confirmPasswordError,
+            suffixIcon: IconButton(
+              icon: Icon(
+                _isConfirmPasswordVisible
+                    ? Icons.visibility
+                    : Icons.visibility_off,
+              ),
+              onPressed: () {
+                setState(() {
+                  _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
+                });
+              },
+            ),
           ),
           SizedBox(height: screenHeight * 0.17),
           _buildPageIndicator(),
