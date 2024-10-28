@@ -164,6 +164,7 @@ class _SettingsState extends State<Settings> {
   void _showLoading(BuildContext context) {
     showDialog(
       barrierDismissible: false,
+      barrierColor: Colors.transparent,
       context: context,
       builder: (BuildContext context) {
         return Center(

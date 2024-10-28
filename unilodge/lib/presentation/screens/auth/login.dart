@@ -216,6 +216,7 @@ class _LoginState extends State<Login> with InputValidationMixin {
   void _showLoading(BuildContext context) {
     showDialog(
       barrierDismissible: false,
+      barrierColor: Colors.transparent,
       context: context,
       builder: (BuildContext context) {
         _loadingContext = context;
