@@ -132,3 +132,21 @@ class IsValidLandlordError extends ListingState {
   @override
   List<Object> get props => [error];
 }
+
+class IsValidLandlordsSuccess extends ListingState {
+  final bool isValid;
+
+  const IsValidLandlordsSuccess(this.isValid);
+
+  @override
+  List<Object> get props => [isValid];
+}
+
+class IsValidLandlordsError extends ListingState {
+  final String error;
+
+  const IsValidLandlordsError(this.error);
+
+  @override
+  List<Object> get props => [error];
+}

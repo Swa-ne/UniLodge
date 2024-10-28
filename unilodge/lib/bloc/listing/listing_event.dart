@@ -61,3 +61,5 @@ class SelectCardEvent extends ListingEvent {
 }
 
 class IsValidLandlordListings extends ListingEvent {}
+
+class IsValidLandlordListing extends ListingEvent {}

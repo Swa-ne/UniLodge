@@ -30,6 +30,15 @@ class ListingBloc extends Bloc<ListingEvent, ListingState> {
         emit(const IsValidLandlordError("Internet Connection Error"));
       }
     });
+    on<IsValidLandlordListing>((event, emit) async {
+      try {
+        emit(ListingLoading());
+        final isValid = await _listingRepository.IsValidLandlord();
+        emit(IsValidLandlordsSuccess(isValid));
+      } catch (e) {
+        emit(const IsValidLandlordsError("Internet Connection Error"));
+      }
+    });
     // on<CreateListing>((event, emit) async {
     //   try {
     //     if (await _listingRepository.createListing(
