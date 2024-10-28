@@ -51,5 +51,27 @@
 	<string>your usage description here</string>
     <key>NSPhotoLibraryUsageDescription</key>
     <string>We need access to your photo library for uploading photos.</string>
+<key>CFBundleURLTypes</key>
+<array>
+  <dict>
+    <key>CFBundleTypeRole</key>
+    <string>Editor</string>
+    <key>CFBundleURLName</key>
+    <string>com.example.unilodge-test</string> <!-- Bundle ID of your app -->
+    <key>CFBundleURLSchemes</key>
+    <array>
+      <!-- your own custom scheme. Be mind of removing :// for this step -->
+      <string>exampleapp</string>
+    </array>
+  </dict>
+</array>
+<key>LSApplicationQueriesSchemes</key>
+<array>
+  <string>metamask</string>
+  <string>trust</string>
+  <string>safe</string>
+  <string>rainbow</string>
+  <string>cbwallet</string>
+</array>
 </dict>
 </plist>
