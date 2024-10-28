@@ -87,7 +87,7 @@ class _PostFacilityState extends State<PostFacility> {
       appBar: AppBar(
           backgroundColor: Colors.white,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios, color: AppColors.textColor),
+            icon: const Icon(Icons.arrow_back, color: AppColors.textColor),
             onPressed: () {
               context.push("/listings");
             },

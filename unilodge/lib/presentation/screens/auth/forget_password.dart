@@ -56,7 +56,7 @@ class _ForgetPasswordState extends State<ForgetPassword>
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             context.push("/login");
           },

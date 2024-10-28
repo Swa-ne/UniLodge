@@ -74,7 +74,7 @@ class _ChatState extends State<Chat> {
         ),
         backgroundColor: AppColors.lightBackground,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
+          icon: const Icon(Icons.arrow_back),
           color: AppColors.primary,
           onPressed: () => Navigator.pop(context),
         ),
