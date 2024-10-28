@@ -88,48 +88,7 @@ class _HomeState extends State<Home> {
                 ),
                 const Divider(),
                 const Text('Filter by Region:'),
-                ListTile(
-                  title: const Text("All Regions"),
-                  onTap: () {
-                    _filterRegion('All Regions');
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  title: const Text("Region I"),
-                  onTap: () {
-                    _filterRegion('REGION I');
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  title: const Text("Region II"),
-                  onTap: () {
-                    _filterRegion('REGION II');
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  title: const Text("Region III"),
-                  onTap: () {
-                    _filterRegion('REGION III');
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  title: const Text("Region IV"),
-                  onTap: () {
-                    _filterRegion('REGION IV');
-                    Navigator.pop(context);
-                  },
-                ),
-                ListTile(
-                  title: const Text("Region V"),
-                  onTap: () {
-                    _filterRegion('REGION V');
-                    Navigator.pop(context);
-                  },
-                ),
+                ..._buildRegionFilterOptions(),
               ],
             ),
           ),
@@ -138,192 +97,209 @@ class _HomeState extends State<Home> {
     );
   }
 
+  List<Widget> _buildRegionFilterOptions() {
+    List<String> regions = [
+      'All Regions',
+      'REGION I',
+      'REGION II',
+      'REGION III',
+      'REGION IV',
+      'REGION V',
+    ];
+
+    return regions.map((region) {
+      return ListTile(
+        title: Text(region),
+        onTap: () {
+          _filterRegion(region);
+          Navigator.pop(context);
+        },
+      );
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: const CustomDrawer(),
-      body: BlocBuilder<RenterBloc, RenterState>(builder: (context, state) {
-        return LiquidPullToRefresh(
-          onRefresh: _refreshDorms,
-          color: AppColors.primary,
-          height: 80,
-          animSpeedFactor: 2,
-          showChildOpacityTransition: false,
-          child: CustomScrollView(
-            slivers: [
-              const SliverAppBar(
-                backgroundColor: AppColors.lightBackground,
-                pinned: true,
-                floating: true,
-                expandedHeight: 70,
-                flexibleSpace: FlexibleSpaceBar(
-                  background: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Stack(
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [],
-                        ),
-                        Align(
-                          alignment: Alignment.topCenter,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 8.0),
-                            child: Text(
-                              'UniLodge',
-                              style: TextStyle(
-                                fontFamily: AppTheme.logoFont,
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.logoTextColor,
-                              ),
-                            ),
+      body: BlocBuilder<RenterBloc, RenterState>(
+        builder: (context, state) {
+          return LiquidPullToRefresh(
+            onRefresh: _refreshDorms,
+            color: AppColors.primary,
+            height: 80,
+            animSpeedFactor: 2,
+            showChildOpacityTransition: false,
+            child: CustomScrollView(
+              slivers: [
+                const SliverAppBar(
+                  backgroundColor: AppColors.lightBackground,
+                  pinned: true,
+                  floating: true,
+                  expandedHeight: 70,
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Center(
+                        child: Text(
+                          'UniLodge',
+                          style: TextStyle(
+                            fontFamily: AppTheme.logoFont,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.logoTextColor,
                           ),
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
-              ),
-              SliverList(
-                delegate: SliverChildListDelegate(
-                  [
-                    Padding(
-                      padding: const EdgeInsets.all(6.0),
-                      child: SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.165,
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                context.push('/type-listing/Dorm');
-                              },
-                              child: const Cards(
-                                text: "Dorm",
-                                imageUrl: AppImages.dorm,
-                                color: Color.fromARGB(137, 235, 214, 183),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                context.push('/type-listing/Solo room');
-                              },
-                              child: const Cards(
-                                text: "Solo Room",
-                                imageUrl: AppImages.soloRoom,
-                                color: Color(0xffCCE1D4),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                context.push('/type-listing/Bed Spacer');
-                              },
-                              child: const Cards(
-                                text: "Bedspacer",
-                                imageUrl: AppImages.bedspacer,
-                                color: Color.fromARGB(141, 235, 233, 183),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                context.push('/type-listing/Apartment');
-                              },
-                              child: const Cards(
-                                text: "Apartment",
-                                imageUrl: AppImages.apartment,
-                                color: Color(0xffCDDDEA),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Text(
-                            "Listings",
-                            style: TextStyle(
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Row(
-                            children: [
-                              IconButton(
-                                icon: const Icon(Icons.sort),
-                                onPressed: _showSortAndFilterBottomSheet,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    if (state is DormsLoading) ...[
-                      const SizedBox(
-                        height: 800,
-                        child: ShimmerLoading(),
-                      ),
-                    ] else if (state is AllDormsLoaded) ...[
-                      if (state.allDorms.isEmpty) ...[
-                        const NoListingPlaceholder(),
-                      ] else ...[
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: state.allDorms.length,
-                            itemBuilder: (context, index) {
-                              // filter and sort listings
-                              List sortedDorms = List.from(state.allDorms);
-
-                              // filter by region
-                              if (selectedRegion != 'All Regions') {
-                                sortedDorms = sortedDorms
-                                    .where(
-                                        (dorm) => dorm.region == selectedRegion)
-                                    .toList();
-                              }
-
-                              // sort by price if selected
-                              if (_sortCriteria == 'price') {
-                                sortedDorms
-                                    .sort((a, b) => a.price.compareTo(b.price));
-                              } else {
-                                // default sort by date
-                                sortedDorms.sort((a, b) =>
-                                    b.createdAt.compareTo(a.createdAt));
-                              }
-
-                              // check if there are no listings in the selected region
-                              if (sortedDorms.isEmpty) {
-                                return const NoListingPlaceholder();
-                              }
-
-                              return ListingCards(listing: sortedDorms[index]);
-                            },
-                          ),
-                        ),
-                      ],
-                    ] else if (state is DormsError) ...[
-                      ErrorMessage(errorMessage: state.message),
+                SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      _buildTypeCards(),
+                      const SizedBox(height: 10),
+                      _buildListingsHeader(),
+                      const SizedBox(height: 10),
+                      _buildListingsContent(state),
                     ],
-                  ],
+                  ),
                 ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildTypeCards() {
+    return Padding(
+      padding: const EdgeInsets.all(6.0),
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.165,
+        child: ListView(
+          scrollDirection: Axis.horizontal,
+          children: [
+            GestureDetector(
+              onTap: () => context.push('/type-listing/Dorm'),
+              child: const Cards(
+                text: "Dorm",
+                imageUrl: AppImages.dorm,
+                color: Color.fromARGB(137, 235, 214, 183),
               ),
-            ],
+            ),
+            GestureDetector(
+              onTap: () => context.push('/type-listing/Solo room'),
+              child: const Cards(
+                text: "Solo Room",
+                imageUrl: AppImages.soloRoom,
+                color: Color(0xffCCE1D4),
+              ),
+            ),
+            GestureDetector(
+              onTap: () => context.push('/type-listing/Bed Spacer'),
+              child: const Cards(
+                text: "Bedspacer",
+                imageUrl: AppImages.bedspacer,
+                color: Color.fromARGB(141, 235, 233, 183),
+              ),
+            ),
+            GestureDetector(
+              onTap: () => context.push('/type-listing/Apartment'),
+              child: const Cards(
+                text: "Apartment",
+                imageUrl: AppImages.apartment,
+                color: Color(0xffCDDDEA),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildListingsHeader() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          child: Text(
+            "Listings",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
           ),
-        );
-      }),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: IconButton(
+            icon: const Icon(Icons.sort),
+            onPressed: _showSortAndFilterBottomSheet,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildListingsContent(RenterState state) {
+    if (state is DormsLoading) {
+      return const SizedBox(
+        height: 800,
+        child: ShimmerLoading(),
+      );
+    } else if (state is AllDormsLoaded) {
+      if (state.allDorms.isEmpty) {
+        return const NoListingPlaceholder();
+      } else {
+        return _buildSortedListings(state.allDorms);
+      }
+    } else if (state is DormsError) {
+      return ErrorMessage(errorMessage: state.message);
+    } else {
+      return Container();
+    }
+  }
+
+  Widget _buildSortedListings(List allDorms) {
+    List sortedDorms = List.from(allDorms);
+
+    // filter by region
+    if (selectedRegion != 'All Regions') {
+      sortedDorms =
+          sortedDorms.where((dorm) => dorm.region == selectedRegion).toList();
+    }
+
+    // sort by price if selected
+    if (_sortCriteria == 'price') {
+      sortedDorms.sort((a, b) => a.price.compareTo(b.price));
+    } else {
+      // default sort by date
+      sortedDorms.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    }
+
+    // check if there are no listings after filtering
+    if (sortedDorms.isEmpty) {
+      return const Center(
+        heightFactor: 1.8,
+        child: NoListingPlaceholder(),
+      );
+    }
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+      child: ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: sortedDorms.length * 2,
+        itemBuilder: (context, index) {
+          if (index.isEven) {
+            return ListingCards(listing: sortedDorms[index ~/ 2]);
+          } else {
+            return const Divider(
+                height: 30, color: Color.fromARGB(255, 223, 223, 223));
+          }
+        },
+      ),
     );
   }
 }
