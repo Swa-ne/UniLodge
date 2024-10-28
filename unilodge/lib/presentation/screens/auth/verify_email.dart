@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:unilodge/bloc/authentication/auth_bloc.dart';
 import 'package:unilodge/bloc/authentication/auth_event.dart';
 import 'package:unilodge/bloc/authentication/auth_state.dart';
+import 'package:unilodge/common/widgets/custom_button.dart';
 import 'package:unilodge/common/widgets/custom_text.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/presentation/screens/auth/change_forgotten_password.dart';
@@ -212,43 +213,31 @@ class _VerifyEmailState extends State<VerifyEmail> {
                   ],
                 ),
                 const SizedBox(height: 16),
-                SizedBox(
-                  width: 300,
-                  height: 55,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      String verificationCode = [
-                        code1Controller.text.trim(),
-                        code2Controller.text.trim(),
-                        code3Controller.text.trim(),
-                        code4Controller.text.trim(),
-                        code5Controller.text.trim(),
-                        code6Controller.text.trim()
-                      ].join();
+                CustomButton(
+                  text: "Verify",
+                  onPressed: () {
+                    String verificationCode = [
+                      code1Controller.text.trim(),
+                      code2Controller.text.trim(),
+                      code3Controller.text.trim(),
+                      code4Controller.text.trim(),
+                      code5Controller.text.trim(),
+                      code6Controller.text.trim()
+                    ].join();
 
-                      if (verificationCode.length != 6) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                                'Please enter a valid 6-digit verification code.'),
-                            backgroundColor: Colors.red,
-                          ),
-                        );
-                      } else {
-                        _authBloc.add(
-                            VerifyEmailEvent(widget.token, verificationCode));
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF2E3E4A),
-                    ),
-                    child: const Text(
-                      'Verify',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
+                    if (verificationCode.length != 6) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                              'Please enter a valid 6-digit verification code.'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    } else {
+                      _authBloc.add(
+                          VerifyEmailEvent(widget.token, verificationCode));
+                    }
+                  },
                 ),
               ],
             ),
