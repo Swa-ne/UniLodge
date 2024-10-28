@@ -35,40 +35,43 @@ class _TypeListingScreenState extends State<TypeListingScreen> {
           color: AppColors.primary,
         ),
       ),
-      body: BlocBuilder<RenterBloc, RenterState>(
-        builder: (context, state) {
-          if (state is DormsLoading) {
-            return const Center(child: ShimmerLoading());
-          } else if (state is DormsError) {
-            return Center(
-              child: CustomText(
-                text: state.message,
-                fontSize: 18,
-                color: Colors.red,
-              ),
-            );
-          } else if (state is AllDormsLoaded) {
-            final listings = state.allDorms.where((dorm) => dorm.selectedPropertyType == widget.listingType).toList();
+      body: Padding(
+        padding: const EdgeInsets.all(12.0), 
+        child: BlocBuilder<RenterBloc, RenterState>(
+          builder: (context, state) {
+            if (state is DormsLoading) {
+              return const Center(child: ShimmerLoading());
+            } else if (state is DormsError) {
+              return Center(
+                child: CustomText(
+                  text: state.message,
+                  fontSize: 18,
+                  color: Colors.red,
+                ),
+              );
+            } else if (state is AllDormsLoaded) {
+              final listings = state.allDorms.where((dorm) => dorm.selectedPropertyType == widget.listingType).toList();
 
-            if (listings.isEmpty) {
-              return const NoListingPlaceholder();
+              if (listings.isEmpty) {
+                return const NoListingPlaceholder();
+              }
+
+              return ListView.builder(
+                itemCount: listings.length,
+                itemBuilder: (context, index) {
+                  final listing = listings[index];
+                  return Column(
+                    children: [
+                      ListingCards(listing: listing),
+                      const Divider(height: 30, color: Color.fromARGB(255, 223, 223, 223)),
+                    ],
+                  );
+                },
+              );
             }
-
-            return ListView.builder(
-              itemCount: listings.length,
-              itemBuilder: (context, index) {
-                final listing = listings[index];
-                return Column(
-                  children: [
-                    ListingCards(listing: listing),
-                    const Divider(height: 30, color: Color.fromARGB(255, 223, 223, 223)),
-                  ],
-                );
-              },
-            );
-          }
-          return const SizedBox.shrink();
-        },
+            return const SizedBox.shrink();
+          },
+        ),
       ),
     );
   }

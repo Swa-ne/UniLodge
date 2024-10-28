@@ -12,6 +12,7 @@ import 'package:unilodge/common/widgets/custom_button.dart';
 import 'package:unilodge/common/widgets/custom_text.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/presentation/widgets/admin/custom_container.dart';
+import 'package:unilodge/presentation/widgets/settings_widg/logout_confirm_bottom_sheet.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -57,10 +58,12 @@ class _DashboardState extends State<Dashboard> {
           return Scaffold(
             appBar: AppBar(
               backgroundColor: AppColors.lightBackground,
+              centerTitle: true,
               title: const CustomText(
-                text: 'Dashboard',
+                text: "Dashboard",
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
                 color: AppColors.primary,
-                fontSize: 18,
               ),
             ),
             body: Column(
@@ -100,8 +103,7 @@ class _DashboardState extends State<Dashboard> {
                   child: CustomButton(
                     text: "Log Out",
                     onPressed: () {
-                      _authBloc.add(LogoutEvent());
-                      _showLoading(context);
+                      _showLogoutConfirmation(context);
                     },
                   ),
                 ),
@@ -110,6 +112,21 @@ class _DashboardState extends State<Dashboard> {
           );
         },
       ),
+    );
+  }
+
+  void _showLogoutConfirmation(BuildContext context) {
+    final _authBloc = BlocProvider.of<AuthBloc>(context);
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return LogoutConfirmBottomSheet(
+          onLogout: () {
+            _authBloc.add(LogoutEvent());
+            _showLoading(context);
+          },
+        );
+      },
     );
   }
 

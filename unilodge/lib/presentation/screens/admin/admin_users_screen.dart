@@ -34,10 +34,12 @@ class _AdminUsersScreenState extends State<AdminUsersScreen> {
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.white,
+            centerTitle: true,
             title: const CustomText(
-              text: 'Review Users',
-              color: AppColors.textColor,
-              fontSize: 18,
+              text: "Review Users",
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: AppColors.primary,
             ),
           ),
           body: SingleChildScrollView(
