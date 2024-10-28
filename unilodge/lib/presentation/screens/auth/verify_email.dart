@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,10 +34,36 @@ class _VerifyEmailState extends State<VerifyEmail> {
   final TextEditingController code5Controller = TextEditingController();
   final TextEditingController code6Controller = TextEditingController();
 
+  Timer? _timer;
+  int _countdown = 60; // 1 minutes countdown
+  bool _isResendButtonDisabled = true;
+
   @override
   void initState() {
     super.initState();
     _authBloc = BlocProvider.of<AuthBloc>(context);
+    startTimer();
+  }
+
+  void startTimer() {
+    setState(() => _isResendButtonDisabled = true);
+    _countdown = 60; // reset to 1 minutes
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        if (_countdown > 0) {
+          _countdown--;
+        } else {
+          _isResendButtonDisabled = false;
+          _timer?.cancel();
+        }
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -45,7 +72,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
       listener: (context, state) {
         if (state is ResendEmailCodeSuccess) {
           if (state.isSuccess) {
-            // TODO: add timer 3 minutes timer before resend button can be available again
+            startTimer();
             return;
           }
           ScaffoldMessenger.of(context).showSnackBar(
@@ -130,114 +157,32 @@ class _VerifyEmailState extends State<VerifyEmail> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SizedBox(
-                        height: 58,
-                        width: 54,
-                        child: TextField(
-                          controller: code1Controller,
-                          onChanged: (value) {
-                            if (value.length == 1) {
-                              FocusScope.of(context).nextFocus();
-                            }
-                          },
-                          keyboardType: TextInputType.number,
-                          textAlign: TextAlign.center,
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(1),
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
+                      for (var controller in [
+                        code1Controller,
+                        code2Controller,
+                        code3Controller,
+                        code4Controller,
+                        code5Controller,
+                        code6Controller,
+                      ])
+                        SizedBox(
+                          height: 58,
+                          width: 54,
+                          child: TextField(
+                            controller: controller,
+                            onChanged: (value) {
+                              if (value.length == 1) {
+                                FocusScope.of(context).nextFocus();
+                              }
+                            },
+                            keyboardType: TextInputType.number,
+                            textAlign: TextAlign.center,
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(1),
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 58,
-                        width: 54,
-                        child: TextField(
-                          controller: code2Controller,
-                          onChanged: (value) {
-                            if (value.length == 1) {
-                              FocusScope.of(context).nextFocus();
-                            }
-                          },
-                          keyboardType: TextInputType.number,
-                          textAlign: TextAlign.center,
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(1),
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 58,
-                        width: 54,
-                        child: TextField(
-                          controller: code3Controller,
-                          onChanged: (value) {
-                            if (value.length == 1) {
-                              FocusScope.of(context).nextFocus();
-                            }
-                          },
-                          keyboardType: TextInputType.number,
-                          textAlign: TextAlign.center,
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(1),
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 58,
-                        width: 54,
-                        child: TextField(
-                          controller: code4Controller,
-                          onChanged: (value) {
-                            if (value.length == 1) {
-                              FocusScope.of(context).nextFocus();
-                            }
-                          },
-                          keyboardType: TextInputType.number,
-                          textAlign: TextAlign.center,
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(1),
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 58,
-                        width: 54,
-                        child: TextField(
-                          controller: code5Controller,
-                          onChanged: (value) {
-                            if (value.length == 1) {
-                              FocusScope.of(context).nextFocus();
-                            }
-                          },
-                          keyboardType: TextInputType.number,
-                          textAlign: TextAlign.center,
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(1),
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 58,
-                        width: 54,
-                        child: TextField(
-                          controller: code6Controller,
-                          onChanged: (value) {
-                            if (value.length == 1) {
-                              FocusScope.of(context).nextFocus();
-                            }
-                          },
-                          keyboardType: TextInputType.number,
-                          textAlign: TextAlign.center,
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(1),
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
-                        ),
-                      ),
                     ],
                   ),
                 ),
@@ -246,15 +191,22 @@ class _VerifyEmailState extends State<VerifyEmail> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     TextButton(
-                      style: TextButton.styleFrom(
-                          textStyle: const TextStyle(fontSize: 11)),
-                      onPressed: () {
-                        _authBloc.add(ResendEmailCodeEvent(widget.token));
-                        // TODO: disable this button temporarily and enable after the timer runs out
-                      },
-                      child: const Text(
-                        'Resend Code',
-                        style: TextStyle(color: Color(0xFF51DAF6)),
+                      onPressed: _isResendButtonDisabled
+                          ? null
+                          : () {
+                              _authBloc.add(ResendEmailCodeEvent(widget.token));
+                            },
+                      child: Text(
+                        _isResendButtonDisabled
+                            ? 'Resend Code ($_countdown s)'
+                            : 'Resend Code',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: _isResendButtonDisabled
+                              ? Colors.grey
+                              : AppColors.primary,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ],
@@ -265,17 +217,16 @@ class _VerifyEmailState extends State<VerifyEmail> {
                   height: 55,
                   child: ElevatedButton(
                     onPressed: () {
-                      String code1 = code1Controller.text.trim();
-                      String code2 = code2Controller.text.trim();
-                      String code3 = code3Controller.text.trim();
-                      String code4 = code4Controller.text.trim();
-                      String code5 = code5Controller.text.trim();
-                      String code6 = code6Controller.text.trim();
+                      String verificationCode = [
+                        code1Controller.text.trim(),
+                        code2Controller.text.trim(),
+                        code3Controller.text.trim(),
+                        code4Controller.text.trim(),
+                        code5Controller.text.trim(),
+                        code6Controller.text.trim()
+                      ].join();
 
-                      String verification_code =
-                          "$code1$code2$code3$code4$code5$code6";
-
-                      if (verification_code.length != 6) {
+                      if (verificationCode.length != 6) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text(
@@ -285,7 +236,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
                         );
                       } else {
                         _authBloc.add(
-                            VerifyEmailEvent(widget.token, verification_code));
+                            VerifyEmailEvent(widget.token, verificationCode));
                       }
                     },
                     style: ElevatedButton.styleFrom(
