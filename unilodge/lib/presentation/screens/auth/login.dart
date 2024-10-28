@@ -27,6 +27,7 @@ class _LoginState extends State<Login> with InputValidationMixin {
   String? emailError;
   String? passwordError;
   bool _isPasswordVisible = false; 
+  BuildContext? _loadingContext;
 
   @override
   void initState() {
@@ -49,13 +50,15 @@ class _LoginState extends State<Login> with InputValidationMixin {
             "email_address": obfuscateEmail(emailController.text),
             "token": state.token,
           });
+          _dismissLoading();
         } else if (state is LoginError) {
-          // TODO: fix this if it looks ugly hahahaha
+          _dismissLoading();
           setState(() {
             emailError = "Incorrect Email or Password";
             passwordError = "Incorrect Email or Password";
           });
         } else if (state is AuthSuccess) {
+          _dismissLoading();
           Navigator.of(context).pop(); 
         }
       },
@@ -215,6 +218,7 @@ class _LoginState extends State<Login> with InputValidationMixin {
       barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
+        _loadingContext = context;
         return Center(
           child: SizedBox(
             width: 200,
@@ -224,5 +228,12 @@ class _LoginState extends State<Login> with InputValidationMixin {
         );
       },
     );
+  }
+
+  void _dismissLoading() {
+    if (_loadingContext != null) {
+      Navigator.of(_loadingContext!).pop();
+      _loadingContext = null;
+    }
   }
 }
