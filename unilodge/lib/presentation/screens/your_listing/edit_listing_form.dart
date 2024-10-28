@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:unilodge/bloc/listing/listing_bloc.dart';
 import 'package:unilodge/bloc/listing/listing_event.dart';
 import 'package:go_router/go_router.dart';
+import 'package:unilodge/common/widgets/custom_confirm_dialog.dart';
 import 'package:unilodge/core/configs/assets/app_images.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
@@ -242,29 +243,21 @@ class _EditListingFormState extends State<EditListingForm> {
             showDialog(
               context: context,
               builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text("Update Listing"),
-                  content: const Text("Would you like to save changes?"),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        _listingBloc.add(UpdateListing(
-                          widget.listing.id!,
-                          selectedImages,
-                          updatedListing,
-                        ));
-                        listingBloc.add(FetchListings());
-                        context.go("/listings");
-                      },
-                      child: const Text("Save"),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text("Cancel"),
-                    ),
-                  ],
+                return ConfirmationDialog(
+                  title: "Update Listing",
+                  content: "Would you like to save changes?",
+                  onConfirm: () {
+                    _listingBloc.add(UpdateListing(
+                      widget.listing.id!,
+                      selectedImages,
+                      updatedListing,
+                    ));
+                    listingBloc.add(FetchListings());
+                    context.go("/listings");
+                  },
+                  onCancel: () {
+                  },
+                  yesButtonColor: AppColors.primary,
                 );
               },
             );

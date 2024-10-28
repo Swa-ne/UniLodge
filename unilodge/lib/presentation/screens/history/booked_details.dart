@@ -8,6 +8,7 @@ import 'package:unilodge/bloc/chat/chat_bloc.dart';
 import 'package:unilodge/bloc/chat/chat_event.dart';
 import 'package:unilodge/bloc/chat/chat_state.dart';
 import 'package:unilodge/common/widgets/custom_button.dart';
+import 'package:unilodge/common/widgets/custom_confirm_dialog.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/booking_history.dart';
 import 'package:unilodge/presentation/widgets/history/booked_listing_details.dart';
@@ -30,27 +31,23 @@ class _BookedDetailsState extends State<BookedDetails> {
 
     return MultiBlocListener(
       listeners: [
-        BlocListener<BookingBloc, BookingState>(
-          listener: (context, state) {
-            if (state is BookingCancelled) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Booking cancelled successfully")),
-              );
-              context.pushReplacement('/history');
-            }
-          },
-        ),
-        BlocListener<ChatBloc, ChatState>(
-          listener: (context, state) {
-            if (state is CreateInboxSuccess) {
-              context.push('/chat/${state.inbox.id}', extra: state.inbox);
-            } else if (state is CreateInboxError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(state.error)),
-              );
-            }
-          },
-        ),
+        BlocListener<BookingBloc, BookingState>(listener: (context, state) {
+          if (state is BookingCancelled) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text("Booking cancelled successfully")),
+            );
+            context.pushReplacement('/history');
+          }
+        }),
+        BlocListener<ChatBloc, ChatState>(listener: (context, state) {
+          if (state is CreateInboxSuccess) {
+            context.push('/chat/${state.inbox.id}', extra: state.inbox);
+          } else if (state is CreateInboxError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.error)),
+            );
+          }
+        }),
       ],
       child: Scaffold(
         appBar: AppBar(
@@ -236,13 +233,15 @@ class _BookedDetailsState extends State<BookedDetails> {
                 if (bookingHistory.status.toLowerCase() != "paid" &&
                     bookingHistory.status.toLowerCase() != "cancelled")
                   Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: CustomButton(
-                          text: "Cancel",
-                          onPressed: () {
-                            _showCancelConfirmationDialog(
-                                context, bookingHistory.id!);
-                          })),
+                    padding: const EdgeInsets.all(16.0),
+                    child: CustomButton(
+                      text: "Cancel",
+                      onPressed: () {
+                        _showCustomCancelConfirmationDialog(
+                            context, bookingHistory.id!);
+                      },
+                    ),
+                  ),
               ],
             ),
           ),
@@ -259,28 +258,21 @@ class _BookedDetailsState extends State<BookedDetails> {
     );
   }
 
-  Future<void> _showCancelConfirmationDialog(
+  Future<void> _showCustomCancelConfirmationDialog(
       BuildContext context, String bookingId) async {
-    await showDialog<bool>(
+    showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
-          title: const Text("Confirm Cancellation"),
-          content: const Text("Are you sure you want to cancel this booking?"),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: const Text("No"),
-            ),
-            TextButton(
-              onPressed: () {
-                BlocProvider.of<BookingBloc>(context)
-                    .add(CancelBookingEvent(bookingId));
-                Navigator.of(context).pop(true);
-              },
-              child: const Text("Yes"),
-            ),
-          ],
+        return ConfirmationDialog(
+          title: "Confirm Cancellation",
+          content: "Are you sure you want to cancel this booking?",
+          onConfirm: () {
+            BlocProvider.of<BookingBloc>(context)
+                .add(CancelBookingEvent(bookingId));
+          },
+          onCancel: () {
+            // Optional: any additional action on cancel
+          },
         );
       },
     );
