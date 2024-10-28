@@ -233,8 +233,9 @@ class _PostPriceState extends State<PostPrice> with InputValidationMixin {
           contentPadding: contentPadding,
         ),
         validator: validator, // Apply validation here
-        keyboardType:
-            label == 'Price' ? TextInputType.number : TextInputType.text,
+        keyboardType: label == 'Price'
+            ? const TextInputType.numberWithOptions(decimal: true)
+            : TextInputType.text,
       ),
     );
   }
