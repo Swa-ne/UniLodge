@@ -29,7 +29,7 @@ class _SettingsState extends State<Settings> {
     super.initState();
 
     _listingBloc = BlocProvider.of<ListingBloc>(context);
-    _listingBloc.add(IsValidLandlordListings());
+    _listingBloc.add(IsValidLandlordListing());
   }
 
   @override
@@ -38,9 +38,11 @@ class _SettingsState extends State<Settings> {
 
     return BlocListener<ListingBloc, ListingState>(
       listener: (context, state) {
-        if (state is IsValidLandlordSuccess) {
-          isValidLandlord = state.isValid;
-        } else if (state is IsValidLandlordError) {
+        if (state is IsValidLandlordsSuccess) {
+          setState(() {
+            isValidLandlord = state.isValid;
+          });
+        } else if (state is IsValidLandlordsError) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Internet Connection Error")),
           );
@@ -88,8 +90,7 @@ class _SettingsState extends State<Settings> {
                         context.push('/my-profile');
                       },
                     ),
-                    // TODO: add logic if user is verified
-                    if (isValidLandlord)
+                    if (!isValidLandlord)
                       ListTile(
                         leading: const Icon(Icons.verified_user,
                             color: AppColors.textColor),
