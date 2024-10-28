@@ -5,9 +5,9 @@ import 'package:lottie/lottie.dart';
 import 'package:unilodge/bloc/admin_bloc/admin_listing/admin_listing_bloc.dart';
 import 'package:unilodge/bloc/admin_bloc/admin_listing/admin_listing_event.dart';
 import 'package:unilodge/bloc/admin_bloc/admin_listing/admin_listing_state.dart';
+import 'package:unilodge/common/widgets/custom_confirm_dialog.dart';
 import 'package:unilodge/core/configs/theme/app_colors.dart';
 import 'package:unilodge/data/models/listing.dart';
-import 'package:unilodge/presentation/widgets/admin/confirmation_dialog.dart';
 import 'package:unilodge/presentation/widgets/admin/status_text.dart';
 import 'package:unilodge/presentation/widgets/home/price_text.dart';
 import 'package:unilodge/presentation/widgets/home/text_row.dart';
@@ -370,25 +370,27 @@ class _AdminListingDetailScreenState extends State<AdminListingDetailScreen> {
     );
   }
 
-  void _showConfirmationDialog(BuildContext context, String action) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return ConfirmationDialog(
-          title: 'Confirm $action Listing',
-          content: 'Are you sure you want to $action this listing?',
-          onConfirm: () {
-            if (action == 'Approve') {
-              context.read<AdminBloc>().add(ApproveListing(widget.listing.id!));
-            } else if (action == 'Decline') {
-              context.read<AdminBloc>().add(DeclineListing(widget.listing.id!));
-            }
-          },
-          onCancel: () {
-            Navigator.of(context).pop();
-          },
-        );
-      },
-    );
-  }
+void _showConfirmationDialog(BuildContext context, String action) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return ConfirmationDialog(
+        title: 'Confirm $action Listing',
+        content: 'Are you sure you want to $action this listing?',
+        onConfirm: () {
+          if (action == 'Approve') {
+            context.read<AdminBloc>().add(ApproveListing(widget.listing.id!));
+          } else if (action == 'Decline') {
+            context.read<AdminBloc>().add(DeclineListing(widget.listing.id!));
+          }
+          Navigator.of(context).pop(); 
+        },
+        onCancel: () {
+        },
+        yesButtonColor: action == 'Approve' ? AppColors.primary : AppColors.redInactive, 
+      );
+    },
+  );
+}
+
 }
