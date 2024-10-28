@@ -57,10 +57,12 @@ class _DashboardState extends State<Dashboard> {
           return Scaffold(
             appBar: AppBar(
               backgroundColor: AppColors.lightBackground,
+              centerTitle: true,
               title: const CustomText(
-                text: 'Dashboard',
+                text: "Dashboard",
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
                 color: AppColors.primary,
-                fontSize: 18,
               ),
             ),
             body: Column(

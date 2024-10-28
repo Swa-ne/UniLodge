@@ -52,10 +52,12 @@ class _AdminListingsScreenState extends State<AdminListingsScreen> {
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.white,
+            centerTitle: true,
             title: const CustomText(
-              text: 'Review Listings',
-              color: AppColors.textColor,
-              fontSize: 18,
+              text: "Review Listings",
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: AppColors.primary,
             ),
           ),
           body: SingleChildScrollView(
@@ -115,9 +117,7 @@ class _AdminListingsScreenState extends State<AdminListingsScreen> {
                     const SizedBox(width: 7),
                   ],
                 ),
-                const SizedBox(
-                    height: 20), 
-
+                const SizedBox(height: 20),
                 if (state is ListingLoading) ...[
                   const SizedBox(
                     height: 800,
