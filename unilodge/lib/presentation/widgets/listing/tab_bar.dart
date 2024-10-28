@@ -56,7 +56,9 @@ class BookingManagementWidget extends StatelessWidget {
                         .toList();
 
                     approvedBookings = state.bookings
-                        .where((booking) => booking.status == 'Accepted')
+                        .where((booking) =>
+                            booking.status == 'Accepted' ||
+                            booking.status == 'Paid')
                         .toList();
 
                     rejectedBookings = state.bookings
@@ -140,19 +142,19 @@ class BookingManagementWidget extends StatelessWidget {
       itemBuilder: (context, index) {
         final booking = bookings[index];
         final bool showApproveButton = booking.status == 'Pending';
-         final bool showRejectButton = booking.status == 'Pending';
+        final bool showRejectButton = booking.status == 'Pending';
 
         return BookingCard(
           propertyType: booking.propertyType,
           userName: booking.userId.full_name.toString(),
           price: booking.price.toString(),
           status: booking.status,
-           onApprove: showApproveButton && onApprove != null
-            ? () => onApprove(booking.id)
-            : null, 
-        onReject: showRejectButton && onReject != null
-            ? () => onReject(booking.id)
-            : null, 
+          onApprove: showApproveButton && onApprove != null
+              ? () => onApprove(booking.id)
+              : null,
+          onReject: showRejectButton && onReject != null
+              ? () => onReject(booking.id)
+              : null,
         );
       },
     );

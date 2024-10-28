@@ -45,8 +45,10 @@ class BookingCard extends StatelessWidget {
                 Text('User: $userName'),
                 const SizedBox(height: 8),
                 Text('Price: $price'),
+                const SizedBox(height: 8),
+                Text(
+                    "Payment Status: ${status == "Accepted" ? "Pending" : "Paid"}"),
                 const SizedBox(height: 16),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -54,7 +56,8 @@ class BookingCard extends StatelessWidget {
                       ElevatedButton(
                         onPressed: onApprove,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromARGB(255, 117, 206, 163),
+                          backgroundColor:
+                              const Color.fromARGB(255, 117, 206, 163),
                           foregroundColor: Colors.white,
                         ),
                         child: const Text('Approve'),
@@ -64,7 +67,8 @@ class BookingCard extends StatelessWidget {
                       ElevatedButton(
                         onPressed: onReject,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromARGB(255, 244, 120, 120),
+                          backgroundColor:
+                              const Color.fromARGB(255, 244, 120, 120),
                           foregroundColor: Colors.white,
                         ),
                         child: const Text('Reject'),
@@ -75,20 +79,19 @@ class BookingCard extends StatelessWidget {
             ),
           ),
         ),
-
-       
         if (status.isNotEmpty)
           Positioned(
             top: 15,
             right: 22,
             child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
               decoration: BoxDecoration(
                 color: _getStatusColor(status),
                 borderRadius: BorderRadius.circular(20.0),
               ),
               child: Text(
-                _getStatusText(status), 
+                _getStatusText(status),
                 style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -100,14 +103,12 @@ class BookingCard extends StatelessWidget {
     );
   }
 
- 
   String _getStatusText(String status) {
-    if (status == 'Accepted') {
-      return 'Approved'; 
+    if (status == 'Accepted' || status == 'Paid') {
+      return 'Approved';
     }
-    return status; 
+    return status;
   }
-
 
   Color _getStatusColor(String status) {
     switch (status) {
