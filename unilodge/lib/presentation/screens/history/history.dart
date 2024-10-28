@@ -24,7 +24,11 @@ class _HistoryState extends State<History> with SingleTickerProviderStateMixin {
         return AppColors.pending;
       case 'accepted':
         return AppColors.greenActive;
+      case 'paid':
+        return AppColors.greenActive;
       case 'rejected':
+        return AppColors.redInactive;
+      case 'cancelled':
         return AppColors.redInactive;
       default:
         return AppColors.primary.withOpacity(0.3);
@@ -68,7 +72,7 @@ class _HistoryState extends State<History> with SingleTickerProviderStateMixin {
               Tab(text: 'Accepted'),
               Tab(text: 'Rejected'),
               Tab(text: 'Cancelled'),
-              Tab(text: 'Paid'), 
+              Tab(text: 'Paid'),
             ],
           ),
         ),
@@ -158,14 +162,16 @@ class _HistoryState extends State<History> with SingleTickerProviderStateMixin {
                               overflow: TextOverflow.ellipsis),
                         ),
                         Text(
-                            'Booked: ${DateTime.parse(listing.createdAt).toLocal().toShortDateString()} ${DateTime.parse(listing.createdAt).toLocal().toShortTimeString()}',
-                            style: const TextStyle(
-                                fontSize: 14, color: AppColors.textColor)),
-                        Text(
-                          'Price: ${listing.listing.price}',
+                          'Price: ${listing.listing.price} ETH',
                           style: const TextStyle(
                               fontSize: 14, color: AppColors.textColor),
                         ),
+                        SizedBox(height: 7,),
+                        Text(
+                            'Booked: ${DateTime.parse(listing.createdAt).toLocal().toShortDateString()} || ${DateTime.parse(listing.createdAt).toLocal().toShortTimeString()}',
+                            style: const TextStyle(
+                                fontSize: 14, color: AppColors.textColor)),
+                        
                       ],
                     ),
                   ),
@@ -235,10 +241,10 @@ class _HistoryState extends State<History> with SingleTickerProviderStateMixin {
 
 extension DateTimeExtension on DateTime {
   String toShortDateString() {
-    return DateFormat('MMMM d').format(this); // e.g., "January 24"
+    return DateFormat('MMMM d, y').format(this); 
   }
 
   String toShortTimeString() {
-    return DateFormat.jm().format(this); // e.g., "2:30 PM"
+    return DateFormat.jm().format(this);
   }
 }
